@@ -290,6 +290,7 @@ GameObject:
   m_Component:
   - component: {fileID: 585594141}
   - component: {fileID: 585594142}
+  - component: {fileID: 585594143}
   m_Layer: 0
   m_Name: InputHandler
   m_TagString: Untagged
@@ -324,6 +325,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afb207e003fe9ed40b7d3caf3f12700c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &585594143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 585594140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: b83d432db81ad064296f3b5366a2c3b0, type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 77040787-f5c2-4050-a47b-f203263a0808
+    m_ActionName: Gameplay/Draw[/Mouse/position]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 1cacc859-4cf6-4235-bfe1-a9f8aa0efbe6
+    m_ActionName: Gameplay/Press[/Mouse/leftButton]
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Gameplay
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0

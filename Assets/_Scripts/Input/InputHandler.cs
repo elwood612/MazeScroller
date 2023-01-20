@@ -3,36 +3,30 @@ using UnityEngine.InputSystem;
 
 public class InputHandler : MonoBehaviour
 {
-    private Controls _controls;
+    private PlayerInput _playerInput;
+    private InputAction _pressAction, _drawAction;
     private static bool _isPressingScreen;
     private static Vector2 _pressPosition = new Vector2();
 
     public static bool IsPressingScreen => _isPressingScreen;
     public static Vector2 PressPosition => _pressPosition;
 
-    
-
-    private void Awake()
-    {
-        _controls = new Controls();
-    }
-
     private void OnEnable()
     {
-        _controls.Enable();
-        
-        _controls.Gameplay.Press.performed += HandlePress;
-        _controls.Gameplay.Press.canceled += HandlePress;
-        _controls.Gameplay.Draw.performed += HandleDraw;
+        _playerInput = GetComponent<PlayerInput>();
+        _pressAction = _playerInput.actions["Press"];
+        _drawAction = _playerInput.actions["Draw"];
+
+        _pressAction.performed += HandlePress;
+        _pressAction.canceled += HandlePress;
+        _drawAction.performed += HandleDraw;
     }
 
     private void OnDisable()
     {
-        _controls.Disable();
-        
-        _controls.Gameplay.Press.performed -= HandlePress;
-        _controls.Gameplay.Press.canceled -= HandlePress;
-        _controls.Gameplay.Draw.performed -= HandleDraw;
+        _pressAction.performed -= HandlePress;
+        _pressAction.canceled -= HandlePress;
+        _drawAction.performed -= HandleDraw;
     }
 
     private void HandleDraw(InputAction.CallbackContext ctx)
