@@ -1,0 +1,17 @@
+{
+    "name": "Project.Maze",
+    "rootNamespace": "",
+    "references": [
+        "GUID:8166730be2347c04da47c9d71b2408ca",
+        "GUID:51033838e45b2cf4981b8304ffedbc36"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
