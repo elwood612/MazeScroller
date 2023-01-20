@@ -39,8 +39,8 @@ public class InputHandler : MonoBehaviour
         _isPressingScreen = ctx.ReadValueAsButton();
     }
 
-    private void Update()
-    {
-        if (IsPressingScreen) Debug.Log("Position = " + PressPosition);
-    }
+    //private void Update()
+    //{
+    //    if (IsPressingScreen) Debug.Log("Position = " + PressPosition);
+    //}
 }
