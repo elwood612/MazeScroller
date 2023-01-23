@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &5608089495543284711
+--- !u!1 &474050623509219925
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,46 +8,46 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5608089495543284715}
-  - component: {fileID: 5608089495543284712}
-  - component: {fileID: 5608089495543284713}
+  - component: {fileID: 7483664429809811964}
+  - component: {fileID: 6141552753161729541}
+  - component: {fileID: 7975143412173610899}
   m_Layer: 0
-  m_Name: TileRenderer
+  m_Name: DrawMazeRenderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5608089495543284715
+--- !u!4 &7483664429809811964
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5608089495543284711}
+  m_GameObject: {fileID: 474050623509219925}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.0005, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7255253569694343399}
+  m_Father: {fileID: 2918248224066926583}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &5608089495543284712
+--- !u!33 &6141552753161729541
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5608089495543284711}
+  m_GameObject: {fileID: 474050623509219925}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &5608089495543284713
+--- !u!23 &7975143412173610899
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5608089495543284711}
+  m_GameObject: {fileID: 474050623509219925}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 1
@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: db4e5687736952e4595558f025ebab91, type: 2}
+  - {fileID: 2100000, guid: 254e66556bd0d3145b4a5d08dd4ced55, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -83,7 +83,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &5751404476535072656
+--- !u!1 &4819652735718566436
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -91,60 +91,40 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7255253569694343399}
-  - component: {fileID: 7255253569694343401}
-  - component: {fileID: 7255253569694343398}
+  - component: {fileID: 2918248224066926583}
+  - component: {fileID: 945619251008403391}
   m_Layer: 0
-  m_Name: Tile
-  m_TagString: Tile
+  m_Name: DrawMaze
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7255253569694343399
+--- !u!4 &2918248224066926583
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5751404476535072656}
+  m_GameObject: {fileID: 4819652735718566436}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 5608089495543284715}
+  - {fileID: 7483664429809811964}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7255253569694343401
+--- !u!114 &945619251008403391
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5751404476535072656}
+  m_GameObject: {fileID: 4819652735718566436}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fbb77ab03a596c942848a8903e3fe10c, type: 3}
+  m_Script: {fileID: 11500000, guid: b07994c24c58df244b8fdf7f4771fac9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isStartingTile: 0
-  _tileBase: {fileID: 2100000, guid: db4e5687736952e4595558f025ebab91, type: 2}
-  _tileDrawn: {fileID: 2100000, guid: 0c9bc223cd7f9a846ab70907553322f4, type: 2}
-  _wallLayer:
-    serializedVersion: 2
-    m_Bits: 256
---- !u!65 &7255253569694343398
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5751404476535072656}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 10, y: 0, z: 10}
-  m_Center: {x: 0, y: 0, z: 0}

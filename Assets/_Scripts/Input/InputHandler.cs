@@ -6,7 +6,7 @@ public class InputHandler : MonoBehaviour
     private PlayerInput _playerInput;
     private InputAction _pressAction, _drawAction;
     private static bool _isPressingScreen;
-    private static Vector2 _pressPosition = new Vector2();
+    private static Vector3 _pressPosition = new Vector3();
 
     public static bool IsPressingScreen => _isPressingScreen;
     public static Vector2 PressPosition => _pressPosition;
@@ -38,9 +38,4 @@ public class InputHandler : MonoBehaviour
     {
         _isPressingScreen = ctx.ReadValueAsButton();
     }
-
-    //private void Update()
-    //{
-    //    if (IsPressingScreen) Debug.Log("Position = " + PressPosition);
-    //}
 }
