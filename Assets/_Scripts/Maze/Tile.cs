@@ -13,19 +13,33 @@ public class Tile : MonoBehaviour
 
     private void Start()
     {
-        if (_isStartingTile) { DrawMaze.TileLength = GetComponent<BoxCollider>().bounds.size.x; }
+        if (_isStartingTile) 
+        { 
+            DrawMaze.TileLength = GetComponent<BoxCollider>().bounds.size.x;
+            AddTileToMaze();
+            foreach (Wall wall in GetNeighborWalls())
+            {
+                wall.WallIsBorder();
+            }
+        }
     }
 
     public void AddTileToMaze()
     {
-        _isPartOfMaze = true;
-        SetMaterial(_tileDrawn);
+        if (!_isPartOfMaze)
+        {
+            _isPartOfMaze = true;
+            SetMaterial(_tileDrawn);
+        }
     }
 
     public void RemoveTileFromMaze()
     {
-        _isPartOfMaze = false;
-        SetMaterial(_tileBase);
+        if (_isPartOfMaze)
+        {
+            _isPartOfMaze = false;
+            SetMaterial(_tileBase);
+        }
     }
 
     public Wall[] GetNeighborWalls()

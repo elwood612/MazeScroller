@@ -3,19 +3,35 @@ using UnityEngine;
 public class Wall : MonoBehaviour
 {
     private Renderer _renderer;
+    private bool _mazeBorder, _mazePath;
 
-    private void Start()
+    public bool MazeBorder => _mazeBorder;
+    public bool MazePath => _mazePath;
+
+    private void Awake()
     {
         _renderer = GetComponentInChildren<Renderer>();
+        DeactivateWall();
     }
 
-    public void EnableRenderer()
+    public void WallIsBorder()
     {
         _renderer.enabled = true;
+        _mazeBorder = true;
+        _mazePath = false;
     }
 
-    public void DisableRenderer()
+    public void WallIsPath()
     {
         _renderer.enabled = false;
+        _mazeBorder = false;
+        _mazePath = true;
+    }
+
+    public void DeactivateWall()
+    {
+        _renderer.enabled = false;
+        _mazeBorder = false;
+        _mazePath = false;
     }
 }

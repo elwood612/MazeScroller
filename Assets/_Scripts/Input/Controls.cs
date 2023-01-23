@@ -44,6 +44,15 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": ""Hold(duration=0.01)"",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RightClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""0636c291-c2ef-4a10-a792-644c1594581c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -90,6 +99,17 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""action"": ""Press"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f11d6d48-7f58-48f9-937e-fa5f91ab28fd"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RightClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -100,6 +120,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
         m_Gameplay_Draw = m_Gameplay.FindAction("Draw", throwIfNotFound: true);
         m_Gameplay_Press = m_Gameplay.FindAction("Press", throwIfNotFound: true);
+        m_Gameplay_RightClick = m_Gameplay.FindAction("RightClick", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -161,12 +182,14 @@ public partial class @Controls : IInputActionCollection2, IDisposable
     private IGameplayActions m_GameplayActionsCallbackInterface;
     private readonly InputAction m_Gameplay_Draw;
     private readonly InputAction m_Gameplay_Press;
+    private readonly InputAction m_Gameplay_RightClick;
     public struct GameplayActions
     {
         private @Controls m_Wrapper;
         public GameplayActions(@Controls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Draw => m_Wrapper.m_Gameplay_Draw;
         public InputAction @Press => m_Wrapper.m_Gameplay_Press;
+        public InputAction @RightClick => m_Wrapper.m_Gameplay_RightClick;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -182,6 +205,9 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @Press.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPress;
                 @Press.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPress;
                 @Press.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPress;
+                @RightClick.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnRightClick;
+                @RightClick.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnRightClick;
+                @RightClick.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnRightClick;
             }
             m_Wrapper.m_GameplayActionsCallbackInterface = instance;
             if (instance != null)
@@ -192,6 +218,9 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @Press.started += instance.OnPress;
                 @Press.performed += instance.OnPress;
                 @Press.canceled += instance.OnPress;
+                @RightClick.started += instance.OnRightClick;
+                @RightClick.performed += instance.OnRightClick;
+                @RightClick.canceled += instance.OnRightClick;
             }
         }
     }
@@ -200,5 +229,6 @@ public partial class @Controls : IInputActionCollection2, IDisposable
     {
         void OnDraw(InputAction.CallbackContext context);
         void OnPress(InputAction.CallbackContext context);
+        void OnRightClick(InputAction.CallbackContext context);
     }
 }
