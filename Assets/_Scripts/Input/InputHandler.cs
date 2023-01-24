@@ -37,5 +37,6 @@ public class InputHandler : MonoBehaviour
     private void HandlePress(InputAction.CallbackContext ctx)
     {
         _isPressingScreen = ctx.ReadValueAsButton();
+        //_isPressingScreen = ctx.ReadValue<float>() > 0;
     }
 }

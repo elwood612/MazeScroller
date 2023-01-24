@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using static PlasticPipe.PlasticProtocol.Messages.Serialization.ItemHandlerMessagesSerialization;
 
 public class DrawMaze : MonoBehaviour
 {
@@ -13,8 +12,6 @@ public class DrawMaze : MonoBehaviour
     private static float _tileLength;
     private Stack<Dictionary<Tile, bool>> _tileHistory = new Stack<Dictionary<Tile, bool>>();
     private Stack<Dictionary<Wall, bool>> _wallHistory = new Stack<Dictionary<Wall, bool>>();
-
-    private Vector3 tempDeactivatePosition;
 
     public static float TileLength
     {
@@ -58,7 +55,7 @@ public class DrawMaze : MonoBehaviour
 
     private void Draw(Tile tile)
     {
-        if (tile == null || _lastTile == null || !_lastTile.IsPartOfMaze || tile.IsPartOfMaze) { return; }
+        if (DrawConditionsNotMet(tile)) { return; }
 
         Dictionary<Tile, bool> tileActions = new Dictionary<Tile, bool>();
         Dictionary<Wall, bool> wallActions = new Dictionary<Wall, bool>();
@@ -90,33 +87,37 @@ public class DrawMaze : MonoBehaviour
         _wallHistory.Push(wallActions);
     }
 
+    private bool DrawConditionsNotMet(Tile tile)
+    {
+        return
+            tile == null ||
+            _lastTile == null ||
+            !_lastTile.IsPartOfMaze ||
+            tile.IsPartOfMaze ||
+            !AreTilesContiguous(tile, _lastTile);
+    }
+
     public void Undo()
     {
         if (_tileHistory.Count == 0) { return; }
 
         foreach (KeyValuePair<Tile, bool> action in _tileHistory.Pop())
         {
-            if (action.Value)
-            {
-                action.Key.RemoveTileFromMaze();
-            }
-            else
-            {
-                action.Key.AddTileToMaze();
-            }
+            if (action.Value) { action.Key.RemoveTileFromMaze(); }
+            else { action.Key.AddTileToMaze(); }
         }
 
         foreach (KeyValuePair<Wall, bool> action in _wallHistory.Pop())
         {
-            if (action.Value)
-            {
-                action.Key.DeactivateWall();
-            }
-            else
-            {
-                action.Key.WallIsBorder();
-            }
+            if (action.Value) { action.Key.DeactivateWall(); }
+            else { action.Key.WallIsBorder(); }
         }
+    }
+
+    private bool AreTilesContiguous(Tile t1, Tile t2)
+    {
+        if (t1 == null || t2 == null) return false;
+        return (t1.transform.position - t2.transform.position).magnitude < _tileLength + 0.5f;
     }
 
     private void UpdateTransformAndRenderer(Vector3 pos)
@@ -128,15 +129,13 @@ public class DrawMaze : MonoBehaviour
     private void DisableRenderer()
     {
         _renderer.enabled = false;
-        _currentTile = null;
     }
 
     private Wall GetWallToDeactivate(Tile t1, Tile t2)
     {
         Vector3 pos1 = t1.transform.position;
         Vector3 pos2 = t2.transform.position;
-        // tempDeactivatePosition = (pos1 + pos2) / 2; // tmp, delete later
-        if ((pos2 - pos1).magnitude > TileLength + 0.5f) { Debug.Log("Non contiguous tiles"); return null; }
+        if ((pos2 - pos1).magnitude > _tileLength + 0.5f) { Debug.Log("Non contiguous tiles"); return null; }
 
         Collider[] colliders = Physics.OverlapSphere((pos1 + pos2) / 2, 0.5f, _wallLayer);
         if (colliders.Length == 0 || colliders == null)
