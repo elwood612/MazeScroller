@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class DrawMaze : MonoBehaviour
 {
     [SerializeField] private LayerMask _wallLayer;
+
     private Ray _ray;
     private RaycastHit[] _hits;
     private Camera _cam;
@@ -12,6 +14,7 @@ public class DrawMaze : MonoBehaviour
     private static float _tileLength;
     private Stack<Dictionary<Tile, bool>> _tileHistory = new Stack<Dictionary<Tile, bool>>();
     private Stack<Dictionary<Wall, bool>> _wallHistory = new Stack<Dictionary<Wall, bool>>();
+    private bool _canRaycast = false;
 
     public static float TileLength
     {
@@ -19,13 +22,29 @@ public class DrawMaze : MonoBehaviour
         set => _tileLength = value; 
     }
 
+    private void OnEnable()
+    {
+        GameManager.OnStateChanged += RaycastConditions;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.OnStateChanged -= RaycastConditions;
+    }
+
     private void Start()
     {
         _cam = Camera.main;
         _renderer = GetComponentInChildren<Renderer>();
+        DisableRenderer();
     }
 
     private void Update()
+    {
+        if (_canRaycast) { HandleRaycast(); }
+    }
+
+    private void HandleRaycast()
     {
         if (InputHandler.IsPressingScreen)
         {
@@ -40,7 +59,7 @@ public class DrawMaze : MonoBehaviour
             _lastTile = null;
             return;
         }
-      
+
         foreach (RaycastHit hit in _hits)
         {
             if (hit.collider.CompareTag("Tile"))
@@ -95,6 +114,11 @@ public class DrawMaze : MonoBehaviour
             !_lastTile.IsPartOfMaze ||
             tile.IsPartOfMaze ||
             !AreTilesContiguous(tile, _lastTile);
+    }
+
+    private void RaycastConditions(GameState state)
+    {
+        _canRaycast = state == GameState.Idle || state == GameState.Running;
     }
 
     public void Undo()
