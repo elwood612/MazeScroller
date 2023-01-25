@@ -11,15 +11,13 @@ public class DrawMaze : MonoBehaviour
     private Camera _cam;
     private Renderer _renderer;
     private Tile _currentTile, _lastTile;
-    private static float _tileLength;
     private Stack<Dictionary<Tile, bool>> _tileHistory = new Stack<Dictionary<Tile, bool>>();
     private Stack<Dictionary<Wall, bool>> _wallHistory = new Stack<Dictionary<Wall, bool>>();
     private bool _canRaycast = false;
 
-    public static float TileLength
+    private void Awake()
     {
-        get => _tileLength; 
-        set => _tileLength = value; 
+        _renderer = GetComponentInChildren<Renderer>();
     }
 
     private void OnEnable()
@@ -35,7 +33,6 @@ public class DrawMaze : MonoBehaviour
     private void Start()
     {
         _cam = Camera.main;
-        _renderer = GetComponentInChildren<Renderer>();
         DisableRenderer();
     }
 
@@ -57,7 +54,12 @@ public class DrawMaze : MonoBehaviour
             if (_renderer.enabled) { DisableRenderer(); }
             _currentTile = null;
             _lastTile = null;
+            GameManager.Instance.UpdateGameState(GameState.Idle); // temp
             return;
+        }
+        else // i.e., if pressingScreen && hitting something
+        {
+            GameManager.Instance.UpdateGameState(GameState.Running); // temp
         }
 
         foreach (RaycastHit hit in _hits)
@@ -92,8 +94,7 @@ public class DrawMaze : MonoBehaviour
             }
         }
 
-        Wall[] neighborWalls = tile.GetNeighborWalls();
-        foreach (Wall wall in neighborWalls)
+        foreach (Wall wall in tile.GetNeighborWalls())
         {
             if (!wall.MazeBorder && !wall.MazePath) 
             { 
@@ -113,6 +114,7 @@ public class DrawMaze : MonoBehaviour
             _lastTile == null ||
             !_lastTile.IsPartOfMaze ||
             tile.IsPartOfMaze ||
+            tile.IsDestroyed ||
             !AreTilesContiguous(tile, _lastTile);
     }
 
@@ -141,7 +143,7 @@ public class DrawMaze : MonoBehaviour
     private bool AreTilesContiguous(Tile t1, Tile t2)
     {
         if (t1 == null || t2 == null) return false;
-        return (t1.transform.position - t2.transform.position).magnitude < _tileLength + 0.5f;
+        return (t1.transform.position - t2.transform.position).magnitude < GameManager.TileLength + 0.5f;
     }
 
     private void UpdateTransformAndRenderer(Vector3 pos)
@@ -159,7 +161,7 @@ public class DrawMaze : MonoBehaviour
     {
         Vector3 pos1 = t1.transform.position;
         Vector3 pos2 = t2.transform.position;
-        if ((pos2 - pos1).magnitude > _tileLength + 0.5f) { Debug.Log("Non contiguous tiles"); return null; }
+        if ((pos2 - pos1).magnitude > GameManager.TileLength + 0.5f) { Debug.Log("Non contiguous tiles"); return null; }
 
         Collider[] colliders = Physics.OverlapSphere((pos1 + pos2) / 2, 0.5f, _wallLayer);
         if (colliders.Length == 0 || colliders == null)

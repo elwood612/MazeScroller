@@ -8,9 +8,13 @@ public class Wall : MonoBehaviour
     public bool MazeBorder => _mazeBorder;
     public bool MazePath => _mazePath;
 
-    private void Awake() // maybe figure out script execution order so we can put this in Start?
+    private void Awake()
     {
         _renderer = GetComponentInChildren<Renderer>();
+    }
+
+    private void Start()
+    {
         DeactivateWall();
     }
 
