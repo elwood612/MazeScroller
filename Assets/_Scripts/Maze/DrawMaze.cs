@@ -94,7 +94,7 @@ public class DrawMaze : MonoBehaviour
             }
         }
 
-        foreach (Wall wall in tile.GetNeighborWalls())
+        foreach (Wall wall in tile.NeighborWalls)
         {
             if (!wall.MazeBorder && !wall.MazePath) 
             { 

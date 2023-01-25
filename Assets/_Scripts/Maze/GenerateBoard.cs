@@ -5,6 +5,7 @@ using UnityEngine;
 public class GenerateBoard : MonoBehaviour
 {
     [SerializeField] private GameObject _rowPrefab;
+    private GameObject _firstRow;
 
     private void OnEnable()
     {
@@ -32,15 +33,27 @@ public class GenerateBoard : MonoBehaviour
             newRow.transform.position += new Vector3(0, 0, i * GameManager.TileLength);
 
             // THIS IS VERY VERY TEMPORARY PLEASE OK THANK YOU
+            if (i == 0)
+            {
+                _firstRow = newRow;
+            }
             if (i == GameManager.Instance.DebugStartTilePosition - 1)
             {
-                newRow.transform.GetChild(0).GetChild(0).GetComponent<Tile>().SetStartingTile();
+                newRow.transform.GetChild(0).GetChild(0).GetComponent<Tile>().IsStartingTile = true;
+            }
+            if (i == GameManager.NumberOfRows - 1)
+            {
+                foreach (Tile tile in newRow.GetComponentsInChildren<Tile>())
+                {
+                    tile.IsEndOfBoard = true;
+                    tile.FirstRow = _firstRow.GetComponent<Row>();
+                }
             }
 
-            boardQueue.Enqueue(newRow);
+            boardQueue.Enqueue(newRow); // optional??
         }
         GameManager.Instance.BoardQueue = boardQueue;
-        yield return null; // important! don't want two gameState updates in the same frame
+        yield return null; // keep this, important! don't want two gameState updates in the same frame
         GameManager.Instance.UpdateGameState(GameState.Idle);
     }
 
