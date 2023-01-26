@@ -7,6 +7,7 @@ public class DrawMaze : MonoBehaviour
     [SerializeField] private LayerMask _wallLayer;
 
     private Ray _ray;
+    private static Row _highestDrawnRow;
     private RaycastHit[] _hits;
     private Camera _cam;
     private Renderer _renderer;
@@ -14,6 +15,11 @@ public class DrawMaze : MonoBehaviour
     private Stack<Dictionary<Tile, bool>> _tileHistory = new Stack<Dictionary<Tile, bool>>();
     private Stack<Dictionary<Wall, bool>> _wallHistory = new Stack<Dictionary<Wall, bool>>();
     private bool _canRaycast = false;
+
+    public static Row HighestDrawnRow
+    {
+        set => _highestDrawnRow = value;
+    }
 
     private void Awake()
     {
@@ -93,6 +99,10 @@ public class DrawMaze : MonoBehaviour
 
         tile.AddTileToMaze();
         tileActions.Add(tile, true);
+        if (tile.transform.position.z > _highestDrawnRow.transform.position.z && !tile.ParentRow.IsHighestDrawnRow)
+        {
+            SetHighestDrawnRow(tile);
+        }
         
         if (_lastTile != null && _lastTile != _currentTile)
         {
@@ -160,6 +170,13 @@ public class DrawMaze : MonoBehaviour
     {
         if (!_renderer.enabled) { _renderer.enabled = true; }
         transform.position = pos;
+    }
+
+    private void SetHighestDrawnRow(Tile tile)
+    {
+        _highestDrawnRow.IsHighestDrawnRow = false;
+        _highestDrawnRow = tile.ParentRow;
+        _highestDrawnRow.IsHighestDrawnRow = true;
     }
 
     private void DisableRenderer()

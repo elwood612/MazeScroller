@@ -11,12 +11,15 @@ public class InputHandler : MonoBehaviour
     public static bool IsPressingScreen => _isPressingScreen;
     public static Vector2 PressPosition => _pressPosition;
 
-    private void OnEnable()
+    private void Awake()
     {
         _playerInput = GetComponent<PlayerInput>();
         _pressAction = _playerInput.actions["Press"];
         _drawAction = _playerInput.actions["Draw"];
+    }
 
+    private void OnEnable()
+    {
         _pressAction.performed += HandlePress;
         _pressAction.canceled += HandlePress;
         _drawAction.performed += HandleDraw;
@@ -37,6 +40,5 @@ public class InputHandler : MonoBehaviour
     private void HandlePress(InputAction.CallbackContext ctx)
     {
         _isPressingScreen = ctx.ReadValueAsButton();
-        //_isPressingScreen = ctx.ReadValue<float>() > 0;
     }
 }

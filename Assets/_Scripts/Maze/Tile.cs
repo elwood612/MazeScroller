@@ -40,6 +40,7 @@ public class Tile : MonoBehaviour
         get => _firstRow;
         set => _firstRow = value;
     }
+    public Row ParentRow => _parentRow;
 
     private void Awake()
     {
@@ -122,6 +123,8 @@ public class Tile : MonoBehaviour
         {
             wall.WallIsBorder();
         }
+        _parentRow.IsHighestDrawnRow = true;
+        DrawMaze.HighestDrawnRow = _parentRow;
     }
 
     private void UndoDestroyed()

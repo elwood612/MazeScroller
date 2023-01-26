@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     private static Vector3 _tileSpeed = Vector3.zero;
     private static Vector3 _boardLength;
     private float _defaultSpeed = 1f;
+    private static float _highestRowPercentage;
     private static float _tileLength;
     private static int _numberOfRows;
     private static int _tileDestroyedChance;
@@ -26,6 +27,11 @@ public class GameManager : MonoBehaviour
     public static int NumberOfRows => _numberOfRows;
     public static int TileDestroyedChance => _tileDestroyedChance;
     public static Vector3 TileSpeed => _tileSpeed;
+    public static float HighestDrawnRowHeight
+    {
+        get => _highestRowPercentage;
+        set => _highestRowPercentage = value;
+    }
 
     private void Awake()
     {
@@ -43,7 +49,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        //_environment.transform.Translate(_tileSpeed * Time.deltaTime);
+        if (CurrentState == GameState.Idle) { CalculateIdleSpeed(); }
     }
 
     public void UpdateGameState(GameState newState)
@@ -78,11 +84,16 @@ public class GameManager : MonoBehaviour
         _tileSpeed = new Vector3(0, 0, -input * _defaultSpeed);
     }
 
+    private void CalculateIdleSpeed() // Redo this please
+    {
+        float mult = Mathf.Max(5f, _highestRowPercentage * 10);
+        SetSpeed(_defaultSpeed * mult);
+    }
+
     private void CalculateBoardLength()
     {
         _tileLength = GameObject.FindGameObjectWithTag("Tile").GetComponent<BoxCollider>().bounds.size.x;
         _boardLength = new Vector3(0, 0, _tileLength * _numberOfRows);
-        //Debug.Log("Tile length = " + _tileLength + ", board length = " + _boardLength);
     }
 
     private void OnDestroy()
