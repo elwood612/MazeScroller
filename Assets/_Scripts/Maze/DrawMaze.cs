@@ -51,10 +51,7 @@ public class DrawMaze : MonoBehaviour
 
         if (!InputHandler.IsPressingScreen || _hits.Length == 0)
         {
-            if (_renderer.enabled) { DisableRenderer(); }
-            _currentTile = null;
-            _lastTile = null;
-            GameManager.Instance.UpdateGameState(GameState.Idle); // temp
+            DisallowDraw();
             return;
         }
         else // i.e., if pressingScreen && hitting something
@@ -67,11 +64,24 @@ public class DrawMaze : MonoBehaviour
             if (hit.collider.CompareTag("Tile"))
             {
                 _currentTile = hit.collider.GetComponent<Tile>();
+                if (_currentTile.IsDestroyed)
+                {
+                    DisallowDraw();
+                    continue;
+                }
                 UpdateTransformAndRenderer(_currentTile.transform.position);
                 Draw(_currentTile);
                 _lastTile = _currentTile;
             }
         }
+    }
+
+    private void DisallowDraw()
+    {
+        if (_renderer.enabled) { DisableRenderer(); }
+        _currentTile = null;
+        _lastTile = null;
+        GameManager.Instance.UpdateGameState(GameState.Idle);
     }
 
     private void Draw(Tile tile)
@@ -135,7 +145,7 @@ public class DrawMaze : MonoBehaviour
 
         foreach (KeyValuePair<Wall, bool> action in _wallHistory.Pop())
         {
-            if (action.Value) { action.Key.DeactivateWall(); }
+            if (action.Value) { action.Key.HideWall(); }
             else { action.Key.WallIsBorder(); }
         }
     }

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
-    
+    public bool tempCheckMark = false;
     [SerializeField] private Material _tileBase, _tileDrawn;
     [SerializeField] private LayerMask _wallLayer;
 
@@ -11,12 +11,12 @@ public class Tile : MonoBehaviour
     private Row _parentRow;
     private Row _firstRow;
     public Wall[] _neighborWalls = new Wall[4];
-    private bool _isSetup = true;
     private bool _isStartingTile = false;
-    private bool _isEndOfBoard = false;
+    private bool _isOnLastRow = false;
     private bool _isPartOfMaze = false;
     private bool _isDestroyed = false;
     private bool _hasCrystal = false;
+    private bool _initialSetup = true;
 
     public Wall[] NeighborWalls => _neighborWalls;
     public bool IsPartOfMaze => _isPartOfMaze;
@@ -29,10 +29,10 @@ public class Tile : MonoBehaviour
         set => _isStartingTile = value;
     }
 
-    public bool IsEndOfBoard
+    public bool IsOnLastRow
     {
-        get => _isEndOfBoard;
-        set => _isEndOfBoard = value;
+        get => _isOnLastRow;
+        set => _isOnLastRow = value;
     }
 
     public Row FirstRow
@@ -49,18 +49,13 @@ public class Tile : MonoBehaviour
 
     private void OnEnable()
     {
+        GameManager.OnStateChanged += RegularSetup;
         if (_parentRow != null) { _parentRow.OnRowReset += ResetTile; }
-        GameManager.OnStateChanged += SetNeighborWalls;
     }
 
     private void OnDisable()
     {
         if (_parentRow != null) { _parentRow.OnRowReset -= ResetTile; }
-    }
-
-    private void Start()
-    {
-        //_neighborWalls = GetNeighborWalls();
     }
 
     public void AddTileToMaze()
@@ -83,9 +78,6 @@ public class Tile : MonoBehaviour
 
     public Wall[] GetNeighborWallsLegacy()
     {
-        //GameObject sphere = Instantiate(GameObject.CreatePrimitive(PrimitiveType.Sphere), transform);
-        //sphere.transform.localScale *= (GameManager.TileLength) + 0.5f;
-        //sphere.transform.GetComponent<Renderer>().material.color = Color.yellow;
         Collider[] colliders = Physics.OverlapSphere(transform.position, (GameManager.TileLength / 2) + 0.5f, _wallLayer);
         Debug.Log("Getting neighboring walls, found: " + colliders.Length);
         Wall[] walls = new Wall[colliders.Length];
@@ -96,18 +88,10 @@ public class Tile : MonoBehaviour
         return walls;
     }
 
-    public void SetNeighborWalls(GameState state)
+    public void RegularSetup(GameState state)
     {
-        if (_isEndOfBoard)
-        {
-            _firstRow.OnRowReset += EndOfRowDelay;
-        }
-        if (state != GameState.Idle || !_isSetup)
-        {
-            _isSetup = false;
-            return;
-        }
-
+        if (state == GameState.Setup || !_initialSetup) { return; }
+        
         Collider[] colliders = Physics.OverlapSphere(transform.position, (GameManager.TileLength / 2) + 0.5f, _wallLayer);
         if (colliders.Length != 4) { return; }
 
@@ -117,13 +101,14 @@ public class Tile : MonoBehaviour
         }
 
         if (_isStartingTile) { SetStartingTile(); }
-        if (_firstRow != null) { _firstRow.OnRowReset -= EndOfRowDelay; }
+        GameManager.OnStateChanged -= RegularSetup;
+        if (_isOnLastRow) { _firstRow.OnRowReset -= DelayedSetupWrapper; }
+        _initialSetup = false;
     }
 
-    public void SetTileAsDestroyed()
+    public void DestroyTile()
     {
-        if (_renderer != null)
-            _renderer.enabled = false;
+        if (_renderer != null) { _renderer.enabled = false; }
         _isDestroyed = true;
         _isPartOfMaze = false;
     }
@@ -152,20 +137,22 @@ public class Tile : MonoBehaviour
 
     private void ResetTile()
     {
-        //foreach (Wall wall in GetNeighborWallsLegacy())
         foreach (Wall wall in _neighborWalls)
         {
-            wall.DeactivateWall();
+            wall.HideWall();
         }
         RemoveTileFromMaze();
     }
 
-    private void EndOfRowDelay()
+    public void DelayedSetupWrapper()
     {
-        Debug.Log("End of row delay");
-        _isEndOfBoard = false;
-        SetNeighborWalls(GameState.Idle);
-        //_firstRow.OnRowReset -= EndOfRowDelay;
+        StartCoroutine(DelayedSetup());
+    }
+
+    private IEnumerator DelayedSetup()
+    {
+        yield return new WaitForSeconds(1f);
+        RegularSetup(GameState.Idle);
     }
 
     //private void OnDrawGizmos()

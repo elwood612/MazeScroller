@@ -5,7 +5,7 @@ using UnityEngine;
 public class GenerateBoard : MonoBehaviour
 {
     [SerializeField] private GameObject _rowPrefab;
-    private GameObject _firstRow;
+    private Row _firstRow;
 
     private void OnEnable()
     {
@@ -25,18 +25,17 @@ public class GenerateBoard : MonoBehaviour
 
     public IEnumerator GenerateBoardQueue()
     {
-        Queue<GameObject> boardQueue = new Queue<GameObject>();
         for (int i = 0; i < GameManager.NumberOfRows; i++)
         {
-            GameObject newRow = GenerateRow();
-            newRow.name = "Row" + i;
+            Row newRow = GenerateRow();
+            newRow.gameObject.name = "Row" + i;
             newRow.transform.position += new Vector3(0, 0, i * GameManager.TileLength);
 
-            // THIS IS VERY VERY TEMPORARY PLEASE OK THANK YOU
             if (i == 0)
             {
                 _firstRow = newRow;
             }
+            // THIS IS VERY VERY TEMPORARY PLEASE OK THANK YOU
             if (i == GameManager.Instance.DebugStartTilePosition - 1)
             {
                 newRow.transform.GetChild(0).GetChild(0).GetComponent<Tile>().IsStartingTile = true;
@@ -45,21 +44,19 @@ public class GenerateBoard : MonoBehaviour
             {
                 foreach (Tile tile in newRow.GetComponentsInChildren<Tile>())
                 {
-                    tile.IsEndOfBoard = true;
-                    tile.FirstRow = _firstRow.GetComponent<Row>();
+                    tile.IsOnLastRow = true;
+                    tile.FirstRow = _firstRow;
+                    _firstRow.OnRowReset += tile.DelayedSetupWrapper;
                 }
             }
-
-            boardQueue.Enqueue(newRow); // optional??
         }
-        GameManager.Instance.BoardQueue = boardQueue;
         yield return null; // keep this, important! don't want two gameState updates in the same frame
         GameManager.Instance.UpdateGameState(GameState.Idle);
     }
 
-    private GameObject GenerateRow()
+    private Row GenerateRow()
     {
-        GameObject row = Instantiate(_rowPrefab, transform);
+        Row row = Instantiate(_rowPrefab, transform).GetComponent<Row>();
         Tile[] tiles = row.GetComponentsInChildren<Tile>();
         foreach (Tile tile in tiles)
         {
@@ -72,7 +69,7 @@ public class GenerateBoard : MonoBehaviour
     {
         if (Random.Range(0, 100) <= GameManager.TileDestroyedChance)
         {
-            tile.SetTileAsDestroyed();
+            tile.DestroyTile();
         }
     }
 }

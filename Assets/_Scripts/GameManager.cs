@@ -11,10 +11,10 @@ public class GameManager : MonoBehaviour
 
     private static Vector3 _tileSpeed = Vector3.zero;
     private static Vector3 _boardLength;
+    private float _defaultSpeed = 1f;
     private static float _tileLength;
     private static int _numberOfRows;
     private static int _tileDestroyedChance;
-    private Queue<GameObject> _boardQueue = new Queue<GameObject>();
 
     public int DebugStartTilePosition;
     public GameState CurrentState;
@@ -26,11 +26,6 @@ public class GameManager : MonoBehaviour
     public static int NumberOfRows => _numberOfRows;
     public static int TileDestroyedChance => _tileDestroyedChance;
     public static Vector3 TileSpeed => _tileSpeed;
-    public Queue<GameObject> BoardQueue
-    {
-        get => _boardQueue;
-        set => _boardQueue = value;
-    }
 
     private void Awake()
     {
@@ -80,7 +75,7 @@ public class GameManager : MonoBehaviour
 
     private void SetSpeed(float input)
     {
-        _tileSpeed = new Vector3(0, 0, -input);
+        _tileSpeed = new Vector3(0, 0, -input * _defaultSpeed);
     }
 
     private void CalculateBoardLength()
