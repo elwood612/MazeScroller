@@ -14,7 +14,9 @@ public class DrawMaze : MonoBehaviour
     private Tile _currentTile, _lastTile;
     private Stack<Dictionary<Tile, bool>> _tileHistory = new Stack<Dictionary<Tile, bool>>();
     private Stack<Dictionary<Wall, bool>> _wallHistory = new Stack<Dictionary<Wall, bool>>();
-    //private bool _canRaycast = false;
+
+    public static event Action OnTileAdded;
+    public static event Action OnTileRemoved;
 
     public static Row HighestDrawnRow
     {
@@ -76,14 +78,6 @@ public class DrawMaze : MonoBehaviour
         }
     }
 
-    private void DisallowDraw()
-    {
-        if (_renderer.enabled) { DisableRenderer(); }
-        _currentTile = null;
-        _lastTile = null;
-        GameManager.Instance.UpdateGameState(GameState.Idle);
-    }
-
     private void Draw(Tile tileToCheck)
     {
         if (DrawConditionsNotMet(tileToCheck)) { return; }
@@ -95,11 +89,9 @@ public class DrawMaze : MonoBehaviour
         if (_lastTile.IsPartOfMaze) { tileToAdd = tileToCheck; }
         else { tileToAdd = _lastTile; }
         tileToAdd.AddTileToMaze();
+        OnTileAdded?.Invoke();
         tileActions.Add(tileToAdd, true);
-        if (tileToAdd.transform.position.z > _highestDrawnRow.transform.position.z && !tileToAdd.ParentRow.IsHighestDrawnRow)
-        {
-            SetHighestDrawnRow(tileToAdd);
-        }
+        SetHighestDrawnRow(tileToAdd);
         
         if (_lastTile != null && _lastTile != _currentTile)
         {
@@ -124,37 +116,63 @@ public class DrawMaze : MonoBehaviour
         _wallHistory.Push(wallActions);
     }
 
+    private void DisallowDraw()
+    {
+        if (_renderer.enabled) { DisableRenderer(); }
+        _currentTile = null;
+        _lastTile = null;
+        GameManager.Instance.UpdateGameState(GameState.Idle);
+    }
+
     private bool DrawConditionsNotMet(Tile tile)
     {
         return
             tile == null ||
             _lastTile == null ||
-            //!_lastTile.IsPartOfMaze ||
-            //tile.IsPartOfMaze ||
             (!_lastTile.IsPartOfMaze && !tile.IsPartOfMaze) ||
             (_lastTile.IsPartOfMaze && tile.IsPartOfMaze) ||
             !AreTilesContiguous(tile, _lastTile);
     }
 
-    //private void RaycastConditions(GameState state)
-    //{
-    //    _canRaycast = state == GameState.Idle || state == GameState.Running;
-    //}
-
     public void Undo()
     {
         if (_tileHistory.Count == 0) { return; }
 
-        foreach (KeyValuePair<Tile, bool> action in _tileHistory.Pop())
+        foreach (KeyValuePair<Tile, bool> action in _tileHistory.Peek())
         {
-            if (action.Value) { action.Key.RemoveTileFromMaze(); }
-            else { action.Key.AddTileToMaze(); }
+            if (action.Key.Crossings > 0) { return; } // Can't undo if runner has already been here
+
+            if (action.Value) 
+            {
+                OnTileRemoved?.Invoke();
+                action.Key.RemoveTileFromMaze();
+            }
+            else // unused for now
+            {
+                Debug.Log("ray what are you doing");
+                action.Key.AddTileToMaze(); 
+            }
+
+            _tileHistory.Pop();
         }
 
         foreach (KeyValuePair<Wall, bool> action in _wallHistory.Pop())
         {
-            if (action.Value) { action.Key.HideWall(); }
-            else { action.Key.WallIsBorder(); }
+            if (action.Value) 
+            { 
+                action.Key.HideWall(); 
+            }
+            else 
+            { 
+                action.Key.WallIsBorder();
+            }
+        }
+
+        if (_tileHistory.Count == 0) { return; }
+        foreach (KeyValuePair<Tile, bool> previousTile in _tileHistory.Peek())
+        {
+            SetHighestDrawnRow(previousTile.Key, true);
+            break;
         }
     }
 
@@ -170,8 +188,21 @@ public class DrawMaze : MonoBehaviour
         transform.position = pos;
     }
 
-    private void SetHighestDrawnRow(Tile tile)
+    private void SetHighestDrawnRow(Tile tile, bool decrease = false)
     {
+        // If we're supposed to be increasing height, bail if we're actually not
+        // Reversed if we're supposed to be decreasing
+        if (!decrease && 
+            (tile.transform.position.z <= _highestDrawnRow.transform.position.z || tile.ParentRow.IsHighestDrawnRow)) 
+        { 
+            return;
+        }
+        else if (decrease && 
+            (tile.transform.position.z >= _highestDrawnRow.transform.position.z || tile.ParentRow.IsHighestDrawnRow))
+        {
+            return;
+        }
+
         _highestDrawnRow.IsHighestDrawnRow = false;
         _highestDrawnRow = tile.ParentRow;
         _highestDrawnRow.IsHighestDrawnRow = true;

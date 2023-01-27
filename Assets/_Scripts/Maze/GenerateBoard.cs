@@ -6,6 +6,7 @@ public class GenerateBoard : MonoBehaviour
 {
     [SerializeField] private GameObject _rowPrefab;
     private Row _firstRow;
+    private Tile _startingTile;
 
     private void OnEnable()
     {
@@ -38,7 +39,8 @@ public class GenerateBoard : MonoBehaviour
             // THIS IS VERY VERY TEMPORARY PLEASE OK THANK YOU
             if (i == GameManager.Instance.DebugStartTilePosition - 1)
             {
-                newRow.transform.GetChild(0).GetChild(0).GetComponent<Tile>().IsStartingTile = true;
+                _startingTile = newRow.transform.GetChild(0).GetChild(0).GetComponent<Tile>();
+                _startingTile.IsStartingTile = true;
             }
             if (i == GameManager.NumberOfRows - 1)
             {
@@ -50,6 +52,7 @@ public class GenerateBoard : MonoBehaviour
                 }
             }
         }
+        SpawnRunner();
         yield return null; // keep this, important! don't want two gameState updates in the same frame
         GameManager.Instance.UpdateGameState(GameState.Idle);
     }
@@ -71,5 +74,10 @@ public class GenerateBoard : MonoBehaviour
         {
             tile.DestroyTile();
         }
+    }
+
+    private void SpawnRunner()
+    {
+        Instantiate(GameManager.Instance.RunnerPrefab, _startingTile.transform.position, Quaternion.identity, transform);
     }
 }

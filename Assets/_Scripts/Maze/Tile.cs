@@ -10,18 +10,20 @@ public class Tile : MonoBehaviour
     private Renderer _renderer;
     private Row _parentRow;
     private Row _firstRow;
-    public Wall[] _neighborWalls = new Wall[4];
+    private Wall[] _neighborWalls = new Wall[4];
     private bool _isStartingTile = false;
     private bool _isOnLastRow = false;
     private bool _isPartOfMaze = false;
     private bool _isDestroyed = false;
     private bool _hasCrystal = false;
     private bool _initialSetup = true;
+    private int _crossings = 0;
 
     public Wall[] NeighborWalls => _neighborWalls;
     public bool IsPartOfMaze => _isPartOfMaze;
     public bool IsDestroyed => _isDestroyed;
     public bool HasCrystal => _hasCrystal;
+    public int Crossings => _crossings;
 
     public bool IsStartingTile
     {

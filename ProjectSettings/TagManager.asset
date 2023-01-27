@@ -8,6 +8,7 @@ TagManager:
   - Tile
   - BottomOfBoard
   - Row
+  - TileCenter
   layers:
   - Default
   - TransparentFX

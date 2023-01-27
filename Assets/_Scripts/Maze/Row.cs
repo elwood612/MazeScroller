@@ -14,19 +14,19 @@ public class Row : MonoBehaviour
 
     private void Update()
     {
-        transform.Translate(GameManager.TileSpeed * Time.deltaTime);
+        GameManager.AddBoardMotion(transform);
         if (_isHighestDrawnRow) { GameManager.HighestDrawnRowHeight = CalculateHeight(); }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("BottomOfBoard")) { SendBackToTop(); }
     }
 
     private float CalculateHeight()
     {
         Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position);
         return screenPos.y / Screen.height;
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("BottomOfBoard")) { SendBackToTop(); }
     }
 
     private void SendBackToTop()

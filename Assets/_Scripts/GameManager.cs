@@ -1,23 +1,17 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
-using UnityEngine.Windows;
 
 public class GameManager : MonoBehaviour
 {
     [SerializeField][Range(0, 100)] private int _debugSetTileDestroyChance;
+    [SerializeField] private GM_Settings _settings;
+    [SerializeField] private GameObject _runnerPrefab;
     public int DebugStartTilePosition;
 
-    private int _setNumberOfRows;
     private AnimationCurve _speedCurve;
-    [SerializeField] private GM_Settings _settings;
-
     private static Vector3 _tileSpeed = Vector3.zero;
     private static Vector3 _boardLength;
     private float _defaultSpeed = 1f;
-    private static float _speedMultiplier = 1f;
-    private static float _highestRowPercentage;
     private static float _tileLength;
     private static int _numberOfRows;
     private static int _tileDestroyedChance;
@@ -31,17 +25,9 @@ public class GameManager : MonoBehaviour
     public static int NumberOfRows => _numberOfRows;
     public static int TileDestroyedChance => _tileDestroyedChance;
     public static Vector3 TileSpeed => _tileSpeed;
-    public static float HighestDrawnRowHeight
-    {
-        get => _highestRowPercentage;
-        set => _highestRowPercentage = value;
-    }
-
-    public static float SpeedMultiplier
-    {
-        get => _speedMultiplier;
-        set => _speedMultiplier = value;
-    }
+    public static float HighestDrawnRowHeight;
+    public static float SpeedMultiplier = 1f;
+    public GameObject RunnerPrefab => _runnerPrefab;
 
     private void Awake()
     {
@@ -60,7 +46,10 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (CurrentState == GameState.Idle || CurrentState == GameState.Running) { CalculateSpeed(_speedMultiplier); }
+        if (CurrentState == GameState.Idle || CurrentState == GameState.Running) 
+        { 
+            CalculateSpeed(SpeedMultiplier); 
+        }
     }
 
     public void UpdateGameState(GameState newState)
@@ -75,10 +64,8 @@ public class GameManager : MonoBehaviour
                 CalculateBoardLength();
                 break;
             case GameState.Idle:
-                //CalculateSpeed(1);
                 break;
             case GameState.Running:
-                //CalculateSpeed(1);
                 break;
             case GameState.Lose:
                 CalculateSpeed(0);
@@ -90,17 +77,15 @@ public class GameManager : MonoBehaviour
         OnStateChanged?.Invoke(newState);
     }
 
-    private void SetSpeed(float input)
+    public static void AddBoardMotion(Transform t)
     {
-        _tileSpeed = new Vector3(0, 0, -input * _defaultSpeed);
+        t.Translate(_tileSpeed * Time.deltaTime);
     }
 
     private void CalculateSpeed(float multiplier)
     {
-        float heightCurve = _speedCurve.Evaluate(_highestRowPercentage);
+        float heightCurve = _speedCurve.Evaluate(HighestDrawnRowHeight);
         _tileSpeed = new Vector3(0, 0, -heightCurve * _defaultSpeed * multiplier);
-        //SetSpeed(_defaultSpeed * mult);
-        //Debug.Log("Mult = " + mult);
     }
 
     private void CalculateBoardLength()
