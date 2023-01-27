@@ -21,7 +21,6 @@ public class Row : MonoBehaviour
     private float CalculateHeight()
     {
         Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position);
-        //Debug.Log("ScreenPos = " + screenPos);
         return screenPos.y / Screen.height;
     }
 

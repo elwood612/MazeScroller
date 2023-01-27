@@ -14,7 +14,7 @@ public class DrawMaze : MonoBehaviour
     private Tile _currentTile, _lastTile;
     private Stack<Dictionary<Tile, bool>> _tileHistory = new Stack<Dictionary<Tile, bool>>();
     private Stack<Dictionary<Wall, bool>> _wallHistory = new Stack<Dictionary<Wall, bool>>();
-    private bool _canRaycast = false;
+    //private bool _canRaycast = false;
 
     public static Row HighestDrawnRow
     {
@@ -24,31 +24,24 @@ public class DrawMaze : MonoBehaviour
     private void Awake()
     {
         _renderer = GetComponentInChildren<Renderer>();
-    }
-
-    private void OnEnable()
-    {
-        GameManager.OnStateChanged += RaycastConditions;
-    }
-
-    private void OnDisable()
-    {
-        GameManager.OnStateChanged -= RaycastConditions;
+        _cam = Camera.main;
     }
 
     private void Start()
     {
-        _cam = Camera.main;
         DisableRenderer();
     }
 
     private void Update()
     {
-        if (_canRaycast) { HandleRaycast(); }
+        HandleRaycast();
+        //if (_lastTile != _currentTile) Debug.Log("Last tile: " + _lastTile + ", current tile:" + _currentTile);
     }
 
     private void HandleRaycast()
     {
+        if (GameManager.CurrentState != GameState.Idle && GameManager.CurrentState != GameState.Running) { return; }
+
         if (InputHandler.IsPressingScreen)
         {
             _ray = _cam.ScreenPointToRay(InputHandler.PressPosition);
@@ -69,6 +62,7 @@ public class DrawMaze : MonoBehaviour
         {
             if (hit.collider.CompareTag("Tile"))
             {
+                _lastTile = _currentTile;
                 _currentTile = hit.collider.GetComponent<Tile>();
                 if (_currentTile.IsDestroyed)
                 {
@@ -77,7 +71,7 @@ public class DrawMaze : MonoBehaviour
                 }
                 UpdateTransformAndRenderer(_currentTile.transform.position);
                 Draw(_currentTile);
-                _lastTile = _currentTile;
+                //_lastTile = _currentTile;
             }
         }
     }
@@ -90,23 +84,26 @@ public class DrawMaze : MonoBehaviour
         GameManager.Instance.UpdateGameState(GameState.Idle);
     }
 
-    private void Draw(Tile tile)
+    private void Draw(Tile tileToCheck)
     {
-        if (DrawConditionsNotMet(tile)) { return; }
+        if (DrawConditionsNotMet(tileToCheck)) { return; }
 
         Dictionary<Tile, bool> tileActions = new Dictionary<Tile, bool>();
         Dictionary<Wall, bool> wallActions = new Dictionary<Wall, bool>();
+        Tile tileToAdd;
 
-        tile.AddTileToMaze();
-        tileActions.Add(tile, true);
-        if (tile.transform.position.z > _highestDrawnRow.transform.position.z && !tile.ParentRow.IsHighestDrawnRow)
+        if (_lastTile.IsPartOfMaze) { tileToAdd = tileToCheck; }
+        else { tileToAdd = _lastTile; }
+        tileToAdd.AddTileToMaze();
+        tileActions.Add(tileToAdd, true);
+        if (tileToAdd.transform.position.z > _highestDrawnRow.transform.position.z && !tileToAdd.ParentRow.IsHighestDrawnRow)
         {
-            SetHighestDrawnRow(tile);
+            SetHighestDrawnRow(tileToAdd);
         }
         
         if (_lastTile != null && _lastTile != _currentTile)
         {
-            Wall toDeactivate = GetWallToDeactivate(tile, _lastTile);
+            Wall toDeactivate = GetWallToDeactivate(tileToCheck, _lastTile);
             if (toDeactivate != null)
             {
                 toDeactivate.WallIsPath();
@@ -114,7 +111,7 @@ public class DrawMaze : MonoBehaviour
             }
         }
 
-        foreach (Wall wall in tile.NeighborWalls)
+        foreach (Wall wall in tileToAdd.NeighborWalls)
         {
             if (!wall.MazeBorder && !wall.MazePath) 
             { 
@@ -132,16 +129,17 @@ public class DrawMaze : MonoBehaviour
         return
             tile == null ||
             _lastTile == null ||
-            !_lastTile.IsPartOfMaze ||
-            tile.IsPartOfMaze ||
-            tile.IsDestroyed ||
+            //!_lastTile.IsPartOfMaze ||
+            //tile.IsPartOfMaze ||
+            (!_lastTile.IsPartOfMaze && !tile.IsPartOfMaze) ||
+            (_lastTile.IsPartOfMaze && tile.IsPartOfMaze) ||
             !AreTilesContiguous(tile, _lastTile);
     }
 
-    private void RaycastConditions(GameState state)
-    {
-        _canRaycast = state == GameState.Idle || state == GameState.Running;
-    }
+    //private void RaycastConditions(GameState state)
+    //{
+    //    _canRaycast = state == GameState.Idle || state == GameState.Running;
+    //}
 
     public void Undo()
     {
