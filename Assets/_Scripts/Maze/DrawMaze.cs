@@ -15,8 +15,8 @@ public class DrawMaze : MonoBehaviour
     private Stack<Dictionary<Tile, bool>> _tileHistory = new Stack<Dictionary<Tile, bool>>();
     private Stack<Dictionary<Wall, bool>> _wallHistory = new Stack<Dictionary<Wall, bool>>();
 
-    public static event Action OnTileAdded;
-    public static event Action OnTileRemoved;
+    public static event Action<Tile> OnTileAdded;
+    public static event Action<Tile> OnTileRemoved;
 
     public static Row HighestDrawnRow
     {
@@ -89,7 +89,6 @@ public class DrawMaze : MonoBehaviour
         if (_lastTile.IsPartOfMaze) { tileToAdd = tileToCheck; }
         else { tileToAdd = _lastTile; }
         tileToAdd.AddTileToMaze();
-        OnTileAdded?.Invoke();
         tileActions.Add(tileToAdd, true);
         SetHighestDrawnRow(tileToAdd);
         
@@ -98,20 +97,21 @@ public class DrawMaze : MonoBehaviour
             Wall toDeactivate = GetWallToDeactivate(tileToCheck, _lastTile);
             if (toDeactivate != null)
             {
-                toDeactivate.WallIsPath();
+                toDeactivate.SetWallAsPath();
                 wallActions.Add(toDeactivate, false);
             }
         }
 
         foreach (Wall wall in tileToAdd.NeighborWalls)
         {
-            if (!wall.MazeBorder && !wall.MazePath) 
+            if (!wall.IsBorder && !wall.IsPath) 
             { 
-                wall.WallIsBorder();
+                wall.SetWallAsBorder();
                 wallActions.Add(wall, true);
             }
         }
 
+        OnTileAdded?.Invoke(tileToAdd);
         _tileHistory.Push(tileActions);
         _wallHistory.Push(wallActions);
     }
@@ -144,7 +144,7 @@ public class DrawMaze : MonoBehaviour
 
             if (action.Value) 
             {
-                OnTileRemoved?.Invoke();
+                OnTileRemoved?.Invoke(action.Key);
                 action.Key.RemoveTileFromMaze();
             }
             else // unused for now
@@ -164,7 +164,7 @@ public class DrawMaze : MonoBehaviour
             }
             else 
             { 
-                action.Key.WallIsBorder();
+                action.Key.SetWallAsBorder();
             }
         }
 

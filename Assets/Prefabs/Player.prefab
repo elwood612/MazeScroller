@@ -241,8 +241,8 @@ GameObject:
   - component: {fileID: 5986021790503786144}
   - component: {fileID: 4579177560185085507}
   m_Layer: 0
-  m_Name: Runner
-  m_TagString: Untagged
+  m_Name: Player
+  m_TagString: Runner
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

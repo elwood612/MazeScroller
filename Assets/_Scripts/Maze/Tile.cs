@@ -1,4 +1,6 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Tile : MonoBehaviour
@@ -11,6 +13,7 @@ public class Tile : MonoBehaviour
     private Row _parentRow;
     private Row _firstRow;
     private Wall[] _neighborWalls = new Wall[4];
+    private List<Wall> _neighborPaths = new List<Wall>();
     private bool _isStartingTile = false;
     private bool _isOnLastRow = false;
     private bool _isPartOfMaze = false;
@@ -19,6 +22,8 @@ public class Tile : MonoBehaviour
     private bool _initialSetup = true;
     private int _crossings = 0;
 
+    public static event Action<Tile> OnTileAdded;
+    public static event Action<Tile> OnTileRemoved;
     public Wall[] NeighborWalls => _neighborWalls;
     public bool IsPartOfMaze => _isPartOfMaze;
     public bool IsDestroyed => _isDestroyed;
@@ -35,6 +40,12 @@ public class Tile : MonoBehaviour
     {
         get => _isOnLastRow;
         set => _isOnLastRow = value;
+    }
+
+    public List<Wall> NeighborPaths
+    {
+        get => _neighborPaths;
+        set => _neighborPaths = value;
     }
 
     public Row FirstRow
@@ -61,40 +72,74 @@ public class Tile : MonoBehaviour
         if (_parentRow != null) { _parentRow.OnRowReset -= ResetTile; }
     }
 
+    private void UndoDestroyed()
+    {
+        _renderer.enabled = true;
+        _isDestroyed = false;
+    }
+
+    private void SetMaterial(Material material)
+    {
+        _renderer.material = material;
+    }
+
+    private void ResetTile()
+    {
+        foreach (Wall wall in _neighborWalls)
+        {
+            wall.HideWall();
+        }
+        RemoveTileFromMaze();
+    }
+
+    private IEnumerator DelayedSetup()
+    {
+        yield return new WaitForSeconds(1f);
+        RegularSetup(GameState.Idle);
+    }
+
+    public void DelayedSetupWrapper()
+    {
+        StartCoroutine(DelayedSetup());
+    }
+
     public void AddTileToMaze()
     {
         if (!_isPartOfMaze)
         {
             _isPartOfMaze = true;
             SetMaterial(_tileDrawn);
+            //OnTileAdded?.Invoke(this);
         }
     }
 
+    // This is where you need to invoke the Action OnTileRemoved from
     public void RemoveTileFromMaze()
     {
         if (_isPartOfMaze)
         {
             _isPartOfMaze = false;
             SetMaterial(_tileBase);
+            //OnTileRemoved?.Invoke(this);
         }
     }
 
-    public Wall[] GetNeighborWallsLegacy()
+    public Tile GetNeighborTile(Vector3 direction)
     {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, (GameManager.TileLength / 2) + 0.5f, _wallLayer);
-        Debug.Log("Getting neighboring walls, found: " + colliders.Length);
-        Wall[] walls = new Wall[colliders.Length];
-        for (int i = 0; i < colliders.Length; i++)
+        foreach (Collider collider in Physics.OverlapSphere(transform.position + direction.normalized * GameManager.TileLength, 1f))
         {
-            walls[i] = colliders[i].GetComponent<Wall>();
+            if (collider.CompareTag("Tile"))
+            {
+                return collider.GetComponent<Tile>();
+            }
         }
-        return walls;
+        return null;
     }
 
     public void RegularSetup(GameState state)
     {
         if (state == GameState.Setup || !_initialSetup) { return; }
-        
+
         Collider[] colliders = Physics.OverlapSphere(transform.position, (GameManager.TileLength / 2) + 0.5f, _wallLayer);
         if (colliders.Length != 4) { return; }
 
@@ -123,41 +168,10 @@ public class Tile : MonoBehaviour
         AddTileToMaze();
         foreach (Wall wall in _neighborWalls)
         {
-            wall.WallIsBorder();
+            wall.SetWallAsBorder();
         }
         _parentRow.IsHighestDrawnRow = true;
         DrawMaze.HighestDrawnRow = _parentRow;
-    }
-
-    private void UndoDestroyed()
-    {
-        _renderer.enabled = true;
-        _isDestroyed = false;
-    }
-
-    private void SetMaterial(Material material)
-    {
-        _renderer.material = material;
-    }
-
-    private void ResetTile()
-    {
-        foreach (Wall wall in _neighborWalls)
-        {
-            wall.HideWall();
-        }
-        RemoveTileFromMaze();
-    }
-
-    public void DelayedSetupWrapper()
-    {
-        StartCoroutine(DelayedSetup());
-    }
-
-    private IEnumerator DelayedSetup()
-    {
-        yield return new WaitForSeconds(1f);
-        RegularSetup(GameState.Idle);
     }
 
     //private void OnDrawGizmos()
