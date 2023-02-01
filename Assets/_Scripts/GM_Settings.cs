@@ -4,5 +4,6 @@ using UnityEngine;
 public class GM_Settings : ScriptableObject
 {
     public int NumberOfRows;
-    public AnimationCurve SpeedCurve;
+    public AnimationCurve TileSpeedCurve;
+    public AnimationCurve RunnerSpeedCurve;
 }

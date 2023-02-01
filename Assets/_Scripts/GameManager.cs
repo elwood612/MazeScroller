@@ -8,7 +8,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject _runnerPrefab;
     public int DebugStartTilePosition;
 
-    private AnimationCurve _speedCurve;
+    private AnimationCurve _tileSpeedCurve;
+    private AnimationCurve _runnerSpeedCurve;
     private static Vector3 _tileSpeed = Vector3.zero;
     private static Vector3 _boardLength;
     private float _defaultSpeed = 1f;
@@ -19,7 +20,6 @@ public class GameManager : MonoBehaviour
     public static GameState CurrentState;
     public static event Action<GameState> OnStateChanged;
     public static GameManager Instance;
-
     public static float TileLength => _tileLength;
     public static Vector3 BoardLength => _boardLength;
     public static int NumberOfRows => _numberOfRows;
@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
     public static float HighestDrawnRowHeight;
     public static float SpeedMultiplier = 1f;
     public GameObject RunnerPrefab => _runnerPrefab;
+    public AnimationCurve RunnerSpeedCurve => _runnerSpeedCurve;
 
     private void Awake()
     {
@@ -35,7 +36,8 @@ public class GameManager : MonoBehaviour
         else { Destroy(this); }
 
         _numberOfRows = _settings.NumberOfRows;
-        _speedCurve = _settings.SpeedCurve;
+        _tileSpeedCurve = _settings.TileSpeedCurve;
+        _runnerSpeedCurve = _settings.RunnerSpeedCurve;
         _tileDestroyedChance = _debugSetTileDestroyChance;
     }
 
@@ -84,7 +86,7 @@ public class GameManager : MonoBehaviour
 
     private void CalculateSpeed(float multiplier)
     {
-        float heightCurve = _speedCurve.Evaluate(HighestDrawnRowHeight);
+        float heightCurve = _tileSpeedCurve.Evaluate(HighestDrawnRowHeight);
         _tileSpeed = new Vector3(0, 0, -heightCurve * _defaultSpeed * multiplier);
     }
 

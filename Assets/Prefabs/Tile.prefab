@@ -146,14 +146,14 @@ MonoBehaviour:
   tempCheckMark: 0
   _tileBase: {fileID: 2100000, guid: db4e5687736952e4595558f025ebab91, type: 2}
   _tileDrawn: {fileID: 2100000, guid: 0c9bc223cd7f9a846ab70907553322f4, type: 2}
+  _tileCrossing:
+  - {fileID: 2100000, guid: 77b45439a59c4d447afedab2788527ab, type: 2}
+  - {fileID: 2100000, guid: 4e2cdbd61cd26db46b38181b8892a2e6, type: 2}
+  - {fileID: 2100000, guid: 99a830d67f09771418e19509881d4ba0, type: 2}
+  - {fileID: 2100000, guid: 22f2a6a46da3c2347adef28013701170, type: 2}
   _wallLayer:
     serializedVersion: 2
     m_Bits: 256
-  _neighborWalls:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!65 &7255253569694343398
 BoxCollider:
   m_ObjectHideFlags: 0

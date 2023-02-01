@@ -13,11 +13,4 @@ public class Player : Runner
         DrawMaze.OnTileAdded -= AddTileToPath;
         DrawMaze.OnTileRemoved -= RemoveTileFromPath;
     }
-
-    protected override void WallCrossing(Wall wall)
-    {
-        base.WallCrossing(wall);
-        wall.Crossings++;
-        wall.TimeCrossed = Time.timeSinceLevelLoad;
-    }
 }

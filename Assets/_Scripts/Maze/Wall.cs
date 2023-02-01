@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Wall : MonoBehaviour
@@ -6,22 +7,22 @@ public class Wall : MonoBehaviour
     private Renderer[] _renderers;
     private bool _isBorder;
     private bool _isPath;
+    public bool _isPathfindingPath;
     private bool _isDestroyed = false;
-    private int _crossings = 0;
+    public int _crossings = 0;
     private float _timeCrossed;
+    private float _timeDrawn;
 
     public bool IsBorder => _isBorder;
     public bool IsPath => _isPath;
     public bool IsDestroyed => _isDestroyed;
-    public int Crossings
+    public int Crossings => _crossings;
+    public float TimeDrawn => _timeDrawn;
+    public float TimeCrossed => _timeCrossed;
+    public bool IsPathfindingPath
     {
-        get => _crossings;
-        set => _crossings = value;
-    }
-    public float TimeCrossed
-    {
-        get => _timeCrossed;
-        set => _timeCrossed = value;
+        get => _isPathfindingPath;
+        set => _isPathfindingPath = value;
     }
 
     private void Awake()
@@ -35,7 +36,22 @@ public class Wall : MonoBehaviour
         TryDestroyWall();
     }
 
-    private void UpdateNeighbors()
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            PlayerCrossing();
+        }
+    }
+
+    private void PlayerCrossing()
+    {
+        _crossings++;
+        _timeCrossed = Time.timeSinceLevelLoad;
+        if (_isPathfindingPath) { _isPathfindingPath = false; }
+    }
+
+    private void UpdateNeighborTiles()
     {
         foreach (Collider collider in Physics.OverlapSphere(transform.position, 1f))
         {
@@ -61,15 +77,16 @@ public class Wall : MonoBehaviour
         _renderers[0].enabled = true;
         _isBorder = true;
         _isPath = false;
-        UpdateNeighbors();
+        UpdateNeighborTiles();
     }
 
     public void SetWallAsPath()
     {
+        _timeDrawn = Time.timeSinceLevelLoad;
         _renderers[0].enabled = false;
         _isBorder = false;
         _isPath = true;
-        UpdateNeighbors();
+        UpdateNeighborTiles();
     }
 
     public void HideWall()
@@ -77,6 +94,7 @@ public class Wall : MonoBehaviour
         _renderers[0].enabled = false;
         _isBorder = false;
         _isPath = false;
+        _crossings = 0;
     }
 
     public bool DestroyConditions()

@@ -90,8 +90,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d031891b60faa046ac8e0467886125c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _debugSetNumberOfRows: 50
-  _debugSetTileDestroyChance: 20
-  _environment: {fileID: 0}
-  DebugStartTilePosition: 0
-  CurrentState: 0
+  _debugSetTileDestroyChance: 10
+  _settings: {fileID: 11400000, guid: 10b9349dccdfd0b4e867c3090042f14c, type: 2}
+  _runnerPrefab: {fileID: 2663821295767816422, guid: 3d6927fba103df24d8707d17b54e757e, type: 3}
+  DebugStartTilePosition: 8

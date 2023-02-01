@@ -6,7 +6,9 @@ using UnityEngine;
 public class Tile : MonoBehaviour
 {
     public bool tempCheckMark = false;
-    [SerializeField] private Material _tileBase, _tileDrawn;
+    [SerializeField] private Material _tileBase;
+    [SerializeField] private Material _tileDrawn;
+    [SerializeField] private Material[] _tileCrossing;
     [SerializeField] private LayerMask _wallLayer;
 
     private Renderer _renderer;
@@ -21,6 +23,7 @@ public class Tile : MonoBehaviour
     private bool _hasCrystal = false;
     private bool _initialSetup = true;
     private int _crossings = 0;
+    public Tile _pathfindingParent;
 
     public static event Action<Tile> OnTileAdded;
     public static event Action<Tile> OnTileRemoved;
@@ -29,31 +32,32 @@ public class Tile : MonoBehaviour
     public bool IsDestroyed => _isDestroyed;
     public bool HasCrystal => _hasCrystal;
     public int Crossings => _crossings;
-
-    public bool IsStartingTile
-    {
-        get => _isStartingTile;
-        set => _isStartingTile = value;
-    }
-
-    public bool IsOnLastRow
-    {
-        get => _isOnLastRow;
-        set => _isOnLastRow = value;
-    }
-
-    public List<Wall> NeighborPaths
-    {
-        get => _neighborPaths;
-        set => _neighborPaths = value;
-    }
-
+    public Row ParentRow => _parentRow;
     public Row FirstRow
     {
         get => _firstRow;
         set => _firstRow = value;
     }
-    public Row ParentRow => _parentRow;
+    public bool IsStartingTile
+    {
+        get => _isStartingTile;
+        set => _isStartingTile = value;
+    }
+    public bool IsOnLastRow
+    {
+        get => _isOnLastRow;
+        set => _isOnLastRow = value;
+    }
+    public List<Wall> NeighborPaths
+    {
+        get => _neighborPaths;
+        set => _neighborPaths = value;
+    }
+    public Tile PathfindingParent
+    {
+        get => _pathfindingParent;
+        set => _pathfindingParent = value;
+    }
 
     private void Awake()
     {
@@ -72,6 +76,29 @@ public class Tile : MonoBehaviour
         if (_parentRow != null) { _parentRow.OnRowReset -= ResetTile; }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            PlayerCrossing(other.GetComponent<IRunner>());
+        }
+    }
+
+    private void PlayerCrossing(IRunner runner)
+    {
+        if (_crossings < _tileCrossing.Length)
+        {
+            SetMaterial(_tileCrossing[_crossings]);
+        }
+        _crossings++;
+        
+        //if (DrawMaze.FirstUncrossedTile == this) { DrawMaze.FirstUncrossedTile = null; }
+        if (DrawMaze.NextAvailableUncrossedTile.Contains(this)) { DrawMaze.NextAvailableUncrossedTile.Remove(this); }
+        runner.PreviousTile = runner.CurrentTile;
+        runner.CurrentTile = this;
+        runner.TilePrepareDecision(this);
+    }
+
     private void UndoDestroyed()
     {
         _renderer.enabled = true;
@@ -85,6 +112,7 @@ public class Tile : MonoBehaviour
 
     private void ResetTile()
     {
+        _crossings = 0;
         foreach (Wall wall in _neighborWalls)
         {
             wall.HideWall();
@@ -92,6 +120,7 @@ public class Tile : MonoBehaviour
         RemoveTileFromMaze();
     }
 
+    // Used for the last row, can't set it up until the first row gets reset
     private IEnumerator DelayedSetup()
     {
         yield return new WaitForSeconds(1f);
@@ -113,7 +142,6 @@ public class Tile : MonoBehaviour
         }
     }
 
-    // This is where you need to invoke the Action OnTileRemoved from
     public void RemoveTileFromMaze()
     {
         if (_isPartOfMaze)
@@ -131,6 +159,18 @@ public class Tile : MonoBehaviour
             if (collider.CompareTag("Tile"))
             {
                 return collider.GetComponent<Tile>();
+            }
+        }
+        return null;
+    }
+
+    public Wall GetWallBetween(Tile other)
+    {
+        foreach (Collider collider in Physics.OverlapSphere((transform.position + other.transform.position) / 2, 1f, _wallLayer))
+        {
+            if (collider.CompareTag("Wall"))
+            {
+                return collider.GetComponent<Wall>();
             }
         }
         return null;

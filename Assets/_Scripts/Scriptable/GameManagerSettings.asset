@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GameManagerSettings
   m_EditorClassIdentifier: 
   NumberOfRows: 20
-  SpeedCurve:
+  TileSpeedCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
@@ -42,6 +42,48 @@ MonoBehaviour:
       tangentMode: 0
       weightedMode: 1
       inWeight: 0.054587603
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  RunnerSpeedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 10
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 65
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.1
+      value: 10
+      inSlope: -0
+      outSlope: 0
+      tangentMode: 5
+      weightedMode: 2
+      inWeight: 0.33333334
+      outWeight: 0.13972126
+    - serializedVersion: 3
+      time: 0.6
+      value: 1
+      inSlope: -0.07228556
+      outSlope: 0
+      tangentMode: 65
+      weightedMode: 3
+      inWeight: 1
+      outWeight: 0.33103135
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: -0
+      outSlope: 0
+      tangentMode: 5
+      weightedMode: 1
+      inWeight: 0.33607766
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2

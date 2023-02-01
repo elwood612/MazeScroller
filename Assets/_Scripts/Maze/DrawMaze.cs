@@ -14,9 +14,11 @@ public class DrawMaze : MonoBehaviour
     private Tile _currentTile, _lastTile;
     private Stack<Dictionary<Tile, bool>> _tileHistory = new Stack<Dictionary<Tile, bool>>();
     private Stack<Dictionary<Wall, bool>> _wallHistory = new Stack<Dictionary<Wall, bool>>();
+    private static List<Tile> _nextAvailableUncrossedTile = new List<Tile>();
 
     public static event Action<Tile> OnTileAdded;
     public static event Action<Tile> OnTileRemoved;
+    public static List<Tile> NextAvailableUncrossedTile => _nextAvailableUncrossedTile;
 
     public static Row HighestDrawnRow
     {
@@ -37,7 +39,6 @@ public class DrawMaze : MonoBehaviour
     private void Update()
     {
         HandleRaycast();
-        //if (_lastTile != _currentTile) Debug.Log("Last tile: " + _lastTile + ", current tile:" + _currentTile);
     }
 
     private void HandleRaycast()
@@ -73,7 +74,6 @@ public class DrawMaze : MonoBehaviour
                 }
                 UpdateTransformAndRenderer(_currentTile.transform.position);
                 Draw(_currentTile);
-                //_lastTile = _currentTile;
             }
         }
     }
@@ -89,6 +89,7 @@ public class DrawMaze : MonoBehaviour
         if (_lastTile.IsPartOfMaze) { tileToAdd = tileToCheck; }
         else { tileToAdd = _lastTile; }
         tileToAdd.AddTileToMaze();
+        _nextAvailableUncrossedTile.Add(tileToAdd);
         tileActions.Add(tileToAdd, true);
         SetHighestDrawnRow(tileToAdd);
         
@@ -146,6 +147,7 @@ public class DrawMaze : MonoBehaviour
             {
                 OnTileRemoved?.Invoke(action.Key);
                 action.Key.RemoveTileFromMaze();
+                _nextAvailableUncrossedTile.RemoveAt(_nextAvailableUncrossedTile.Count - 1);
             }
             else // unused for now
             {
@@ -190,7 +192,7 @@ public class DrawMaze : MonoBehaviour
 
     private void SetHighestDrawnRow(Tile tile, bool decrease = false)
     {
-        // If we're supposed to be increasing height, bail if we're actually not
+        // If we're supposed to be increasing height: bail if it turns out we're not
         // Reversed if we're supposed to be decreasing
         if (!decrease && 
             (tile.transform.position.z <= _highestDrawnRow.transform.position.z || tile.ParentRow.IsHighestDrawnRow)) 
