@@ -86,8 +86,13 @@ public class Runner : MonoBehaviour, IRunner
         transform.GetChild(0).LookAt(_targetTile.transform);
     }
 
+    // This needs to be re-done.
     public void TilePrepareDecision(Tile tile)
     {
+        // foreach (wall in tile.neighborPaths)
+        //      if (wall.IsPathfinding)
+        //          _nextTarget = GetNeighborTile(wall);
+        // Then go into below, and remove the call to GetPathfindingPath (it's buried in CalculatePathfinding)
         switch (tile.NeighborPaths.Count)
         {
             case 1: case 2:
