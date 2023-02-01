@@ -1,21 +1,27 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Wall : MonoBehaviour
 {
     [SerializeField] LayerMask _tileLayer;
     private Renderer[] _renderers;
+    private bool _isOnFirstRow = false;
     private bool _isBorder;
     private bool _isPath;
-    public bool _isPathfindingPath;
-    private bool _isDestroyed = false;
-    public int _crossings = 0;
+    private bool _isPathfindingPath;
+    private bool _isHidden = false;
+    private int _crossings = 0;
     private float _timeCrossed;
     private float _timeDrawn;
+    private Row _firstRow;
+    private List<Tile> _neighborTiles = new List<Tile>();
 
     public bool IsBorder => _isBorder;
     public bool IsPath => _isPath;
-    public bool IsDestroyed => _isDestroyed;
+    public bool IsDestroyed => _isHidden;
     public int Crossings => _crossings;
     public float TimeDrawn => _timeDrawn;
     public float TimeCrossed => _timeCrossed;
@@ -24,16 +30,25 @@ public class Wall : MonoBehaviour
         get => _isPathfindingPath;
         set => _isPathfindingPath = value;
     }
-
-    private void Awake()
+    public bool IsOnFirstRow
     {
-        _renderers = GetComponentsInChildren<Renderer>();
+        get => _isOnFirstRow;
+        set => _isOnFirstRow = value;
+    }
+    public Row FirstRow
+    {
+        get => _firstRow;
+        set => _firstRow = value;
     }
 
-    private void Start()
+    private void OnEnable()
     {
-        HideWall();
-        TryDestroyWall();
+        //if (!_isOnFirstRow) { GenerateBoard.OnWallsSetup += Setup; }
+    }
+
+    private void OnDisable()
+    {
+        //if (!_isOnFirstRow) { GenerateBoard.OnWallsSetup -= Setup; }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -53,31 +68,25 @@ public class Wall : MonoBehaviour
 
     private void UpdateNeighborTiles()
     {
-        foreach (Collider collider in Physics.OverlapSphere(transform.position, 1f))
+        foreach (Tile tile in _neighborTiles)
         {
-            if (collider.CompareTag("Tile"))
+            if (_isPath)
             {
-                if (_isPath) 
-                { 
-                    collider.GetComponent<Tile>().NeighborPaths.Add(this); 
-                }
-                else 
-                { 
-                    if (collider.GetComponent<Tile>().NeighborPaths.Contains(this))
-                    {
-                        collider.GetComponent<Tile>().NeighborPaths.Remove(this);
-                    }
-                }
+                tile.NeighborPaths.Add(this);
+            }
+            else
+            {
+                if (tile.NeighborPaths.Contains(this)) { tile.NeighborPaths.Remove(this); }
             }
         }
     }
 
-    public void SetWallAsBorder()
+    public void SetWallAsBorder(bool startingTile = false)
     {
         _renderers[0].enabled = true;
         _isBorder = true;
         _isPath = false;
-        UpdateNeighborTiles();
+        if (!startingTile) { UpdateNeighborTiles(); }
     }
 
     public void SetWallAsPath()
@@ -89,32 +98,64 @@ public class Wall : MonoBehaviour
         UpdateNeighborTiles();
     }
 
-    public void HideWall()
+    public void ResetWall()
     {
-        _renderers[0].enabled = false;
+        HideWall();
         _isBorder = false;
         _isPath = false;
+        _isPathfindingPath = false;
+        _isHidden = false;
         _crossings = 0;
     }
 
-    public bool DestroyConditions()
+    public bool GoodToHide()
     {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, 1f, _tileLayer);
-        int destroy = colliders.Length;
-        foreach (Collider collider in colliders)
+        int destroy = _neighborTiles.Count;
+        foreach (Tile tile in _neighborTiles)
         {
-            if (collider.GetComponent<Tile>().IsDestroyed) { destroy--; }
+            if (tile.IsHidden) { destroy--; }
         }
         return destroy == 0;
     }
 
     // Good but need to account for first row edge case.
     // Also find a good time to call it as tiles get destroyed, because OnRowReset will NOT work
-    public void TryDestroyWall() 
+    public void HideWall() 
     {
-        if (!DestroyConditions()) { return; }
-        HideWall();
+        _renderers[0].enabled = false;
         _renderers[1].enabled = false;
-        _isDestroyed = true;
+        _isHidden = true;
+    }
+
+    public void UnhideWall()
+    {
+        _renderers[1].enabled = true;
+        _isHidden = false;
+    }
+
+    public void Setup()
+    {
+        //ResetWall();
+        _neighborTiles.Clear();
+        foreach (Tile tile in GenerateBoard.AllTiles)
+        {
+            if (Vector3.Distance(tile.transform.position, transform.position) < (GameManager.TileLength / 2) + 0.5f)
+            {
+                _neighborTiles.Add(tile);
+                if (tile.IsStartingTile) { SetWallAsBorder(true); }
+            }
+        }
+        //HideWall();
+    }
+
+    public void Initialize()
+    {
+        _renderers = GetComponentsInChildren<Renderer>();
+        HideWall();
+    }
+
+    private void Awake()
+    {
+        Initialize();
     }
 }

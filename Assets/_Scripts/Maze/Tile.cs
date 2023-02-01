@@ -14,22 +14,20 @@ public class Tile : MonoBehaviour
     private Renderer _renderer;
     private Row _parentRow;
     private Row _firstRow;
-    private Wall[] _neighborWalls = new Wall[4];
+    private List<Wall> _neighborWalls = new List<Wall>();
     private List<Wall> _neighborPaths = new List<Wall>();
+    private List<Tile> _neighborTiles = new List<Tile>();
     private bool _isStartingTile = false;
     private bool _isOnLastRow = false;
     private bool _isPartOfMaze = false;
-    private bool _isDestroyed = false;
+    private bool _isHidden = false;
     private bool _hasCrystal = false;
-    private bool _initialSetup = true;
     private int _crossings = 0;
     public Tile _pathfindingParent;
 
-    public static event Action<Tile> OnTileAdded;
-    public static event Action<Tile> OnTileRemoved;
-    public Wall[] NeighborWalls => _neighborWalls;
+    public List<Wall> NeighborWalls => _neighborWalls;
     public bool IsPartOfMaze => _isPartOfMaze;
-    public bool IsDestroyed => _isDestroyed;
+    public bool IsHidden => _isHidden;
     public bool HasCrystal => _hasCrystal;
     public int Crossings => _crossings;
     public Row ParentRow => _parentRow;
@@ -59,20 +57,15 @@ public class Tile : MonoBehaviour
         set => _pathfindingParent = value;
     }
 
-    private void Awake()
-    {
-        _renderer = GetComponentInChildren<Renderer>();
-        _parentRow = transform.GetComponentInParent<Row>();
-    }
-
     private void OnEnable()
     {
-        GameManager.OnStateChanged += RegularSetup;
+        //if (!_isOnLastRow) { GenerateBoard.OnTilesSetup += Setup; }
         if (_parentRow != null) { _parentRow.OnRowReset += ResetTile; }
     }
 
     private void OnDisable()
     {
+        //if (!_isOnLastRow) { GenerateBoard.OnTilesSetup -= Setup; }
         if (_parentRow != null) { _parentRow.OnRowReset -= ResetTile; }
     }
 
@@ -86,45 +79,33 @@ public class Tile : MonoBehaviour
 
     private void PlayerCrossing(IRunner runner)
     {
-        if (_crossings < _tileCrossing.Length)
+        if (_crossings < _tileCrossing.Length && !_isStartingTile)
         {
             SetMaterial(_tileCrossing[_crossings]);
         }
         _crossings++;
         
-        //if (DrawMaze.FirstUncrossedTile == this) { DrawMaze.FirstUncrossedTile = null; }
-        if (DrawMaze.NextAvailableUncrossedTile.Contains(this)) { DrawMaze.NextAvailableUncrossedTile.Remove(this); }
         runner.PreviousTile = runner.CurrentTile;
         runner.CurrentTile = this;
-        runner.TilePrepareDecision(this);
+        runner.CalculateNextTargetWrapper(this);
     }
 
-    private void UndoDestroyed()
+    private void Unhide()
     {
         _renderer.enabled = true;
-        _isDestroyed = false;
+        _isHidden = false;
     }
 
     private void SetMaterial(Material material)
     {
         _renderer.material = material;
-    }
-
-    private void ResetTile()
-    {
-        _crossings = 0;
-        foreach (Wall wall in _neighborWalls)
-        {
-            wall.HideWall();
-        }
-        RemoveTileFromMaze();
-    }
+    }   
 
     // Used for the last row, can't set it up until the first row gets reset
     private IEnumerator DelayedSetup()
     {
         yield return new WaitForSeconds(1f);
-        RegularSetup(GameState.Idle);
+        Setup();
     }
 
     public void DelayedSetupWrapper()
@@ -138,7 +119,6 @@ public class Tile : MonoBehaviour
         {
             _isPartOfMaze = true;
             SetMaterial(_tileDrawn);
-            //OnTileAdded?.Invoke(this);
         }
     }
 
@@ -148,10 +128,13 @@ public class Tile : MonoBehaviour
         {
             _isPartOfMaze = false;
             SetMaterial(_tileBase);
-            //OnTileRemoved?.Invoke(this);
         }
     }
 
+    // To make these new versions work:
+    // Need to delay setup at least until the row behind has been reset
+    // Can do a new setup everytime the row gets reset
+    // Probably time to implement those trigger areas for spawning
     public Tile GetNeighborTile(Vector3 direction)
     {
         foreach (Collider collider in Physics.OverlapSphere(transform.position + direction.normalized * GameManager.TileLength, 1f))
@@ -161,6 +144,7 @@ public class Tile : MonoBehaviour
                 return collider.GetComponent<Tile>();
             }
         }
+
         return null;
     }
 
@@ -176,46 +160,66 @@ public class Tile : MonoBehaviour
         return null;
     }
 
-    public void RegularSetup(GameState state)
+    public void HideTile()
     {
-        if (state == GameState.Setup || !_initialSetup) { return; }
-
-        Collider[] colliders = Physics.OverlapSphere(transform.position, (GameManager.TileLength / 2) + 0.5f, _wallLayer);
-        if (colliders.Length != 4) { return; }
-
-        for (int i = 0; i < colliders.Length; i++)
-        {
-            _neighborWalls[i] = colliders[i].GetComponent<Wall>();
-        }
-
-        if (_isStartingTile) { SetStartingTile(); }
-        GameManager.OnStateChanged -= RegularSetup;
-        if (_isOnLastRow) { _firstRow.OnRowReset -= DelayedSetupWrapper; }
-        _initialSetup = false;
+        _renderer.enabled = false;
+        _isHidden = true;
     }
 
-    public void DestroyTile()
+    public void UnhideTile()
     {
-        if (_renderer != null) { _renderer.enabled = false; }
-        _isDestroyed = true;
-        _isPartOfMaze = false;
+        if (_renderer != null) { _renderer.enabled = true; }
+        _isHidden = false;
     }
 
     public void SetStartingTile()
     {
         _isStartingTile = true;
-        if (_isDestroyed) { UndoDestroyed(); }
+        if (_isHidden) { Unhide(); }
         AddTileToMaze();
-        foreach (Wall wall in _neighborWalls)
-        {
-            wall.SetWallAsBorder();
-        }
         _parentRow.IsHighestDrawnRow = true;
         DrawMaze.HighestDrawnRow = _parentRow;
     }
 
-    //private void OnDrawGizmos()
-    //{
-    //    Gizmos.DrawSphere(transform.position, (GameManager.TileLength / 2) + 0.5f);
-    //}
+    public void ResetTile()
+    {
+        _crossings = 0;
+        RemoveTileFromMaze();
+        HideTile();
+    }
+
+    public void Setup()
+    {
+        _neighborWalls.Clear();
+        _neighborTiles.Clear();
+        foreach (Wall wall in GenerateBoard.AllWalls)
+        {
+            if (Vector3.Distance(wall.transform.position, transform.position) < (GameManager.TileLength / 2) + 0.5f)
+            {
+                _neighborWalls.Add(wall);
+            }
+        }
+        foreach (Tile tile in GenerateBoard.AllTiles)
+        {
+            if (Vector3.Distance(tile.transform.position, transform.position) < GameManager.TileLength + 0.5f)
+            {
+                _neighborTiles.Add(tile);
+            }
+        }
+        //if (_neighborWalls.Count != 4 || _neighborTiles.Count != 4) { return; }
+        if (_isStartingTile) { SetStartingTile(); }
+        //if (_isOnLastRow) { _firstRow.OnRowReset -= DelayedSetupWrapper; }
+    }
+
+    private void Initialize()
+    {
+        _renderer = GetComponentInChildren<Renderer>();
+        _parentRow = transform.GetComponentInParent<Row>();
+        HideTile();
+    }
+
+    private void Awake()
+    {
+        Initialize();
+    }
 }

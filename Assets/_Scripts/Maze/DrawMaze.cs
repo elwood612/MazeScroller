@@ -14,11 +14,9 @@ public class DrawMaze : MonoBehaviour
     private Tile _currentTile, _lastTile;
     private Stack<Dictionary<Tile, bool>> _tileHistory = new Stack<Dictionary<Tile, bool>>();
     private Stack<Dictionary<Wall, bool>> _wallHistory = new Stack<Dictionary<Wall, bool>>();
-    private static List<Tile> _nextAvailableUncrossedTile = new List<Tile>();
 
     public static event Action<Tile> OnTileAdded;
     public static event Action<Tile> OnTileRemoved;
-    public static List<Tile> NextAvailableUncrossedTile => _nextAvailableUncrossedTile;
 
     public static Row HighestDrawnRow
     {
@@ -67,7 +65,7 @@ public class DrawMaze : MonoBehaviour
             {
                 _lastTile = _currentTile;
                 _currentTile = hit.collider.GetComponent<Tile>();
-                if (_currentTile.IsDestroyed)
+                if (_currentTile.IsHidden)
                 {
                     DisallowDraw();
                     continue;
@@ -89,7 +87,6 @@ public class DrawMaze : MonoBehaviour
         if (_lastTile.IsPartOfMaze) { tileToAdd = tileToCheck; }
         else { tileToAdd = _lastTile; }
         tileToAdd.AddTileToMaze();
-        _nextAvailableUncrossedTile.Add(tileToAdd);
         tileActions.Add(tileToAdd, true);
         SetHighestDrawnRow(tileToAdd);
         
@@ -147,12 +144,11 @@ public class DrawMaze : MonoBehaviour
             {
                 OnTileRemoved?.Invoke(action.Key);
                 action.Key.RemoveTileFromMaze();
-                _nextAvailableUncrossedTile.RemoveAt(_nextAvailableUncrossedTile.Count - 1);
             }
             else // unused for now
             {
                 Debug.Log("ray what are you doing");
-                action.Key.AddTileToMaze(); 
+                action.Key.AddTileToMaze();
             }
 
             _tileHistory.Pop();
@@ -162,7 +158,7 @@ public class DrawMaze : MonoBehaviour
         {
             if (action.Value) 
             { 
-                action.Key.HideWall(); 
+                action.Key.ResetWall();
             }
             else 
             { 
@@ -219,24 +215,16 @@ public class DrawMaze : MonoBehaviour
     {
         Vector3 pos1 = t1.transform.position;
         Vector3 pos2 = t2.transform.position;
-        if ((pos2 - pos1).magnitude > GameManager.TileLength + 0.5f) { Debug.Log("Non contiguous tiles"); return null; }
+        if ((pos2 - pos1).magnitude > GameManager.TileLength + 0.5f) { return null; }
 
         Collider[] colliders = Physics.OverlapSphere((pos1 + pos2) / 2, 0.5f, _wallLayer);
-        if (colliders.Length == 0 || colliders == null)
-        {
-            Debug.Log("Error! No intermediate wall found");
-            return null;
-        }
+        if (colliders.Length == 0 || colliders == null) { return null; }
 
         foreach (Collider collider in colliders)
         {
-            if (collider.TryGetComponent(out Wall wall))
-            {
-                return wall;
-            }
+            if (collider.TryGetComponent(out Wall wall)) { return wall; }
         }
 
-        Debug.Log("Unknown error, colliders:" + colliders.Length);
         return null;
     }
 

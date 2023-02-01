@@ -1,6 +1,8 @@
+using System.Collections;
+
 public interface IRunner
 {
     public Tile CurrentTile { get; set; }
     public Tile PreviousTile { get; set; }
-    public void TilePrepareDecision(Tile tile);
+    public void CalculateNextTargetWrapper(Tile tile);
 }

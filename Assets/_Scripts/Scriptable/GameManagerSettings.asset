@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdbcded1c8b2db442a9a47deb805ddbd, type: 3}
   m_Name: GameManagerSettings
   m_EditorClassIdentifier: 
-  NumberOfRows: 20
+  NumberOfRows: 30
   TileSpeedCurve:
     serializedVersion: 2
     m_Curve:
@@ -51,7 +51,7 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 10
+      value: 2
       inSlope: 0
       outSlope: 0
       tangentMode: 65
@@ -60,7 +60,7 @@ MonoBehaviour:
       outWeight: 0
     - serializedVersion: 3
       time: 0.1
-      value: 10
+      value: 2
       inSlope: -0
       outSlope: 0
       tangentMode: 5

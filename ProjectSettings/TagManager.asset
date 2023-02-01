@@ -10,6 +10,7 @@ TagManager:
   - Row
   - TileCenter
   - Runner
+  - TopOfBoard
   layers:
   - Default
   - TransparentFX

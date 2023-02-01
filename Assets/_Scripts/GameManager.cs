@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -14,6 +15,8 @@ public class GameManager : MonoBehaviour
     private static Vector3 _boardLength;
     private float _defaultSpeed = 1f;
     private static float _tileLength;
+    private static float _speedMultiplier = 1f;
+    private static float _highestDrawnRowHeight;
     private static int _numberOfRows;
     private static int _tileDestroyedChance;
 
@@ -25,10 +28,13 @@ public class GameManager : MonoBehaviour
     public static int NumberOfRows => _numberOfRows;
     public static int TileDestroyedChance => _tileDestroyedChance;
     public static Vector3 TileSpeed => _tileSpeed;
-    public static float HighestDrawnRowHeight;
-    public static float SpeedMultiplier = 1f;
     public GameObject RunnerPrefab => _runnerPrefab;
     public AnimationCurve RunnerSpeedCurve => _runnerSpeedCurve;
+    public static float HighestDrawnRowHeight
+    {
+        get => _highestDrawnRowHeight;
+        set => _highestDrawnRowHeight = value;
+    }
 
     private void Awake()
     {
@@ -50,7 +56,7 @@ public class GameManager : MonoBehaviour
     {
         if (CurrentState == GameState.Idle || CurrentState == GameState.Running) 
         { 
-            CalculateSpeed(SpeedMultiplier); 
+            CalculateSpeed(_speedMultiplier); 
         }
     }
 

@@ -8,9 +8,9 @@ public class Runner : MonoBehaviour, IRunner
     private Tile _targetTile;
     private Tile _nextTarget;
     private Tile _previousTile;
-    private List<Tile> _mazeTiles = new List<Tile>();
+    private List<Tile> _uncrossedTilesInMaze = new List<Tile>();
     private float _currentSpeed;
-    private float _multiplier = 10f;
+    private float _multiplier = 20f;
     private bool _runnerStopped = true;
     private AnimationCurve _speedCurve;
 
@@ -34,14 +34,14 @@ public class Runner : MonoBehaviour, IRunner
     {
         GameManager.AddBoardMotion(transform);
         CalculateSpeed();
-        if (_mazeTiles.Count > 0) { Move(); }
+        if (_uncrossedTilesInMaze.Count > 0) { Move(); }
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("TileCenter"))
         {
-            TileCenterDecision(other.GetComponentInParent<Tile>());
+            TileDecision(other.GetComponentInParent<Tile>());
         }
     }
 
@@ -62,14 +62,14 @@ public class Runner : MonoBehaviour, IRunner
         transform.position = Vector3.MoveTowards(transform.position, _targetTile.transform.position, Time.deltaTime * _currentSpeed * _multiplier);
     }
 
-    private void TileCenterDecision(Tile tile)
+    private void TileDecision(Tile tile)
     {
         RemoveTileFromPath(_currentTile);
 
-        if (_mazeTiles.Count == 0)
+        if (_uncrossedTilesInMaze.Count == 0)
         {
             _runnerStopped = true;
-            DrawMaze.OnTileAdded += TileCenterDecision;
+            DrawMaze.OnTileAdded += TileDecision;
             return;
         }
         else
@@ -77,50 +77,50 @@ public class Runner : MonoBehaviour, IRunner
             if (_runnerStopped)
             {
                 _runnerStopped = false;
-                TilePrepareDecision(_currentTile);
+                CalculateNextTargetWrapper(_currentTile);
             }
-            DrawMaze.OnTileAdded -= TileCenterDecision;
+            DrawMaze.OnTileAdded -= TileDecision;
         }
 
         _targetTile = _nextTarget;
         transform.GetChild(0).LookAt(_targetTile.transform);
     }
 
-    // This needs to be re-done.
-    public void TilePrepareDecision(Tile tile)
+    public void CalculateNextTargetWrapper(Tile tile)
     {
-        // foreach (wall in tile.neighborPaths)
-        //      if (wall.IsPathfinding)
-        //          _nextTarget = GetNeighborTile(wall);
-        // Then go into below, and remove the call to GetPathfindingPath (it's buried in CalculatePathfinding)
+        StartCoroutine(CalculateNextTarget(tile));
+    }
+
+    private IEnumerator CalculateNextTarget(Tile tile)
+    {
+        if (GetPathfindingPath(_currentTile) != _currentTile)
+        {
+            _nextTarget = GetPathfindingPath(_currentTile);
+            yield break;
+        }
+
         switch (tile.NeighborPaths.Count)
         {
-            case 1: case 2:
+            case 1:
+            case 2:
                 _nextTarget = GetLeastCrossedPath(_currentTile);
                 break;
-            case 3: case 4:
-                if (AreUncrossedPaths(_currentTile))
+            case 3:
+            case 4:
+                if (GetFirstUncrossedPath(_currentTile) != _currentTile)
                 {
-                    _nextTarget = GetFirstDrawnPath(_currentTile);
+                    _nextTarget = GetFirstUncrossedPath(_currentTile);
                 }
                 else
                 {
-                    CalculatePathfindingPath(_currentTile, DrawMaze.NextAvailableUncrossedTile[0]);
+                    yield return new WaitUntil(() => CalculatePathfindingPath(_currentTile, _uncrossedTilesInMaze[0]));
+                    _nextTarget = GetPathfindingPath(_currentTile);
                 }
                 break;
             default:
                 _nextTarget = tile;
                 break;
         }
-    }
-
-    private bool AreUncrossedPaths(Tile tile)
-    {
-        foreach (Wall wall in tile.NeighborPaths)
-        {
-            if (wall.Crossings == 0) { return true; }
-        }
-        return false;
     }
 
     // Only ever gets called for corridors or dead ends
@@ -146,7 +146,7 @@ public class Runner : MonoBehaviour, IRunner
     }
 
     // Only ever gets called when there is at least one uncrossed path
-    private Tile GetFirstDrawnPath(Tile tile)
+    private Tile GetFirstUncrossedPath(Tile tile)
     {
         float firstDrawn = Mathf.Infinity;
         Tile toReturn = tile;
@@ -161,7 +161,6 @@ public class Runner : MonoBehaviour, IRunner
                 toReturn = tile.GetNeighborTile(direction);
             }
         }
-
         return toReturn;
     }
 
@@ -192,7 +191,7 @@ public class Runner : MonoBehaviour, IRunner
 
             if (currentTile == endTile)
             {
-                RetracePath(startTile, endTile);
+                RetracePathfindingPath(startTile, endTile);
                 return true;
             }
 
@@ -207,10 +206,11 @@ public class Runner : MonoBehaviour, IRunner
                 }
             }
         }
-        return false;
+        Debug.Log("Whelp. Something went wrong");
+        return false; // should never happen inshallah
     }
 
-    private void RetracePath(Tile startTile, Tile finishTile)
+    private void RetracePathfindingPath(Tile startTile, Tile finishTile)
     {
         Tile currentTile = finishTile;
         while (currentTile != startTile)
@@ -218,16 +218,15 @@ public class Runner : MonoBehaviour, IRunner
             currentTile.GetWallBetween(currentTile.PathfindingParent).IsPathfindingPath = true;
             currentTile = currentTile.PathfindingParent;
         }
-        _nextTarget = GetPathfindingPath(_currentTile);
     }
 
     protected void AddTileToPath(Tile tile)
     {
-        _mazeTiles.Add(tile);
+        _uncrossedTilesInMaze.Add(tile);
     }
 
     protected void RemoveTileFromPath(Tile tile)
     {
-        if (_mazeTiles.Contains(tile)) { _mazeTiles.Remove(tile); }
+        if (_uncrossedTilesInMaze.Contains(tile)) { _uncrossedTilesInMaze.Remove(tile); }
     }
 }
