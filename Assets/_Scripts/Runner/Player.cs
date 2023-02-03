@@ -6,12 +6,14 @@ public class Player : Runner
     {
         DrawMaze.OnTileAdded += AddTileToPath;
         DrawMaze.OnTileRemoved += RemoveTileFromPath;
+        Tile.OnTileDestroy += RemoveTileFromPath;
     }
 
     private void OnDisable()
     {
         DrawMaze.OnTileAdded -= AddTileToPath;
         DrawMaze.OnTileRemoved -= RemoveTileFromPath;
+        Tile.OnTileDestroy -= RemoveTileFromPath;
     }
 
     protected override void SelfDestruct()

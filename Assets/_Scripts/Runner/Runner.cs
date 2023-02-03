@@ -54,7 +54,7 @@ public class Runner : MonoBehaviour, IRunner
 
     private void CalculateSpeed()
     {
-        _currentSpeed = _speedCurve.Evaluate(CalculateHeight());
+        _currentSpeed = _speedCurve.Evaluate(CalculateHeight()); // need to make this dependent on TileSpeed & _uncrossedTilesInMaze
     }
 
     private float CalculateHeight()

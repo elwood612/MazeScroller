@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Tile : MonoBehaviour
 {
@@ -16,14 +18,16 @@ public class Tile : MonoBehaviour
     private List<Wall> _neighborPaths = new List<Wall>();
     private List<Tile> _neighborTiles = new List<Tile>();
     private bool _isPartOfMaze = false;
-    private bool _isHidden = false;
+    private bool _isEnabled = false;
     private bool _hasCrystal = false;
     private int _crossings = 0;
     private Tile _pathfindingParent;
     private static bool _firstTile = true;
+
+    public static event Action<Tile> OnTileDestroy;
     public List<Wall> NeighborWalls => _neighborWalls;
     public bool IsPartOfMaze => _isPartOfMaze;
-    public bool IsHidden => _isHidden;
+    public bool IsEnabled => _isEnabled;
     public bool HasCrystal => _hasCrystal;
     public int Crossings => _crossings;
     public Row ParentRow => _parentRow;
@@ -41,13 +45,13 @@ public class Tile : MonoBehaviour
     private void OnEnable()
     {
         _parentRow.OnRowReset += ResetTile;
-        _parentRow.OnRowSetup += SetupTile;
+        _parentRow.OnRowSetup += GetNeighbors;
     }
 
     private void OnDisable()
     {
         _parentRow.OnRowReset -= ResetTile;
-        _parentRow.OnRowSetup -= SetupTile;
+        _parentRow.OnRowSetup -= GetNeighbors;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -93,7 +97,10 @@ public class Tile : MonoBehaviour
 
     private void DestroyTile()
     {
-        if (!_parentRow.HasSetupBeenRun) { return; }
+        if (!_parentRow.HasSetupBeenRun || !_isEnabled) { return; }
+
+        if (_crossings == 0) { GameManager.Instability += 10; }
+        else if (_crossings == 1) { GameManager.Instability++; }
 
         _rb.isKinematic = false;
         Vector3 impulse = new Vector3(Random.Range(-50f, 50f), Random.Range(-50f, 0), Random.Range(-50f, 50f));
@@ -102,18 +109,27 @@ public class Tile : MonoBehaviour
         {
             wall.DestroyWall();
         }
+
+        OnTileDestroy?.Invoke(this);
     }
 
-    private void DisableTile()
+    public void DisableTile(bool onSpawn = false)
     {
         _renderer.enabled = false;
-        _isHidden = true;
+        _isEnabled = false;
+
+        if (!onSpawn) { return; }
+
+        foreach (Wall wall in _neighborWalls)
+        {
+            wall.TryDisable();
+        }
     }
 
     private void EnableTile()
     {
         _renderer.enabled = true;
-        _isHidden = false;
+        _isEnabled = true;
     }
 
     private void SetMaterial(Material material)
@@ -162,7 +178,7 @@ public class Tile : MonoBehaviour
             }
         }
         Debug.Log("Couldn't find wall between");
-        return null;
+        return _neighborWalls[0];
     }
 
     public void SetStartingTile()
@@ -186,7 +202,7 @@ public class Tile : MonoBehaviour
         _rb.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
     }
 
-    public void SetupTile()
+    public void GetNeighbors()
     {
         foreach (Wall wall in BoardManager.AllWalls)
         {

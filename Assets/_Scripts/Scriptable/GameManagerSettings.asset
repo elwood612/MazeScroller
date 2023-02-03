@@ -25,22 +25,22 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.35
+      time: 0.25
       value: 0.5
-      inSlope: 0
-      outSlope: 0.31250098
+      inSlope: -0
+      outSlope: 0.0000058472224
       tangentMode: 5
       weightedMode: 2
       inWeight: 0
-      outWeight: 0.8038954
+      outWeight: 0.7684458
     - serializedVersion: 3
       time: 1
       value: 50
-      inSlope: 213.66624
-      outSlope: 213.66624
+      inSlope: -0.000009647491
+      outSlope: -0.000009647491
       tangentMode: 0
       weightedMode: 1
-      inWeight: 0.054587603
+      inWeight: 0.60832036
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -83,6 +83,57 @@ MonoBehaviour:
       tangentMode: 5
       weightedMode: 1
       inWeight: 0.33607766
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  TileSpawnerCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.5
+      inSlope: 0
+      outSlope: 50
+      tangentMode: 65
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.01
+      value: 1
+      inSlope: 50
+      outSlope: 25
+      tangentMode: 69
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.05
+      value: 2
+      inSlope: 14.657723
+      outSlope: 14.657723
+      tangentMode: 1
+      weightedMode: 2
+      inWeight: 0.33333334
+      outWeight: 0.050680265
+    - serializedVersion: 3
+      time: 0.8
+      value: 3.5
+      inSlope: 4.75
+      outSlope: 4.75
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 5
+      inSlope: 7.5000005
+      outSlope: 4.5
+      tangentMode: 69
+      weightedMode: 0
+      inWeight: 0.33333334
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2

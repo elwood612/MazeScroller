@@ -14,12 +14,14 @@ public class DrawMaze : MonoBehaviour
     private Tile _currentTile, _lastTile;
     private Stack<Dictionary<Tile, bool>> _tileHistory = new Stack<Dictionary<Tile, bool>>();
     private Stack<Dictionary<Wall, bool>> _wallHistory = new Stack<Dictionary<Wall, bool>>();
+    private bool _firstTileDrawn = true;
 
     public static event Action<Tile> OnTileAdded;
     public static event Action<Tile> OnTileRemoved;
 
     public static Row HighestDrawnRow
     {
+        get => _highestDrawnRow;
         set => _highestDrawnRow = value;
     }
 
@@ -61,7 +63,7 @@ public class DrawMaze : MonoBehaviour
             {
                 _lastTile = _currentTile;
                 _currentTile = hit.collider.GetComponent<Tile>();
-                if (_currentTile.IsHidden)
+                if (!_currentTile.IsEnabled)
                 {
                     DisallowDraw();
                     continue;
@@ -105,6 +107,11 @@ public class DrawMaze : MonoBehaviour
             }
         }
 
+        if (_firstTileDrawn) 
+        { 
+            GameManager.Instability += 10;
+            _firstTileDrawn = false;
+        }
         OnTileAdded?.Invoke(tileToAdd);
         _tileHistory.Push(tileActions);
         _wallHistory.Push(wallActions);
@@ -154,7 +161,7 @@ public class DrawMaze : MonoBehaviour
         {
             if (action.Value) // if wall is a border
             { 
-                action.Key.ResetWall();
+                action.Key.UndoWallAsBorder();
             }
             else // if wall is a path
             { 

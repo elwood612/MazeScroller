@@ -31,13 +31,13 @@ public class Wall : MonoBehaviour
     private void OnEnable()
     {
         _parentRow.OnRowReset += ResetWall;
-        _parentRow.OnRowSetup += SetupWall;
+        _parentRow.OnRowSetup += GetNeighbors;
     }
 
     private void OnDisable()
     {
         _parentRow.OnRowReset -= ResetWall;
-        _parentRow.OnRowSetup -= SetupWall;
+        _parentRow.OnRowSetup -= GetNeighbors;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -70,12 +70,12 @@ public class Wall : MonoBehaviour
         }
     }
 
-    public void SetWallAsBorder(bool startingTile = false)
+    public void SetWallAsBorder()
     {
         _renderers[0].enabled = true;
         _isBorder = true;
         _isPath = false;
-        if (!startingTile) { UpdateNeighborTiles(); }
+        UpdateNeighborTiles();
     }
 
     public void SetWallAsPath()
@@ -87,7 +87,15 @@ public class Wall : MonoBehaviour
         UpdateNeighborTiles();
     }
 
-    public void ResetWall()
+    public void UndoWallAsBorder()
+    {
+        _renderers[0].enabled = false;
+        _isBorder = false;
+        _isPath = false;
+        UpdateNeighborTiles();
+    }
+
+    private void ResetWall()
     {
         _crossings = 0;
         _isBorder = false;
@@ -112,6 +120,15 @@ public class Wall : MonoBehaviour
         _isHidden = false;
     }
 
+    public void TryDisable()
+    {
+        foreach (Tile tile in _neighborTiles)
+        {
+            if (tile.IsEnabled) { return; }
+        }
+        DisableWall();
+    }
+
     public void DestroyWall()
     {
         _rb.isKinematic = false;
@@ -119,7 +136,7 @@ public class Wall : MonoBehaviour
         _rb.AddForce(impulse, ForceMode.Impulse);
     }
 
-    public void SetupWall()
+    public void GetNeighbors()
     {
         foreach (Tile tile in BoardManager.AllTiles)
         {
