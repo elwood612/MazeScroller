@@ -13,4 +13,9 @@ public class Player : Runner
         DrawMaze.OnTileAdded -= AddTileToPath;
         DrawMaze.OnTileRemoved -= RemoveTileFromPath;
     }
+
+    protected override void SelfDestruct()
+    {
+        _rb.isKinematic = false;
+    }
 }

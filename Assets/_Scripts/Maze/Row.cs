@@ -1,13 +1,15 @@
 using System;
-using System.Collections;
 using UnityEngine;
 
 public class Row : MonoBehaviour
 {
     private bool _isHighestDrawnRow;
-    private int _tilesToDraw = 5;
+    private bool _hasSetupBeenRun = false;
 
     public event Action OnRowReset;
+    public event Action OnRowSetup;
+
+    public bool HasSetupBeenRun => _hasSetupBeenRun;
     public bool IsHighestDrawnRow
     {
         get => _isHighestDrawnRow;
@@ -22,8 +24,8 @@ public class Row : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("BottomOfBoard")) { ResetRow(); }
-        else if (other.CompareTag("TopOfBoard")) { SetupRow(); }
+        if (other.CompareTag("RowReset")) { ResetRow(); }
+        else if (other.CompareTag("RowSetup")) { SetupRow(); }
     }
 
     private float CalculateHeight()
@@ -35,30 +37,13 @@ public class Row : MonoBehaviour
     private void ResetRow()
     {
         transform.position += GameManager.BoardLength;
-        foreach (Tile tile in GetComponentsInChildren<Tile>())
-        {
-            tile.ResetTile();
-        }
-        foreach (Wall wall in GetComponentsInChildren<Wall>())
-        {
-            wall.ResetWall();
-        }
         OnRowReset?.Invoke();
     }
 
     private void SetupRow()
     {
-        foreach (Tile tile in GetComponentsInChildren<Tile>())
-        {
-            tile.Setup();
-        }
-        foreach (Wall wall in GetComponentsInChildren<Wall>())
-        {
-            wall.Setup();
-        }
-        for (int i = 0; i < _tilesToDraw; i++)
-        {
-            transform.GetChild(0).GetChild(i).GetComponent<Tile>().UnhideTile();
-        }
+        if (_hasSetupBeenRun) { return; }
+        OnRowSetup?.Invoke();
+        _hasSetupBeenRun = true;
     }
 }

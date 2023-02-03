@@ -4,10 +4,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField][Range(0, 100)] private int _debugSetTileDestroyChance;
     [SerializeField] private GM_Settings _settings;
     [SerializeField] private GameObject _runnerPrefab;
-    public int DebugStartTilePosition;
 
     private AnimationCurve _tileSpeedCurve;
     private AnimationCurve _runnerSpeedCurve;
@@ -18,22 +16,22 @@ public class GameManager : MonoBehaviour
     private static float _speedMultiplier = 1f;
     private static float _highestDrawnRowHeight;
     private static int _numberOfRows;
-    private static int _tileDestroyedChance;
 
     public static GameState CurrentState;
     public static event Action<GameState> OnStateChanged;
     public static GameManager Instance;
     public static float TileLength => _tileLength;
     public static Vector3 BoardLength => _boardLength;
-    public static int NumberOfRows => _numberOfRows;
-    public static int TileDestroyedChance => _tileDestroyedChance;
-    public static Vector3 TileSpeed => _tileSpeed;
-    public GameObject RunnerPrefab => _runnerPrefab;
     public AnimationCurve RunnerSpeedCurve => _runnerSpeedCurve;
     public static float HighestDrawnRowHeight
     {
         get => _highestDrawnRowHeight;
         set => _highestDrawnRowHeight = value;
+    }
+    public static int NumberOfRows
+    {
+        get => _numberOfRows;
+        set => _numberOfRows = value;
     }
 
     private void Awake()
@@ -41,10 +39,9 @@ public class GameManager : MonoBehaviour
         if (Instance == null) { Instance = this; }
         else { Destroy(this); }
 
-        _numberOfRows = _settings.NumberOfRows;
         _tileSpeedCurve = _settings.TileSpeedCurve;
         _runnerSpeedCurve = _settings.RunnerSpeedCurve;
-        _tileDestroyedChance = _debugSetTileDestroyChance;
+        _tileLength = GameObject.FindGameObjectWithTag("Tile").GetComponent<BoxCollider>().bounds.size.x;
     }
 
     private void Start()
@@ -56,8 +53,24 @@ public class GameManager : MonoBehaviour
     {
         if (CurrentState == GameState.Idle || CurrentState == GameState.Running) 
         { 
-            CalculateSpeed(_speedMultiplier); 
+            CalculateBoardSpeed(_speedMultiplier);
         }
+    }
+
+    private void CalculateBoardSpeed(float multiplier)
+    {
+        float heightCurve = _tileSpeedCurve.Evaluate(HighestDrawnRowHeight);
+        _tileSpeed = new Vector3(0, 0, -heightCurve * _defaultSpeed * multiplier);
+    }
+
+    private void CalculateBoardLength()
+    {
+        _boardLength = new Vector3(0, 0, _tileLength * _numberOfRows);
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance == this) { Instance = null; }
     }
 
     public void UpdateGameState(GameState newState)
@@ -68,7 +81,7 @@ public class GameManager : MonoBehaviour
         switch (newState)
         {
             case GameState.Setup:
-                CalculateSpeed(0);
+                CalculateBoardSpeed(0);
                 CalculateBoardLength();
                 break;
             case GameState.Idle:
@@ -76,34 +89,19 @@ public class GameManager : MonoBehaviour
             case GameState.Running:
                 break;
             case GameState.Lose:
-                CalculateSpeed(0);
-                break;
-            
-            default:
+                CalculateBoardSpeed(0);
                 break;
         }
         OnStateChanged?.Invoke(newState);
     }
 
+    public void SpawnPlayer(Transform tile)
+    {
+        Instantiate(_runnerPrefab, tile.position, Quaternion.identity);
+    }
+
     public static void AddBoardMotion(Transform t)
     {
         t.Translate(_tileSpeed * Time.deltaTime);
-    }
-
-    private void CalculateSpeed(float multiplier)
-    {
-        float heightCurve = _tileSpeedCurve.Evaluate(HighestDrawnRowHeight);
-        _tileSpeed = new Vector3(0, 0, -heightCurve * _defaultSpeed * multiplier);
-    }
-
-    private void CalculateBoardLength()
-    {
-        _tileLength = GameObject.FindGameObjectWithTag("Tile").GetComponent<BoxCollider>().bounds.size.x;
-        _boardLength = new Vector3(0, 0, _tileLength * _numberOfRows);
-    }
-
-    private void OnDestroy()
-    {
-        if (Instance == this) { Instance = null; }
     }
 }

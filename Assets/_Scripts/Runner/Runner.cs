@@ -10,9 +10,11 @@ public class Runner : MonoBehaviour, IRunner
     private Tile _previousTile;
     private List<Tile> _uncrossedTilesInMaze = new List<Tile>();
     private float _currentSpeed;
-    private float _multiplier = 20f;
+    private float _multiplier = 1f;
     private bool _runnerStopped = true;
+    private bool _approachingDeadEnd = false;
     private AnimationCurve _speedCurve;
+    protected Rigidbody _rb;
 
     public Tile CurrentTile
     {
@@ -28,6 +30,7 @@ public class Runner : MonoBehaviour, IRunner
     private void Awake()
     {
         _speedCurve = GameManager.Instance.RunnerSpeedCurve;
+        _rb = GetComponent<Rigidbody>();
     }
 
     private void Update()
@@ -41,13 +44,16 @@ public class Runner : MonoBehaviour, IRunner
     {
         if (other.CompareTag("TileCenter"))
         {
-            TileDecision(other.GetComponentInParent<Tile>());
+            SetTarget(other.GetComponentInParent<Tile>());
+        }
+        else if (other.CompareTag("TileDestroyer"))
+        {
+            SelfDestruct();
         }
     }
 
     private void CalculateSpeed()
     {
-        //_currentSpeed = Mathf.Abs(GameManager.TileSpeed.z) * 2 + 10f;
         _currentSpeed = _speedCurve.Evaluate(CalculateHeight());
     }
 
@@ -62,14 +68,14 @@ public class Runner : MonoBehaviour, IRunner
         transform.position = Vector3.MoveTowards(transform.position, _targetTile.transform.position, Time.deltaTime * _currentSpeed * _multiplier);
     }
 
-    private void TileDecision(Tile tile)
+    private void SetTarget(Tile tile)
     {
         RemoveTileFromPath(_currentTile);
 
         if (_uncrossedTilesInMaze.Count == 0)
         {
             _runnerStopped = true;
-            DrawMaze.OnTileAdded += TileDecision;
+            DrawMaze.OnTileAdded += SetTarget;
             return;
         }
         else
@@ -79,20 +85,17 @@ public class Runner : MonoBehaviour, IRunner
                 _runnerStopped = false;
                 CalculateNextTargetWrapper(_currentTile);
             }
-            DrawMaze.OnTileAdded -= TileDecision;
+            DrawMaze.OnTileAdded -= SetTarget;
         }
 
         _targetTile = _nextTarget;
-        transform.GetChild(0).LookAt(_targetTile.transform);
-    }
-
-    public void CalculateNextTargetWrapper(Tile tile)
-    {
-        StartCoroutine(CalculateNextTarget(tile));
+        if (_targetTile != null) { transform.GetChild(0).LookAt(_targetTile.transform); }
     }
 
     private IEnumerator CalculateNextTarget(Tile tile)
     {
+        _approachingDeadEnd = tile.NeighborPaths.Count == 1;
+
         if (GetPathfindingPath(_currentTile) != _currentTile)
         {
             _nextTarget = GetPathfindingPath(_currentTile);
@@ -222,6 +225,7 @@ public class Runner : MonoBehaviour, IRunner
 
     protected void AddTileToPath(Tile tile)
     {
+        if (_approachingDeadEnd) { CalculateNextTargetWrapper(_currentTile); }
         _uncrossedTilesInMaze.Add(tile);
     }
 
@@ -229,4 +233,14 @@ public class Runner : MonoBehaviour, IRunner
     {
         if (_uncrossedTilesInMaze.Contains(tile)) { _uncrossedTilesInMaze.Remove(tile); }
     }
+
+    protected virtual void SelfDestruct()
+    {
+        // override in inheriting classes
+    }
+    public void CalculateNextTargetWrapper(Tile tile)
+    {
+        StartCoroutine(CalculateNextTarget(tile));
+    }
+
 }

@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,40 +10,23 @@ public class Tile : MonoBehaviour
     [SerializeField] private LayerMask _wallLayer;
 
     private Renderer _renderer;
+    private Rigidbody _rb;
     private Row _parentRow;
-    private Row _firstRow;
     private List<Wall> _neighborWalls = new List<Wall>();
     private List<Wall> _neighborPaths = new List<Wall>();
     private List<Tile> _neighborTiles = new List<Tile>();
-    private bool _isStartingTile = false;
-    private bool _isOnLastRow = false;
     private bool _isPartOfMaze = false;
     private bool _isHidden = false;
     private bool _hasCrystal = false;
     private int _crossings = 0;
-    public Tile _pathfindingParent;
-
+    private Tile _pathfindingParent;
+    private static bool _firstTile = true;
     public List<Wall> NeighborWalls => _neighborWalls;
     public bool IsPartOfMaze => _isPartOfMaze;
     public bool IsHidden => _isHidden;
     public bool HasCrystal => _hasCrystal;
     public int Crossings => _crossings;
     public Row ParentRow => _parentRow;
-    public Row FirstRow
-    {
-        get => _firstRow;
-        set => _firstRow = value;
-    }
-    public bool IsStartingTile
-    {
-        get => _isStartingTile;
-        set => _isStartingTile = value;
-    }
-    public bool IsOnLastRow
-    {
-        get => _isOnLastRow;
-        set => _isOnLastRow = value;
-    }
     public List<Wall> NeighborPaths
     {
         get => _neighborPaths;
@@ -59,14 +40,14 @@ public class Tile : MonoBehaviour
 
     private void OnEnable()
     {
-        //if (!_isOnLastRow) { GenerateBoard.OnTilesSetup += Setup; }
-        if (_parentRow != null) { _parentRow.OnRowReset += ResetTile; }
+        _parentRow.OnRowReset += ResetTile;
+        _parentRow.OnRowSetup += SetupTile;
     }
 
     private void OnDisable()
     {
-        //if (!_isOnLastRow) { GenerateBoard.OnTilesSetup -= Setup; }
-        if (_parentRow != null) { _parentRow.OnRowReset -= ResetTile; }
+        _parentRow.OnRowReset -= ResetTile;
+        _parentRow.OnRowSetup -= SetupTile;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -75,22 +56,61 @@ public class Tile : MonoBehaviour
         {
             PlayerCrossing(other.GetComponent<IRunner>());
         }
+        else if (other.CompareTag("TileSpawner"))
+        {
+            SpawnTile();
+        }
+        else if (other.CompareTag("TileDestroyer"))
+        {
+            DestroyTile();
+        }
     }
 
     private void PlayerCrossing(IRunner runner)
     {
-        if (_crossings < _tileCrossing.Length && !_isStartingTile)
+        if (_crossings < _tileCrossing.Length)
         {
             SetMaterial(_tileCrossing[_crossings]);
         }
         _crossings++;
-        
         runner.PreviousTile = runner.CurrentTile;
         runner.CurrentTile = this;
         runner.CalculateNextTargetWrapper(this);
     }
 
-    private void Unhide()
+    private void SpawnTile()
+    {
+        if (!_parentRow.HasSetupBeenRun) { return; }
+
+        EnableTile();
+        foreach (Wall wall in _neighborWalls)
+        {
+            wall.EnableWall();
+        }
+        if (_firstTile) { SetStartingTile(); }
+        _firstTile = false;
+    }
+
+    private void DestroyTile()
+    {
+        if (!_parentRow.HasSetupBeenRun) { return; }
+
+        _rb.isKinematic = false;
+        Vector3 impulse = new Vector3(Random.Range(-50f, 50f), Random.Range(-50f, 0), Random.Range(-50f, 50f));
+        _rb.AddForce(impulse, ForceMode.Impulse);
+        foreach (Wall wall in _neighborWalls)
+        {
+            wall.DestroyWall();
+        }
+    }
+
+    private void DisableTile()
+    {
+        _renderer.enabled = false;
+        _isHidden = true;
+    }
+
+    private void EnableTile()
     {
         _renderer.enabled = true;
         _isHidden = false;
@@ -100,18 +120,6 @@ public class Tile : MonoBehaviour
     {
         _renderer.material = material;
     }   
-
-    // Used for the last row, can't set it up until the first row gets reset
-    private IEnumerator DelayedSetup()
-    {
-        yield return new WaitForSeconds(1f);
-        Setup();
-    }
-
-    public void DelayedSetupWrapper()
-    {
-        StartCoroutine(DelayedSetup());
-    }
 
     public void AddTileToMaze()
     {
@@ -131,95 +139,87 @@ public class Tile : MonoBehaviour
         }
     }
 
-    // To make these new versions work:
-    // Need to delay setup at least until the row behind has been reset
-    // Can do a new setup everytime the row gets reset
-    // Probably time to implement those trigger areas for spawning
     public Tile GetNeighborTile(Vector3 direction)
     {
-        foreach (Collider collider in Physics.OverlapSphere(transform.position + direction.normalized * GameManager.TileLength, 1f))
+        foreach (Tile tile in _neighborTiles)
         {
-            if (collider.CompareTag("Tile"))
+            if (CompareVectors(tile.transform.position, transform.position + direction.normalized * GameManager.TileLength))
             {
-                return collider.GetComponent<Tile>();
+                return tile;
             }
         }
-
-        return null;
+        Debug.Log("Couldn't find neighbor tile");
+        return this;
     }
 
     public Wall GetWallBetween(Tile other)
     {
-        foreach (Collider collider in Physics.OverlapSphere((transform.position + other.transform.position) / 2, 1f, _wallLayer))
+        foreach (Wall wall in _neighborWalls)
         {
-            if (collider.CompareTag("Wall"))
+            if (CompareVectors(wall.transform.position, (transform.position + other.transform.position) / 2))
             {
-                return collider.GetComponent<Wall>();
+                return wall;
             }
         }
+        Debug.Log("Couldn't find wall between");
         return null;
-    }
-
-    public void HideTile()
-    {
-        _renderer.enabled = false;
-        _isHidden = true;
-    }
-
-    public void UnhideTile()
-    {
-        if (_renderer != null) { _renderer.enabled = true; }
-        _isHidden = false;
     }
 
     public void SetStartingTile()
     {
-        _isStartingTile = true;
-        if (_isHidden) { Unhide(); }
         AddTileToMaze();
         _parentRow.IsHighestDrawnRow = true;
         DrawMaze.HighestDrawnRow = _parentRow;
+        foreach (Wall wall in _neighborWalls)
+        {
+            wall.SetWallAsBorder();
+        }
+        GameManager.Instance.SpawnPlayer(transform);
     }
 
     public void ResetTile()
     {
         _crossings = 0;
         RemoveTileFromMaze();
-        HideTile();
+        DisableTile();
+        _rb.isKinematic = true;
+        _rb.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
     }
 
-    public void Setup()
+    public void SetupTile()
     {
-        _neighborWalls.Clear();
-        _neighborTiles.Clear();
-        foreach (Wall wall in GenerateBoard.AllWalls)
+        foreach (Wall wall in BoardManager.AllWalls)
         {
             if (Vector3.Distance(wall.transform.position, transform.position) < (GameManager.TileLength / 2) + 0.5f)
             {
                 _neighborWalls.Add(wall);
             }
         }
-        foreach (Tile tile in GenerateBoard.AllTiles)
+        foreach (Tile tile in BoardManager.AllTiles)
         {
+            if (tile == this) { continue; }
             if (Vector3.Distance(tile.transform.position, transform.position) < GameManager.TileLength + 0.5f)
             {
                 _neighborTiles.Add(tile);
             }
         }
-        //if (_neighborWalls.Count != 4 || _neighborTiles.Count != 4) { return; }
-        if (_isStartingTile) { SetStartingTile(); }
-        //if (_isOnLastRow) { _firstRow.OnRowReset -= DelayedSetupWrapper; }
     }
 
     private void Initialize()
     {
         _renderer = GetComponentInChildren<Renderer>();
         _parentRow = transform.GetComponentInParent<Row>();
-        HideTile();
+        _rb = GetComponentInChildren<Rigidbody>();
+        DisableTile();
     }
 
     private void Awake()
     {
         Initialize();
+    }
+
+    private bool CompareVectors(Vector3 v1, Vector3 v2)
+    {
+        return Vector3Int.RoundToInt(v1) == Vector3Int.RoundToInt(v2);
     }
 }

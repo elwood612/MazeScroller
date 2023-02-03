@@ -133,8 +133,6 @@ MonoBehaviour:
   _tileLayer:
     serializedVersion: 2
     m_Bits: 512
-  _isPathfindingPath: 0
-  _crossings: 0
 --- !u!65 &1988291058608467337
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -159,6 +157,7 @@ GameObject:
   - component: {fileID: 7187520762705876403}
   - component: {fileID: 7187520762705876428}
   - component: {fileID: 7187520762705876429}
+  - component: {fileID: 7370810639107560507}
   m_Layer: 0
   m_Name: WallRenderer
   m_TagString: Untagged
@@ -231,3 +230,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!54 &7370810639107560507
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7187520762705876400}
+  serializedVersion: 2
+  m_Mass: 6
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0

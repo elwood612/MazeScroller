@@ -6,11 +6,13 @@ TagManager:
   tags:
   - Wall
   - Tile
-  - BottomOfBoard
   - Row
   - TileCenter
   - Runner
-  - TopOfBoard
+  - RowReset
+  - RowSetup
+  - TileSpawner
+  - TileDestroyer
   layers:
   - Default
   - TransparentFX
@@ -22,7 +24,7 @@ TagManager:
   - 
   - Wall
   - Tile
-  - 
+  - Runner
   - 
   - 
   - 

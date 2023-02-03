@@ -27,10 +27,6 @@ public class DrawMaze : MonoBehaviour
     {
         _renderer = GetComponentInChildren<Renderer>();
         _cam = Camera.main;
-    }
-
-    private void Start()
-    {
         DisableRenderer();
     }
 
@@ -140,7 +136,7 @@ public class DrawMaze : MonoBehaviour
         {
             if (action.Key.Crossings > 0) { return; } // Can't undo if runner has already been here
 
-            if (action.Value) 
+            if (action.Value) // if tile is in maze
             {
                 OnTileRemoved?.Invoke(action.Key);
                 action.Key.RemoveTileFromMaze();
@@ -156,11 +152,11 @@ public class DrawMaze : MonoBehaviour
 
         foreach (KeyValuePair<Wall, bool> action in _wallHistory.Pop())
         {
-            if (action.Value) 
+            if (action.Value) // if wall is a border
             { 
                 action.Key.ResetWall();
             }
-            else 
+            else // if wall is a path
             { 
                 action.Key.SetWallAsBorder();
             }
@@ -169,7 +165,7 @@ public class DrawMaze : MonoBehaviour
         if (_tileHistory.Count == 0) { return; }
         foreach (KeyValuePair<Tile, bool> previousTile in _tileHistory.Peek())
         {
-            SetHighestDrawnRow(previousTile.Key, true);
+            SetHighestDrawnRow(previousTile.Key, true); // update highestDrawnRow with next tile
             break;
         }
     }
@@ -227,10 +223,4 @@ public class DrawMaze : MonoBehaviour
 
         return null;
     }
-
-    //private void OnDrawGizmos()
-    //{
-    //    Gizmos.color = Color.red;
-    //    Gizmos.DrawSphere(tempDeactivatePosition, 0.5f);
-    //}
 }

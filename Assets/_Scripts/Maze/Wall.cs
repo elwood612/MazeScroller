@@ -1,14 +1,11 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class Wall : MonoBehaviour
 {
     [SerializeField] LayerMask _tileLayer;
     private Renderer[] _renderers;
-    private bool _isOnFirstRow = false;
+    private Rigidbody _rb;
     private bool _isBorder;
     private bool _isPath;
     private bool _isPathfindingPath;
@@ -16,7 +13,7 @@ public class Wall : MonoBehaviour
     private int _crossings = 0;
     private float _timeCrossed;
     private float _timeDrawn;
-    private Row _firstRow;
+    private Row _parentRow;
     private List<Tile> _neighborTiles = new List<Tile>();
 
     public bool IsBorder => _isBorder;
@@ -30,25 +27,17 @@ public class Wall : MonoBehaviour
         get => _isPathfindingPath;
         set => _isPathfindingPath = value;
     }
-    public bool IsOnFirstRow
-    {
-        get => _isOnFirstRow;
-        set => _isOnFirstRow = value;
-    }
-    public Row FirstRow
-    {
-        get => _firstRow;
-        set => _firstRow = value;
-    }
 
     private void OnEnable()
     {
-        //if (!_isOnFirstRow) { GenerateBoard.OnWallsSetup += Setup; }
+        _parentRow.OnRowReset += ResetWall;
+        _parentRow.OnRowSetup += SetupWall;
     }
 
     private void OnDisable()
     {
-        //if (!_isOnFirstRow) { GenerateBoard.OnWallsSetup -= Setup; }
+        _parentRow.OnRowReset -= ResetWall;
+        _parentRow.OnRowSetup -= SetupWall;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -100,58 +89,53 @@ public class Wall : MonoBehaviour
 
     public void ResetWall()
     {
-        HideWall();
+        _crossings = 0;
         _isBorder = false;
         _isPath = false;
         _isPathfindingPath = false;
         _isHidden = false;
-        _crossings = 0;
+        _rb.isKinematic = true;
+        _rb.transform.SetLocalPositionAndRotation(new Vector3(0, 1, 0), Quaternion.identity);
+        DisableWall();
     }
 
-    public bool GoodToHide()
-    {
-        int destroy = _neighborTiles.Count;
-        foreach (Tile tile in _neighborTiles)
-        {
-            if (tile.IsHidden) { destroy--; }
-        }
-        return destroy == 0;
-    }
-
-    // Good but need to account for first row edge case.
-    // Also find a good time to call it as tiles get destroyed, because OnRowReset will NOT work
-    public void HideWall() 
+    private void DisableWall() 
     {
         _renderers[0].enabled = false;
         _renderers[1].enabled = false;
         _isHidden = true;
     }
 
-    public void UnhideWall()
+    public void EnableWall()
     {
         _renderers[1].enabled = true;
         _isHidden = false;
     }
 
-    public void Setup()
+    public void DestroyWall()
     {
-        //ResetWall();
-        _neighborTiles.Clear();
-        foreach (Tile tile in GenerateBoard.AllTiles)
+        _rb.isKinematic = false;
+        Vector3 impulse = new Vector3(Random.Range(-50f, 50f), Random.Range(-50f, 0), Random.Range(-50f, 50f));
+        _rb.AddForce(impulse, ForceMode.Impulse);
+    }
+
+    public void SetupWall()
+    {
+        foreach (Tile tile in BoardManager.AllTiles)
         {
             if (Vector3.Distance(tile.transform.position, transform.position) < (GameManager.TileLength / 2) + 0.5f)
             {
                 _neighborTiles.Add(tile);
-                if (tile.IsStartingTile) { SetWallAsBorder(true); }
             }
         }
-        //HideWall();
     }
 
     public void Initialize()
     {
         _renderers = GetComponentsInChildren<Renderer>();
-        HideWall();
+        _parentRow = GetComponentInParent<Row>();
+        _rb = GetComponentInChildren<Rigidbody>();
+        DisableWall();
     }
 
     private void Awake()
