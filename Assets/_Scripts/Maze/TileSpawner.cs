@@ -6,7 +6,7 @@ public class TileSpawner : MonoBehaviour
     private int _randomDisableTile;
     private float _width;
     private float _xPos;
-    private float _smooth = 3f; // the larger this is, the slower you move
+    public float _smooth = 3f; // the larger this is, the slower you move
     private float _delta = 0.1f;
     private bool _toggle = false;
     private float _middleOfScreen, _edgeOfScreen;
@@ -21,7 +21,7 @@ public class TileSpawner : MonoBehaviour
 
     private void Initialize()
     {
-        _widthCurve = GameManager.Instance.TileSpawnerCurve;
+        _widthCurve = GameManager.Instance.TileSpawnerWidthCurve;
         _target = transform.position;
         _middleOfScreen = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height, 100)).x;
         _edgeOfScreen = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 100)).x;
@@ -56,13 +56,14 @@ public class TileSpawner : MonoBehaviour
     {
         if (Vector3.Magnitude(transform.position - _target) < _delta && GameManager.Instability > 0) 
         { 
-            SetNewTarget(); // need to make this dependent on TileSpeed
+            SetNewTarget();
         }
         UpdateSizeAndPosition();
     }
 
     private void UpdateSizeAndPosition()
     {
+        _smooth = Mathf.Clamp(GameManager.MaxSpeed / GameManager.TileSpeed, 3f, 50f);
         transform.localScale = new Vector3(_width * GameManager.TileLength, 1, 1);
         transform.position = Vector3.SmoothDamp(transform.position, _target, ref _velocity, _smooth);
     }
@@ -78,7 +79,7 @@ public class TileSpawner : MonoBehaviour
         int sign = _toggle ? 1 : -1;
         _toggle = _toggle ? false : true;
 
-        _xPos = Random.Range(_middleOfScreen, _edgeOfScreen - _width / 2);
+        _xPos = Random.Range(_middleOfScreen, _edgeOfScreen - _width * GameManager.TileLength / 2);
         _target = new Vector3(_xPos * sign, transform.position.y, transform.position.z);
     }
 }

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -10,10 +9,12 @@ public class GameManager : MonoBehaviour
 
     private AnimationCurve _tileSpeedCurve;
     private AnimationCurve _runnerSpeedCurve;
-    private AnimationCurve _tileSpawnerCurve;
+    private AnimationCurve _tileSpawnerWidthCurve;
     private static Vector3 _tileSpeed = Vector3.zero;
     private static Vector3 _boardLength;
     private float _defaultSpeed = 1f;
+    private float _minSpeed = 0.5f;
+    private static float _maxSpeed = 50f;
     
     private static float _tileLength;
     private static float _speedMultiplier = 1f;
@@ -29,9 +30,11 @@ public class GameManager : MonoBehaviour
     public static int NumberOfRows;
     public static float TileLength => _tileLength;
     public static Vector3 BoardLength => _boardLength;
+    public static float TileSpeed => Mathf.Abs(_tileSpeed.z);
     public AnimationCurve RunnerSpeedCurve => _runnerSpeedCurve;
-    public AnimationCurve TileSpawnerCurve => _tileSpawnerCurve;
+    public AnimationCurve TileSpawnerWidthCurve => _tileSpawnerWidthCurve;
     public static int MaxInstability => _maxInstability;
+    public static float MaxSpeed => _maxSpeed;
     public static int Instability
     {
         get => _instability;
@@ -51,8 +54,10 @@ public class GameManager : MonoBehaviour
         Instability = _startingInstability;
         _tileSpeedCurve = _settings.TileSpeedCurve;
         _runnerSpeedCurve = _settings.RunnerSpeedCurve;
-        _tileSpawnerCurve = _settings.TileSpawnerCurve;
+        _tileSpawnerWidthCurve = _settings.TileSpawnerWidthCurve;
         _tileLength = GameObject.FindGameObjectWithTag("Tile").GetComponent<BoxCollider>().bounds.size.x;
+
+        //Time.timeScale = 0.25f; // DEBUG
     }
 
     private void Start()
@@ -70,7 +75,7 @@ public class GameManager : MonoBehaviour
 
     private void CalculateBoardSpeed(float multiplier)
     {
-        float heightCurve = _tileSpeedCurve.Evaluate(HighestDrawnRowHeight);
+        float heightCurve = Mathf.Clamp(_tileSpeedCurve.Evaluate(HighestDrawnRowHeight), _minSpeed, _maxSpeed);
         _tileSpeed = new Vector3(0, 0, -heightCurve * _defaultSpeed * multiplier);
     }
 

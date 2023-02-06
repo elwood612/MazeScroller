@@ -21,11 +21,13 @@ public class Tile : MonoBehaviour
     private bool _isEnabled = false;
     private bool _hasCrystal = false;
     private int _crossings = 0;
-    private Tile _pathfindingParent;
+    public Tile _pathfindingParent;
     private static bool _firstTile = true;
 
     public static event Action<Tile> OnTileDestroy;
+    public static event Action<Tile> OnTileDeactivate;
     public List<Wall> NeighborWalls => _neighborWalls;
+    public List<Tile> NeighborTiles => _neighborTiles;
     public bool IsPartOfMaze => _isPartOfMaze;
     public bool IsEnabled => _isEnabled;
     public bool HasCrystal => _hasCrystal;
@@ -67,6 +69,10 @@ public class Tile : MonoBehaviour
         else if (other.CompareTag("TileDestroyer"))
         {
             DestroyTile();
+        }
+        else if (other.CompareTag("TileDeactivator"))
+        {
+            OnTileDeactivate?.Invoke(this);
         }
     }
 
@@ -202,7 +208,7 @@ public class Tile : MonoBehaviour
         _rb.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
     }
 
-    public void GetNeighbors()
+    private void GetNeighbors()
     {
         foreach (Wall wall in BoardManager.AllWalls)
         {

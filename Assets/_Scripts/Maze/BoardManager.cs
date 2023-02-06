@@ -16,6 +16,7 @@ public class BoardManager : MonoBehaviour
     private Vector3 _rowSetupPos;
     private Vector3 _tileSpawnerPos;
     private Vector3 _tileDestroyPos;
+    private float _destroyMargin = 3f;
 
     public static List<Tile> AllTiles => _allTiles;
     public static List<Wall> AllWalls => _allWalls;
@@ -32,7 +33,7 @@ public class BoardManager : MonoBehaviour
         _rowResetPos = new Vector3(transform.position.x, transform.position.y, bottomOfScreen.z - _safetyMargin);
         _rowSetupPos = new Vector3(transform.position.x, transform.position.y, topOfScreen.z + _safetyMargin);
         _tileSpawnerPos = new Vector3(transform.position.x, transform.position.y, topOfScreen.z + _safetyMargin - 1.1f * GameManager.TileLength);
-        _tileDestroyPos = new Vector3(transform.position.x, transform.position.y, bottomOfScreen.z);
+        _tileDestroyPos = new Vector3(transform.position.x, transform.position.y, bottomOfScreen.z - _destroyMargin);
 
         transform.position = _rowResetPos;
         GameManager.NumberOfRows = Mathf.CeilToInt((_rowSetupPos.z - _rowResetPos.z) / GameManager.TileLength) + 2;

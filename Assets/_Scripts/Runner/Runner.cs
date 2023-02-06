@@ -5,7 +5,7 @@ using UnityEngine;
 public class Runner : MonoBehaviour, IRunner
 {
     private Tile _currentTile;
-    private Tile _targetTile;
+    private Tile _currentTarget;
     private Tile _nextTarget;
     private Tile _previousTile;
     private List<Tile> _uncrossedTilesInMaze = new List<Tile>();
@@ -54,7 +54,7 @@ public class Runner : MonoBehaviour, IRunner
 
     private void CalculateSpeed()
     {
-        _currentSpeed = _speedCurve.Evaluate(CalculateHeight()); // need to make this dependent on TileSpeed & _uncrossedTilesInMaze
+        _currentSpeed = _speedCurve.Evaluate(CalculateHeight()) + GameManager.TileSpeed;
     }
 
     private float CalculateHeight()
@@ -65,10 +65,10 @@ public class Runner : MonoBehaviour, IRunner
 
     private void Move()
     {
-        transform.position = Vector3.MoveTowards(transform.position, _targetTile.transform.position, Time.deltaTime * _currentSpeed * _multiplier);
+        transform.position = Vector3.MoveTowards(transform.position, _currentTarget.transform.position, Time.deltaTime * _currentSpeed * _multiplier);
     }
 
-    private void SetTarget(Tile tile)
+    private void SetTarget(Tile tile) // On tile center
     {
         RemoveTileFromPath(_currentTile);
 
@@ -88,13 +88,15 @@ public class Runner : MonoBehaviour, IRunner
             DrawMaze.OnTileAdded -= SetTarget;
         }
 
-        _targetTile = _nextTarget;
-        if (_targetTile != null) { transform.GetChild(0).LookAt(_targetTile.transform); }
+        _currentTarget = _nextTarget;
+        if (_currentTarget != null) { transform.GetChild(0).LookAt(_currentTarget.transform); }
     }
 
-    private IEnumerator CalculateNextTarget(Tile tile)
+    private IEnumerator CalculateNextTarget(Tile tile) // On tile edge
     {
         _approachingDeadEnd = tile.NeighborPaths.Count == 1;
+
+        if (_currentTile.NeighborPaths.Count == 0) { yield break; }
 
         if (GetPathfindingPath(_currentTile) != _currentTile)
         {
@@ -106,7 +108,7 @@ public class Runner : MonoBehaviour, IRunner
         {
             case 1:
             case 2:
-                _nextTarget = GetLeastCrossedPath(_currentTile);
+                _nextTarget = GetOldestCrossedPath(_currentTile);
                 break;
             case 3:
             case 4:
@@ -116,7 +118,7 @@ public class Runner : MonoBehaviour, IRunner
                 }
                 else
                 {
-                    yield return new WaitUntil(() => CalculatePathfindingPath(_currentTile, _uncrossedTilesInMaze[0]));
+                    yield return new WaitUntil(() => ExecutePathfinding(_currentTile, _uncrossedTilesInMaze[0]));
                     _nextTarget = GetPathfindingPath(_currentTile);
                 }
                 break;
@@ -126,29 +128,29 @@ public class Runner : MonoBehaviour, IRunner
         }
     }
 
-    // Only ever gets called for corridors or dead ends
-    private Tile GetLeastCrossedPath(Tile tile)
-    {
-        int leastCrossings = 100;
-        Tile toReturn = tile;
+    //// Only ever gets called for corridors or dead ends
+    //private Tile GetLeastCrossedPath(Tile tile)
+    //{
+    //    int leastCrossings = 100;
+    //    Tile toReturn = tile;
 
-        foreach (Wall wall in tile.NeighborPaths)
-        {
-            if (wall.IsPathfindingPath)
-            {
-                return GetPathfindingPath(tile);
-            }
-            Vector3 direction = wall.transform.position - tile.transform.position;
-            if (wall.Crossings < leastCrossings)
-            {
-                leastCrossings = wall.Crossings;
-                toReturn = tile.GetNeighborTile(direction);
-            }
-        }
-        return toReturn;
-    }
+    //    foreach (Wall wall in tile.NeighborPaths)
+    //    {
+    //        //if (wall.IsPathfindingPath)
+    //        //{
+    //        //    return GetPathfindingPath(tile);
+    //        //}
+    //        if (wall.Crossings > 1) { continue; }
+    //        Vector3 direction = wall.transform.position - tile.transform.position;
+    //        if (wall.Crossings < leastCrossings)
+    //        {
+    //            leastCrossings = wall.Crossings;
+    //            toReturn = tile.GetNeighborTile(direction);
+    //        }
+    //    }
+    //    return toReturn;
+    //}
 
-    // Only ever gets called when there is at least one uncrossed path
     private Tile GetFirstUncrossedPath(Tile tile)
     {
         float firstDrawn = Mathf.Infinity;
@@ -161,6 +163,23 @@ public class Runner : MonoBehaviour, IRunner
             if (wall.TimeDrawn < firstDrawn)
             {
                 firstDrawn = wall.TimeDrawn;
+                toReturn = tile.GetNeighborTile(direction);
+            }
+        }
+        return toReturn;
+    }
+
+    private Tile GetOldestCrossedPath(Tile tile)
+    {
+        float firstCrossed = Mathf.Infinity;
+        Tile toReturn = tile;
+        foreach (Wall wall in tile.NeighborPaths)
+        {
+            Vector3 direction = wall.transform.position - tile.transform.position;
+            if (wall.Crossings == 0) { return tile.GetNeighborTile(direction); }
+            if (wall.TimeCrossed < firstCrossed)
+            {
+                firstCrossed = wall.TimeCrossed;
                 toReturn = tile.GetNeighborTile(direction);
             }
         }
@@ -181,7 +200,7 @@ public class Runner : MonoBehaviour, IRunner
         return toReturn;
     }
 
-    private bool CalculatePathfindingPath(Tile startTile, Tile endTile)
+    private bool ExecutePathfinding(Tile startTile, Tile endTile)
     {
         Queue<Tile> openSet = new Queue<Tile>();
         HashSet<Tile> closedSet = new HashSet<Tile>();
@@ -238,6 +257,7 @@ public class Runner : MonoBehaviour, IRunner
     {
         // override in inheriting classes
     }
+
     public void CalculateNextTargetWrapper(Tile tile)
     {
         StartCoroutine(CalculateNextTarget(tile));

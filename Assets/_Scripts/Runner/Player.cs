@@ -7,6 +7,7 @@ public class Player : Runner
         DrawMaze.OnTileAdded += AddTileToPath;
         DrawMaze.OnTileRemoved += RemoveTileFromPath;
         Tile.OnTileDestroy += RemoveTileFromPath;
+        //Tile.OnTileDeactivate += RemoveTileFromPath;
     }
 
     private void OnDisable()
@@ -14,6 +15,7 @@ public class Player : Runner
         DrawMaze.OnTileAdded -= AddTileToPath;
         DrawMaze.OnTileRemoved -= RemoveTileFromPath;
         Tile.OnTileDestroy -= RemoveTileFromPath;
+        //Tile.OnTileDeactivate -= RemoveTileFromPath;
     }
 
     protected override void SelfDestruct()

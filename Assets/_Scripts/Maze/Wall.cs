@@ -8,9 +8,9 @@ public class Wall : MonoBehaviour
     private Rigidbody _rb;
     private bool _isBorder;
     private bool _isPath;
-    private bool _isPathfindingPath;
+    public bool _isPathfindingPath;
     private bool _isHidden = false;
-    private int _crossings = 0;
+    public int _crossings = 0;
     private float _timeCrossed;
     private float _timeDrawn;
     private Row _parentRow;
