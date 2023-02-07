@@ -16,7 +16,7 @@ public class BoardManager : MonoBehaviour
     private Vector3 _rowSetupPos;
     private Vector3 _tileSpawnerPos;
     private Vector3 _tileDestroyPos;
-    private float _destroyMargin = 3f;
+    private float _destroyMargin = 1f;
 
     public static List<Tile> AllTiles => _allTiles;
     public static List<Wall> AllWalls => _allWalls;

@@ -13,6 +13,7 @@ TagManager:
   - RowSetup
   - TileSpawner
   - TileDestroyer
+  - TileDeactivator
   layers:
   - Default
   - TransparentFX
@@ -25,7 +26,7 @@ TagManager:
   - Wall
   - Tile
   - Runner
-  - 
+  - TileCenter
   - 
   - 
   - 

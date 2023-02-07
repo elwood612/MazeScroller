@@ -36,11 +36,11 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 1
       value: 50
-      inSlope: -0.000009647491
-      outSlope: -0.000009647491
+      inSlope: -0.000012409635
+      outSlope: -0.000012409635
       tangentMode: 0
       weightedMode: 1
-      inWeight: 0.60832036
+      inWeight: 0.40986404
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -87,7 +87,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  TileSpawnerCurve:
+  TileSpawnerWidthCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3

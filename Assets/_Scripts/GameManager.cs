@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     private static Vector3 _tileSpeed = Vector3.zero;
     private static Vector3 _boardLength;
     private float _defaultSpeed = 1f;
-    private float _minSpeed = 0.5f;
+    public float _minSpeed = 0.5f;
     private static float _maxSpeed = 50f;
     
     private static float _tileLength;
@@ -75,6 +75,7 @@ public class GameManager : MonoBehaviour
 
     private void CalculateBoardSpeed(float multiplier)
     {
+        _minSpeed = (_maxSpeed / 2) * _instability / _maxInstability; // This should probably be a curve?
         float heightCurve = Mathf.Clamp(_tileSpeedCurve.Evaluate(HighestDrawnRowHeight), _minSpeed, _maxSpeed);
         _tileSpeed = new Vector3(0, 0, -heightCurve * _defaultSpeed * multiplier);
     }

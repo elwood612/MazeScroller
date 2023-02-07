@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -13,6 +14,7 @@ public class Tile : MonoBehaviour
 
     private Renderer _renderer;
     private Rigidbody _rb;
+    private ParticleSystem _particles;
     private Row _parentRow;
     private List<Wall> _neighborWalls = new List<Wall>();
     private List<Wall> _neighborPaths = new List<Wall>();
@@ -21,8 +23,10 @@ public class Tile : MonoBehaviour
     private bool _isEnabled = false;
     private bool _hasCrystal = false;
     private int _crossings = 0;
-    public Tile _pathfindingParent;
+    private Tile _pathfindingParent;
     private static bool _firstTile = true;
+    private WaitForSeconds _destuctionDelay;
+    private WaitForSeconds _hideDelay;
 
     public static event Action<Tile> OnTileDestroy;
     public static event Action<Tile> OnTileDeactivate;
@@ -108,15 +112,35 @@ public class Tile : MonoBehaviour
         if (_crossings == 0) { GameManager.Instability += 10; }
         else if (_crossings == 1) { GameManager.Instability++; }
 
-        _rb.isKinematic = false;
-        Vector3 impulse = new Vector3(Random.Range(-50f, 50f), Random.Range(-50f, 0), Random.Range(-50f, 50f));
-        _rb.AddForce(impulse, ForceMode.Impulse);
+        OnTileDestroy?.Invoke(this);
+
+        if (_crossings > 0) { return; }
+
+        // For uncrossed tiles only
         foreach (Wall wall in _neighborWalls)
         {
             wall.DestroyWall();
         }
 
-        OnTileDestroy?.Invoke(this);
+        _particles.Play();
+        DisableTile();
+        
+        //StartCoroutine(HideTileAfterDestruction());
+        //StartCoroutine(RigidbodyDestroy());
+    }
+
+    private IEnumerator RigidbodyDestroy()
+    {
+        yield return _destuctionDelay;
+        _rb.isKinematic = false;
+        Vector3 impulse = new Vector3(Random.Range(-50f, 50f), Random.Range(-50f, 0), Random.Range(-50f, 50f));
+        _rb.AddForce(impulse, ForceMode.Impulse);
+    }
+
+    private IEnumerator HideTileAfterDestruction()
+    {
+        yield return _hideDelay;
+        if (_isEnabled) { DisableTile(); }
     }
 
     public void DisableTile(bool onSpawn = false)
@@ -229,10 +253,13 @@ public class Tile : MonoBehaviour
 
     private void Initialize()
     {
-        _renderer = GetComponentInChildren<Renderer>();
+        _renderer = GetComponentInChildren<MeshRenderer>();
         _parentRow = transform.GetComponentInParent<Row>();
         _rb = GetComponentInChildren<Rigidbody>();
+        _particles = GetComponent<ParticleSystem>();
         DisableTile();
+        _destuctionDelay = new WaitForSeconds(Random.Range(0, 0.5f));
+        _hideDelay = new WaitForSeconds(1f);
     }
 
     private void Awake()

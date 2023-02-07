@@ -102,8 +102,8 @@ public class Wall : MonoBehaviour
         _isPath = false;
         _isPathfindingPath = false;
         _isHidden = false;
-        _rb.isKinematic = true;
-        _rb.transform.SetLocalPositionAndRotation(new Vector3(0, 1, 0), Quaternion.identity);
+        //_rb.isKinematic = true;
+        //_rb.transform.SetLocalPositionAndRotation(new Vector3(0, 1, 0), Quaternion.identity);
         DisableWall();
     }
 
@@ -131,9 +131,10 @@ public class Wall : MonoBehaviour
 
     public void DestroyWall()
     {
-        _rb.isKinematic = false;
-        Vector3 impulse = new Vector3(Random.Range(-50f, 50f), Random.Range(-50f, 0), Random.Range(-50f, 50f));
-        _rb.AddForce(impulse, ForceMode.Impulse);
+        //_rb.isKinematic = false;
+        //Vector3 impulse = new Vector3(Random.Range(-50f, 50f), Random.Range(-50f, 0), Random.Range(-50f, 50f));
+        //_rb.AddForce(impulse, ForceMode.Impulse);
+        DisableWall();
     }
 
     public void GetNeighbors()
