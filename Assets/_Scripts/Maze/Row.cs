@@ -15,6 +15,11 @@ public class Row : MonoBehaviour
     public event Action OnRowSetup;
 
     public bool HasSetupBeenRun => _hasSetupBeenRun;
+    public List<Tile> EnabledTiles
+    {
+        get => _enabledTiles;
+        set => _enabledTiles = value;
+    }
     public bool IsHighestDrawnRow
     {
         get => _isHighestDrawnRow;
@@ -54,9 +59,11 @@ public class Row : MonoBehaviour
 
     private void SetupRow()
     {
-        if (_hasSetupBeenRun) { return; }
-        OnRowSetup?.Invoke();
-        _hasSetupBeenRun = true;
+        if (!_hasSetupBeenRun) 
+        {
+            OnRowSetup?.Invoke();
+            _hasSetupBeenRun = true;
+        }
     }
 
     private IEnumerator DisableRandomTiles()
@@ -64,11 +71,6 @@ public class Row : MonoBehaviour
         yield return null;
         if (!_shouldDisableRandomTiles) { yield break; }
 
-        foreach (Tile tile in GetComponentsInChildren<Tile>())
-        {
-            if (!tile.IsEnabled) { continue; }
-            _enabledTiles.Add(tile);
-        }
         int index = Random.Range(0, _enabledTiles.Count);
         _enabledTiles[index].DisableTile(true);
     }

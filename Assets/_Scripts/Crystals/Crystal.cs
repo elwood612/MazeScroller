@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -9,7 +10,6 @@ public class Crystal : MonoBehaviour
     private Renderer _renderer;
     private ParticleSystem.MainModule particlesNormalModule;
     private ParticleSystem.MainModule particlesExplosionModule;
-    private bool canExplode = false, hasExploded = false;
 
     private void Awake()
     {
@@ -18,14 +18,22 @@ public class Crystal : MonoBehaviour
         particlesExplosionModule = particlesExplosion.main;
     }
 
-    public IEnumerator SelfDestruct()
+    private void OnTriggerEnter(Collider other)
     {
-        if (!canExplode || hasExploded) { yield break; }
+        if (other.CompareTag("Player"))
+        {
+            GameManager.Score++;
+            StartCoroutine(SelfDestruct());
+        }
+    }
 
-        hasExploded = true;
+    private IEnumerator SelfDestruct()
+    {
         particlesExplosion.Play();
         particlesNormal.Stop();
         _renderer.enabled = false;
+
+        // Need to implement object pooling
         yield return new WaitForSeconds(1f);
         Destroy(gameObject);
     }

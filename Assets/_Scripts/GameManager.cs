@@ -20,10 +20,12 @@ public class GameManager : MonoBehaviour
     private static float _speedMultiplier = 1f;
     private static int _instability;
     private static int _maxInstability = 1000;
+    private static int _score = 0;
 
     public static GameState CurrentState;
     public static event Action<GameState> OnStateChanged;
     public static event Action<int> OnInstabilityChanged;
+    public static event Action<int> OnScoreChanged;
     public static GameManager Instance;
     public static float HighestDrawnRowHeight;
     
@@ -42,6 +44,15 @@ public class GameManager : MonoBehaviour
         { 
             _instability = value; 
             OnInstabilityChanged?.Invoke(value); 
+        }
+    }
+    public static int Score
+    {
+        get => _score;
+        set
+        {
+            _score = value;
+            OnScoreChanged?.Invoke(value);
         }
     }
 

@@ -1,3 +1,4 @@
+using Codice.CM.WorkspaceServer.Tree;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using Random = UnityEngine.Random;
 
 public class Tile : MonoBehaviour
 {
-    public bool tempCheckMark = false;
+    [SerializeField] private Crystal _crystalPrefab;
     [SerializeField] private Material _tileBase;
     [SerializeField] private Material _tileDrawn;
     [SerializeField] private Material[] _tileCrossing;
@@ -101,6 +102,7 @@ public class Tile : MonoBehaviour
         {
             wall.EnableWall();
         }
+        
         if (_firstTile) { SetStartingTile(); }
         _firstTile = false;
     }
@@ -160,12 +162,53 @@ public class Tile : MonoBehaviour
     {
         _renderer.enabled = true;
         _isEnabled = true;
+        _parentRow.EnabledTiles.Add(this);
     }
 
     private void SetMaterial(Material material)
     {
         _renderer.material = material;
     }   
+
+    private void GetNeighbors()
+    {
+        foreach (Wall wall in BoardManager.AllWalls)
+        {
+            if (Vector3.Distance(wall.transform.position, transform.position) < (GameManager.TileLength / 2) + 0.5f)
+            {
+                _neighborWalls.Add(wall);
+            }
+        }
+        foreach (Tile tile in BoardManager.AllTiles)
+        {
+            if (tile == this) { continue; }
+            if (Vector3.Distance(tile.transform.position, transform.position) < GameManager.TileLength + 0.5f)
+            {
+                _neighborTiles.Add(tile);
+            }
+        }
+    }
+
+    private void Initialize()
+    {
+        _renderer = GetComponentInChildren<MeshRenderer>();
+        _parentRow = transform.GetComponentInParent<Row>();
+        _rb = GetComponentInChildren<Rigidbody>();
+        _particles = GetComponent<ParticleSystem>();
+        DisableTile();
+        _destuctionDelay = new WaitForSeconds(Random.Range(0, 0.5f));
+        _hideDelay = new WaitForSeconds(1f);
+    }
+
+    private void Awake()
+    {
+        Initialize();
+    }
+
+    private bool CompareVectors(Vector3 v1, Vector3 v2)
+    {
+        return Vector3Int.RoundToInt(v1) == Vector3Int.RoundToInt(v2);
+    }
 
     public void AddTileToMaze()
     {
@@ -232,43 +275,8 @@ public class Tile : MonoBehaviour
         _rb.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
     }
 
-    private void GetNeighbors()
+    public void SpawnCrystal(int level)
     {
-        foreach (Wall wall in BoardManager.AllWalls)
-        {
-            if (Vector3.Distance(wall.transform.position, transform.position) < (GameManager.TileLength / 2) + 0.5f)
-            {
-                _neighborWalls.Add(wall);
-            }
-        }
-        foreach (Tile tile in BoardManager.AllTiles)
-        {
-            if (tile == this) { continue; }
-            if (Vector3.Distance(tile.transform.position, transform.position) < GameManager.TileLength + 0.5f)
-            {
-                _neighborTiles.Add(tile);
-            }
-        }
-    }
-
-    private void Initialize()
-    {
-        _renderer = GetComponentInChildren<MeshRenderer>();
-        _parentRow = transform.GetComponentInParent<Row>();
-        _rb = GetComponentInChildren<Rigidbody>();
-        _particles = GetComponent<ParticleSystem>();
-        DisableTile();
-        _destuctionDelay = new WaitForSeconds(Random.Range(0, 0.5f));
-        _hideDelay = new WaitForSeconds(1f);
-    }
-
-    private void Awake()
-    {
-        Initialize();
-    }
-
-    private bool CompareVectors(Vector3 v1, Vector3 v2)
-    {
-        return Vector3Int.RoundToInt(v1) == Vector3Int.RoundToInt(v2);
+        Instantiate(_crystalPrefab, transform);
     }
 }
