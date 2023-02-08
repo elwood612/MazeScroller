@@ -1,35 +1,54 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Pool;
 
 public class TileSpawner : MonoBehaviour
 {
+    [SerializeField] private Crystal _crystalPrefab;
+    [SerializeField] private OrbitMissile _missilePrefab;
+
     private int _disableTileCounter = 0;
     private int _randomDisableTile = 5;
     private int _crystalSpawnCounter = 0;
     private int _randomCrystalSpawn = 5;
     private float _width;
     private float _xPos;
-    public float _smooth = 3f; // the larger this is, the slower you move
+    private float _smooth = 3f; // the larger this is, the slower you move
     private float _delta = 0.1f;
     private bool _toggle = false;
     private float _middleOfScreen, _edgeOfScreen;
     private Vector3 _target;
     private Vector3 _velocity = Vector3.zero;
     private AnimationCurve _widthCurve;
-    private WaitForSeconds _crystalDelay = new WaitForSeconds(0.1f);
+    private WaitForSeconds _crystalDelay = new WaitForSeconds(0.5f);
+    private ObjectPool<Crystal> _crystalPool;
 
     private void Awake()
-    {
-        Initialize();
-    }
-
-    private void Initialize()
     {
         _widthCurve = GameManager.Instance.TileSpawnerWidthCurve;
         _target = transform.position;
         _middleOfScreen = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height, 100)).x;
         _edgeOfScreen = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 100)).x;
         CalculateWidth(GameManager.Instability); // we subscribe too late to catch the first state update, need to call it manually
+        InitializeCrystalPool();
+    }
+
+    private void InitializeCrystalPool()
+    {
+        _crystalPool = new ObjectPool<Crystal>(() => 
+        { 
+            return Instantiate(_crystalPrefab);
+        }, crystal =>
+        {
+            crystal.gameObject.SetActive(true);
+        }, crystal =>
+        {
+            crystal.gameObject.SetActive(false);
+            crystal.transform.SetParent(transform, false);
+        }, crystal =>
+        {
+            Destroy(crystal.gameObject);
+        }, false, 10, 20);
     }
 
     private void OnEnable()
@@ -57,8 +76,8 @@ public class TileSpawner : MonoBehaviour
             if (++_crystalSpawnCounter > _randomCrystalSpawn && _width > 1.1f)
             {
                 _crystalSpawnCounter = 0;
-                _randomCrystalSpawn = Random.Range(2, 16);
-                int level = 1;
+                _randomCrystalSpawn = Random.Range(2, 8);
+                int level = 2; // This needs to be adjusted based on instability
                 StartCoroutine(SpawnRandomCrystal(other.GetComponent<Row>(), level));
             }
         }
@@ -112,6 +131,10 @@ public class TileSpawner : MonoBehaviour
     {
         yield return _crystalDelay;
         Tile tile = row.EnabledTiles[Random.Range(0, row.EnabledTiles.Count)];
-        if (tile.IsEnabled) { tile.SpawnCrystal(level); }
+        if (!tile.IsEnabled) { yield break; }
+
+        Crystal newCrystal = _crystalPool.Get();
+        newCrystal.transform.SetParent(tile.transform, false);
+        newCrystal.Initialize(level, _crystalPool);
     }
 }

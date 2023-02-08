@@ -48,6 +48,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af019e2db12eeb41b40b1bc2d5b209b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _crystalPrefab: {fileID: 2508441268512867463, guid: a3e55954301c358438cdc51c7dc7cbb7, type: 3}
+  _smooth: 3
 --- !u!33 &8930086198790722511
 MeshFilter:
   m_ObjectHideFlags: 0

@@ -33,6 +33,7 @@ public class UIManager : MonoBehaviour
 
     private void UpdateScore(int score)
     {
-        _scoreText.text = score.ToString(); // add "D2" for 2 leading digits
+        _scoreText.text = score.ToString(); // can add "D2" for 2 leading digits
+        // Need to add flash effect
     }
 }

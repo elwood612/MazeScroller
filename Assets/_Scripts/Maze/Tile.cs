@@ -274,9 +274,4 @@ public class Tile : MonoBehaviour
         _rb.isKinematic = true;
         _rb.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
     }
-
-    public void SpawnCrystal(int level)
-    {
-        Instantiate(_crystalPrefab, transform);
-    }
 }

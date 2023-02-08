@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Pool;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,17 +11,16 @@ public class GameManager : MonoBehaviour
     private AnimationCurve _tileSpeedCurve;
     private AnimationCurve _runnerSpeedCurve;
     private AnimationCurve _tileSpawnerWidthCurve;
-    private static Vector3 _tileSpeed = Vector3.zero;
-    private static Vector3 _boardLength;
     private float _defaultSpeed = 1f;
-    public float _minSpeed = 0.5f;
+    private float _minSpeed = 0.5f;
     private static float _maxSpeed = 50f;
-    
     private static float _tileLength;
     private static float _speedMultiplier = 1f;
     private static int _instability;
     private static int _maxInstability = 1000;
     private static int _score = 0;
+    private static Vector3 _tileSpeed = Vector3.zero;
+    private static Vector3 _boardLength;
 
     public static GameState CurrentState;
     public static event Action<GameState> OnStateChanged;
@@ -28,7 +28,6 @@ public class GameManager : MonoBehaviour
     public static event Action<int> OnScoreChanged;
     public static GameManager Instance;
     public static float HighestDrawnRowHeight;
-    
     public static int NumberOfRows;
     public static float TileLength => _tileLength;
     public static Vector3 BoardLength => _boardLength;
@@ -67,8 +66,6 @@ public class GameManager : MonoBehaviour
         _runnerSpeedCurve = _settings.RunnerSpeedCurve;
         _tileSpawnerWidthCurve = _settings.TileSpawnerWidthCurve;
         _tileLength = GameObject.FindGameObjectWithTag("Tile").GetComponent<BoxCollider>().bounds.size.x;
-
-        //Time.timeScale = 0.25f; // DEBUG
     }
 
     private void Start()
