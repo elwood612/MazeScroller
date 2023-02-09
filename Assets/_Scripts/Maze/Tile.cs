@@ -1,4 +1,3 @@
-using Codice.CM.WorkspaceServer.Tree;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,6 +9,7 @@ public class Tile : MonoBehaviour
     [SerializeField] private Crystal _crystalPrefab;
     [SerializeField] private Material _tileBase;
     [SerializeField] private Material _tileDrawn;
+    [SerializeField] private Material _tileDead;
     [SerializeField] private Material[] _tileCrossing;
     [SerializeField] private LayerMask _wallLayer;
 
@@ -22,7 +22,7 @@ public class Tile : MonoBehaviour
     private List<Tile> _neighborTiles = new List<Tile>();
     private bool _isPartOfMaze = false;
     private bool _isEnabled = false;
-    private bool _hasCrystal = false;
+    private bool _isDead = false;
     private int _crossings = 0;
     private Tile _pathfindingParent;
     private static bool _firstTile = true;
@@ -35,7 +35,7 @@ public class Tile : MonoBehaviour
     public List<Tile> NeighborTiles => _neighborTiles;
     public bool IsPartOfMaze => _isPartOfMaze;
     public bool IsEnabled => _isEnabled;
-    public bool HasCrystal => _hasCrystal;
+    public bool IsDead => _isDead;
     public int Crossings => _crossings;
     public Row ParentRow => _parentRow;
     public List<Wall> NeighborPaths
@@ -85,24 +85,31 @@ public class Tile : MonoBehaviour
     {
         if (_crossings < _tileCrossing.Length)
         {
-            SetMaterial(_tileCrossing[_crossings]);
+            //SetMaterial(_tileCrossing[_crossings]);
+            SetMaterial(_tileCrossing[0]); // temp
         }
         _crossings++;
         runner.PreviousTile = runner.CurrentTile;
         runner.CurrentTile = this;
         runner.CalculateNextTargetWrapper(this);
+        runner.Multiplier = _isDead ? 0.25f : 1f;
     }
 
     private void SpawnTile()
     {
         if (!_parentRow.HasSetupBeenRun) { return; }
 
+        float chance = Mathf.Clamp((GameManager.Instability / GameManager.MaxInstability) / 2, 0.1f, 0.5f);
+        if (GameManager.Instability > 10) { _isDead = Random.Range(0f, 1f) < chance; }
+
         EnableTile();
         foreach (Wall wall in _neighborWalls)
         {
             wall.EnableWall();
         }
+
         
+
         if (_firstTile) { SetStartingTile(); }
         _firstTile = false;
     }
@@ -111,7 +118,7 @@ public class Tile : MonoBehaviour
     {
         if (!_parentRow.HasSetupBeenRun || !_isEnabled) { return; }
 
-        if (_crossings == 0) { GameManager.Instability += 10; }
+        if (_crossings == 0) { GameManager.Instability += 2; }
         else if (_crossings == 1) { GameManager.Instability++; }
 
         OnTileDestroy?.Invoke(this);
@@ -160,6 +167,7 @@ public class Tile : MonoBehaviour
 
     private void EnableTile()
     {
+        if (_isDead) { SetMaterial(_tileDead); }
         _renderer.enabled = true;
         _isEnabled = true;
         _parentRow.EnabledTiles.Add(this);
@@ -205,34 +213,23 @@ public class Tile : MonoBehaviour
         Initialize();
     }
 
-    private bool CompareVectors(Vector3 v1, Vector3 v2)
-    {
-        return Vector3Int.RoundToInt(v1) == Vector3Int.RoundToInt(v2);
-    }
-
     public void AddTileToMaze()
     {
-        if (!_isPartOfMaze)
-        {
-            _isPartOfMaze = true;
-            SetMaterial(_tileDrawn);
-        }
+        _isPartOfMaze = true;
+        SetMaterial(_tileDrawn);
     }
 
     public void RemoveTileFromMaze()
     {
-        if (_isPartOfMaze)
-        {
-            _isPartOfMaze = false;
-            SetMaterial(_tileBase);
-        }
+        _isPartOfMaze = false;
+        SetMaterial(_tileBase);
     }
 
     public Tile GetNeighborTile(Vector3 direction)
     {
         foreach (Tile tile in _neighborTiles)
         {
-            if (CompareVectors(tile.transform.position, transform.position + direction.normalized * GameManager.TileLength))
+            if (GameManager.CompareVectors(tile.transform.position, transform.position + direction.normalized * GameManager.TileLength))
             {
                 return tile;
             }
@@ -245,7 +242,7 @@ public class Tile : MonoBehaviour
     {
         foreach (Wall wall in _neighborWalls)
         {
-            if (CompareVectors(wall.transform.position, (transform.position + other.transform.position) / 2))
+            if (GameManager.CompareVectors(wall.transform.position, (transform.position + other.transform.position) / 2))
             {
                 return wall;
             }
@@ -269,6 +266,7 @@ public class Tile : MonoBehaviour
     public void ResetTile()
     {
         _crossings = 0;
+        _isDead = false;
         RemoveTileFromMaze();
         DisableTile();
         _rb.isKinematic = true;

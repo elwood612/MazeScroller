@@ -1,9 +1,7 @@
 {
     "name": "Project",
     "rootNamespace": "",
-    "references": [
-        "GUID:3a22c1b2937bcf14bbb1a676dad101ec"
-    ],
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

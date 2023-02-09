@@ -5,16 +5,17 @@ using UnityEngine.Pool;
 
 public class Crystal : MonoBehaviour
 {
-    [SerializeField] private Renderer _renderer;
+    [SerializeField] private GameObject _wireframe;
     [SerializeField] private ParticleSystem _particlesNormal;
     [SerializeField] private ParticleSystem _particlesExplosion;
     [SerializeField] private ParticleSystem _particlesExplosionMissile;
     [SerializeField] private OrbitMissile _missilePrefab;
+    [SerializeField] private Material[] _materials;
 
-    //private ParticleSystem.MainModule _particlesNormalModule;
-    //private ParticleSystem.MainModule _particlesExplosionModule;
+    private ParticleSystem.MainModule _particlesExplosionModule;
     private ObjectPool<Crystal> _crystalPool;
-    private int _crystalLevel = 0;
+    private int _level = 0;
+    private int _initialLevel;
     private bool _destroyed = false;
     private WaitForSeconds _destroyDelay = new WaitForSeconds(1f);
     private OrbitMissile[] _orbitMissiles = new OrbitMissile[6];
@@ -26,23 +27,22 @@ public class Crystal : MonoBehaviour
             _orbitMissiles[i] = Instantiate(_missilePrefab, transform);
             _orbitMissiles[i].gameObject.SetActive(false);
         }
-        //_particlesNormalModule = _particlesNormal.main;
-        //_particlesExplosionModule = _particlesExplosion.main;
+        _particlesExplosionModule = _particlesExplosion.main;
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player") && !_destroyed)
         {
-            if (_crystalLevel == 0)
+            if (_level == 0)
             {
-                GameManager.Score++;
+                GameManager.Score += (int)Mathf.Pow(10, _initialLevel);
                 StartCoroutine(PlayerContact());
             }
             else
             {
-                DestroyOrbitMissile(_orbitMissiles[_crystalLevel - 1]);
-                _crystalLevel--;
+                DestroyOrbitMissile(_orbitMissiles[_level - 1]);
+                _level--;
             }
         }
         else if (other.CompareTag("TileDestroyer") && !_destroyed)
@@ -51,27 +51,20 @@ public class Crystal : MonoBehaviour
         }
     }
 
-    //private void SetColor(Material color)
-    //{
-    //    _renderer.material = color;
-    //    _particlesNormalModule.startColor = color.color;
-    //    _particlesExplosionModule.startColor = color.color;
-    //}
-
     private void SpawnOrbitMissiles()
     {
-        for (int i = 0; i < _crystalLevel; i++)
+        for (int i = 0; i < _level; i++)
         {
             _orbitMissiles[i].gameObject.SetActive(true);
             _orbitMissiles[i].transform.localPosition = new Vector3(3.5f, 2, 0);
-            _orbitMissiles[i].transform.RotateAround(transform.position, transform.up, i * (360 / _crystalLevel));
+            _orbitMissiles[i].transform.RotateAround(transform.position, transform.up, i * (360 / _level));
         }
     }
 
     private IEnumerator PlayerContact()
     {
         _destroyed = true;
-        _renderer.enabled = false;
+        _wireframe.SetActive(false);
         _particlesExplosion.Play();
         _particlesNormal.Stop();
         yield return _destroyDelay;
@@ -81,10 +74,10 @@ public class Crystal : MonoBehaviour
     private void EndOfBoardContact()
     {
         GameManager.Instability += 100;
-        for (int i = 0; i < _crystalLevel; i++)
+        for (int i = 0; i < _level; i++)
         {
             // Spawn actual missile here
-            DestroyOrbitMissile(_orbitMissiles[_crystalLevel - 1]);
+            DestroyOrbitMissile(_orbitMissiles[_level - 1]);
         }
         _crystalPool.Release(this);
     }
@@ -95,12 +88,20 @@ public class Crystal : MonoBehaviour
         _particlesExplosionMissile.Play();
     }
 
+    private void SetMaterial(Material material)
+    {
+        //_wireframe.material = material;
+        _particlesExplosionModule.startColor = material.color;
+    }
+
     public void Initialize(int level, ObjectPool<Crystal> crystalPool)
     {
         _destroyed = false;
-        _renderer.enabled = true;
-        _crystalLevel = level;
+        _wireframe.SetActive(true);
+        _level = level;
+        _initialLevel = _level;
         _crystalPool = crystalPool;
+        SetMaterial(_materials[Mathf.Min(_level, _materials.Length - 1)]);
         SpawnOrbitMissiles();
     }
 }

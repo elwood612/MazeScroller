@@ -183,16 +183,6 @@ public class DrawMaze : MonoBehaviour
         return (t1.transform.position - t2.transform.position).magnitude < GameManager.TileLength + 0.5f;
     }
 
-    private bool IsTilePartOfOrNextToMaze(Tile t)
-    {
-        if (t.IsPartOfMaze) { return true; }
-        foreach (Tile tile in t.NeighborTiles)
-        {
-            if (tile.IsPartOfMaze) { return true; }
-        }
-        return false;
-    }
-
     private void UpdateTransformAndRenderer(Vector3 pos)
     {
         if (!_renderer.enabled) { _renderer.enabled = true; }
@@ -240,83 +230,4 @@ public class DrawMaze : MonoBehaviour
 
         return null;
     }
-
-
-    // This was an attempt to be able to draw the maze while simply clicking next to the maze. Needs more work, mysteriously buggy
-
-    //private void Draw(Tile tileToCheck)
-    //{
-    //    if (DrawConditionsNotMet(tileToCheck)) { return; }
-
-    //    Dictionary<Tile, bool> tileActions = new Dictionary<Tile, bool>();
-    //    Dictionary<Wall, bool> wallActions = new Dictionary<Wall, bool>();
-    //    Tile tileToAdd = tileToCheck; // temp, don't like
-
-    //    if (_lastTile != null && !IsTilePartOfOrNextToMaze(_lastTile)) { _lastTile = null; }
-    //    if (_lastTile == null)
-    //    {
-    //        foreach (Tile tile in tileToCheck.NeighborTiles)
-    //        {
-    //            if (tile.IsPartOfMaze)
-    //            {
-    //                tileToAdd = tileToCheck;
-    //                _lastTile = tile;
-    //                break;
-    //            }
-    //        }
-    //    }
-    //    else if (_lastTile.IsPartOfMaze) { tileToAdd = tileToCheck; }
-    //    else { tileToAdd = _lastTile; }
-
-    //    tileToAdd.AddTileToMaze();
-    //    tileActions.Add(tileToAdd, true);
-    //    SetHighestDrawnRow(tileToAdd);
-
-    //    if (_lastTile != null && _lastTile != _currentTile)
-    //    {
-    //        Wall toDeactivate = GetWallToDeactivate(tileToCheck, _lastTile);
-    //        if (toDeactivate != null)
-    //        {
-    //            toDeactivate.SetWallAsPath();
-    //            wallActions.Add(toDeactivate, false);
-    //        }
-    //    }
-
-    //    foreach (Wall wall in tileToAdd.NeighborWalls)
-    //    {
-    //        if (!wall.IsBorder && !wall.IsPath)
-    //        {
-    //            wall.SetWallAsBorder();
-    //            wallActions.Add(wall, true);
-    //        }
-    //    }
-
-    //    if (_firstTileDrawn)
-    //    {
-    //        GameManager.Instability += 10;
-    //        _firstTileDrawn = false;
-    //    }
-
-    //    OnTileAdded?.Invoke(tileToAdd);
-    //    _tileHistory.Push(tileActions);
-    //    _wallHistory.Push(wallActions);
-    //}
-
-    //private void DisallowDraw()
-    //{
-    //    if (_renderer.enabled) { DisableRenderer(); }
-    //    _currentTile = null;
-    //    _lastTile = null;
-    //    GameManager.Instance.UpdateGameState(GameState.Idle);
-    //}
-
-    //private bool DrawConditionsNotMet(Tile tile)
-    //{
-    //    return
-    //        tile == null ||                                                                 // shouldn't happen
-    //        !IsTilePartOfOrNextToMaze(tile) ||                                                    // can't join into maze if you're not connected
-    //        (_lastTile != null && !_lastTile.IsPartOfMaze && !IsTilePartOfOrNextToMaze(tile)) ||         // can't draw stuff unconnected to maze
-    //        (_lastTile != null && _lastTile.IsPartOfMaze && tile.IsPartOfMaze) ||           // can't make "shortcut" in maze
-    //        (_lastTile != null && !AreTilesContiguous(tile, _lastTile));                    // should prevent spamming errors
-    //}
 }

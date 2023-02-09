@@ -26,6 +26,11 @@ public class Runner : MonoBehaviour, IRunner
         get => _previousTile;
         set => _previousTile = value;
     }
+    public float Multiplier
+    {
+        get => _multiplier;
+        set => _multiplier = value;
+    }
 
     private void Awake()
     {
@@ -54,18 +59,14 @@ public class Runner : MonoBehaviour, IRunner
 
     private void CalculateSpeed()
     {
-        _currentSpeed = _speedCurve.Evaluate(CalculateHeight()) + GameManager.TileSpeed;
-    }
-
-    private float CalculateHeight()
-    {
         Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position);
-        return screenPos.y / Screen.height;
+        float height = screenPos.y / Screen.height;
+        _currentSpeed = (_speedCurve.Evaluate(height) + GameManager.TileSpeed) * _multiplier;
     }
 
     private void Move()
     {
-        transform.position = Vector3.MoveTowards(transform.position, _currentTarget.transform.position, Time.deltaTime * _currentSpeed * _multiplier);
+        transform.position = Vector3.MoveTowards(transform.position, _currentTarget.transform.position, Time.deltaTime * _currentSpeed);
     }
 
     private void SetTarget(Tile tile) // On tile center
@@ -127,29 +128,6 @@ public class Runner : MonoBehaviour, IRunner
                 break;
         }
     }
-
-    //// Only ever gets called for corridors or dead ends
-    //private Tile GetLeastCrossedPath(Tile tile)
-    //{
-    //    int leastCrossings = 100;
-    //    Tile toReturn = tile;
-
-    //    foreach (Wall wall in tile.NeighborPaths)
-    //    {
-    //        //if (wall.IsPathfindingPath)
-    //        //{
-    //        //    return GetPathfindingPath(tile);
-    //        //}
-    //        if (wall.Crossings > 1) { continue; }
-    //        Vector3 direction = wall.transform.position - tile.transform.position;
-    //        if (wall.Crossings < leastCrossings)
-    //        {
-    //            leastCrossings = wall.Crossings;
-    //            toReturn = tile.GetNeighborTile(direction);
-    //        }
-    //    }
-    //    return toReturn;
-    //}
 
     private Tile GetFirstUncrossedPath(Tile tile)
     {
@@ -262,5 +240,4 @@ public class Runner : MonoBehaviour, IRunner
     {
         StartCoroutine(CalculateNextTarget(tile));
     }
-
 }

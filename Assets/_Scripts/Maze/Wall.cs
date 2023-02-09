@@ -4,17 +4,21 @@ using UnityEngine;
 public class Wall : MonoBehaviour
 {
     [SerializeField] LayerMask _tileLayer;
-    private Renderer[] _renderers;
-    private Rigidbody _rb;
+    [SerializeField] private Renderer _wallRenderer;
+    [SerializeField] private Renderer _lineRenderer;
+    [SerializeField] private Renderer _glowRendererLeft;
+    [SerializeField] private Renderer _glowRendererRight;
+
     private bool _isBorder;
     private bool _isPath;
-    public bool _isPathfindingPath;
+    private bool _isPathfindingPath;
     private bool _isHidden = false;
-    public int _crossings = 0;
+    private int _crossings = 0;
     private float _timeCrossed;
     private float _timeDrawn;
     private Row _parentRow;
     private List<Tile> _neighborTiles = new List<Tile>();
+    private Tile _leftTile, _rightTile;
 
     public bool IsBorder => _isBorder;
     public bool IsPath => _isPath;
@@ -72,7 +76,9 @@ public class Wall : MonoBehaviour
 
     public void SetWallAsBorder()
     {
-        _renderers[0].enabled = true;
+        _wallRenderer.enabled = true;
+        if (_leftTile != null && _leftTile.IsPartOfMaze) { _glowRendererLeft.enabled = true; }
+        if (_rightTile != null && _rightTile.IsPartOfMaze) { _glowRendererRight.enabled = true; }
         _isBorder = true;
         _isPath = false;
         UpdateNeighborTiles();
@@ -81,7 +87,9 @@ public class Wall : MonoBehaviour
     public void SetWallAsPath()
     {
         _timeDrawn = Time.timeSinceLevelLoad;
-        _renderers[0].enabled = false;
+        _wallRenderer.enabled = false;
+        _glowRendererLeft.enabled = false;
+        _glowRendererRight.enabled = false;
         _isBorder = false;
         _isPath = true;
         UpdateNeighborTiles();
@@ -89,7 +97,7 @@ public class Wall : MonoBehaviour
 
     public void UndoWallAsBorder()
     {
-        _renderers[0].enabled = false;
+        _wallRenderer.enabled = false;
         _isBorder = false;
         _isPath = false;
         UpdateNeighborTiles();
@@ -109,14 +117,16 @@ public class Wall : MonoBehaviour
 
     private void DisableWall() 
     {
-        _renderers[0].enabled = false;
-        _renderers[1].enabled = false;
+        _wallRenderer.enabled = false;
+        _lineRenderer.enabled = false;
+        _glowRendererLeft.enabled = false;
+        _glowRendererRight.enabled = false;
         _isHidden = true;
     }
 
     public void EnableWall()
     {
-        _renderers[1].enabled = true;
+        _lineRenderer.enabled = true;
         _isHidden = false;
     }
 
@@ -144,20 +154,24 @@ public class Wall : MonoBehaviour
             if (Vector3.Distance(tile.transform.position, transform.position) < (GameManager.TileLength / 2) + 0.5f)
             {
                 _neighborTiles.Add(tile);
+                // Let's prettify this maybe?
+                if (GameManager.CompareVectors(transform.position + Vector3.right * GameManager.TileLength / 2, tile.transform.position) ||
+                    GameManager.CompareVectors(transform.position + Vector3.back * GameManager.TileLength / 2, tile.transform.position))
+                {
+                    _rightTile = tile;
+                }
+                else if (GameManager.CompareVectors(transform.position + Vector3.left * GameManager.TileLength / 2, tile.transform.position) ||
+                    GameManager.CompareVectors(transform.position + Vector3.forward * GameManager.TileLength / 2, tile.transform.position))
+                {
+                    _leftTile = tile;
+                }
             }
         }
     }
 
-    public void Initialize()
-    {
-        _renderers = GetComponentsInChildren<Renderer>();
-        _parentRow = GetComponentInParent<Row>();
-        _rb = GetComponentInChildren<Rigidbody>();
-        DisableWall();
-    }
-
     private void Awake()
     {
-        Initialize();
+        _parentRow = GetComponentInParent<Row>();
+        DisableWall();
     }
 }

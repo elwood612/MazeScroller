@@ -41,8 +41,11 @@ public class GameManager : MonoBehaviour
         get => _instability;
         set 
         { 
-            _instability = value; 
-            OnInstabilityChanged?.Invoke(value); 
+            if (_instability < _maxInstability)
+            {
+                _instability = value;
+                OnInstabilityChanged?.Invoke(value);
+            }
         }
     }
     public static int Score
@@ -128,5 +131,10 @@ public class GameManager : MonoBehaviour
     public static void AddBoardMotion(Transform t)
     {
         t.Translate(_tileSpeed * Time.deltaTime);
+    }
+
+    public static bool CompareVectors(Vector3 v1, Vector3 v2)
+    {
+        return Vector3Int.RoundToInt(v1) == Vector3Int.RoundToInt(v2);
     }
 }

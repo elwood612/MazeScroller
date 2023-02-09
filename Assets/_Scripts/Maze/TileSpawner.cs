@@ -76,8 +76,8 @@ public class TileSpawner : MonoBehaviour
             if (++_crystalSpawnCounter > _randomCrystalSpawn && _width > 1.1f)
             {
                 _crystalSpawnCounter = 0;
-                _randomCrystalSpawn = Random.Range(2, 8);
-                int level = 2; // This needs to be adjusted based on instability
+                _randomCrystalSpawn = Random.Range(1, 6);
+                int level = Mathf.RoundToInt(Random.Range(0f, GameManager.Instability * 4f / GameManager.MaxInstability));
                 StartCoroutine(SpawnRandomCrystal(other.GetComponent<Row>(), level));
             }
         }
