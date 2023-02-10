@@ -8,7 +8,6 @@ public class Row : MonoBehaviour
 {
     private bool _isHighestDrawnRow;
     private bool _hasSetupBeenRun = false;
-    private bool _shouldDisableRandomTiles = false;
     private List<Tile> _enabledTiles = new List<Tile>();
 
     public event Action OnRowReset;

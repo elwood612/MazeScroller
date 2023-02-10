@@ -65,7 +65,7 @@ public class TileSpawner : MonoBehaviour
             {
                 _disableTileCounter = 0;
                 _randomDisableTile = Random.Range(2, 5);
-                int tilesToDisable = Random.Range(1, GameManager.Stage + 1);
+                int tilesToDisable = 1;
                 StartCoroutine(DisableRandomTile(other.GetComponent<Row>(), tilesToDisable));
             }
 
@@ -95,7 +95,7 @@ public class TileSpawner : MonoBehaviour
     private void UpdateSizeAndPosition()
     {
         if (GameManager.CurrentState == GameState.Transition) { _smooth = 3f; }
-        else { _smooth = Mathf.Clamp(GameManager.MaxSpeed / GameManager.TileSpeed, 3f, 50f); }
+        else { _smooth = Mathf.Clamp(GameManager.MaxSpeed / GameManager.TileSpeed, 3f, 80f); }
         
         transform.localScale = Vector3.SmoothDamp(transform.localScale, _scaleTarget, ref _scaleVelocity, _smooth / 4);
         transform.position = Vector3.SmoothDamp(transform.position, _positionTarget, ref _positionVelocity, _smooth);
@@ -159,6 +159,10 @@ public class TileSpawner : MonoBehaviour
 
         Crystal newCrystal = _crystalPool.Get();
         Color color = _colors[Random.Range(0, GameManager.Stage)]; // needs to depend on Stage
+        if (color != Color.white)
+        {
+            color = Random.Range(0f, 1f) < 0.5f ? Color.white : color; // Temp, should make colors rarer
+        }
         newCrystal.transform.SetParent(tile.transform, false);
         newCrystal.Initialize(level, _crystalPool, color);
         tile.HasCrystal = true;

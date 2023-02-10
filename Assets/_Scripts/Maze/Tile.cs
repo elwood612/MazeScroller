@@ -129,15 +129,31 @@ public class Tile : MonoBehaviour
         if (_isPartOfMaze) 
         { 
             RemoveTileFromMaze();
+            //SpawnProtectiveWall();
         }
         if (_crossings > 0)
         {
             _flashRenderer.enabled = true;
             StartCoroutine(TileFlash());
-            SetMaterial(_tileDead);
+            SetMaterial(_tileCrossed);
         }
 
         OnTileDestroy?.Invoke(this);
+    }
+
+    private void SpawnProtectiveWall()
+    {
+        foreach (Wall wall in _neighborWalls)
+        {
+            if (GameManager.CompareVectors(wall.transform.position, transform.position + Vector3.forward * GameManager.TileLength / 2))
+            {
+                wall.SetWallAsHiddenBorder();
+            }
+            //else
+            //{
+            //    wall.HideWall();
+            //}
+        }
     }
 
     private IEnumerator TileFlash()

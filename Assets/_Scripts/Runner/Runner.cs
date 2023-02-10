@@ -44,6 +44,7 @@ public class Runner : MonoBehaviour, IRunner
         GameManager.AddBoardMotion(transform);
         CalculateSpeed();
         if (_uncrossedTilesInMaze.Count > 0) { Move(); }
+        GameManager.RunnerHeight = Camera.main.WorldToScreenPoint(transform.position).y / Screen.height;
     }
 
     private void OnTriggerEnter(Collider other)

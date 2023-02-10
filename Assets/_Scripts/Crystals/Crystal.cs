@@ -37,7 +37,7 @@ public class Crystal : MonoBehaviour
             if (_level == 0)
             {
                 //if (other.GetComponent<IRunner>()) { } // this should fucking work but it's not
-                StartCoroutine(PlayerContact());
+                PlayerContact();
             }
             else
             {
@@ -61,26 +61,29 @@ public class Crystal : MonoBehaviour
         }
     }
 
-    private IEnumerator PlayerContact()
+    private void PlayerContact()
     {
+        StartCoroutine(Explode());
         //GameManager.Score += (int)Mathf.Pow(10, _initialLevel);
-        _destroyed = true;
-        _wireframe.SetActive(false);
-        _particlesExplosion.Play();
-        _particlesNormal.Stop();
-
-        yield return _destroyDelay;
-        _crystalPool.Release(this);
     }
 
     private void EndOfBoardContact()
     {
-        //GameManager.Progress += 100;
+        StartCoroutine(Explode());
+        GameManager.Lives--;
         for (int i = 0; i < _level; i++)
         {
-            // Spawn actual missile here
             DestroyOrbitMissile(_orbitMissiles[_level - 1]);
         }
+    }
+
+    private IEnumerator Explode()
+    {
+        _destroyed = true;
+        _wireframe.SetActive(false);
+        _particlesExplosion.Play();
+        _particlesNormal.Stop();
+        yield return _destroyDelay;
         _crystalPool.Release(this);
     }
 

@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     private AnimationCurve _tileSpawnerWidthCurve;
     private float _defaultSpeed = 1f;
     private float _minSpeed = 0.5f;
+    private bool _startOfGame = true;
     private static int _transitionCounter = 0;
     private static float _maxSpeed = 50f;
     private static float _tileLength;
@@ -22,6 +23,7 @@ public class GameManager : MonoBehaviour
     private static int _score = 0;
     private static int _stage = 1;
     private static int _prevStage = 1;
+    private static int _lives = 5;
     private static Vector3 _tileSpeed = Vector3.zero;
     private static Vector3 _boardLength;
 
@@ -30,8 +32,10 @@ public class GameManager : MonoBehaviour
     public static event Action<int> OnProgressChanged;
     public static event Action<int> OnScoreChanged;
     public static event Action<int> OnStageChanged;
+    public static event Action<int> OnLivesChanged;
     public static GameManager Instance;
     public static float HighestDrawnRowHeight;
+    public static float RunnerHeight;
     public static int NumberOfRows;
     public static float TileLength => _tileLength;
     public static Vector3 BoardLength => _boardLength;
@@ -51,7 +55,7 @@ public class GameManager : MonoBehaviour
                 if (CurrentState == GameState.Transition) 
                 { 
                     _transitionCounter++;
-                    if (_transitionCounter > 12)
+                    if (_transitionCounter > 20)
                     {
                         Instance.UpdateGameState(GameState.Progressing);
                         _transitionCounter = 0;
@@ -80,6 +84,17 @@ public class GameManager : MonoBehaviour
         {
             _score = value;
             OnScoreChanged?.Invoke(value);
+        }
+    }
+    public static int Lives
+    {
+        get => _lives;
+        set
+        {
+            _lives = value;
+            Debug.Log("Lost a life");
+            OnLivesChanged?.Invoke(value);
+            if (_lives < 0) { Debug.Log("Game over!"); }
         }
     }
 
@@ -111,9 +126,17 @@ public class GameManager : MonoBehaviour
 
     private void CalculateBoardSpeed(float multiplier)
     {
-        //_minSpeed = (_maxSpeed / 2) * _instability / _maxInstability; // This should probably be a curve?
-        //float heightCurve = Mathf.Clamp(_tileSpeedCurve.Evaluate(HighestDrawnRowHeight), _minSpeed, _maxSpeed);
-        float heightCurve = _tileSpeedCurve.Evaluate(HighestDrawnRowHeight);
+        float heightCurve;
+        if (RunnerHeight < 0.2f)
+        {
+            heightCurve = _tileSpeedCurve.Evaluate(RunnerHeight);
+            Debug.Log("Oh no, you're going too fast!");
+        }
+        else
+        {
+            heightCurve = _tileSpeedCurve.Evaluate(HighestDrawnRowHeight);
+        }
+        if (_startOfGame) { heightCurve = 0.5f; } // just used for first few frames
         _tileSpeed = new Vector3(0, 0, -heightCurve * _defaultSpeed * multiplier);
     }
 
@@ -139,10 +162,10 @@ public class GameManager : MonoBehaviour
                 CalculateBoardLength();
                 break;
             case GameState.Transition:
-                Debug.Log("Transition");
+                //Debug.Log("Transition");
                 break;
             case GameState.Progressing:
-                Debug.Log("Progressing");
+                //Debug.Log("Progressing");
                 break;
             case GameState.Lose:
                 CalculateBoardSpeed(0);
@@ -154,6 +177,7 @@ public class GameManager : MonoBehaviour
     public void SpawnPlayer(Transform tile)
     {
         Instantiate(_runnerPrefab, tile.position, Quaternion.identity);
+        _startOfGame = false;
     }
 
     public static void AddBoardMotion(Transform t)
