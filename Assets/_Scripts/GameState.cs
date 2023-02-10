@@ -1,7 +1,7 @@
 ﻿public enum GameState
 {
     Setup,
-    Idle,
-    Running,
+    Transition,
+    Progressing,
     Lose
 }

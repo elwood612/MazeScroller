@@ -6,26 +6,30 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private GM_Settings _settings;
     [SerializeField] private GameObject _runnerPrefab;
-    [SerializeField] private int _startingInstability;
+    [SerializeField] private int _startingProgress;
 
     private AnimationCurve _tileSpeedCurve;
     private AnimationCurve _runnerSpeedCurve;
     private AnimationCurve _tileSpawnerWidthCurve;
     private float _defaultSpeed = 1f;
     private float _minSpeed = 0.5f;
+    private static int _transitionCounter = 0;
     private static float _maxSpeed = 50f;
     private static float _tileLength;
     private static float _speedMultiplier = 1f;
-    private static int _instability;
-    private static int _maxInstability = 1000;
+    private static int _progress;
+    private static int _maxProgress = 400;
     private static int _score = 0;
+    private static int _stage = 1;
+    private static int _prevStage = 1;
     private static Vector3 _tileSpeed = Vector3.zero;
     private static Vector3 _boardLength;
 
     public static GameState CurrentState;
     public static event Action<GameState> OnStateChanged;
-    public static event Action<int> OnInstabilityChanged;
+    public static event Action<int> OnProgressChanged;
     public static event Action<int> OnScoreChanged;
+    public static event Action<int> OnStageChanged;
     public static GameManager Instance;
     public static float HighestDrawnRowHeight;
     public static int NumberOfRows;
@@ -34,17 +38,38 @@ public class GameManager : MonoBehaviour
     public static float TileSpeed => Mathf.Abs(_tileSpeed.z);
     public AnimationCurve RunnerSpeedCurve => _runnerSpeedCurve;
     public AnimationCurve TileSpawnerWidthCurve => _tileSpawnerWidthCurve;
-    public static int MaxInstability => _maxInstability;
+    public static int MaxProgress => _maxProgress;
     public static float MaxSpeed => _maxSpeed;
-    public static int Instability
+    public static int Stage => _stage;
+    public static int Progress
     {
-        get => _instability;
+        get => _progress;
         set 
         { 
-            if (_instability < _maxInstability)
+            if (_progress < _maxProgress)
             {
-                _instability = value;
-                OnInstabilityChanged?.Invoke(value);
+                if (CurrentState == GameState.Transition) 
+                { 
+                    _transitionCounter++;
+                    if (_transitionCounter > 12)
+                    {
+                        Instance.UpdateGameState(GameState.Progressing);
+                        _transitionCounter = 0;
+                    }
+                }
+                else
+                {
+                    _progress = value;
+                    OnProgressChanged?.Invoke(value);
+                }
+
+                _stage = Mathf.CeilToInt(_progress * 4f / _maxProgress);
+                if (_stage > _prevStage)
+                {
+                    _prevStage = _stage;
+                    Instance.UpdateGameState(GameState.Transition);
+                    OnStageChanged?.Invoke(_stage);
+                }
             }
         }
     }
@@ -64,7 +89,7 @@ public class GameManager : MonoBehaviour
         if (Instance == null) { Instance = this; }
         else { Destroy(this); }
 
-        Instability = _startingInstability;
+        _progress = _startingProgress;
         _tileSpeedCurve = _settings.TileSpeedCurve;
         _runnerSpeedCurve = _settings.RunnerSpeedCurve;
         _tileSpawnerWidthCurve = _settings.TileSpawnerWidthCurve;
@@ -78,7 +103,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (CurrentState == GameState.Idle || CurrentState == GameState.Running) 
+        if (CurrentState == GameState.Transition || CurrentState == GameState.Progressing) 
         { 
             CalculateBoardSpeed(_speedMultiplier);
         }
@@ -86,8 +111,9 @@ public class GameManager : MonoBehaviour
 
     private void CalculateBoardSpeed(float multiplier)
     {
-        _minSpeed = (_maxSpeed / 2) * _instability / _maxInstability; // This should probably be a curve?
-        float heightCurve = Mathf.Clamp(_tileSpeedCurve.Evaluate(HighestDrawnRowHeight), _minSpeed, _maxSpeed);
+        //_minSpeed = (_maxSpeed / 2) * _instability / _maxInstability; // This should probably be a curve?
+        //float heightCurve = Mathf.Clamp(_tileSpeedCurve.Evaluate(HighestDrawnRowHeight), _minSpeed, _maxSpeed);
+        float heightCurve = _tileSpeedCurve.Evaluate(HighestDrawnRowHeight);
         _tileSpeed = new Vector3(0, 0, -heightCurve * _defaultSpeed * multiplier);
     }
 
@@ -112,9 +138,11 @@ public class GameManager : MonoBehaviour
                 CalculateBoardSpeed(0);
                 CalculateBoardLength();
                 break;
-            case GameState.Idle:
+            case GameState.Transition:
+                Debug.Log("Transition");
                 break;
-            case GameState.Running:
+            case GameState.Progressing:
+                Debug.Log("Progressing");
                 break;
             case GameState.Lose:
                 CalculateBoardSpeed(0);

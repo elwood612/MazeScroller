@@ -30,6 +30,9 @@ public class DrawMaze : MonoBehaviour
         _renderer = GetComponentInChildren<Renderer>();
         _cam = Camera.main;
         DisableRenderer();
+#if UNITY_ANDROID
+        Taptic.tapticOn = true;
+#endif
     }
 
     private void Update()
@@ -39,7 +42,7 @@ public class DrawMaze : MonoBehaviour
 
     private void HandleRaycast()
     {
-        if (GameManager.CurrentState != GameState.Idle && GameManager.CurrentState != GameState.Running) { return; }
+        if (GameManager.CurrentState != GameState.Transition && GameManager.CurrentState != GameState.Progressing) { return; }
 
         if (InputHandler.IsPressingScreen)
         {
@@ -52,10 +55,10 @@ public class DrawMaze : MonoBehaviour
             DisallowDraw();
             return;
         }
-        else // i.e., if pressingScreen && hitting something
-        {
-            GameManager.Instance.UpdateGameState(GameState.Running); // temp
-        }
+        //else // i.e., if pressingScreen && hitting something
+        //{
+        //    GameManager.Instance.UpdateGameState(GameState.Progressing); // temp
+        //}
 
         foreach (RaycastHit hit in _hits)
         {
@@ -107,11 +110,15 @@ public class DrawMaze : MonoBehaviour
             }
         }
 
-        if (_firstTileDrawn)
-        {
-            GameManager.Instability += 10;
-            _firstTileDrawn = false;
-        }
+        //if (_firstTileDrawn)
+        //{
+        //    _firstTileDrawn = false;
+        //}
+
+#if UNITY_ANDROID
+        Taptic.Vibrate();
+#endif
+
         OnTileAdded?.Invoke(tileToAdd);
         _tileHistory.Push(tileActions);
         _wallHistory.Push(wallActions);
@@ -122,7 +129,7 @@ public class DrawMaze : MonoBehaviour
         if (_renderer.enabled) { DisableRenderer(); }
         _currentTile = null;
         _lastTile = null;
-        GameManager.Instance.UpdateGameState(GameState.Idle);
+        //GameManager.Instance.UpdateGameState(GameState.Transition);
     }
 
     private bool DrawConditionsNotMet(Tile tile)

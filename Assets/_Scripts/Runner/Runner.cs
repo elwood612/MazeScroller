@@ -4,15 +4,19 @@ using UnityEngine;
 
 public class Runner : MonoBehaviour, IRunner
 {
+    [SerializeField] private Renderer[] _renderers;
+    [SerializeField] private ParticleSystem _particles;
+    private ParticleSystem.MainModule _particlesMainModule;
+
     private Tile _currentTile;
     private Tile _currentTarget;
     private Tile _nextTarget;
     private Tile _previousTile;
     private List<Tile> _uncrossedTilesInMaze = new List<Tile>();
     private float _currentSpeed;
-    private float _multiplier = 1f;
     private bool _runnerStopped = true;
     private bool _approachingDeadEnd = false;
+    private bool _particlesStart = true;
     private AnimationCurve _speedCurve;
     protected Rigidbody _rb;
 
@@ -26,16 +30,13 @@ public class Runner : MonoBehaviour, IRunner
         get => _previousTile;
         set => _previousTile = value;
     }
-    public float Multiplier
-    {
-        get => _multiplier;
-        set => _multiplier = value;
-    }
 
     private void Awake()
     {
         _speedCurve = GameManager.Instance.RunnerSpeedCurve;
         _rb = GetComponent<Rigidbody>();
+        _particlesMainModule = _particles.main;
+        ChangeColor(Color.white);
     }
 
     private void Update()
@@ -50,18 +51,27 @@ public class Runner : MonoBehaviour, IRunner
         if (other.CompareTag("TileCenter"))
         {
             SetTarget(other.GetComponentInParent<Tile>());
+            //if (_particlesStart)
+            //{
+            //    _particlesMainModule.customSimulationSpace = other.transform;
+            //    _particlesStart = false;
+            //}
         }
         else if (other.CompareTag("TileDestroyer"))
         {
             SelfDestruct();
         }
+        else if (other.CompareTag("Crystal"))
+        {
+            ChangeColor(Color.white);
+        }
     }
 
-    private void CalculateSpeed()
+    private void CalculateSpeed() // this needs to change
     {
         Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position);
         float height = screenPos.y / Screen.height;
-        _currentSpeed = (_speedCurve.Evaluate(height) + GameManager.TileSpeed) * _multiplier;
+        _currentSpeed = _speedCurve.Evaluate(height) + GameManager.TileSpeed;
     }
 
     private void Move()
@@ -239,5 +249,14 @@ public class Runner : MonoBehaviour, IRunner
     public void CalculateNextTargetWrapper(Tile tile)
     {
         StartCoroutine(CalculateNextTarget(tile));
+    }
+
+    public void ChangeColor(Color color)
+    {
+        foreach (var renderer in _renderers)
+        {
+            renderer.material.color = color;
+        }
+        // also set trail
     }
 }

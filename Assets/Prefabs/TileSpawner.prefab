@@ -49,7 +49,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _crystalPrefab: {fileID: 2508441268512867463, guid: a3e55954301c358438cdc51c7dc7cbb7, type: 3}
-  _smooth: 3
+  _missilePrefab: {fileID: 0}
+  _colors:
+  - {r: 1, g: 1, b: 1, a: 1}
+  - {r: 1, g: 0, b: 0, a: 1}
+  - {r: 0, g: 0, b: 1, a: 1}
+  - {r: 0, g: 1, b: 0, a: 1}
 --- !u!33 &8930086198790722511
 MeshFilter:
   m_ObjectHideFlags: 0

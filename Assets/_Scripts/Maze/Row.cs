@@ -25,11 +25,6 @@ public class Row : MonoBehaviour
         get => _isHighestDrawnRow;
         set => _isHighestDrawnRow = value;
     }
-    public bool ShouldDisableRandomTiles
-    {
-        get => _shouldDisableRandomTiles;
-        set => _shouldDisableRandomTiles = value;
-    }
 
     private void Update()
     {
@@ -41,7 +36,6 @@ public class Row : MonoBehaviour
     {
         if (other.CompareTag("RowReset")) { ResetRow(); }
         else if (other.CompareTag("RowSetup")) { SetupRow(); }
-        else if (other.CompareTag("TileSpawner")) { StartCoroutine(DisableRandomTiles()); }
     }
 
     private float CalculateHeight()
@@ -59,19 +53,11 @@ public class Row : MonoBehaviour
 
     private void SetupRow()
     {
+        GameManager.Progress++;
         if (!_hasSetupBeenRun) 
         {
             OnRowSetup?.Invoke();
             _hasSetupBeenRun = true;
         }
-    }
-
-    private IEnumerator DisableRandomTiles()
-    {
-        yield return null;
-        if (!_shouldDisableRandomTiles) { yield break; }
-
-        int index = Random.Range(0, _enabledTiles.Count);
-        _enabledTiles[index].DisableTile(true);
     }
 }

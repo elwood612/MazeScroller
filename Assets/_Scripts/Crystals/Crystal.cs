@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Pool;
@@ -17,6 +16,7 @@ public class Crystal : MonoBehaviour
     private int _level = 0;
     private int _initialLevel;
     private bool _destroyed = false;
+    private Color _color;
     private WaitForSeconds _destroyDelay = new WaitForSeconds(1f);
     private OrbitMissile[] _orbitMissiles = new OrbitMissile[6];
 
@@ -36,7 +36,7 @@ public class Crystal : MonoBehaviour
         {
             if (_level == 0)
             {
-                GameManager.Score += (int)Mathf.Pow(10, _initialLevel);
+                //if (other.GetComponent<IRunner>()) { } // this should fucking work but it's not
                 StartCoroutine(PlayerContact());
             }
             else
@@ -63,17 +63,19 @@ public class Crystal : MonoBehaviour
 
     private IEnumerator PlayerContact()
     {
+        //GameManager.Score += (int)Mathf.Pow(10, _initialLevel);
         _destroyed = true;
         _wireframe.SetActive(false);
         _particlesExplosion.Play();
         _particlesNormal.Stop();
+
         yield return _destroyDelay;
         _crystalPool.Release(this);
     }
 
     private void EndOfBoardContact()
     {
-        GameManager.Instability += 100;
+        //GameManager.Progress += 100;
         for (int i = 0; i < _level; i++)
         {
             // Spawn actual missile here
@@ -88,20 +90,24 @@ public class Crystal : MonoBehaviour
         _particlesExplosionMissile.Play();
     }
 
-    private void SetMaterial(Material material)
+    private void SetColor(Color color)
     {
-        //_wireframe.material = material;
-        _particlesExplosionModule.startColor = material.color;
+        foreach(var cube in _wireframe.transform.GetComponentsInChildren<Renderer>())
+        {
+            cube.material.color = color;
+        }
+        _particlesExplosionModule.startColor = color;
     }
 
-    public void Initialize(int level, ObjectPool<Crystal> crystalPool)
+    public void Initialize(int level, ObjectPool<Crystal> crystalPool, Color color)
     {
         _destroyed = false;
         _wireframe.SetActive(true);
         _level = level;
         _initialLevel = _level;
         _crystalPool = crystalPool;
-        SetMaterial(_materials[Mathf.Min(_level, _materials.Length - 1)]);
+        _color = color;
+        SetColor(_color);
         SpawnOrbitMissiles();
     }
 }

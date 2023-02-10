@@ -7,35 +7,40 @@ using Random = UnityEngine.Random;
 public class Tile : MonoBehaviour
 {
     [SerializeField] private Crystal _crystalPrefab;
+    [SerializeField] private Renderer _renderer;
+    [SerializeField] private Renderer _flashRenderer;
+    [SerializeField] private Renderer _colorBorderRenderer;
+    [SerializeField] private ParticleSystem _colorParticles;
     [SerializeField] private Material _tileBase;
     [SerializeField] private Material _tileDrawn;
     [SerializeField] private Material _tileDead;
-    [SerializeField] private Material[] _tileCrossing;
+    [SerializeField] private Material _tileFlash;
+    [SerializeField] private Material _tileCrossed;
     [SerializeField] private LayerMask _wallLayer;
 
-    private Renderer _renderer;
-    private Rigidbody _rb;
-    private ParticleSystem _particles;
+    private ParticleSystem.MainModule _colorParticlesMainModule;
     private Row _parentRow;
     private List<Wall> _neighborWalls = new List<Wall>();
     private List<Wall> _neighborPaths = new List<Wall>();
     private List<Tile> _neighborTiles = new List<Tile>();
     private bool _isPartOfMaze = false;
     private bool _isEnabled = false;
-    private bool _isDead = false;
+    private bool _isColored = false;
+    private Color _color;
     private int _crossings = 0;
     private Tile _pathfindingParent;
     private static bool _firstTile = true;
-    private WaitForSeconds _destuctionDelay;
-    private WaitForSeconds _hideDelay;
+    private WaitForSecondsRealtime _flashDelay = new WaitForSecondsRealtime(0.1f);
+    private float _flashAlpha = 1f;
 
     public static event Action<Tile> OnTileDestroy;
     public static event Action<Tile> OnTileDeactivate;
+    public bool HasCrystal = false;
     public List<Wall> NeighborWalls => _neighborWalls;
     public List<Tile> NeighborTiles => _neighborTiles;
     public bool IsPartOfMaze => _isPartOfMaze;
     public bool IsEnabled => _isEnabled;
-    public bool IsDead => _isDead;
+    public bool IsColored => _isColored;
     public int Crossings => _crossings;
     public Row ParentRow => _parentRow;
     public List<Wall> NeighborPaths
@@ -83,33 +88,34 @@ public class Tile : MonoBehaviour
 
     private void PlayerCrossing(IRunner runner)
     {
-        if (_crossings < _tileCrossing.Length)
-        {
-            //SetMaterial(_tileCrossing[_crossings]);
-            SetMaterial(_tileCrossing[0]); // temp
-        }
+        SetMaterial(_tileCrossed);
+        if (_isColored) { runner.ChangeColor(_color); }
+        ResetColor();
         _crossings++;
         runner.PreviousTile = runner.CurrentTile;
         runner.CurrentTile = this;
         runner.CalculateNextTargetWrapper(this);
-        runner.Multiplier = _isDead ? 0.25f : 1f;
     }
 
     private void SpawnTile()
     {
         if (!_parentRow.HasSetupBeenRun) { return; }
 
-        float chance = Mathf.Clamp((GameManager.Instability / GameManager.MaxInstability) / 2, 0.1f, 0.5f);
-        if (GameManager.Instability > 10) { _isDead = Random.Range(0f, 1f) < chance; }
+        //float chance = Mathf.Clamp((GameManager.Progress / GameManager.MaxProgress) / 2, 0.1f, 0.5f);
+        //if (GameManager.Progress > 10) 
+        //{ 
+        //    if (Random.Range(0f, 1f) < chance)
+        //    {
+        //        _color = Color.yellow;
+        //    }
+        //}
 
         EnableTile();
         foreach (Wall wall in _neighborWalls)
         {
-            wall.EnableWall();
+            wall.EnableWall();  
         }
-
-        
-
+        //if (_color != Color.white) { SetColor(_color); }
         if (_firstTile) { SetStartingTile(); }
         _firstTile = false;
     }
@@ -118,43 +124,45 @@ public class Tile : MonoBehaviour
     {
         if (!_parentRow.HasSetupBeenRun || !_isEnabled) { return; }
 
-        if (_crossings == 0) { GameManager.Instability += 2; }
-        else if (_crossings == 1) { GameManager.Instability++; }
+        GameManager.Score += _crossings;
 
-        OnTileDestroy?.Invoke(this);
-
-        if (_crossings > 0) { return; }
-
-        // For uncrossed tiles only
-        foreach (Wall wall in _neighborWalls)
+        if (_isPartOfMaze) 
+        { 
+            RemoveTileFromMaze();
+        }
+        if (_crossings > 0)
         {
-            wall.DestroyWall();
+            _flashRenderer.enabled = true;
+            StartCoroutine(TileFlash());
+            SetMaterial(_tileDead);
         }
 
-        _particles.Play();
-        DisableTile();
-        
-        //StartCoroutine(HideTileAfterDestruction());
-        //StartCoroutine(RigidbodyDestroy());
+        OnTileDestroy?.Invoke(this);
     }
 
-    private IEnumerator RigidbodyDestroy()
+    private IEnumerator TileFlash()
     {
-        yield return _destuctionDelay;
-        _rb.isKinematic = false;
-        Vector3 impulse = new Vector3(Random.Range(-50f, 50f), Random.Range(-50f, 0), Random.Range(-50f, 50f));
-        _rb.AddForce(impulse, ForceMode.Impulse);
+        yield return _flashDelay;
+        while (_flashAlpha > 0)
+        {
+            _flashAlpha -= 0.05f;
+            Color newColor = _flashRenderer.material.color;
+            newColor.a = _flashAlpha;
+            _flashRenderer.material.color = newColor;
+        }
     }
 
-    private IEnumerator HideTileAfterDestruction()
+    private void ResetColor()
     {
-        yield return _hideDelay;
-        if (_isEnabled) { DisableTile(); }
+        _isColored = false;
+        _colorBorderRenderer.enabled = false;
+        _colorParticles.Stop();
     }
 
     public void DisableTile(bool onSpawn = false)
     {
         _renderer.enabled = false;
+        ResetColor();
         _isEnabled = false;
 
         if (!onSpawn) { return; }
@@ -167,7 +175,6 @@ public class Tile : MonoBehaviour
 
     private void EnableTile()
     {
-        if (_isDead) { SetMaterial(_tileDead); }
         _renderer.enabled = true;
         _isEnabled = true;
         _parentRow.EnabledTiles.Add(this);
@@ -199,13 +206,12 @@ public class Tile : MonoBehaviour
 
     private void Initialize()
     {
-        _renderer = GetComponentInChildren<MeshRenderer>();
         _parentRow = transform.GetComponentInParent<Row>();
-        _rb = GetComponentInChildren<Rigidbody>();
-        _particles = GetComponent<ParticleSystem>();
+        _flashRenderer.material = _tileFlash;
+        _flashRenderer.enabled = false;
+        _colorParticlesMainModule = _colorParticles.main;
+        _colorBorderRenderer.enabled = false;
         DisableTile();
-        _destuctionDelay = new WaitForSeconds(Random.Range(0, 0.5f));
-        _hideDelay = new WaitForSeconds(1f);
     }
 
     private void Awake()
@@ -251,6 +257,16 @@ public class Tile : MonoBehaviour
         return _neighborWalls[0];
     }
 
+    public void SetColor(Color color)
+    {
+        _isColored = true;
+        _color = color;
+        _colorBorderRenderer.enabled = true;
+        _colorBorderRenderer.material.color = color;
+        _colorParticlesMainModule.startColor = color;
+        _colorParticles.Play();
+    }
+
     public void SetStartingTile()
     {
         AddTileToMaze();
@@ -266,10 +282,12 @@ public class Tile : MonoBehaviour
     public void ResetTile()
     {
         _crossings = 0;
-        _isDead = false;
+        HasCrystal = false;
+        _flashAlpha = 1f;
+        _flashRenderer.material = _tileFlash;
+        _flashRenderer.enabled = false;
         RemoveTileFromMaze();
         DisableTile();
-        _rb.isKinematic = true;
-        _rb.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+        ResetColor();
     }
 }

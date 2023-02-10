@@ -61,7 +61,7 @@ public class BoardManager : MonoBehaviour
         }
 
         InstantiateColliders();
-        GameManager.Instance.UpdateGameState(GameState.Idle);
+        GameManager.Instance.UpdateGameState(GameState.Transition);
         GameManager.OnStateChanged -= GenerateBoard;
     }
 

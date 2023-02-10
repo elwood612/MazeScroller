@@ -14,6 +14,7 @@ TagManager:
   - TileSpawner
   - TileDestroyer
   - TileDeactivator
+  - Crystal
   layers:
   - Default
   - TransparentFX

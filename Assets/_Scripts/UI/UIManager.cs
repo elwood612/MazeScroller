@@ -6,24 +6,28 @@ public class UIManager : MonoBehaviour
 {
     [SerializeField] private Slider _slider;
     [SerializeField] private TextMeshProUGUI _scoreText;
+    [SerializeField] private TextMeshProUGUI _tempStageText;
 
     private void Awake()
     {
-        UpdateInstability(GameManager.Instability);
-        _slider.maxValue = GameManager.MaxInstability;
+        UpdateInstability(GameManager.Progress);
+        _slider.maxValue = GameManager.MaxProgress;
         UpdateScore(0);
+        UpdateStage(GameManager.Stage);
     }
 
     private void OnEnable()
     {
-        GameManager.OnInstabilityChanged += UpdateInstability;
+        GameManager.OnProgressChanged += UpdateInstability;
         GameManager.OnScoreChanged += UpdateScore;
+        GameManager.OnStageChanged += UpdateStage;
     }
 
     private void OnDisable()
     {
-        GameManager.OnInstabilityChanged -= UpdateInstability;
+        GameManager.OnProgressChanged -= UpdateInstability;
         GameManager.OnScoreChanged -= UpdateScore;
+        GameManager.OnStageChanged -= UpdateStage;
     }
 
     private void UpdateInstability(int amount)
@@ -35,5 +39,10 @@ public class UIManager : MonoBehaviour
     {
         _scoreText.text = score.ToString(); // can add "D2" for 2 leading digits
         // Need to add flash effect
+    }
+
+    private void UpdateStage(int stage)
+    {
+        _tempStageText.text = "Stage " + stage.ToString();
     }
 }

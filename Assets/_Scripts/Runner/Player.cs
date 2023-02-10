@@ -20,6 +20,6 @@ public class Player : Runner
 
     protected override void SelfDestruct()
     {
-        _rb.isKinematic = false;
+        //_rb.isKinematic = false;
     }
 }
