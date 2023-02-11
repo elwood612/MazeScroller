@@ -130,7 +130,6 @@ public class GameManager : MonoBehaviour
         if (RunnerHeight < 0.2f)
         {
             heightCurve = _tileSpeedCurve.Evaluate(RunnerHeight);
-            Debug.Log("Oh no, you're going too fast!");
         }
         else
         {

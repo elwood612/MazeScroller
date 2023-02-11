@@ -5266,6 +5266,9 @@ MonoBehaviour:
   _wallLayer:
     serializedVersion: 2
     m_Bits: 256
+  _pathfindingParent: {fileID: 0}
+  HasCrystal: 0
+  IsStartingTile: 0
 --- !u!65 &7255253569694343398
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -28,7 +28,7 @@ public class Tile : MonoBehaviour
     private bool _isColored = false;
     private Color _color;
     private int _crossings = 0;
-    private Tile _pathfindingParent;
+    public Tile _pathfindingParent;
     private static bool _firstTile = true;
     private WaitForSecondsRealtime _flashDelay = new WaitForSecondsRealtime(0.1f);
     private float _flashAlpha = 1f;
@@ -36,6 +36,7 @@ public class Tile : MonoBehaviour
     public static event Action<Tile> OnTileDestroy;
     public static event Action<Tile> OnTileDeactivate;
     public bool HasCrystal = false;
+    public bool IsStartingTile = false;
     public List<Wall> NeighborWalls => _neighborWalls;
     public List<Tile> NeighborTiles => _neighborTiles;
     public bool IsPartOfMaze => _isPartOfMaze;
@@ -86,15 +87,33 @@ public class Tile : MonoBehaviour
         }
     }
 
+    //private void OnTriggerExit(Collider other)
+    //{
+    //    if (other.CompareTag("TileDeactivator"))
+    //    {
+    //        TileOffscreen();
+    //    }
+    //}
+
+    //private void TileOffscreen()
+    //{
+    //    foreach (Tile tile in _neighborTiles)
+    //    {
+    //        GetWallBetween(tile).SetWallAsPath();
+    //    }
+    //}
+
     private void PlayerCrossing(IRunner runner)
     {
         SetMaterial(_tileCrossed);
         if (_isColored) { runner.ChangeColor(_color); }
         ResetColor();
         _crossings++;
+        _pathfindingParent = null;
         runner.PreviousTile = runner.CurrentTile;
         runner.CurrentTile = this;
         runner.CalculateNextTargetWrapper(this);
+        GameManager.Score++;
     }
 
     private void SpawnTile()
@@ -124,7 +143,7 @@ public class Tile : MonoBehaviour
     {
         if (!_parentRow.HasSetupBeenRun || !_isEnabled) { return; }
 
-        GameManager.Score += _crossings;
+        //GameManager.Score += _crossings;
 
         if (_isPartOfMaze) 
         { 
@@ -133,8 +152,8 @@ public class Tile : MonoBehaviour
         }
         if (_crossings > 0)
         {
-            _flashRenderer.enabled = true;
-            StartCoroutine(TileFlash());
+            //_flashRenderer.enabled = true;
+            //StartCoroutine(TileFlash());
             SetMaterial(_tileCrossed);
         }
 
@@ -287,6 +306,7 @@ public class Tile : MonoBehaviour
     {
         AddTileToMaze();
         _parentRow.IsHighestDrawnRow = true;
+        IsStartingTile = true;
         DrawMaze.HighestDrawnRow = _parentRow;
         foreach (Wall wall in _neighborWalls)
         {

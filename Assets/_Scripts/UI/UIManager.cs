@@ -8,8 +8,11 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _scoreText;
     [SerializeField] private TextMeshProUGUI _livesText;
 
+    private AudioSource _audioSource;
+
     private void Awake()
     {
+        _audioSource = GetComponent<AudioSource>();
         UpdateInstability(GameManager.Progress);
         _slider.maxValue = GameManager.MaxProgress;
         UpdateScore(0);
@@ -44,5 +47,10 @@ public class UIManager : MonoBehaviour
     private void UpdateLives(int lives)
     {
         _livesText.text = "Lives: " + lives.ToString();
+    }
+
+    public void Settings()
+    {
+        //_audioSource.PlayOneShot(_audioSource.clip);
     }
 }

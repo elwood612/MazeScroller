@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,12 +10,14 @@ public class Runner : MonoBehaviour, IRunner
     private ParticleSystem.MainModule _particlesMainModule;
 
     private Tile _currentTile;
-    private Tile _currentTarget;
-    private Tile _nextTarget;
+    public Tile _currentTarget;
+    public Tile _nextTarget;
     private Tile _previousTile;
-    private List<Tile> _uncrossedTilesInMaze = new List<Tile>();
+    private List<Tile> _uncrossedTiles = new List<Tile>();
     private float _currentSpeed;
-    private bool _runnerStopped = true;
+    private int _colliderCheck = 0;
+    public bool _runnerStopped = true;
+    public bool _runnerOffScreen = false;
     private bool _approachingDeadEnd = false;
     private bool _particlesStart = true;
     private AnimationCurve _speedCurve;
@@ -43,14 +46,15 @@ public class Runner : MonoBehaviour, IRunner
     {
         GameManager.AddBoardMotion(transform);
         CalculateSpeed();
-        if (_uncrossedTilesInMaze.Count > 0) { Move(); }
+        if (_uncrossedTiles.Count > 0) { Move(); }
         GameManager.RunnerHeight = Camera.main.WorldToScreenPoint(transform.position).y / Screen.height;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("TileCenter"))
+        if (other.CompareTag("TileCenter") && _colliderCheck == 0)
         {
+            _colliderCheck++;
             SetTarget(other.GetComponentInParent<Tile>());
             //if (_particlesStart)
             //{
@@ -60,12 +64,18 @@ public class Runner : MonoBehaviour, IRunner
         }
         else if (other.CompareTag("TileDestroyer"))
         {
-            SelfDestruct();
+            _runnerOffScreen = true;
+            CalculateNextTargetWrapper(_currentTile);
         }
         else if (other.CompareTag("Crystal"))
         {
             ChangeColor(Color.white);
         }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("TileCenter")) { _colliderCheck = 0; }
     }
 
     private void CalculateSpeed() // this needs to change
@@ -84,9 +94,8 @@ public class Runner : MonoBehaviour, IRunner
     {
         RemoveTileFromPath(_currentTile);
 
-        if (_uncrossedTilesInMaze.Count == 0)
+        if (_uncrossedTiles.Count == 0)
         {
-            _runnerStopped = true;
             DrawMaze.OnTileAdded += SetTarget;
             return;
         }
@@ -94,8 +103,8 @@ public class Runner : MonoBehaviour, IRunner
         {
             if (_runnerStopped)
             {
-                _runnerStopped = false;
                 CalculateNextTargetWrapper(_currentTile);
+                _runnerStopped = false;
             }
             DrawMaze.OnTileAdded -= SetTarget;
         }
@@ -106,9 +115,27 @@ public class Runner : MonoBehaviour, IRunner
 
     private IEnumerator CalculateNextTarget(Tile tile) // On tile edge
     {
-        _approachingDeadEnd = tile.NeighborPaths.Count == 1;
+        _approachingDeadEnd = _currentTile.NeighborPaths.Count == 1;
 
         if (_currentTile.NeighborPaths.Count == 0) { yield break; }
+
+        //if (_runnerStopped && !_currentTile.IsStartingTile) // should get you out of a jam if you get stuck
+        //{
+        //    yield return new WaitUntil(() => ExecutePathfinding(_currentTile, tile)); // possibly pathfind to most recent uncrossed tile??
+        //    _nextTarget = GetPathfindingPath(_currentTile);
+        //    _currentTarget = _nextTarget;
+        //    _runnerStopped = false;
+        //    yield break;
+        //}
+
+        if (_runnerOffScreen)
+        {
+            Debug.Log("Pathfinding from off-screen");
+            yield return new WaitUntil(() => ExecutePathfinding(_currentTile, _uncrossedTiles[0]));
+            _nextTarget = GetPathfindingPath(_currentTile);
+            _runnerOffScreen = false;
+            yield break;
+        }
 
         if (GetPathfindingPath(_currentTile) != _currentTile)
         {
@@ -120,6 +147,7 @@ public class Runner : MonoBehaviour, IRunner
         {
             case 1:
             case 2:
+                //Debug.Log("No pathfinding found");
                 _nextTarget = GetOldestCrossedPath(_currentTile);
                 break;
             case 3:
@@ -130,7 +158,7 @@ public class Runner : MonoBehaviour, IRunner
                 }
                 else
                 {
-                    yield return new WaitUntil(() => ExecutePathfinding(_currentTile, _uncrossedTilesInMaze[0]));
+                    yield return new WaitUntil(() => ExecutePathfinding(_currentTile, _uncrossedTiles[0]));
                     _nextTarget = GetPathfindingPath(_currentTile);
                 }
                 break;
@@ -191,6 +219,8 @@ public class Runner : MonoBehaviour, IRunner
 
     private bool ExecutePathfinding(Tile startTile, Tile endTile)
     {
+        ClearPathfinding(); // should help with bugs
+
         Queue<Tile> openSet = new Queue<Tile>();
         HashSet<Tile> closedSet = new HashSet<Tile>();
         openSet.Enqueue(startTile);
@@ -217,8 +247,40 @@ public class Runner : MonoBehaviour, IRunner
                 }
             }
         }
-        Debug.Log("Whelp. Something went wrong");
-        return false; // should never happen inshallah
+        Debug.Log("Whelp, something went wrong, teleporting to safety.");
+        Teleport(endTile);
+        return true;
+    }
+
+    // Not quite working
+    // There shouldn't be pathfinding happening AFTER the teleport (OnTileDrawn), yet there is
+    private void Teleport(Tile endTile)
+    {
+        ClearPathfinding();
+        
+        _runnerStopped = true;
+        _runnerOffScreen = false;
+        _currentTile = endTile;
+        _currentTarget = endTile;
+        
+        ResetUncrossedTiles();
+
+        transform.position = endTile.transform.position;
+    }
+
+    private void ClearPathfinding()
+    {
+        foreach (Tile tile in BoardManager.AllTiles) { tile.PathfindingParent = null; }
+        foreach (Wall wall in BoardManager.AllWalls) { wall.IsPathfindingPath = false; }
+    }
+
+    private void ResetUncrossedTiles()
+    {
+        _uncrossedTiles.Clear();
+        foreach (Tile tile in BoardManager.AllTiles)
+        {
+            if (tile.IsPartOfMaze && tile.Crossings == 0) { _uncrossedTiles.Add(tile); }
+        }
     }
 
     private void RetracePathfindingPath(Tile startTile, Tile finishTile)
@@ -233,13 +295,14 @@ public class Runner : MonoBehaviour, IRunner
 
     protected void AddTileToPath(Tile tile)
     {
+        _uncrossedTiles.Add(tile);
         if (_approachingDeadEnd) { CalculateNextTargetWrapper(_currentTile); }
-        _uncrossedTilesInMaze.Add(tile);
     }
 
     protected void RemoveTileFromPath(Tile tile)
     {
-        if (_uncrossedTilesInMaze.Contains(tile)) { _uncrossedTilesInMaze.Remove(tile); }
+        if (_uncrossedTiles.Contains(tile)) { _uncrossedTiles.Remove(tile); }
+        if (_uncrossedTiles.Count == 0) { _runnerStopped = true; }
     }
 
     protected virtual void SelfDestruct()
