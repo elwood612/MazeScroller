@@ -35,6 +35,7 @@ public class Row : MonoBehaviour
     {
         if (other.CompareTag("RowReset")) { ResetRow(); }
         else if (other.CompareTag("RowSetup")) { SetupRow(); }
+        else if (other.CompareTag("RowQA")) { CheckRow(); }
     }
 
     private float CalculateHeight()
@@ -57,6 +58,33 @@ public class Row : MonoBehaviour
         {
             OnRowSetup?.Invoke();
             _hasSetupBeenRun = true;
+        }
+    }
+
+    private void CheckRow()
+    {
+        if (GameManager.CurrentState == GameState.Transition) { return; }
+
+        bool canPathThrough = false;
+        bool canPathAroundColor = false;
+        bool isColor = false;
+
+        foreach (Tile t in _enabledTiles)
+        {
+            if (t.IsColored) { isColor = true; }
+            if (t.GetNeighborTile(Vector3.forward).IsEnabled && t.GetNeighborTile(Vector3.back).IsEnabled)
+            {
+                canPathThrough = true;
+                if (!t.IsColored) { canPathAroundColor = true; }
+            }
+            if (t.DisallowCrystal() && t.AttachedCrystal != null) { t.RemoveCrystal(); }
+        }
+
+        // temporary
+        foreach (Tile t in GetComponentsInChildren<Tile>())
+        {
+            if (!canPathThrough && !_enabledTiles.Contains(t)) { t.SpawnTile(); }
+            if (!canPathAroundColor && isColor && _enabledTiles.Contains(t)) { t.SetAsColored(false); }
         }
     }
 }

@@ -8,12 +8,14 @@ public class BoardManager : MonoBehaviour
     [SerializeField] private GameObject _tileDestroyCollider;
     [SerializeField] private GameObject _rowResetCollider;
     [SerializeField] private GameObject _rowSetupCollider;
+    [SerializeField] private GameObject _rowQACollider;
     [SerializeField] private float _safetyMargin;
 
     private static List<Tile> _allTiles = new List<Tile>();
     private static List<Wall> _allWalls = new List<Wall>();
     private Vector3 _rowResetPos;
     private Vector3 _rowSetupPos;
+    private Vector3 _rowQAPos;
     private Vector3 _tileSpawnerPos;
     private Vector3 _tileDestroyPos;
     private float _destroyMargin = 1f;
@@ -32,6 +34,7 @@ public class BoardManager : MonoBehaviour
         Vector3 topOfScreen = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height, 100));
         _rowResetPos = new Vector3(transform.position.x, transform.position.y, bottomOfScreen.z - _safetyMargin);
         _rowSetupPos = new Vector3(transform.position.x, transform.position.y, topOfScreen.z + _safetyMargin);
+        _rowQAPos = new Vector3(transform.position.x, transform.position.y, topOfScreen.z + _destroyMargin);
         _tileSpawnerPos = new Vector3(transform.position.x, transform.position.y, topOfScreen.z + _safetyMargin - 1.1f * GameManager.TileLength);
         _tileDestroyPos = new Vector3(transform.position.x, transform.position.y, bottomOfScreen.z - _destroyMargin);
 
@@ -83,6 +86,7 @@ public class BoardManager : MonoBehaviour
     {
         Instantiate(_rowResetCollider, transform);
         Instantiate(_rowSetupCollider, _rowSetupPos, Quaternion.identity, transform);
+        Instantiate(_rowQACollider, _rowQAPos, Quaternion.identity, transform);
         Instantiate(_tileSpawnerPrefab, _tileSpawnerPos, Quaternion.identity, transform);
         Instantiate(_tileDestroyCollider, _tileDestroyPos, Quaternion.identity, transform);
     }

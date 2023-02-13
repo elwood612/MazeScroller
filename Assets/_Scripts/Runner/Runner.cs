@@ -6,22 +6,18 @@ using UnityEngine;
 public class Runner : MonoBehaviour, IRunner
 {
     [SerializeField] private Renderer[] _renderers;
-    [SerializeField] private ParticleSystem _particles;
-    private ParticleSystem.MainModule _particlesMainModule;
 
     private Tile _currentTile;
-    public Tile _currentTarget;
-    public Tile _nextTarget;
+    private Tile _currentTarget;
+    private Tile _nextTarget;
     private Tile _previousTile;
     private List<Tile> _uncrossedTiles = new List<Tile>();
     private float _currentSpeed;
     private int _colliderCheck = 0;
-    public bool _runnerStopped = true;
-    public bool _runnerOffScreen = false;
+    private bool _runnerStopped = true;
+    private bool _runnerOffScreen = false;
     private bool _approachingDeadEnd = false;
-    private bool _particlesStart = true;
     private AnimationCurve _speedCurve;
-    protected Rigidbody _rb;
 
     public Tile CurrentTile
     {
@@ -37,9 +33,6 @@ public class Runner : MonoBehaviour, IRunner
     private void Awake()
     {
         _speedCurve = GameManager.Instance.RunnerSpeedCurve;
-        _rb = GetComponent<Rigidbody>();
-        _particlesMainModule = _particles.main;
-        ChangeColor(Color.white);
     }
 
     private void OnEnable()
@@ -70,20 +63,11 @@ public class Runner : MonoBehaviour, IRunner
         {
             _colliderCheck++;
             SetTarget(other.GetComponentInParent<Tile>());
-            //if (_particlesStart)
-            //{
-            //    _particlesMainModule.customSimulationSpace = other.transform;
-            //    _particlesStart = false;
-            //}
         }
         else if (other.CompareTag("TileDestroyer"))
         {
             _runnerOffScreen = true;
             CalculateNextTargetWrapper(_currentTile);
-        }
-        else if (other.CompareTag("Crystal"))
-        {
-            ChangeColor(Color.white);
         }
     }
 
@@ -144,7 +128,6 @@ public class Runner : MonoBehaviour, IRunner
 
         if (_runnerOffScreen)
         {
-            Debug.Log("Pathfinding from off-screen");
             yield return new WaitUntil(() => ExecutePathfinding(_currentTile, _uncrossedTiles[0]));
             _nextTarget = GetPathfindingPath(_currentTile);
             _runnerOffScreen = false;
@@ -161,7 +144,6 @@ public class Runner : MonoBehaviour, IRunner
         {
             case 1:
             case 2:
-                //Debug.Log("No pathfinding found");
                 _nextTarget = GetOldestCrossedPath(_currentTile);
                 break;
             case 3:
@@ -322,14 +304,5 @@ public class Runner : MonoBehaviour, IRunner
     public void CalculateNextTargetWrapper(Tile tile)
     {
         StartCoroutine(CalculateNextTarget(tile));
-    }
-
-    public void ChangeColor(Color color)
-    {
-        foreach (var renderer in _renderers)
-        {
-            renderer.material.color = color;
-        }
-        // also set trail
     }
 }

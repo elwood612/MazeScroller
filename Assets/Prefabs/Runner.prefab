@@ -5071,12 +5071,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2663821295767816423}
-  - component: {fileID: 5111100603068765210}
+  - component: {fileID: 7907450556452591095}
   - component: {fileID: 1993844521352827490}
   - component: {fileID: 4579177560185085507}
   m_Layer: 10
-  m_Name: Player
-  m_TagString: Player
+  m_Name: Runner
+  m_TagString: Runner
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5098,7 +5098,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5111100603068765210
+--- !u!114 &7907450556452591095
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5107,7 +5107,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2663821295767816422}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1313182f3f57ea469add58d353199fd, type: 3}
+  m_Script: {fileID: 11500000, guid: 1903871dab3bbcf49ab47184378b302b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _renderers:

@@ -233,11 +233,6 @@ MonoBehaviour:
   _particlesExplosion: {fileID: 2740910353732975463}
   _particlesExplosionMissile: {fileID: 5368291365614741686}
   _missilePrefab: {fileID: 4604828465646090591, guid: 4ce8cbdca9d5e844bbf82a6bae6d5993, type: 3}
-  _materials:
-  - {fileID: 2100000, guid: c2752f7364e711d4684a92bc714fa085, type: 2}
-  - {fileID: 2100000, guid: ada91bbb970fa4744b7cc7b0e093dc1b, type: 2}
-  - {fileID: 2100000, guid: 3c6b02cdd0351ef4484d9cb187b80b5e, type: 2}
-  - {fileID: 2100000, guid: 0399af2cc1f4e23479dd252cdbf4a70e, type: 2}
 --- !u!1 &2527750835083253968
 GameObject:
   m_ObjectHideFlags: 0
@@ -461,7 +456,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.41176474, g: 1, b: 0, a: 1}
+      maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -5352,7 +5347,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0, g: 1, b: 0, a: 1}
+      maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}

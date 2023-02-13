@@ -15,6 +15,7 @@ TagManager:
   - TileDestroyer
   - TileDeactivator
   - Crystal
+  - RowQA
   layers:
   - Default
   - TransparentFX

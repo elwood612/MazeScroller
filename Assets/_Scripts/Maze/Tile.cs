@@ -7,7 +7,9 @@ using Random = UnityEngine.Random;
 public class Tile : MonoBehaviour
 {
     [SerializeField] private Crystal _crystalPrefab;
-    [SerializeField] private Renderer _renderer;
+    [SerializeField] private Renderer _tileRenderer;
+    [SerializeField] private Renderer _colorRenderer;
+    [SerializeField] private Renderer _deadEndRenderer;
     [SerializeField] private Renderer _flashRenderer;
     [SerializeField] private Renderer _colorBorderRenderer;
     [SerializeField] private ParticleSystem _colorParticles;
@@ -26,17 +28,19 @@ public class Tile : MonoBehaviour
     private bool _isPartOfMaze = false;
     private bool _isEnabled = false;
     private bool _isColored = false;
-    private Color _color;
     private int _crossings = 0;
     public Tile _pathfindingParent;
     private static bool _firstTile = true;
     private WaitForSecondsRealtime _flashDelay = new WaitForSecondsRealtime(0.1f);
     private float _flashAlpha = 1f;
+    private float _colorShift = 50;
+    private Material _tileBaseColored;
 
     public static event Action<Tile> OnTileDestroy;
     public static event Action<Tile> OnTileDeactivate;
-    public bool HasCrystal = false;
+    public static event Action<Crystal> OnCrystalRemoval;
     public bool IsStartingTile = false;
+    public Crystal AttachedCrystal;
     public List<Wall> NeighborWalls => _neighborWalls;
     public List<Tile> NeighborTiles => _neighborTiles;
     public bool IsPartOfMaze => _isPartOfMaze;
@@ -53,6 +57,14 @@ public class Tile : MonoBehaviour
     {
         get => _pathfindingParent;
         set => _pathfindingParent = value;
+    }
+
+    private void Awake()
+    {
+        _parentRow = transform.GetComponentInParent<Row>();
+        _colorRenderer.enabled = false;
+        _deadEndRenderer.enabled = false;
+        DisableTile();
     }
 
     private void OnEnable()
@@ -87,13 +99,16 @@ public class Tile : MonoBehaviour
         }
     }
 
-    //private void OnTriggerExit(Collider other)
-    //{
-    //    if (other.CompareTag("TileDeactivator"))
-    //    {
-    //        TileOffscreen();
-    //    }
-    //}
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Runner"))
+        {
+            if (_isColored && _neighborPaths.Count > 1)
+            {
+                Debug.Log("You messed up the dead end!");
+            }
+        }
+    }
 
     //private void TileOffscreen()
     //{
@@ -106,8 +121,7 @@ public class Tile : MonoBehaviour
     private void PlayerCrossing(IRunner runner)
     {
         SetMaterial(_tileCrossed);
-        if (_isColored) { runner.ChangeColor(_color); }
-        ResetColor();
+        if (IsDeadEnd() && _isColored) { PrimeDeadEnd(); }
         _crossings++;
         _pathfindingParent = null;
         runner.PreviousTile = runner.CurrentTile;
@@ -116,25 +130,15 @@ public class Tile : MonoBehaviour
         GameManager.Score++;
     }
 
-    private void SpawnTile()
+    public void SpawnTile()
     {
         if (!_parentRow.HasSetupBeenRun) { return; }
-
-        //float chance = Mathf.Clamp((GameManager.Progress / GameManager.MaxProgress) / 2, 0.1f, 0.5f);
-        //if (GameManager.Progress > 10) 
-        //{ 
-        //    if (Random.Range(0f, 1f) < chance)
-        //    {
-        //        _color = Color.yellow;
-        //    }
-        //}
 
         EnableTile();
         foreach (Wall wall in _neighborWalls)
         {
             wall.EnableWall();  
         }
-        //if (_color != Color.white) { SetColor(_color); }
         if (_firstTile) { SetStartingTile(); }
         _firstTile = false;
     }
@@ -143,62 +147,49 @@ public class Tile : MonoBehaviour
     {
         if (!_parentRow.HasSetupBeenRun || !_isEnabled) { return; }
 
-        //GameManager.Score += _crossings;
-
         if (_isPartOfMaze) 
         { 
             RemoveTileFromMaze();
-            //SpawnProtectiveWall();
         }
         if (_crossings > 0)
         {
-            //_flashRenderer.enabled = true;
-            //StartCoroutine(TileFlash());
             SetMaterial(_tileCrossed);
         }
 
         OnTileDestroy?.Invoke(this);
     }
 
-    private void SpawnProtectiveWall()
-    {
-        foreach (Wall wall in _neighborWalls)
-        {
-            if (GameManager.CompareVectors(wall.transform.position, transform.position + Vector3.forward * GameManager.TileLength / 2))
-            {
-                wall.SetWallAsHiddenBorder();
-            }
-            //else
-            //{
-            //    wall.HideWall();
-            //}
-        }
-    }
+    //private IEnumerator TileFlash()
+    //{
+    //    yield return _flashDelay;
+    //    while (_flashAlpha > 0)
+    //    {
+    //        _flashAlpha -= 0.05f;
+    //        Color newColor = _flashRenderer.material.color;
+    //        newColor.a = _flashAlpha;
+    //        _flashRenderer.material.color = newColor;
+    //    }
+    //}
 
-    private IEnumerator TileFlash()
-    {
-        yield return _flashDelay;
-        while (_flashAlpha > 0)
-        {
-            _flashAlpha -= 0.05f;
-            Color newColor = _flashRenderer.material.color;
-            newColor.a = _flashAlpha;
-            _flashRenderer.material.color = newColor;
-        }
-    }
-
-    private void ResetColor()
-    {
-        _isColored = false;
-        _colorBorderRenderer.enabled = false;
-        _colorParticles.Stop();
-    }
+    //private void SetColoredColor()
+    //{
+    //    float hue, S, V;
+    //    _tileBaseColored = new Material(_tileBase);
+    //    Color.RGBToHSV(_tileBaseColored.color, out hue, out S, out V);
+    //    hue += _colorShift;
+    //    Color newColor = Color.HSVToRGB(hue, S, V);
+    //    _tileBaseColored.color = newColor;
+    //}
 
     public void DisableTile(bool onSpawn = false)
     {
-        _renderer.enabled = false;
-        ResetColor();
+        _tileRenderer.enabled = false;
+        SetAsColored(false);
         _isEnabled = false;
+        if (_parentRow.EnabledTiles.Contains(this))
+        {
+            _parentRow.EnabledTiles.Remove(this);
+        }
 
         if (!onSpawn) { return; }
 
@@ -210,14 +201,14 @@ public class Tile : MonoBehaviour
 
     private void EnableTile()
     {
-        _renderer.enabled = true;
+        _tileRenderer.enabled = true;
         _isEnabled = true;
         _parentRow.EnabledTiles.Add(this);
     }
 
     private void SetMaterial(Material material)
     {
-        _renderer.material = material;
+        _tileRenderer.material = material;
     }   
 
     private void GetNeighbors()
@@ -237,21 +228,6 @@ public class Tile : MonoBehaviour
                 _neighborTiles.Add(tile);
             }
         }
-    }
-
-    private void Initialize()
-    {
-        _parentRow = transform.GetComponentInParent<Row>();
-        _flashRenderer.material = _tileFlash;
-        _flashRenderer.enabled = false;
-        _colorParticlesMainModule = _colorParticles.main;
-        _colorBorderRenderer.enabled = false;
-        DisableTile();
-    }
-
-    private void Awake()
-    {
-        Initialize();
     }
 
     public void AddTileToMaze()
@@ -292,14 +268,38 @@ public class Tile : MonoBehaviour
         return _neighborWalls[0];
     }
 
-    public void SetColor(Color color)
+    public bool DisallowCrystal()
     {
-        _isColored = true;
-        _color = color;
-        _colorBorderRenderer.enabled = true;
-        _colorBorderRenderer.material.color = color;
-        _colorParticlesMainModule.startColor = color;
-        _colorParticles.Play();
+        int counter = 0;
+        foreach (Tile tile in _neighborTiles)
+        {
+            if (tile.IsEnabled) { counter++; }
+        }
+        return counter <= 1;
+    }
+
+    public void RemoveCrystal()
+    {
+        OnCrystalRemoval?.Invoke(AttachedCrystal);
+        AttachedCrystal = null;
+    }
+
+    public bool IsDeadEnd()
+    {
+        return _neighborPaths.Count == 1;
+    }
+
+    public void SetAsColored(bool input)
+    {
+        _isColored = input;
+        _colorRenderer.enabled = input;
+    }
+
+    public void PrimeDeadEnd() // not working dude
+    {
+        _deadEndRenderer.enabled = true;
+        _colorRenderer.enabled = false;
+        _colorRenderer.transform.LookAt(GetNeighborTile(_neighborPaths[0].transform.position - transform.position).transform, Vector3.up);
     }
 
     public void SetStartingTile()
@@ -318,12 +318,9 @@ public class Tile : MonoBehaviour
     public void ResetTile()
     {
         _crossings = 0;
-        HasCrystal = false;
-        _flashAlpha = 1f;
-        _flashRenderer.material = _tileFlash;
-        _flashRenderer.enabled = false;
         RemoveTileFromMaze();
         DisableTile();
-        ResetColor();
+        SetAsColored(false);
+        _deadEndRenderer.enabled = false;
     }
 }

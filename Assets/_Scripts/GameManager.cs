@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private GM_Settings _settings;
     [SerializeField] private GameObject _runnerPrefab;
-    [SerializeField] private int _startingProgress;
+    [SerializeField] private bool _debugMode;
 
     private AnimationCurve _tileSpeedCurve;
     private AnimationCurve _runnerSpeedCurve;
@@ -104,11 +104,15 @@ public class GameManager : MonoBehaviour
         if (Instance == null) { Instance = this; }
         else { Destroy(this); }
 
-        _progress = _startingProgress;
         _tileSpeedCurve = _settings.TileSpeedCurve;
         _runnerSpeedCurve = _settings.RunnerSpeedCurve;
         _tileSpawnerWidthCurve = _settings.TileSpawnerWidthCurve;
         _tileLength = GameObject.FindGameObjectWithTag("Tile").GetComponent<BoxCollider>().bounds.size.x;
+
+        if (_debugMode)
+        {
+            Camera.main.GetComponent<AudioSource>().Stop();
+        }
     }
 
     private void Start()

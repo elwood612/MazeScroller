@@ -49,4 +49,5 @@ MonoBehaviour:
   _tileDestroyCollider: {fileID: 5309334656680371276, guid: 751fff2e2d700104dac9da317de9fc2c, type: 3}
   _rowResetCollider: {fileID: 7405094935564437863, guid: 3c15379df765bdf47823fcea9e07e6f4, type: 3}
   _rowSetupCollider: {fileID: 4030078712270320930, guid: 7a1b79d118b8a8347a7f3f3c2bd77f83, type: 3}
+  _rowQACollider: {fileID: 4030078712270320930, guid: 748b8285dbd420742b2634fec2be4045, type: 3}
   _safetyMargin: 50

@@ -18,11 +18,11 @@ public class OrbitMissile : MonoBehaviour
         transform.RotateAround(transform.parent.position, transform.parent.up, -180 * Time.deltaTime);
     }
 
-    public void Spawn(Vector3 localPos, int missileIndex, int level)
+    public void Spawn(int index, int level)
     {
         gameObject.SetActive(true);
-        transform.localPosition = localPos;
-        transform.RotateAround(transform.parent.position, transform.parent.up, missileIndex * (360 / level));
+        transform.localPosition = new Vector3(3.5f, 2, 0);
+        transform.RotateAround(transform.parent.position, transform.parent.up, index * (360 / level));
         _particlesNormal.Play();
         _renderer.enabled = true;
     }

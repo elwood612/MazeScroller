@@ -9,10 +9,12 @@ public class TileSpawner : MonoBehaviour
     [SerializeField] private OrbitMissile _missilePrefab;
     [SerializeField] private Color[] _colors; 
 
-    private int _disableTileCounter = 0;
+    private int _counterDisableTile = 0;
     private int _randomDisableTile = 5;
-    private int _crystalSpawnCounter = 0;
+    private int _counterSpawnCrystal = 0;
     private int _randomCrystalSpawn = 5;
+    private int _counterSpawnColor = 0;
+    private int _randomColorSpawn = 5;
     private int _crystalMaxColors = 0;
     public float _width = 0.5f;
     private float _minWidth = 0.5f;
@@ -25,7 +27,8 @@ public class TileSpawner : MonoBehaviour
     private Vector3 _scaleTarget;
     private Vector3 _positionVelocity = Vector3.zero;
     private Vector3 _scaleVelocity = Vector3.zero;
-    private WaitForSeconds _crystalDelay = new WaitForSeconds(0.5f);
+    private WaitForSeconds _crystalDelay = new WaitForSeconds(0.8f);
+    private WaitForSeconds _colorDelay = new WaitForSeconds(0.4f);
     private ObjectPool<Crystal> _crystalPool;
 
     private void Awake()
@@ -35,6 +38,16 @@ public class TileSpawner : MonoBehaviour
         _middleOfScreen = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height, 100)).x;
         _edgeOfScreen = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 100)).x;
         InitializeCrystalPool();
+    }
+
+    private void OnEnable()
+    {
+        Tile.OnCrystalRemoval += RemoveCrystal;
+    }
+
+    private void OnDisable()
+    {
+        Tile.OnCrystalRemoval -= RemoveCrystal;
     }
 
     private void InitializeCrystalPool()
@@ -61,21 +74,26 @@ public class TileSpawner : MonoBehaviour
         {
             if (GameManager.CurrentState == GameState.Transition) { return; }
 
-            if (++_disableTileCounter > _randomDisableTile)
+            if (++_counterDisableTile > _randomDisableTile)
             {
-                _disableTileCounter = 0;
-                _randomDisableTile = Random.Range(2, 5);
-                int tilesToDisable = 1;
-                StartCoroutine(DisableRandomTile(other.GetComponent<Row>(), tilesToDisable));
+                _counterDisableTile = 0;
+                StartCoroutine(DisableRandomTile(other.GetComponent<Row>()));
             }
 
-            if (++_crystalSpawnCounter > _randomCrystalSpawn && _width > 1.1f)
+            if (++_counterSpawnColor > _randomColorSpawn)
             {
-                _crystalSpawnCounter = 0;
-                _randomCrystalSpawn = Random.Range(1, 2);
-                int level = Mathf.RoundToInt(Random.Range(0f, GameManager.Progress * 4f / GameManager.MaxProgress));
+                _counterSpawnColor = 0;
+                StartCoroutine(SpawnColor(other.GetComponent<Row>()));
+            }
+
+            if (++_counterSpawnCrystal > _randomCrystalSpawn && _width > 1.1f)
+            {
+                _counterSpawnCrystal = 0;
+                int level = Mathf.RoundToInt(Random.Range(0f, GameManager.Progress * 4f / GameManager.MaxProgress)); 
                 StartCoroutine(SpawnRandomCrystal(other.GetComponent<Row>(), level));
             }
+
+            
         }
     }
 
@@ -137,18 +155,23 @@ public class TileSpawner : MonoBehaviour
         _scaleTarget = new Vector3(_width * GameManager.TileLength, 1, 1);
     }
 
-    private IEnumerator DisableRandomTile(Row row, int amount)
+    private IEnumerator DisableRandomTile(Row row)
     {
         yield return null;
-        if (row.EnabledTiles.Count <= 1) { yield break; }
         Tile tile = row.EnabledTiles[Random.Range(0, row.EnabledTiles.Count)];
-        tile.DisableTile(true);
+        if (row.EnabledTiles.Count <= 1) { yield break; }
 
-        if (amount == 1) { yield break; }
-        for (int i = 0; i < amount; i++)
-        {
-            tile.NeighborTiles[Random.Range(0, tile.NeighborTiles.Count)].DisableTile();
-        }
+        _randomDisableTile = Mathf.RoundToInt(Random.Range(2f * 3 / row.EnabledTiles.Count, 5f * 3 / row.EnabledTiles.Count));
+        tile.DisableTile(true);
+    }
+
+    private IEnumerator SpawnColor(Row row)
+    {
+        yield return _colorDelay;
+        Tile tile = row.EnabledTiles[Random.Range(0, row.EnabledTiles.Count)];
+        if (!tile.IsEnabled || row.EnabledTiles.Count <= 1) { yield break; }
+        _randomColorSpawn = Random.Range(3, 6);
+        tile.SetAsColored(true);
     }
 
     private IEnumerator SpawnRandomCrystal(Row row, int level)
@@ -158,27 +181,14 @@ public class TileSpawner : MonoBehaviour
         if (!tile.IsEnabled || tile.IsColored) { yield break; }
 
         Crystal newCrystal = _crystalPool.Get();
-        Color color = _colors[Random.Range(0, GameManager.Stage)]; // needs to depend on Stage
-        if (color != Color.white)
-        {
-            color = Random.Range(0f, 1f) < 0.5f ? Color.white : color; // Temp, should make colors rarer
-        }
         newCrystal.transform.SetParent(tile.transform, false);
-        newCrystal.Initialize(level, _crystalPool, color);
-        tile.HasCrystal = true;
+        newCrystal.Initialize(level, _crystalPool);
+        _randomCrystalSpawn = Random.Range(1, 2);
+        tile.AttachedCrystal = newCrystal;
+    }
 
-        if (color == Color.white) { yield break; }
-        List<Tile> tiles = new List<Tile>();
-        foreach (Tile t in BoardManager.AllTiles)
-        {
-            if (Vector3.Distance(t.transform.position, tile.transform.position) < GameManager.TileLength * 3 + 0.5f && 
-                t.transform.position.z <= tile.transform.position.z &&
-                t.IsEnabled &&  
-                !t.HasCrystal)
-            {
-                tiles.Add(t);
-            }
-        }
-        tiles[Random.Range(0, tiles.Count)].SetColor(color);
+    public void RemoveCrystal(Crystal crystal)
+    {
+        _crystalPool.Release(crystal);
     }
 }
