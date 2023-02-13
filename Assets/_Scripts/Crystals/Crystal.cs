@@ -32,7 +32,7 @@ public class Crystal : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && !_destroyed)
+        if (other.CompareTag("Runner") && !_destroyed)
         {
             if (_level == 0)
             {
@@ -55,9 +55,10 @@ public class Crystal : MonoBehaviour
     {
         for (int i = 0; i < _level; i++)
         {
-            _orbitMissiles[i].gameObject.SetActive(true);
-            _orbitMissiles[i].transform.localPosition = new Vector3(3.5f, 2, 0);
-            _orbitMissiles[i].transform.RotateAround(transform.position, transform.up, i * (360 / _level));
+            _orbitMissiles[i].Spawn(new Vector3(3.5f, 2, 0), i, _level);
+            //_orbitMissiles[i].gameObject.SetActive(true);
+            //_orbitMissiles[i].transform.localPosition = new Vector3(3.5f, 2, 0);
+            //_orbitMissiles[i].transform.RotateAround(transform.position, transform.up, i * (360 / _level));
         }
     }
 

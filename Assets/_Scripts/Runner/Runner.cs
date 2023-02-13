@@ -42,6 +42,20 @@ public class Runner : MonoBehaviour, IRunner
         ChangeColor(Color.white);
     }
 
+    private void OnEnable()
+    {
+        DrawMaze.OnTileAdded += AddTileToPath;
+        DrawMaze.OnTileRemoved += RemoveTileFromPath;
+        Tile.OnTileDestroy += RemoveTileFromPath;
+    }
+
+    private void OnDisable()
+    {
+        DrawMaze.OnTileAdded -= AddTileToPath;
+        DrawMaze.OnTileRemoved -= RemoveTileFromPath;
+        Tile.OnTileDestroy -= RemoveTileFromPath;
+    }
+
     private void Update()
     {
         GameManager.AddBoardMotion(transform);
@@ -303,11 +317,6 @@ public class Runner : MonoBehaviour, IRunner
     {
         if (_uncrossedTiles.Contains(tile)) { _uncrossedTiles.Remove(tile); }
         if (_uncrossedTiles.Count == 0) { _runnerStopped = true; }
-    }
-
-    protected virtual void SelfDestruct()
-    {
-        // override in inheriting classes
     }
 
     public void CalculateNextTargetWrapper(Tile tile)
