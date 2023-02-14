@@ -4,38 +4,29 @@ using TMPro;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField] private Slider _slider;
     [SerializeField] private TextMeshProUGUI _scoreText;
-    [SerializeField] private TextMeshProUGUI _livesText;
-
-    private AudioSource _audioSource;
+    [SerializeField] private Slider _speedSlider;
+    [SerializeField] private Slider _tileSlider;
 
     private void Awake()
     {
-        _audioSource = GetComponent<AudioSource>();
-        UpdateInstability(GameManager.Progress);
-        _slider.maxValue = GameManager.MaxProgress;
         UpdateScore(0);
-        UpdateLives(GameManager.Lives);
+        _tileSlider.value = 20;
+        _speedSlider.value = 20;
     }
 
     private void OnEnable()
     {
-        GameManager.OnProgressChanged += UpdateInstability;
         GameManager.OnScoreChanged += UpdateScore;
-        GameManager.OnLivesChanged += UpdateLives;
+        GameManager.OnSpeedBonusChanged += UpdateSpeedBonus;
+        GameManager.OnTileBonusChanged += UpdateTileBonus;
     }
 
     private void OnDisable()
     {
-        GameManager.OnProgressChanged -= UpdateInstability;
         GameManager.OnScoreChanged -= UpdateScore;
-        GameManager.OnLivesChanged -= UpdateLives;
-    }
-
-    private void UpdateInstability(int amount)
-    {
-        _slider.value = amount;
+        GameManager.OnSpeedBonusChanged -= UpdateSpeedBonus;
+        GameManager.OnTileBonusChanged -= UpdateTileBonus;
     }
 
     private void UpdateScore(int score)
@@ -44,9 +35,14 @@ public class UIManager : MonoBehaviour
         // Need to add flash effect
     }
 
-    private void UpdateLives(int lives)
+    private void UpdateSpeedBonus(int amount)
     {
-        _livesText.text = "Lives: " + lives.ToString();
+        _speedSlider.value = amount;
+    }
+
+    private void UpdateTileBonus(int amount)
+    {
+        _tileSlider.value = amount;
     }
 
     public void Settings()

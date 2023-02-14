@@ -150,6 +150,9 @@ public class TileSpawner : MonoBehaviour
                 case 4:
                     _width = Random.Range(3.2f, 4.8f);
                     break;
+                default:
+                    _width = Random.Range(1.2f, 3.8f);
+                    break;
             }
         }
         _scaleTarget = new Vector3(_width * GameManager.TileLength, 1, 1);

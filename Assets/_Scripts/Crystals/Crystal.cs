@@ -66,7 +66,7 @@ public class Crystal : MonoBehaviour
     private void EndOfBoardContact()
     {
         StartCoroutine(Explode());
-        GameManager.Lives--;
+        Debug.Log("Lower speed bonus here");
         for (int i = 0; i < _level; i++)
         {
             DestroyOrbitMissile(_orbitMissiles[_level - 1]);

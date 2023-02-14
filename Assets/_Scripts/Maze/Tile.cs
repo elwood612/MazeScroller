@@ -9,26 +9,25 @@ public class Tile : MonoBehaviour
     [SerializeField] private Crystal _crystalPrefab;
     [SerializeField] private Renderer _tileRenderer;
     [SerializeField] private Renderer _colorRenderer;
-    [SerializeField] private Renderer _deadEndRenderer;
     [SerializeField] private Renderer _flashRenderer;
-    [SerializeField] private Renderer _colorBorderRenderer;
     [SerializeField] private ParticleSystem _colorParticles;
+    [SerializeField] private ParticleSystem _deadEndSuccessParticles;
     [SerializeField] private Material _tileBase;
     [SerializeField] private Material _tileDrawn;
     [SerializeField] private Material _tileDead;
     [SerializeField] private Material _tileFlash;
     [SerializeField] private Material _tileCrossed;
+    [SerializeField] private GameObject _tileDeadEnd;
     [SerializeField] private LayerMask _wallLayer;
 
-    private ParticleSystem.MainModule _colorParticlesMainModule;
     private Row _parentRow;
     private List<Wall> _neighborWalls = new List<Wall>();
-    private List<Wall> _neighborPaths = new List<Wall>();
     private List<Tile> _neighborTiles = new List<Tile>();
     private bool _isPartOfMaze = false;
     private bool _isEnabled = false;
-    private bool _isColored = false;
-    private int _crossings = 0;
+    public bool _isColored = false;
+    private bool _deadEndPrimed = false;
+    public int _crossings = 0;
     public Tile _pathfindingParent;
     private static bool _firstTile = true;
     private WaitForSecondsRealtime _flashDelay = new WaitForSecondsRealtime(0.1f);
@@ -41,6 +40,7 @@ public class Tile : MonoBehaviour
     public static event Action<Crystal> OnCrystalRemoval;
     public bool IsStartingTile = false;
     public Crystal AttachedCrystal;
+    public List<Wall> NeighborPaths = new List<Wall>();
     public List<Wall> NeighborWalls => _neighborWalls;
     public List<Tile> NeighborTiles => _neighborTiles;
     public bool IsPartOfMaze => _isPartOfMaze;
@@ -48,11 +48,6 @@ public class Tile : MonoBehaviour
     public bool IsColored => _isColored;
     public int Crossings => _crossings;
     public Row ParentRow => _parentRow;
-    public List<Wall> NeighborPaths
-    {
-        get => _neighborPaths;
-        set => _neighborPaths = value;
-    }
     public Tile PathfindingParent
     {
         get => _pathfindingParent;
@@ -63,7 +58,7 @@ public class Tile : MonoBehaviour
     {
         _parentRow = transform.GetComponentInParent<Row>();
         _colorRenderer.enabled = false;
-        _deadEndRenderer.enabled = false;
+        _tileDeadEnd.SetActive(false);
         DisableTile();
     }
 
@@ -99,63 +94,40 @@ public class Tile : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Runner"))
-        {
-            if (_isColored && _neighborPaths.Count > 1)
-            {
-                Debug.Log("You messed up the dead end!");
-            }
-        }
-    }
-
-    //private void TileOffscreen()
-    //{
-    //    foreach (Tile tile in _neighborTiles)
-    //    {
-    //        GetWallBetween(tile).SetWallAsPath();
-    //    }
-    //}
-
     private void PlayerCrossing(IRunner runner)
     {
         SetMaterial(_tileCrossed);
-        if (IsDeadEnd() && _isColored) { PrimeDeadEnd(); }
         _crossings++;
         _pathfindingParent = null;
         runner.PreviousTile = runner.CurrentTile;
         runner.CurrentTile = this;
         runner.CalculateNextTargetWrapper(this);
         GameManager.Score++;
-    }
 
-    public void SpawnTile()
-    {
-        if (!_parentRow.HasSetupBeenRun) { return; }
-
-        EnableTile();
-        foreach (Wall wall in _neighborWalls)
+        if (_isColored)
         {
-            wall.EnableWall();  
+            if (NeighborPaths.Count == 1)
+            {
+                _colorParticles.Stop();
+                _deadEndSuccessParticles.Play();
+                _colorRenderer.enabled = false;
+            }
+            else if (NeighborPaths.Count > 1)
+            {
+                GameManager.Instance.UpdateTileBonus(-100);
+                SetAsColored(false);
+            }
         }
-        if (_firstTile) { SetStartingTile(); }
-        _firstTile = false;
     }
 
     private void DestroyTile()
     {
         if (!_parentRow.HasSetupBeenRun || !_isEnabled) { return; }
-
-        if (_isPartOfMaze) 
+        if (_crossings == 0) 
         { 
-            RemoveTileFromMaze();
+            GetComponent<ParticleSystem>().Play();
+            GameManager.Instance.UpdateTileBonus(-30);
         }
-        if (_crossings > 0)
-        {
-            SetMaterial(_tileCrossed);
-        }
-
         OnTileDestroy?.Invoke(this);
     }
 
@@ -181,24 +153,6 @@ public class Tile : MonoBehaviour
     //    _tileBaseColored.color = newColor;
     //}
 
-    public void DisableTile(bool onSpawn = false)
-    {
-        _tileRenderer.enabled = false;
-        SetAsColored(false);
-        _isEnabled = false;
-        if (_parentRow.EnabledTiles.Contains(this))
-        {
-            _parentRow.EnabledTiles.Remove(this);
-        }
-
-        if (!onSpawn) { return; }
-
-        foreach (Wall wall in _neighborWalls)
-        {
-            wall.TryDisable();
-        }
-    }
-
     private void EnableTile()
     {
         _tileRenderer.enabled = true;
@@ -209,7 +163,13 @@ public class Tile : MonoBehaviour
     private void SetMaterial(Material material)
     {
         _tileRenderer.material = material;
-    }   
+    }
+
+    private void ResetDeadEnd()
+    {
+        _tileDeadEnd.SetActive(false);
+        _deadEndPrimed = false;
+    }
 
     private void GetNeighbors()
     {
@@ -230,16 +190,64 @@ public class Tile : MonoBehaviour
         }
     }
 
+    public void SpawnTile()
+    {
+        if (!_parentRow.HasSetupBeenRun) { return; }
+
+        EnableTile();
+        foreach (Wall wall in _neighborWalls)
+        {
+            wall.EnableWall();
+        }
+        if (_firstTile) { SetStartingTile(); }
+        _firstTile = false;
+    }
+
+    public void DisableTile(bool onSpawn = false)
+    {
+        _tileRenderer.enabled = false;
+        SetAsColored(false);
+        _isEnabled = false;
+        if (_parentRow.EnabledTiles.Contains(this))
+        {
+            _parentRow.EnabledTiles.Remove(this);
+        }
+
+        if (!onSpawn) { return; }
+
+        foreach (Wall wall in _neighborWalls)
+        {
+            wall.TryDisable();
+        }
+    }
+
     public void AddTileToMaze()
     {
         _isPartOfMaze = true;
         SetMaterial(_tileDrawn);
+        //if (_isColored) 
+        //{
+        //    _tileDeadEnd.SetActive(true);
+        //    _tileDeadEnd.transform.LookAt();
+        //}
     }
 
     public void RemoveTileFromMaze()
     {
         _isPartOfMaze = false;
         SetMaterial(_tileBase);
+    }
+
+    public void SetTileAsDeadEnd(Transform wall)
+    {
+        _tileDeadEnd.SetActive(true);
+        _tileDeadEnd.transform.LookAt(wall);
+        _deadEndPrimed = true;
+    }
+
+    public void UndoDeadEnd()
+    {
+        if (_deadEndPrimed) { _tileDeadEnd.SetActive(false); }
     }
 
     public Tile GetNeighborTile(Vector3 direction)
@@ -284,22 +292,11 @@ public class Tile : MonoBehaviour
         AttachedCrystal = null;
     }
 
-    public bool IsDeadEnd()
-    {
-        return _neighborPaths.Count == 1;
-    }
-
     public void SetAsColored(bool input)
     {
         _isColored = input;
         _colorRenderer.enabled = input;
-    }
-
-    public void PrimeDeadEnd() // not working dude
-    {
-        _deadEndRenderer.enabled = true;
-        _colorRenderer.enabled = false;
-        _colorRenderer.transform.LookAt(GetNeighborTile(_neighborPaths[0].transform.position - transform.position).transform, Vector3.up);
+        _colorParticles.Play();
     }
 
     public void SetStartingTile()
@@ -319,8 +316,10 @@ public class Tile : MonoBehaviour
     {
         _crossings = 0;
         RemoveTileFromMaze();
+        SetMaterial(_tileBase);
         DisableTile();
         SetAsColored(false);
-        _deadEndRenderer.enabled = false;
+        ResetDeadEnd();
+        NeighborPaths.Clear();
     }
 }

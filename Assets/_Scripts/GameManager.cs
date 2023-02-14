@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using Unity.VisualScripting.YamlDotNet.Core.Tokens;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -13,6 +15,8 @@ public class GameManager : MonoBehaviour
     private AnimationCurve _tileSpawnerWidthCurve;
     private float _defaultSpeed = 1f;
     private float _minSpeed = 0.5f;
+    private WaitForSeconds _bonusLongDelay = new WaitForSeconds(10f);
+    private WaitForSeconds _bonusShortDelay = new WaitForSeconds(2f);
     private bool _startOfGame = true;
     private static int _transitionCounter = 0;
     private static float _maxSpeed = 50f;
@@ -23,20 +27,26 @@ public class GameManager : MonoBehaviour
     private static int _score = 0;
     private static int _stage = 1;
     private static int _prevStage = 1;
-    private static int _lives = 5;
+    private static int _tileBonus = 20;
+    private static int _speedBonus = 20;
     private static Vector3 _tileSpeed = Vector3.zero;
     private static Vector3 _boardLength;
+    private static bool _isTileBonusDeactivated = false;
+    private static bool _isSpeedBonusDeactivated = false;
 
     public static GameState CurrentState;
     public static event Action<GameState> OnStateChanged;
     public static event Action<int> OnProgressChanged;
     public static event Action<int> OnScoreChanged;
     public static event Action<int> OnStageChanged;
-    public static event Action<int> OnLivesChanged;
+    public static event Action<int> OnTileBonusChanged;
+    public static event Action<int> OnSpeedBonusChanged;
+
     public static GameManager Instance;
     public static float HighestDrawnRowHeight;
     public static float RunnerHeight;
     public static int NumberOfRows;
+    
     public static float TileLength => _tileLength;
     public static Vector3 BoardLength => _boardLength;
     public static float TileSpeed => Mathf.Abs(_tileSpeed.z);
@@ -45,6 +55,8 @@ public class GameManager : MonoBehaviour
     public static int MaxProgress => _maxProgress;
     public static float MaxSpeed => _maxSpeed;
     public static int Stage => _stage;
+    public static int SpeedBonus => _speedBonus;
+    public static int TileBonus => _tileBonus;
     public static int Progress
     {
         get => _progress;
@@ -55,7 +67,7 @@ public class GameManager : MonoBehaviour
                 if (CurrentState == GameState.Transition) 
                 { 
                     _transitionCounter++;
-                    if (_transitionCounter > 20)
+                    if (_transitionCounter > 10)
                     {
                         Instance.UpdateGameState(GameState.Progressing);
                         _transitionCounter = 0;
@@ -82,22 +94,10 @@ public class GameManager : MonoBehaviour
         get => _score;
         set
         {
-            _score = value;
+            _score = value + _tileBonus / 5 + _speedBonus / 5;
             OnScoreChanged?.Invoke(value);
         }
     }
-    public static int Lives
-    {
-        get => _lives;
-        set
-        {
-            _lives = value;
-            Debug.Log("Lost a life");
-            OnLivesChanged?.Invoke(value);
-            if (_lives < 0) { Debug.Log("Game over!"); }
-        }
-    }
-
 
     private void Awake()
     {
@@ -153,6 +153,13 @@ public class GameManager : MonoBehaviour
         if (Instance == this) { Instance = null; }
     }
 
+    private IEnumerator ReduceTileBonus(WaitForSeconds delay)
+    {
+        Debug.Log("Can't increase tile bonus yet");
+        yield return delay;
+        _isTileBonusDeactivated = false;
+    }
+
     public void UpdateGameState(GameState newState)
     {
         if (CurrentState == newState && newState != GameState.Setup) { return; } // avoids spamming events for no reason
@@ -175,6 +182,38 @@ public class GameManager : MonoBehaviour
                 break;
         }
         OnStateChanged?.Invoke(newState);
+    }
+
+    // How this should work:
+    // Spend too long on EITHER bonus at < 10, fail the stage
+    // Spend too long on BOTH bonuses at < 100, fail the stage
+    public void UpdateTileBonus(int amount)
+    {
+        if (amount < 0)
+        {
+            if (amount == 100)
+            {
+                StopCoroutine(ReduceTileBonus(_bonusLongDelay));
+                StartCoroutine(ReduceTileBonus(_bonusLongDelay));
+            }
+            else
+            {
+                StopCoroutine(ReduceTileBonus(_bonusShortDelay));
+                StartCoroutine(ReduceTileBonus(_bonusShortDelay));
+            }
+            
+            _isTileBonusDeactivated = true;
+            _tileBonus = amount >= _tileBonus ? 0 : _tileBonus - amount;
+            OnTileBonusChanged?.Invoke(_tileBonus);
+        }
+        else
+        {
+            if (!_isTileBonusDeactivated)
+            {
+                _tileBonus += amount;
+                OnTileBonusChanged?.Invoke(_tileBonus);
+            }
+        }
     }
 
     public void SpawnPlayer(Transform tile)

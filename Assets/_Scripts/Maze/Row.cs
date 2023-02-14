@@ -48,6 +48,7 @@ public class Row : MonoBehaviour
     {
         transform.position += GameManager.BoardLength;
         _enabledTiles.Clear();
+        if (_hasSetupBeenRun) { GameManager.Instance.UpdateTileBonus(1); }
         OnRowReset?.Invoke();
     }
 

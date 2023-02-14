@@ -66,6 +66,11 @@ public class Wall : MonoBehaviour
             if (_isPath)
             {
                 tile.NeighborPaths.Add(this);
+                if (tile.IsColored)
+                {
+                    if (tile.NeighborPaths.Count == 1) { tile.SetTileAsDeadEnd(transform); }
+                    else { tile.UndoDeadEnd(); }
+                }
             }
             else
             {
