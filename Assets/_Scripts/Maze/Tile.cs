@@ -114,7 +114,7 @@ public class Tile : MonoBehaviour
             }
             else if (NeighborPaths.Count > 1)
             {
-                GameManager.Instance.UpdateTileBonus(-100);
+                GameManager.Instance.DecreaseTileBonus(100);
                 SetAsColored(false);
             }
         }
@@ -126,7 +126,11 @@ public class Tile : MonoBehaviour
         if (_crossings == 0) 
         { 
             GetComponent<ParticleSystem>().Play();
-            GameManager.Instance.UpdateTileBonus(-30);
+            GameManager.Instance.DecreaseTileBonus(30);
+        }
+        else
+        {
+            GameManager.Instance.IncreaseTileBonus(1);
         }
         OnTileDestroy?.Invoke(this);
     }

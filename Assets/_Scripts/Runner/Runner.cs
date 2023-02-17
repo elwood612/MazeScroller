@@ -144,7 +144,15 @@ public class Runner : MonoBehaviour, IRunner
         {
             case 1:
             case 2:
-                _nextTarget = GetOldestCrossedPath(_currentTile);
+                if (GetOldestCrossedPath(_currentTile) != _currentTile)
+                {
+                    _nextTarget = GetOldestCrossedPath(_currentTile);
+                }
+                else
+                {
+                    yield return new WaitUntil(() => ExecutePathfinding(_currentTile, _uncrossedTiles[0]));
+                    _nextTarget = GetPathfindingPath(_currentTile);
+                }
                 break;
             case 3:
             case 4:

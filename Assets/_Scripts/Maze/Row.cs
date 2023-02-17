@@ -36,6 +36,7 @@ public class Row : MonoBehaviour
         if (other.CompareTag("RowReset")) { ResetRow(); }
         else if (other.CompareTag("RowSetup")) { SetupRow(); }
         else if (other.CompareTag("RowQA")) { CheckRow(); }
+        else if (other.CompareTag("TileDestroyer") && _hasSetupBeenRun) { GameManager.Progress(); }
     }
 
     private float CalculateHeight()
@@ -48,13 +49,11 @@ public class Row : MonoBehaviour
     {
         transform.position += GameManager.BoardLength;
         _enabledTiles.Clear();
-        if (_hasSetupBeenRun) { GameManager.Instance.UpdateTileBonus(1); }
         OnRowReset?.Invoke();
     }
 
     private void SetupRow()
     {
-        GameManager.Progress++;
         if (!_hasSetupBeenRun) 
         {
             OnRowSetup?.Invoke();
@@ -68,24 +67,40 @@ public class Row : MonoBehaviour
 
         bool canPathThrough = false;
         bool canPathAroundColor = false;
-        bool isColor = false;
+        bool isBoxedInByColor = true;
+        bool isAColor = false;
 
         foreach (Tile t in _enabledTiles)
         {
-            if (t.IsColored) { isColor = true; }
+            if (t.IsColored) { isAColor = true; }
             if (t.GetNeighborTile(Vector3.forward).IsEnabled && t.GetNeighborTile(Vector3.back).IsEnabled)
             {
                 canPathThrough = true;
                 if (!t.IsColored) { canPathAroundColor = true; }
             }
             if (t.DisallowCrystal() && t.AttachedCrystal != null) { t.RemoveCrystal(); }
+
+            int paths = 0;
+            int blockedPaths = 0;
+            foreach (Tile neighbor in t.NeighborTiles)
+            {
+                if (!t.IsEnabled) { continue; }
+                paths++;
+                if (neighbor.IsColored)
+                {
+                    blockedPaths++;
+                }
+            }
+            if (paths > blockedPaths) { isBoxedInByColor = false; }
         }
 
-        // temporary
         foreach (Tile t in GetComponentsInChildren<Tile>())
         {
-            if (!canPathThrough && !_enabledTiles.Contains(t)) { t.SpawnTile(); }
-            if (!canPathAroundColor && isColor && _enabledTiles.Contains(t)) { t.SetAsColored(false); }
+            if (!canPathThrough && !t.IsEnabled) { t.SpawnTile(); } // this is currently overkill
+            if (!canPathAroundColor && isAColor && t.IsEnabled) { t.SetAsColored(false); }
+            if (isBoxedInByColor && isAColor && t.IsEnabled) { t.SetAsColored(false); }
+            //if (t.IsColored && t.GetNeighborTile(Vector3.right).NeighborPaths.Count == 1) { t.SetAsColored(false); }
+            //if (t.IsColored && t.GetNeighborTile(Vector3.left).NeighborPaths.Count == 1) { t.SetAsColored(false); }
         }
     }
 }
