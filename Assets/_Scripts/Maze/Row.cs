@@ -35,8 +35,12 @@ public class Row : MonoBehaviour
     {
         if (other.CompareTag("RowReset")) { ResetRow(); }
         else if (other.CompareTag("RowSetup")) { SetupRow(); }
-        else if (other.CompareTag("RowQA")) { CheckRow(); }
-        else if (other.CompareTag("TileDestroyer") && _hasSetupBeenRun) { GameManager.Progress(); }
+        else if (other.CompareTag("RowQA")) 
+        { 
+            CheckRow(); 
+            if (_hasSetupBeenRun) { GameManager.Progress(); }
+        }
+        //else if (other.CompareTag("TileSpawner") && _hasSetupBeenRun) { GameManager.Progress(); }
     }
 
     private float CalculateHeight()

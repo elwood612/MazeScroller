@@ -23,8 +23,8 @@ public class TileSpawner : MonoBehaviour
     private float _delta = 0.1f;
     private bool _toggle = false;
     private float _middleOfScreen, _edgeOfScreen;
-    private Vector3 _positionTarget;
-    private Vector3 _scaleTarget;
+    private Vector3 _targetPosition;
+    private Vector3 _targetScale;
     private Vector3 _positionVelocity = Vector3.zero;
     private Vector3 _scaleVelocity = Vector3.zero;
     private WaitForSeconds _crystalDelay = new WaitForSeconds(0.8f);
@@ -46,8 +46,8 @@ public class TileSpawner : MonoBehaviour
     #region Initialization
     private void Awake()
     {
-        _positionTarget = transform.position;
-        _scaleTarget = transform.localScale;
+        _targetPosition = transform.position;
+        _targetScale = transform.localScale;
         _middleOfScreen = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height, 100)).x;
         _edgeOfScreen = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 100)).x;
         InitializeCrystalPool();
@@ -114,11 +114,11 @@ public class TileSpawner : MonoBehaviour
 
     private void Update()
     {
-        if (Vector3.Magnitude(transform.position - _positionTarget) < _delta) 
+        if (Vector3.Magnitude(transform.position - _targetPosition) < _delta) 
         { 
-            SetNewPosition();
+            SetNewPosition(GameManager.CurrentState);
         }
-        if (Vector3.Magnitude(transform.localScale - _scaleTarget) < _delta)
+        if (Vector3.Magnitude(transform.localScale - _targetScale) < _delta)
         {
             SetNewScale(GameManager.CurrentState);
         }
@@ -127,20 +127,38 @@ public class TileSpawner : MonoBehaviour
 
     private void UpdateSizeAndPosition()
     {
-        if (GameManager.CurrentState == GameState.Transition) { _smooth = 3f; }
-        else { _smooth = Mathf.Clamp(GameManager.MaxSpeed / GameManager.TileSpeed, 3f, 80f); }
-        
-        transform.localScale = Vector3.SmoothDamp(transform.localScale, _scaleTarget, ref _scaleVelocity, _smooth / 4);
-        transform.position = Vector3.SmoothDamp(transform.position, _positionTarget, ref _positionVelocity, _smooth);
+        if (GameManager.CurrentState == GameState.Transition)
+        {
+            transform.localScale = _targetScale;
+            transform.position = _targetPosition;
+        }
+        else if (GameManager.CurrentState == GameState.Progressing)
+        {
+            _smooth = Mathf.Clamp(GameManager.MaxSpeed / GameManager.TileSpeed, 3f, 80f);
+            transform.localScale = Vector3.SmoothDamp(transform.localScale, _targetScale, ref _scaleVelocity, _smooth / 4);
+            transform.position = Vector3.SmoothDamp(transform.position, _targetPosition, ref _positionVelocity, _smooth);
+        }
+
+        //if (GameManager.CurrentState == GameState.Transition) { _smooth = 0.5f; }
+        //else { _smooth = Mathf.Clamp(GameManager.MaxSpeed / GameManager.TileSpeed, 3f, 80f); }
+
+        //transform.localScale = Vector3.SmoothDamp(transform.localScale, _targetScale, ref _scaleVelocity, _smooth / 4);
+        //transform.position = Vector3.SmoothDamp(transform.position, _targetPosition, ref _positionVelocity, _smooth);
     }
 
-    private void SetNewPosition()
+    private void SetNewPosition(GameState state)
     {
-        int sign = _toggle ? 1 : -1;
-        _toggle = _toggle ? false : true;
-
-        _xPos = Random.Range(_middleOfScreen, _edgeOfScreen - _width * GameManager.TileLength / 2);
-        _positionTarget = new Vector3(_xPos * sign, transform.position.y, transform.position.z);
+        if (state == GameState.Transition)
+        {
+            _xPos = _middleOfScreen;
+        }
+        else if (state == GameState.Progressing)
+        {
+            int sign = _toggle ? 1 : -1;
+            _toggle = _toggle ? false : true;
+            _xPos = sign * Random.Range(_middleOfScreen, _edgeOfScreen - _width * GameManager.TileLength / 2);
+        }
+        _targetPosition = new Vector3(_xPos, transform.position.y, transform.position.z);
     }
 
     private void SetNewScale(GameState state)
@@ -153,7 +171,7 @@ public class TileSpawner : MonoBehaviour
         {
             _width = Random.Range(_widthMin, _widthMax);
         }
-        _scaleTarget = new Vector3(_width * GameManager.TileLength, 1, 1);
+        _targetScale = new Vector3(_width * GameManager.TileLength, 1, 1);
     }
 
     private IEnumerator DisableRandomTile(Row row) // no longer disabling tiles???

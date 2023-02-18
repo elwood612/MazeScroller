@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
 
     private AnimationCurve _tileSpeedCurve;
     private AnimationCurve _runnerSpeedCurve;
+    private AnimationCurve _runnerTransitionCurve;
     private AnimationCurve _tileSpawnerWidthCurve;
     private float _defaultSpeed = 1f;
     private float _averageSpeed;
@@ -38,6 +39,7 @@ public class GameManager : MonoBehaviour
     private static int _tileBonus = 100;
     private static int _speedBonus = 100;
     private static Vector3 _tileSpeed = Vector3.zero;
+    private static Vector3 _transitionSpeed = new Vector3(0, 0, -40);
     private static Vector3 _boardLength;
     private static bool _canIncreaseTileBonus = false;
     private static bool _canIncreaseSpeedBonus = false;
@@ -55,11 +57,13 @@ public class GameManager : MonoBehaviour
     public static float HighestDrawnRowHeight;
     public static float RunnerHeight;
     public static int NumberOfRows;
+    public static bool IsRunnerInTransition = false;
 
     public static float TileLength => _tileLength;
     public static Vector3 BoardLength => _boardLength;
     public static float TileSpeed => Mathf.Abs(_tileSpeed.z);
     public AnimationCurve RunnerSpeedCurve => _runnerSpeedCurve;
+    public AnimationCurve RunnerTransitionCurve => _runnerTransitionCurve;
     public AnimationCurve TileSpawnerWidthCurve => _tileSpawnerWidthCurve;
     public static int StageLength => _stageLength;
     public static float MaxSpeed => _maxSpeed;
@@ -89,6 +93,7 @@ public class GameManager : MonoBehaviour
 
         _tileSpeedCurve = _settings.TileSpeedCurve;
         _runnerSpeedCurve = _settings.RunnerSpeedCurve;
+        _runnerTransitionCurve = _settings.RunnerTransitionCurve;
         _tileSpawnerWidthCurve = _settings.TileSpawnerWidthCurve;
         _tileLength = GameObject.FindGameObjectWithTag("Tile").GetComponent<BoxCollider>().bounds.size.x;
 
@@ -333,11 +338,23 @@ public class GameManager : MonoBehaviour
 
     public static void AddBoardMotion(Transform t)
     {
-        t.Translate(_tileSpeed * Time.deltaTime);
+        if (IsRunnerInTransition)
+        {
+            t.Translate(_transitionSpeed * Time.deltaTime);
+        }
+        else if (!IsRunnerInTransition)
+        {
+            t.Translate(_tileSpeed * Time.deltaTime);
+        }
     }
 
     public static bool CompareVectors(Vector3 v1, Vector3 v2)
     {
         return Vector3Int.RoundToInt(v1) == Vector3Int.RoundToInt(v2);
+    }
+
+    public GameObject GetCurrentRunner()
+    {
+        return _runnerPrefab;
     }
 }

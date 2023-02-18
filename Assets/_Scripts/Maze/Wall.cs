@@ -10,7 +10,7 @@ public class Wall : MonoBehaviour
     [SerializeField] private Renderer _glowRendererRight;
 
     private bool _isBorder;
-    private bool _isPath;
+    public bool _isPath;
     public bool _isPathfindingPath;
     private bool _isHidden = false;
     private int _crossings = 0;

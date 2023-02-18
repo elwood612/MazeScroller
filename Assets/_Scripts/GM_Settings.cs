@@ -5,5 +5,6 @@ public class GM_Settings : ScriptableObject
 {
     public AnimationCurve TileSpeedCurve;
     public AnimationCurve RunnerSpeedCurve;
+    public AnimationCurve RunnerTransitionCurve;
     public AnimationCurve TileSpawnerWidthCurve;
 }

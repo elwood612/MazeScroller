@@ -25,11 +25,12 @@ public class Tile : MonoBehaviour
     private List<Tile> _neighborTiles = new List<Tile>();
     private bool _isPartOfMaze = false;
     private bool _isEnabled = false;
-    public bool _isColored = false;
+    private bool _isColored = false;
     private bool _deadEndPrimed = false;
-    public int _crossings = 0;
-    public Tile _pathfindingParent;
+    private int _crossings = 0;
+    private Tile _pathfindingParent;
     private static bool _firstTile = true;
+    private static bool _comingOutOfTransition = false;
     private WaitForSecondsRealtime _flashDelay = new WaitForSecondsRealtime(0.1f);
     private float _flashAlpha = 1f;
     private float _colorShift = 50;
@@ -39,6 +40,7 @@ public class Tile : MonoBehaviour
     public static event Action<Tile> OnTileDeactivate;
     public static event Action<Crystal> OnCrystalRemoval;
     public bool IsStartingTile = false;
+    public bool IsTransitionTile = false;
     public Crystal AttachedCrystal;
     public List<Wall> NeighborPaths = new List<Wall>();
     public List<Wall> NeighborWalls => _neighborWalls;
@@ -102,6 +104,8 @@ public class Tile : MonoBehaviour
         runner.PreviousTile = runner.CurrentTile;
         runner.CurrentTile = this;
         runner.CalculateNextTargetWrapper(this);
+        if (IsTransitionTile && !runner.IsInTransition) { runner.BeginTransition(); }
+        if (!IsTransitionTile && runner.IsInTransition) { runner.BeginStage(); }
         GameManager.Score++;
 
         if (_isColored)
@@ -203,8 +207,38 @@ public class Tile : MonoBehaviour
         {
             wall.EnableWall();
         }
+
         if (_firstTile) { SetStartingTile(); }
         _firstTile = false;
+        
+        if (GameManager.CurrentState == GameState.Transition)
+        {
+            //_comingOutOfTransition = true;
+            IsTransitionTile = true;
+            AddTileToMaze();
+            if (!IsStartingTile) { DrawMaze.TileAddingItselfToMaze(this); }
+            Tile t = GetNeighborTile(Vector3.back);
+            foreach (Wall wall in _neighborWalls)
+            {
+                if (wall == GetWallBetween(t) && !IsStartingTile) { wall.SetWallAsPath(); }
+                else { wall.SetWallAsBorder(); }
+            }
+        }
+        //else if (GameManager.CurrentState == GameState.Progressing)
+        //{
+        //    Debug.Log("Spawning last tile");
+        //    Tile t = GetNeighborTile(Vector3.back);
+        //    if (t.IsTransitionTile)
+        //    {
+        //        AddTileToMaze();
+        //        foreach (Wall wall in _neighborWalls)
+        //        {
+        //            if (wall == GetWallBetween(t)) { wall.SetWallAsPath(); }
+        //            else { wall.SetWallAsBorder(); }
+        //        }
+        //    }
+        //    //_comingOutOfTransition = false;
+        //}
     }
 
     public void DisableTile(bool onSpawn = false)
@@ -229,11 +263,6 @@ public class Tile : MonoBehaviour
     {
         _isPartOfMaze = true;
         SetMaterial(_tileDrawn);
-        //if (_isColored) 
-        //{
-        //    _tileDeadEnd.SetActive(true);
-        //    _tileDeadEnd.transform.LookAt();
-        //}
     }
 
     public void RemoveTileFromMaze()
@@ -308,17 +337,20 @@ public class Tile : MonoBehaviour
         AddTileToMaze();
         _parentRow.IsHighestDrawnRow = true;
         IsStartingTile = true;
-        DrawMaze.HighestDrawnRow = _parentRow;
         foreach (Wall wall in _neighborWalls)
         {
             wall.SetWallAsBorder();
         }
+
+        DrawMaze.HighestDrawnRow = _parentRow;
         GameManager.Instance.SpawnPlayer(transform);
+        GameManager.Instance.GetCurrentRunner().GetComponent<IRunner>().SetCurrentTile(this);
     }
 
     public void ResetTile()
     {
         _crossings = 0;
+        IsTransitionTile = false;
         RemoveTileFromMaze();
         SetMaterial(_tileBase);
         DisableTile();

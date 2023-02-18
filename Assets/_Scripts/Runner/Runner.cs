@@ -7,18 +7,27 @@ public class Runner : MonoBehaviour, IRunner
 {
     [SerializeField] private Renderer[] _renderers;
 
-    private Tile _currentTile;
+    public Tile _currentTile;
     private Tile _currentTarget;
     private Tile _nextTarget;
     private Tile _previousTile;
     private List<Tile> _uncrossedTiles = new List<Tile>();
+    private List<Tile> _uncrossedTransitionTiles = new List<Tile>();
     private float _currentSpeed;
     private int _colliderCheck = 0;
-    private bool _runnerStopped = true;
+    public bool _runnerStopped = true;
     private bool _runnerOffScreen = false;
     private bool _approachingDeadEnd = false;
+    private bool _isInTransition = false;
     private AnimationCurve _speedCurve;
+    private AnimationCurve _transitionCurve;
 
+    public static event Action OnTransitionReached;
+    public bool IsInTransition
+    {
+        get => _isInTransition;
+        set => _isInTransition = value;
+    }
     public Tile CurrentTile
     {
         get => _currentTile;
@@ -33,6 +42,7 @@ public class Runner : MonoBehaviour, IRunner
     private void Awake()
     {
         _speedCurve = GameManager.Instance.RunnerSpeedCurve;
+        _transitionCurve = GameManager.Instance.RunnerTransitionCurve;
     }
 
     private void OnEnable()
@@ -54,6 +64,7 @@ public class Runner : MonoBehaviour, IRunner
         GameManager.AddBoardMotion(transform);
         CalculateSpeed();
         if (_uncrossedTiles.Count > 0) { Move(); }
+        //if (_uncrossedTransitionTiles.Count > 0 && _isInTransition) { Move(); }
         GameManager.RunnerHeight = Camera.main.WorldToScreenPoint(transform.position).y / Screen.height;
     }
 
@@ -80,11 +91,20 @@ public class Runner : MonoBehaviour, IRunner
     {
         Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position);
         float height = screenPos.y / Screen.height;
-        _currentSpeed = _speedCurve.Evaluate(height) + GameManager.TileSpeed;
+
+        if (_isInTransition)
+        {
+            _currentSpeed = _transitionCurve.Evaluate(height);
+        }
+        else if (!_isInTransition)
+        {
+            _currentSpeed = _speedCurve.Evaluate(height) + GameManager.TileSpeed;
+        }
     }
 
     private void Move()
     {
+        if (_currentTarget == null) { return; }
         transform.position = Vector3.MoveTowards(transform.position, _currentTarget.transform.position, Time.deltaTime * _currentSpeed);
     }
 
@@ -95,19 +115,38 @@ public class Runner : MonoBehaviour, IRunner
         if (_uncrossedTiles.Count == 0)
         {
             DrawMaze.OnTileAdded += SetTarget;
+            _nextTarget = null;
             return;
         }
         else
         {
             if (_runnerStopped)
             {
+                //if (!_isInTransition && !_currentTile.IsStartingTile)
+                //{
+                //    foreach (Tile t in _currentTile.NeighborTiles)
+                //    {
+                //        if (t.IsTransitionTile)
+                //        {
+                //            _nextTarget = t;
+                //            goto skipAhead;
+                //        }
+                //    }
+                //}
                 CalculateNextTargetWrapper(_currentTile);
-                _runnerStopped = false;
+                //_runnerStopped = false;
             }
-            DrawMaze.OnTileAdded -= SetTarget;
+            //DrawMaze.OnTileAdded -= SetTarget;
         }
 
-        _currentTarget = _nextTarget;
+    skipAhead:
+        if (_nextTarget != null)
+        {
+            _currentTarget = _nextTarget;
+            _runnerStopped = false;
+            DrawMaze.OnTileAdded -= SetTarget;
+        }
+        
         if (_currentTarget != null) { transform.GetChild(0).LookAt(_currentTarget.transform); }
     }
 
@@ -115,7 +154,7 @@ public class Runner : MonoBehaviour, IRunner
     {
         _approachingDeadEnd = _currentTile.NeighborPaths.Count == 1;
 
-        if (_currentTile.NeighborPaths.Count == 0) { yield break; }
+        if (_currentTile.NeighborPaths.Count == 0) { Debug.Log("No neighbor paths detected"); yield break; }
 
         //if (_runnerStopped && !_currentTile.IsStartingTile) // should get you out of a jam if you get stuck
         //{
@@ -299,7 +338,9 @@ public class Runner : MonoBehaviour, IRunner
 
     protected void AddTileToPath(Tile tile)
     {
-        _uncrossedTiles.Add(tile);
+        if (!tile.IsStartingTile) { _uncrossedTiles.Add(tile); }
+        //if (!tile.IsStartingTile && !tile.IsTransitionTile) { _uncrossedTiles.Add(tile); }
+        if (tile.IsTransitionTile) { _uncrossedTransitionTiles.Add(tile); }
         if (_approachingDeadEnd) { CalculateNextTargetWrapper(_currentTile); }
     }
 
@@ -312,5 +353,23 @@ public class Runner : MonoBehaviour, IRunner
     public void CalculateNextTargetWrapper(Tile tile)
     {
         StartCoroutine(CalculateNextTarget(tile));
+    }
+
+    public void BeginTransition()
+    {
+        _isInTransition = true;
+        GameManager.IsRunnerInTransition = true;
+        OnTransitionReached?.Invoke();
+    }
+
+    public void BeginStage()
+    {
+        _isInTransition = false;
+        GameManager.IsRunnerInTransition = false;
+    }
+
+    public void SetCurrentTile(Tile tile)
+    {
+        _currentTile = tile;
     }
 }

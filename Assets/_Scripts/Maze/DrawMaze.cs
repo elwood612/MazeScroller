@@ -14,7 +14,6 @@ public class DrawMaze : MonoBehaviour
     private Tile _currentTile, _lastTile;
     private Stack<Dictionary<Tile, bool>> _tileHistory = new Stack<Dictionary<Tile, bool>>();
     private Stack<Dictionary<Wall, bool>> _wallHistory = new Stack<Dictionary<Wall, bool>>();
-    private bool _firstTileDrawn = true;
 
     public static event Action<Tile> OnTileAdded;
     public static event Action<Tile> OnTileRemoved;
@@ -43,6 +42,7 @@ public class DrawMaze : MonoBehaviour
     private void HandleRaycast()
     {
         if (GameManager.CurrentState != GameState.Transition && GameManager.CurrentState != GameState.Progressing) { return; }
+        //if (!_canRaycast) { return; }
 
         if (InputHandler.IsPressingScreen)
         {
@@ -55,10 +55,6 @@ public class DrawMaze : MonoBehaviour
             DisallowDraw();
             return;
         }
-        //else // i.e., if pressingScreen && hitting something
-        //{
-        //    GameManager.Instance.UpdateGameState(GameState.Progressing); // temp
-        //}
 
         foreach (RaycastHit hit in _hits)
         {
@@ -88,16 +84,17 @@ public class DrawMaze : MonoBehaviour
         if (_lastTile.IsPartOfMaze) { tileToAdd = tileToCheck; }
         else { tileToAdd = _lastTile; }
         tileToAdd.AddTileToMaze();
-        tileActions.Add(tileToAdd, true);
+        //tileActions.Add(tileToAdd, true);
         SetHighestDrawnRow(tileToAdd);
 
         if (_lastTile != null && _lastTile != _currentTile)
         {
-            Wall toDeactivate = GetWallToDeactivate(tileToCheck, _lastTile);
+            //Wall toDeactivate = GetWallToDeactivate(tileToCheck, _lastTile);
+            Wall toDeactivate = tileToCheck.GetWallBetween(_lastTile);
             if (toDeactivate != null)
             {
                 toDeactivate.SetWallAsPath();
-                wallActions.Add(toDeactivate, false);
+                //wallActions.Add(toDeactivate, false);
             }
         }
 
@@ -106,7 +103,7 @@ public class DrawMaze : MonoBehaviour
             if (!wall.IsBorder && !wall.IsPath)
             {
                 wall.SetWallAsBorder();
-                wallActions.Add(wall, true);
+                //wallActions.Add(wall, true);
             }
         }
 
@@ -120,8 +117,8 @@ public class DrawMaze : MonoBehaviour
 #endif
 
         OnTileAdded?.Invoke(tileToAdd);
-        _tileHistory.Push(tileActions);
-        _wallHistory.Push(wallActions);
+        //_tileHistory.Push(tileActions);
+        //_wallHistory.Push(wallActions);
     }
 
     private void DisallowDraw()
@@ -129,7 +126,6 @@ public class DrawMaze : MonoBehaviour
         if (_renderer.enabled) { DisableRenderer(); }
         _currentTile = null;
         _lastTile = null;
-        //GameManager.Instance.UpdateGameState(GameState.Transition);
     }
 
     private bool DrawConditionsNotMet(Tile tile)
@@ -142,47 +138,47 @@ public class DrawMaze : MonoBehaviour
             !AreTilesContiguous(tile, _lastTile);
     }
 
-    public void Undo()
-    {
-        if (_tileHistory.Count == 0) { return; }
+    //public void Undo()
+    //{
+    //    if (_tileHistory.Count == 0) { return; }
 
-        foreach (KeyValuePair<Tile, bool> action in _tileHistory.Peek())
-        {
-            if (action.Key.Crossings > 0) { return; } // Can't undo if runner has already been here
+    //    foreach (KeyValuePair<Tile, bool> action in _tileHistory.Peek())
+    //    {
+    //        if (action.Key.Crossings > 0) { return; } // Can't undo if runner has already been here
 
-            if (action.Value) // if tile is in maze
-            {
-                OnTileRemoved?.Invoke(action.Key);
-                action.Key.RemoveTileFromMaze();
-            }
-            else // unused for now
-            {
-                Debug.Log("ray what are you doing");
-                action.Key.AddTileToMaze();
-            }
+    //        if (action.Value) // if tile is in maze
+    //        {
+    //            OnTileRemoved?.Invoke(action.Key);
+    //            action.Key.RemoveTileFromMaze();
+    //        }
+    //        else // unused for now
+    //        {
+    //            Debug.Log("ray what are you doing");
+    //            action.Key.AddTileToMaze();
+    //        }
 
-            _tileHistory.Pop();
-        }
+    //        _tileHistory.Pop();
+    //    }
 
-        foreach (KeyValuePair<Wall, bool> action in _wallHistory.Pop())
-        {
-            if (action.Value) // if wall is a border
-            { 
-                action.Key.UndoWallAsBorder();
-            }
-            else // if wall is a path
-            { 
-                action.Key.SetWallAsBorder();
-            }
-        }
+    //    foreach (KeyValuePair<Wall, bool> action in _wallHistory.Pop())
+    //    {
+    //        if (action.Value) // if wall is a border
+    //        { 
+    //            action.Key.UndoWallAsBorder();
+    //        }
+    //        else // if wall is a path
+    //        { 
+    //            action.Key.SetWallAsBorder();
+    //        }
+    //    }
 
-        if (_tileHistory.Count == 0) { return; }
-        foreach (KeyValuePair<Tile, bool> previousTile in _tileHistory.Peek())
-        {
-            SetHighestDrawnRow(previousTile.Key, true); // update highestDrawnRow with next tile
-            break;
-        }
-    }
+    //    if (_tileHistory.Count == 0) { return; }
+    //    foreach (KeyValuePair<Tile, bool> previousTile in _tileHistory.Peek())
+    //    {
+    //        SetHighestDrawnRow(previousTile.Key, true); // update highestDrawnRow with next tile
+    //        break;
+    //    }
+    //}
 
     private bool AreTilesContiguous(Tile t1, Tile t2)
     {
@@ -196,16 +192,27 @@ public class DrawMaze : MonoBehaviour
         transform.position = pos;
     }
 
-    private void SetHighestDrawnRow(Tile tile, bool decrease = false)
+    private void DisableRenderer()
+    {
+        _renderer.enabled = false;
+    }
+
+    public static void TileAddingItselfToMaze(Tile tile)
+    {
+        SetHighestDrawnRow(tile);
+        OnTileAdded?.Invoke(tile);
+    }
+
+    public static void SetHighestDrawnRow(Tile tile, bool decrease = false)
     {
         // If we're supposed to be increasing height: bail if it turns out we're not
         // Reversed if we're supposed to be decreasing
-        if (!decrease && 
-            (tile.transform.position.z <= _highestDrawnRow.transform.position.z || tile.ParentRow.IsHighestDrawnRow)) 
-        { 
+        if (!decrease &&
+            (tile.transform.position.z <= _highestDrawnRow.transform.position.z || tile.ParentRow.IsHighestDrawnRow))
+        {
             return;
         }
-        else if (decrease && 
+        else if (decrease &&
             (tile.transform.position.z >= _highestDrawnRow.transform.position.z || tile.ParentRow.IsHighestDrawnRow))
         {
             return;
@@ -214,27 +221,5 @@ public class DrawMaze : MonoBehaviour
         _highestDrawnRow.IsHighestDrawnRow = false;
         _highestDrawnRow = tile.ParentRow;
         _highestDrawnRow.IsHighestDrawnRow = true;
-    }
-
-    private void DisableRenderer()
-    {
-        _renderer.enabled = false;
-    }
-
-    private Wall GetWallToDeactivate(Tile t1, Tile t2)
-    {
-        Vector3 pos1 = t1.transform.position;
-        Vector3 pos2 = t2.transform.position;
-        if ((pos2 - pos1).magnitude > GameManager.TileLength + 0.5f) { return null; }
-
-        Collider[] colliders = Physics.OverlapSphere((pos1 + pos2) / 2, 0.5f, _wallLayer);
-        if (colliders.Length == 0 || colliders == null) { return null; }
-
-        foreach (Collider collider in colliders)
-        {
-            if (collider.TryGetComponent(out Wall wall)) { return wall; }
-        }
-
-        return null;
     }
 }
