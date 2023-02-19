@@ -12,7 +12,7 @@ public class TileSpawner : MonoBehaviour
     private int _counterDisableTile = 0;
     private int _counterColorSpawn = 0;
     private int _counterSpawnCrystal = 0;
-    private int _triggerDisableTile = 1000;
+    private int _triggerDisableTile = 2;
     private int _triggerColorSpawn = 1000;
     private int _triggerCrystalSpawn = 1000;
     

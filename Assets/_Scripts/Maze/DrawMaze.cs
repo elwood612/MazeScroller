@@ -199,7 +199,10 @@ public class DrawMaze : MonoBehaviour
 
     public static void TileAddingItselfToMaze(Tile tile)
     {
-        SetHighestDrawnRow(tile);
+        if (!tile.IsTransitionTile)
+        {
+            SetHighestDrawnRow(tile);
+        }
         OnTileAdded?.Invoke(tile);
     }
 

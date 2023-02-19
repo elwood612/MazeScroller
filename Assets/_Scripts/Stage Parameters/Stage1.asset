@@ -18,8 +18,8 @@ MonoBehaviour:
   EasyIntro: 10
   TileSpawnerWidthMin: 1.8
   TileSpawnerWidthMax: 2.2
-  ColorSpawnChanceMin: 3
-  ColorSpawnChanceMax: 6
+  ColorSpawnChanceMin: 2
+  ColorSpawnChanceMax: 5
   CrystalSpawnChanceMin: 1000
   CrystalSpawnChanceMax: 1000
   CrystalLevelDistribution:

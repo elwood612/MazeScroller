@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     private AnimationCurve _runnerSpeedCurve;
     private AnimationCurve _runnerTransitionCurve;
     private AnimationCurve _tileSpawnerWidthCurve;
+    private GameObject _currentRunner;
     private float _defaultSpeed = 1f;
     private float _averageSpeed;
     private int _counterAverageSpeed = 0;
@@ -33,7 +34,7 @@ public class GameManager : MonoBehaviour
     private static int _stageProgress;
     private static int _stageLength = 100;
     private static int _transitionProgress;
-    private static int _transitionLength = 20;
+    private static int _transitionLength = 30;
     private static int _score = 0;
     private static int _loseCounter = 0;
     private static int _tileBonus = 100;
@@ -59,6 +60,7 @@ public class GameManager : MonoBehaviour
     public static int NumberOfRows;
     public static bool IsRunnerInTransition = false;
 
+    public GameObject CurrentRunner => _currentRunner;
     public static float TileLength => _tileLength;
     public static Vector3 BoardLength => _boardLength;
     public static float TileSpeed => Mathf.Abs(_tileSpeed.z);
@@ -332,7 +334,7 @@ public class GameManager : MonoBehaviour
 
     public void SpawnPlayer(Transform tile)
     {
-        Instantiate(_runnerPrefab, tile.position, Quaternion.identity);
+        _currentRunner = Instantiate(_runnerPrefab, tile.position, Quaternion.identity);
         _startOfGame = false;
     }
 
@@ -353,8 +355,8 @@ public class GameManager : MonoBehaviour
         return Vector3Int.RoundToInt(v1) == Vector3Int.RoundToInt(v2);
     }
 
-    public GameObject GetCurrentRunner()
-    {
-        return _runnerPrefab;
-    }
+    //public GameObject GetCurrentRunner()
+    //{
+    //    return _runnerPrefab;
+    //}
 }

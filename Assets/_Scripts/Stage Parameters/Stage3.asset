@@ -15,9 +15,10 @@ MonoBehaviour:
   StageLength: 100
   BonusRecoveryTime: 2
   MinSpeed: 10
+  EasyIntro: 5
   TileSpawnerWidthMin: 2.2
   TileSpawnerWidthMax: 3.2
-  ColorSpawnChanceMin: 3
+  ColorSpawnChanceMin: 2
   ColorSpawnChanceMax: 6
   CrystalSpawnChanceMin: 1
   CrystalSpawnChanceMax: 3

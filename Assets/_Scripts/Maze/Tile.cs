@@ -41,6 +41,7 @@ public class Tile : MonoBehaviour
     public static event Action<Crystal> OnCrystalRemoval;
     public bool IsStartingTile = false;
     public bool IsTransitionTile = false;
+    public bool IsPreTransitionTile = false;
     public Crystal AttachedCrystal;
     public List<Wall> NeighborPaths = new List<Wall>();
     public List<Wall> NeighborWalls => _neighborWalls;
@@ -104,7 +105,11 @@ public class Tile : MonoBehaviour
         runner.PreviousTile = runner.CurrentTile;
         runner.CurrentTile = this;
         runner.CalculateNextTargetWrapper(this);
-        if (IsTransitionTile && !runner.IsInTransition) { runner.BeginTransition(); }
+        //foreach (Tile tile in _neighborTiles)
+        //{
+        //    if ((tile.IsTransitionTile && !runner.IsInTransition) || IsStartingTile) { runner.BeginTransition(); }
+        //}
+        if ((IsTransitionTile || IsPreTransitionTile) && !runner.IsInTransition) { runner.BeginTransition(); }
         if (!IsTransitionTile && runner.IsInTransition) { runner.BeginStage(); }
         GameManager.Score++;
 
@@ -138,28 +143,6 @@ public class Tile : MonoBehaviour
         }
         OnTileDestroy?.Invoke(this);
     }
-
-    //private IEnumerator TileFlash()
-    //{
-    //    yield return _flashDelay;
-    //    while (_flashAlpha > 0)
-    //    {
-    //        _flashAlpha -= 0.05f;
-    //        Color newColor = _flashRenderer.material.color;
-    //        newColor.a = _flashAlpha;
-    //        _flashRenderer.material.color = newColor;
-    //    }
-    //}
-
-    //private void SetColoredColor()
-    //{
-    //    float hue, S, V;
-    //    _tileBaseColored = new Material(_tileBase);
-    //    Color.RGBToHSV(_tileBaseColored.color, out hue, out S, out V);
-    //    hue += _colorShift;
-    //    Color newColor = Color.HSVToRGB(hue, S, V);
-    //    _tileBaseColored.color = newColor;
-    //}
 
     private void EnableTile()
     {
@@ -213,33 +196,29 @@ public class Tile : MonoBehaviour
         
         if (GameManager.CurrentState == GameState.Transition)
         {
-            //_comingOutOfTransition = true;
             IsTransitionTile = true;
+            Tile t = GetNeighborTile(Vector3.back);
+            if (!t.IsTransitionTile && !t.IsPreTransitionTile && !t.IsStartingTile && !IsStartingTile)
+            {
+                IsTransitionTile = false;
+                IsPreTransitionTile = true;
+                return;
+            }
+
             AddTileToMaze();
             if (!IsStartingTile) { DrawMaze.TileAddingItselfToMaze(this); }
-            Tile t = GetNeighborTile(Vector3.back);
             foreach (Wall wall in _neighborWalls)
             {
                 if (wall == GetWallBetween(t) && !IsStartingTile) { wall.SetWallAsPath(); }
                 else { wall.SetWallAsBorder(); }
             }
         }
-        //else if (GameManager.CurrentState == GameState.Progressing)
-        //{
-        //    Debug.Log("Spawning last tile");
-        //    Tile t = GetNeighborTile(Vector3.back);
-        //    if (t.IsTransitionTile)
-        //    {
-        //        AddTileToMaze();
-        //        foreach (Wall wall in _neighborWalls)
-        //        {
-        //            if (wall == GetWallBetween(t)) { wall.SetWallAsPath(); }
-        //            else { wall.SetWallAsBorder(); }
-        //        }
-        //    }
-        //    //_comingOutOfTransition = false;
-        //}
-    }
+        else if (GameManager.CurrentState == GameState.Progressing)
+        {
+            Tile t = GetNeighborTile(Vector3.back);
+            if (t.IsTransitionTile) { t.IsTransitionTile = false; }
+        }
+}
 
     public void DisableTile(bool onSpawn = false)
     {
@@ -344,13 +323,15 @@ public class Tile : MonoBehaviour
 
         DrawMaze.HighestDrawnRow = _parentRow;
         GameManager.Instance.SpawnPlayer(transform);
-        GameManager.Instance.GetCurrentRunner().GetComponent<IRunner>().SetCurrentTile(this);
+        GameManager.Instance.CurrentRunner.GetComponent<IRunner>().SetCurrentTile(this);
     }
 
     public void ResetTile()
     {
         _crossings = 0;
+        IsStartingTile = false;
         IsTransitionTile = false;
+        IsPreTransitionTile = false;
         RemoveTileFromMaze();
         SetMaterial(_tileBase);
         DisableTile();

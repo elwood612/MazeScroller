@@ -18,7 +18,7 @@ public class Runner : MonoBehaviour, IRunner
     public bool _runnerStopped = true;
     private bool _runnerOffScreen = false;
     private bool _approachingDeadEnd = false;
-    private bool _isInTransition = false;
+    public bool _isInTransition = false;
     private AnimationCurve _speedCurve;
     private AnimationCurve _transitionCurve;
 
@@ -63,8 +63,10 @@ public class Runner : MonoBehaviour, IRunner
     {
         GameManager.AddBoardMotion(transform);
         CalculateSpeed();
-        if (_uncrossedTiles.Count > 0) { Move(); }
-        //if (_uncrossedTransitionTiles.Count > 0 && _isInTransition) { Move(); }
+        if (_uncrossedTiles.Count > 0 && !_isInTransition) { Move(); }
+        if (_uncrossedTiles.Count == 0 && _currentTile.IsPreTransitionTile) { Move(); }
+        if (_uncrossedTransitionTiles.Count > 0 && _isInTransition) { Move(); }
+
         GameManager.RunnerHeight = Camera.main.WorldToScreenPoint(transform.position).y / Screen.height;
     }
 
@@ -105,6 +107,7 @@ public class Runner : MonoBehaviour, IRunner
     private void Move()
     {
         if (_currentTarget == null) { return; }
+        //Debug.Log("Moving!");
         transform.position = Vector3.MoveTowards(transform.position, _currentTarget.transform.position, Time.deltaTime * _currentSpeed);
     }
 
@@ -112,7 +115,8 @@ public class Runner : MonoBehaviour, IRunner
     {
         RemoveTileFromPath(_currentTile);
 
-        if (_uncrossedTiles.Count == 0)
+        if ((_uncrossedTiles.Count == 0 && !_isInTransition && !_currentTile.IsPreTransitionTile) ||
+            (_uncrossedTransitionTiles.Count == 0 && _isInTransition))
         {
             DrawMaze.OnTileAdded += SetTarget;
             _nextTarget = null;
@@ -139,7 +143,7 @@ public class Runner : MonoBehaviour, IRunner
             //DrawMaze.OnTileAdded -= SetTarget;
         }
 
-    skipAhead:
+    //skipAhead:
         if (_nextTarget != null)
         {
             _currentTarget = _nextTarget;
@@ -154,7 +158,7 @@ public class Runner : MonoBehaviour, IRunner
     {
         _approachingDeadEnd = _currentTile.NeighborPaths.Count == 1;
 
-        if (_currentTile.NeighborPaths.Count == 0) { Debug.Log("No neighbor paths detected"); yield break; }
+        if (_currentTile.NeighborPaths.Count == 0) { yield break; }
 
         //if (_runnerStopped && !_currentTile.IsStartingTile) // should get you out of a jam if you get stuck
         //{
@@ -165,9 +169,13 @@ public class Runner : MonoBehaviour, IRunner
         //    yield break;
         //}
 
+        Tile pathfindingTarget = tile;
+        if (_uncrossedTiles.Count > 0) { pathfindingTarget = _uncrossedTiles[0]; }
+        else if (_uncrossedTransitionTiles.Count > 0) { pathfindingTarget = _uncrossedTransitionTiles[0]; }
+
         if (_runnerOffScreen)
         {
-            yield return new WaitUntil(() => ExecutePathfinding(_currentTile, _uncrossedTiles[0]));
+            yield return new WaitUntil(() => ExecutePathfinding(_currentTile, pathfindingTarget));
             _nextTarget = GetPathfindingPath(_currentTile);
             _runnerOffScreen = false;
             yield break;
@@ -189,7 +197,7 @@ public class Runner : MonoBehaviour, IRunner
                 }
                 else
                 {
-                    yield return new WaitUntil(() => ExecutePathfinding(_currentTile, _uncrossedTiles[0]));
+                    yield return new WaitUntil(() => ExecutePathfinding(_currentTile, pathfindingTarget));
                     _nextTarget = GetPathfindingPath(_currentTile);
                 }
                 break;
@@ -201,7 +209,7 @@ public class Runner : MonoBehaviour, IRunner
                 }
                 else
                 {
-                    yield return new WaitUntil(() => ExecutePathfinding(_currentTile, _uncrossedTiles[0]));
+                    yield return new WaitUntil(() => ExecutePathfinding(_currentTile, pathfindingTarget));
                     _nextTarget = GetPathfindingPath(_currentTile);
                 }
                 break;
@@ -338,16 +346,19 @@ public class Runner : MonoBehaviour, IRunner
 
     protected void AddTileToPath(Tile tile)
     {
-        if (!tile.IsStartingTile) { _uncrossedTiles.Add(tile); }
-        //if (!tile.IsStartingTile && !tile.IsTransitionTile) { _uncrossedTiles.Add(tile); }
-        if (tile.IsTransitionTile) { _uncrossedTransitionTiles.Add(tile); }
+        //if (!tile.IsStartingTile) { _uncrossedTiles.Add(tile); }
+        if (!tile.IsStartingTile && !tile.IsTransitionTile) { _uncrossedTiles.Add(tile); }
+        if (!tile.IsStartingTile && tile.IsTransitionTile) { _uncrossedTransitionTiles.Add(tile); }
         if (_approachingDeadEnd) { CalculateNextTargetWrapper(_currentTile); }
     }
 
     protected void RemoveTileFromPath(Tile tile)
     {
         if (_uncrossedTiles.Contains(tile)) { _uncrossedTiles.Remove(tile); }
-        if (_uncrossedTiles.Count == 0) { _runnerStopped = true; }
+        if (_uncrossedTransitionTiles.Contains(tile)) { _uncrossedTransitionTiles.Remove(tile); }
+
+        if (_uncrossedTiles.Count == 0 && !_isInTransition) { _runnerStopped = true; }
+        if (_uncrossedTransitionTiles.Count == 0 && _isInTransition) { _runnerStopped = true; }
     }
 
     public void CalculateNextTargetWrapper(Tile tile)
