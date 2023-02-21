@@ -18,4 +18,15 @@ public class StageParameters : ScriptableObject
     public int CrystalSpawnChanceMax = 6;
 
     public AnimationCurve CrystalLevelDistribution = new AnimationCurve(new Keyframe(0, 0), new Keyframe(1, 1));
+
+    public Dialogue AssociatedDialogue;
+
+    /// <summary>
+    /// Whoa, you can use OnEnable here?? Bring all randomization into this class please
+    /// Ok thanks
+    /// </summary> 
+    //private void OnEnable()
+    //{
+    //    AssociatedDialogue = CreateInstance<Dialogue>();
+    //}
 }

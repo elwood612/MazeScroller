@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 844953302060c844a8c3e66c78e08ead, type: 3}
   m_Name: Stage2
   m_EditorClassIdentifier: 
-  StageLength: 100
+  StageLength: 70
   BonusRecoveryTime: 2
   MinSpeed: 10
+  EasyIntro: 5
   TileSpawnerWidthMin: 2.2
   TileSpawnerWidthMax: 2.8
   ColorSpawnChanceMin: 3

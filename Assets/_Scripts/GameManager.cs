@@ -49,10 +49,11 @@ public class GameManager : MonoBehaviour
     public static event Action<GameState> OnStateChanged;
     public static event Action<int> OnSetupNextStage;
     public static event Action<int> OnScoreChanged;
-    public static event Action<int> OnStageChanged;
     public static event Action<int> OnTileBonusChanged;
     public static event Action<int> OnSpeedBonusChanged;
     public static event Action<int> OnLoseCounterChanged;
+    public static event Action<Dialogue> OnDialogueStart;
+    public static event Action<GameObject> OnRunnerSpawned;
 
     public static GameManager Instance;
     public static float HighestDrawnRowHeight;
@@ -99,7 +100,7 @@ public class GameManager : MonoBehaviour
         _tileSpawnerWidthCurve = _settings.TileSpawnerWidthCurve;
         _tileLength = GameObject.FindGameObjectWithTag("Tile").GetComponent<BoxCollider>().bounds.size.x;
 
-        QualitySettings.vSyncCount = 0;  // VSync must be disabled
+        QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 60;
 
         if (_debugMode)
@@ -119,7 +120,7 @@ public class GameManager : MonoBehaviour
         if (CurrentState == GameState.Setup) { return; }
         CalculateBoardSpeed(_speedMultiplier);
 
-        if (CurrentState == GameState.Transition)
+        if (IsRunnerInTransition)
         {
             if (++_counterTransitionBonusIncrease > _triggerCounters)
             {
@@ -129,7 +130,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if (CurrentState == GameState.Progressing) 
+        if (CurrentState == GameState.Progressing)
         {
             if (_debugMode) { return; }
 
@@ -138,26 +139,26 @@ public class GameManager : MonoBehaviour
                 _counterAverageSpeed = 0;
                 CalculateSpeedAverage();
 
-                if (_loseCounter > 100) 
-                { 
-                    Debug.Log("You lose!"); 
-                }
+                //if (_loseCounter > 100)
+                //{
+                //    Debug.Log("You lose!");
+                //}
 
-                if (_speedBonus < 100 && _tileBonus < 100)
-                {
-                    _loseCounter++;
-                    OnLoseCounterChanged?.Invoke(_loseCounter);
-                }
-                else if (_speedBonus < 10 || _tileBonus < 10)
-                {
-                    _loseCounter++;
-                    OnLoseCounterChanged?.Invoke(_loseCounter);
-                }
-                else
-                {
-                    _loseCounter = 0;
-                    OnLoseCounterChanged?.Invoke(_loseCounter);
-                }
+                //if (_speedBonus < 100 && _tileBonus < 100)
+                //{
+                //    _loseCounter++;
+                //    OnLoseCounterChanged?.Invoke(_loseCounter);
+                //}
+                //else if (_speedBonus < 10 || _tileBonus < 10)
+                //{
+                //    _loseCounter++;
+                //    OnLoseCounterChanged?.Invoke(_loseCounter);
+                //}
+                //else
+                //{
+                //    _loseCounter = 0;
+                //    OnLoseCounterChanged?.Invoke(_loseCounter);
+                //}
             }
         }
     }
@@ -191,8 +192,6 @@ public class GameManager : MonoBehaviour
         {
             DecreaseSpeedBonus(1, Mathf.FloorToInt(_averageSpeed * 100 / _minSpeed));
         }
-
-        //Debug.Log("Average speed = " + _averageSpeed);
     }
 
     private void CalculateBoardLength()
@@ -238,10 +237,9 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.Transition:
                 SetupNextStage();
-                OnLoseCounterChanged?.Invoke(0);
+                //OnLoseCounterChanged?.Invoke(0);
                 break;
             case GameState.Progressing:
-                //OnStageChanged?.Invoke(_currentStage);
                 break;
             case GameState.Lose:
                 CalculateBoardSpeed(0);
@@ -339,6 +337,7 @@ public class GameManager : MonoBehaviour
     {
         _currentRunner = Instantiate(_runnerPrefab, tile.position, Quaternion.identity);
         _startOfGame = false;
+        OnRunnerSpawned?.Invoke(_currentRunner);
     }
 
     public static void AddBoardMotion(Transform t)
@@ -353,13 +352,16 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public static bool CompareVectors(Vector3 v1, Vector3 v2)
+    public static bool CompareVectorsAsInts(Vector3 v1, Vector3 v2)
     {
         return Vector3Int.RoundToInt(v1) == Vector3Int.RoundToInt(v2);
     }
 
-    //public GameObject GetCurrentRunner()
-    //{
-    //    return _runnerPrefab;
-    //}
+    public void StartDialogue()
+    {
+        if (Parameters[_currentStage].AssociatedDialogue != null)
+        {
+            OnDialogueStart?.Invoke(Parameters[_currentStage].AssociatedDialogue);
+        }
+    }
 }

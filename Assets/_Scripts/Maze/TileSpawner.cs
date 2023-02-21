@@ -1,6 +1,8 @@
+//using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Pool;
+//using Random = System.Random;
 
 public class TileSpawner : MonoBehaviour
 {
@@ -15,7 +17,6 @@ public class TileSpawner : MonoBehaviour
     private int _triggerDisableTile = 2;
     private int _triggerColorSpawn = 1000;
     private int _triggerCrystalSpawn = 1000;
-    
     public float _width = 0.5f;
     private float _transitionWidth = 0.5f;
     private float _xPos;
@@ -30,6 +31,7 @@ public class TileSpawner : MonoBehaviour
     private WaitForSeconds _crystalDelay = new WaitForSeconds(0.8f);
     private WaitForSeconds _colorDelay = new WaitForSeconds(0.4f);
     private ObjectPool<Crystal> _crystalPool;
+    //private System.Random _randomSystem = new System.Random(0);
 
     private int _colorSpawnChanceMin => GameManager.Instance.Parameters[GameManager.CurrentStage].ColorSpawnChanceMin;
     private int _colorSpawnChanceMax => GameManager.Instance.Parameters[GameManager.CurrentStage].ColorSpawnChanceMax;
@@ -57,14 +59,14 @@ public class TileSpawner : MonoBehaviour
     {
         Tile.OnCrystalRemoval += RemoveCrystal;
         GameManager.OnStateChanged += SetNewScale;
-        GameManager.OnSetupNextStage += SetTriggerCounters;
+        GameManager.OnSetupNextStage += SetupNewStage;
     }
 
     private void OnDisable()
     {
         Tile.OnCrystalRemoval -= RemoveCrystal;
         GameManager.OnStateChanged -= SetNewScale;
-        GameManager.OnSetupNextStage -= SetTriggerCounters;
+        GameManager.OnSetupNextStage -= SetupNewStage;
     }
 
     private void InitializeCrystalPool()
@@ -164,6 +166,7 @@ public class TileSpawner : MonoBehaviour
         else if (state == GameState.Progressing)
         {
             _width = Random.Range(_widthMin, _widthMax);
+            //_width = _randomSystem.Next((int)_widthMin * 10, (int)_widthMax * 10) / 10;
         }
         _targetScale = new Vector3(_width * GameManager.TileLength, 1, 1);
     }
@@ -201,8 +204,9 @@ public class TileSpawner : MonoBehaviour
         _triggerCrystalSpawn = Random.Range(_crystalSpawnChanceMin, _crystalSpawnChanceMax);
     }
 
-    private void SetTriggerCounters(int stage)
+    private void SetupNewStage(int stage)
     {
+        //_randomSystem = new Random(stage);
         _triggerColorSpawn = Random.Range(_colorSpawnChanceMin, _colorSpawnChanceMax);
         _triggerCrystalSpawn = Random.Range(_crystalSpawnChanceMin, _crystalSpawnChanceMax);
     }

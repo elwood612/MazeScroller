@@ -1,10 +1,8 @@
 {
-    "name": "Project.Runner",
+    "name": "Project.Dialogue",
     "rootNamespace": "",
     "references": [
-        "GUID:8166730be2347c04da47c9d71b2408ca",
-        "GUID:41c33408e5cb1904faba8e2d96639195",
-        "GUID:6055be8ebefd69e48b49212b09b47b2f"
+        "GUID:8166730be2347c04da47c9d71b2408ca"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

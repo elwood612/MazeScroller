@@ -163,13 +163,13 @@ public class Wall : MonoBehaviour
             {
                 _neighborTiles.Add(tile);
                 // Let's prettify this maybe?
-                if (GameManager.CompareVectors(transform.position + Vector3.right * GameManager.TileLength / 2, tile.transform.position) ||
-                    GameManager.CompareVectors(transform.position + Vector3.back * GameManager.TileLength / 2, tile.transform.position))
+                if (GameManager.CompareVectorsAsInts(transform.position + Vector3.right * GameManager.TileLength / 2, tile.transform.position) ||
+                    GameManager.CompareVectorsAsInts(transform.position + Vector3.back * GameManager.TileLength / 2, tile.transform.position))
                 {
                     _rightTile = tile;
                 }
-                else if (GameManager.CompareVectors(transform.position + Vector3.left * GameManager.TileLength / 2, tile.transform.position) ||
-                    GameManager.CompareVectors(transform.position + Vector3.forward * GameManager.TileLength / 2, tile.transform.position))
+                else if (GameManager.CompareVectorsAsInts(transform.position + Vector3.left * GameManager.TileLength / 2, tile.transform.position) ||
+                    GameManager.CompareVectorsAsInts(transform.position + Vector3.forward * GameManager.TileLength / 2, tile.transform.position))
                 {
                     _leftTile = tile;
                 }

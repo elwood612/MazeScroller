@@ -55,3 +55,4 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  AssociatedDialogue: {fileID: 11400000, guid: c8385568c73c7de41bbdeff1f0aa212e, type: 2}

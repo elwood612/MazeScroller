@@ -17,7 +17,7 @@ public class CameraBehavior : MonoBehaviour
     private bool _goodToMove = false;
     private bool _goodToRotate = false;
     private float _delta = 0.1f;
-    private float _smooth = 2f; // the larger this is, the slower you move
+    private float _smooth = 1f; // the larger this is, the slower you move
 
     private void OnEnable()
     {
@@ -60,9 +60,13 @@ public class CameraBehavior : MonoBehaviour
     private void MoveCamera()
     {
         transform.position = Vector3.SmoothDamp(transform.position, _targetPosition, ref _refVelocity, _smooth);
-        if (Vector3.Magnitude(transform.position - _targetPosition) < _delta)
+        if (GameManager.CompareVectorsAsInts(transform.position, _targetPosition))
         {
             _goodToMove = false;
+            if (GameManager.CurrentState == GameState.Transition)
+            {
+                GameManager.Instance.StartDialogue();
+            }
         }
     }
 

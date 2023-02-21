@@ -14,6 +14,8 @@ public class UIManager : MonoBehaviour
     private WaitForSecondsRealtime _delay = new WaitForSecondsRealtime(0.25f);
     private bool _flashing = true;
     private bool _flashRunning = false;
+    public TextMeshProUGUI _dialogueBox;
+    private int _dialogueIndex = 0;
 
     private void Awake()
     {
@@ -31,6 +33,8 @@ public class UIManager : MonoBehaviour
         GameManager.OnSpeedBonusChanged += UpdateSpeedBonus;
         GameManager.OnTileBonusChanged += UpdateTileBonus;
         GameManager.OnLoseCounterChanged += Losing;
+        GameManager.OnRunnerSpawned += AssignDialogueBox;
+        DialogueManager.OnNextSentence += UpdateDialogueBox;
     }
 
     private void OnDisable()
@@ -39,6 +43,8 @@ public class UIManager : MonoBehaviour
         GameManager.OnSpeedBonusChanged -= UpdateSpeedBonus;
         GameManager.OnTileBonusChanged -= UpdateTileBonus;
         GameManager.OnLoseCounterChanged -= Losing;
+        GameManager.OnRunnerSpawned -= AssignDialogueBox;
+        DialogueManager.OnNextSentence -= UpdateDialogueBox;
     }
 
     private void UpdateScore(int score)
@@ -90,6 +96,17 @@ public class UIManager : MonoBehaviour
             _redGlow.enabled = false;
         }
         _flashRunning = false;
+    }
+
+    private void UpdateDialogueBox(string sentence)
+    {
+        _dialogueBox.transform.parent.gameObject.SetActive(true);
+        _dialogueBox.text = sentence;
+    }
+
+    private void AssignDialogueBox(GameObject runner)
+    {
+        _dialogueBox = runner.GetComponent<IRunner>().DialogueBox;
     }
 
     public void Settings()

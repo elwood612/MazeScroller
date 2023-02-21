@@ -1,11 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Runner : MonoBehaviour, IRunner
 {
     [SerializeField] private Renderer[] _renderers;
+    [SerializeField] private TextMeshProUGUI _dialogueBox;
 
     public Tile _currentTile;
     private Tile _currentTarget;
@@ -23,6 +26,7 @@ public class Runner : MonoBehaviour, IRunner
     private AnimationCurve _transitionCurve;
 
     public static event Action OnTransitionReached;
+    public TextMeshProUGUI DialogueBox => _dialogueBox;
     public bool IsInTransition
     {
         get => _isInTransition;
@@ -41,6 +45,7 @@ public class Runner : MonoBehaviour, IRunner
 
     private void Awake()
     {
+        _dialogueBox.transform.parent.gameObject.SetActive(false);
         _speedCurve = GameManager.Instance.RunnerSpeedCurve;
         _transitionCurve = GameManager.Instance.RunnerTransitionCurve;
     }

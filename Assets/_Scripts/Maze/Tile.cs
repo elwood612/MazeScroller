@@ -259,7 +259,7 @@ public class Tile : MonoBehaviour
     {
         foreach (Tile tile in _neighborTiles)
         {
-            if (GameManager.CompareVectors(tile.transform.position, transform.position + direction.normalized * GameManager.TileLength))
+            if (GameManager.CompareVectorsAsInts(tile.transform.position, transform.position + direction.normalized * GameManager.TileLength))
             {
                 return tile;
             }
@@ -272,7 +272,7 @@ public class Tile : MonoBehaviour
     {
         foreach (Wall wall in _neighborWalls)
         {
-            if (GameManager.CompareVectors(wall.transform.position, (transform.position + other.transform.position) / 2))
+            if (GameManager.CompareVectorsAsInts(wall.transform.position, (transform.position + other.transform.position) / 2))
             {
                 return wall;
             }
