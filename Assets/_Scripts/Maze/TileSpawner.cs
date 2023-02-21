@@ -135,15 +135,9 @@ public class TileSpawner : MonoBehaviour
         else if (GameManager.CurrentState == GameState.Progressing)
         {
             _smooth = Mathf.Clamp(GameManager.MaxSpeed / GameManager.TileSpeed, 3f, 80f);
-            transform.localScale = Vector3.SmoothDamp(transform.localScale, _targetScale, ref _scaleVelocity, _smooth / 4);
-            transform.position = Vector3.SmoothDamp(transform.position, _targetPosition, ref _positionVelocity, _smooth);
+            transform.localScale = Vector3.SmoothDamp(transform.localScale, _targetScale, ref _scaleVelocity, _smooth / 4 * Time.deltaTime * 60);
+            transform.position = Vector3.SmoothDamp(transform.position, _targetPosition, ref _positionVelocity, _smooth * Time.deltaTime * 60);
         }
-
-        //if (GameManager.CurrentState == GameState.Transition) { _smooth = 0.5f; }
-        //else { _smooth = Mathf.Clamp(GameManager.MaxSpeed / GameManager.TileSpeed, 3f, 80f); }
-
-        //transform.localScale = Vector3.SmoothDamp(transform.localScale, _targetScale, ref _scaleVelocity, _smooth / 4);
-        //transform.position = Vector3.SmoothDamp(transform.position, _targetPosition, ref _positionVelocity, _smooth);
     }
 
     private void SetNewPosition(GameState state)

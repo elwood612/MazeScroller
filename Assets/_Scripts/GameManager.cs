@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
     private int _counterTransitionBonusIncrease = 0;
     private int _triggerCounters = 30;
     private WaitForSeconds _bonusShortDelay = new WaitForSeconds(2f);
-    private WaitForSeconds _bonusLongDelay = new WaitForSeconds(10f);
+    private WaitForSeconds _bonusLongDelay = new WaitForSeconds(6f);
     private bool _startOfGame = true;
     private Queue<float> _rollingSpeedAverage = new Queue<float>();
     private int _rollingSpeedAverageMaxCount = 40;
@@ -98,6 +98,9 @@ public class GameManager : MonoBehaviour
         _runnerTransitionCurve = _settings.RunnerTransitionCurve;
         _tileSpawnerWidthCurve = _settings.TileSpawnerWidthCurve;
         _tileLength = GameObject.FindGameObjectWithTag("Tile").GetComponent<BoxCollider>().bounds.size.x;
+
+        QualitySettings.vSyncCount = 0;  // VSync must be disabled
+        Application.targetFrameRate = 60;
 
         if (_debugMode)
         {
@@ -219,7 +222,7 @@ public class GameManager : MonoBehaviour
             Parameters.Add(newStage);
         }
         _bonusShortDelay = new WaitForSeconds(Parameters[_currentStage].BonusRecoveryTime);
-        _bonusLongDelay = new WaitForSeconds(Parameters[_currentStage].BonusRecoveryTime * 4);
+        _bonusLongDelay = new WaitForSeconds(Parameters[_currentStage].BonusRecoveryTime * 3);
     }
 
     public void UpdateGameState(GameState newState)

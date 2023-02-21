@@ -1,6 +1,5 @@
 public interface IRunner
 {
-    //public static event Action OnNewStage;
     public bool IsInTransition { get; set; }
     public Tile CurrentTile { get; set; }
     public Tile PreviousTile { get; set; }

@@ -10,14 +10,13 @@ public class Crystal : MonoBehaviour
     [SerializeField] private ParticleSystem _particlesExplosionMissile;
     [SerializeField] private OrbitMissile _missilePrefab;
 
-    private ParticleSystem.MainModule _particlesExplosionModule;
     private ObjectPool<Crystal> _crystalPool;
     private int _level = 0;
     private int _initialLevel;
     private bool _destroyed = false;
     private WaitForSeconds _destroyDelay = new WaitForSeconds(1f);
     private OrbitMissile[] _orbitMissiles = new OrbitMissile[6];
-
+    
     private void Awake()
     {
         for (int i = 0; i < _orbitMissiles.Length; i++)
@@ -25,7 +24,6 @@ public class Crystal : MonoBehaviour
             _orbitMissiles[i] = Instantiate(_missilePrefab, transform);
             _orbitMissiles[i].gameObject.SetActive(false);
         }
-        _particlesExplosionModule = _particlesExplosion.main;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -59,8 +57,9 @@ public class Crystal : MonoBehaviour
 
     private void PlayerContact()
     {
+        // Need a sound here
         StartCoroutine(Explode());
-        //GameManager.Score += (int)Mathf.Pow(10, _initialLevel);
+        GameManager.Score += (int)Mathf.Pow(10, _initialLevel);
     }
 
     private void EndOfBoardContact()
@@ -94,7 +93,7 @@ public class Crystal : MonoBehaviour
         _destroyed = false;
         _wireframe.SetActive(true);
         _level = level;
-        _initialLevel = _level;
+        _initialLevel = level;
         _crystalPool = crystalPool;
         SpawnOrbitMissiles();
     }

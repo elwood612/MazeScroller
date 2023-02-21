@@ -197,16 +197,7 @@ public class DrawMaze : MonoBehaviour
         _renderer.enabled = false;
     }
 
-    public static void TileAddingItselfToMaze(Tile tile)
-    {
-        if (!tile.IsTransitionTile)
-        {
-            SetHighestDrawnRow(tile);
-        }
-        OnTileAdded?.Invoke(tile);
-    }
-
-    public static void SetHighestDrawnRow(Tile tile, bool decrease = false)
+    private static void SetHighestDrawnRow(Tile tile, bool decrease = false)
     {
         // If we're supposed to be increasing height: bail if it turns out we're not
         // Reversed if we're supposed to be decreasing
@@ -224,5 +215,14 @@ public class DrawMaze : MonoBehaviour
         _highestDrawnRow.IsHighestDrawnRow = false;
         _highestDrawnRow = tile.ParentRow;
         _highestDrawnRow.IsHighestDrawnRow = true;
+    }
+
+    public static void TileAddingItselfToMaze(Tile tile)
+    {
+        if (!tile.IsTransitionTile)
+        {
+            SetHighestDrawnRow(tile);
+        }
+        OnTileAdded?.Invoke(tile);
     }
 }

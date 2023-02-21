@@ -1,8 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class Tile : MonoBehaviour
 {
@@ -30,11 +28,6 @@ public class Tile : MonoBehaviour
     private int _crossings = 0;
     private Tile _pathfindingParent;
     private static bool _firstTile = true;
-    private static bool _comingOutOfTransition = false;
-    private WaitForSecondsRealtime _flashDelay = new WaitForSecondsRealtime(0.1f);
-    private float _flashAlpha = 1f;
-    private float _colorShift = 50;
-    private Material _tileBaseColored;
 
     public static event Action<Tile> OnTileDestroy;
     public static event Action<Tile> OnTileDeactivate;
@@ -105,13 +98,9 @@ public class Tile : MonoBehaviour
         runner.PreviousTile = runner.CurrentTile;
         runner.CurrentTile = this;
         runner.CalculateNextTargetWrapper(this);
-        //foreach (Tile tile in _neighborTiles)
-        //{
-        //    if ((tile.IsTransitionTile && !runner.IsInTransition) || IsStartingTile) { runner.BeginTransition(); }
-        //}
         if ((IsTransitionTile || IsPreTransitionTile) && !runner.IsInTransition) { runner.BeginTransition(); }
         if (!IsTransitionTile && runner.IsInTransition) { runner.BeginStage(); }
-        GameManager.Score++;
+        if (!IsTransitionTile) { GameManager.Score++; }
 
         if (_isColored)
         {
@@ -216,7 +205,11 @@ public class Tile : MonoBehaviour
         else if (GameManager.CurrentState == GameState.Progressing)
         {
             Tile t = GetNeighborTile(Vector3.back);
-            if (t.IsTransitionTile) { t.IsTransitionTile = false; }
+            if (t.IsTransitionTile) 
+            { 
+                t.IsTransitionTile = false;
+                DrawMaze.TileAddingItselfToMaze(t);
+            }
         }
 }
 

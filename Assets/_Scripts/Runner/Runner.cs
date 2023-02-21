@@ -89,7 +89,7 @@ public class Runner : MonoBehaviour, IRunner
         if (other.CompareTag("TileCenter")) { _colliderCheck = 0; }
     }
 
-    private void CalculateSpeed() // this needs to change
+    private void CalculateSpeed()
     {
         Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position);
         float height = screenPos.y / Screen.height;
@@ -107,7 +107,6 @@ public class Runner : MonoBehaviour, IRunner
     private void Move()
     {
         if (_currentTarget == null) { return; }
-        //Debug.Log("Moving!");
         transform.position = Vector3.MoveTowards(transform.position, _currentTarget.transform.position, Time.deltaTime * _currentSpeed);
     }
 
@@ -126,24 +125,10 @@ public class Runner : MonoBehaviour, IRunner
         {
             if (_runnerStopped)
             {
-                //if (!_isInTransition && !_currentTile.IsStartingTile)
-                //{
-                //    foreach (Tile t in _currentTile.NeighborTiles)
-                //    {
-                //        if (t.IsTransitionTile)
-                //        {
-                //            _nextTarget = t;
-                //            goto skipAhead;
-                //        }
-                //    }
-                //}
                 CalculateNextTargetWrapper(_currentTile);
-                //_runnerStopped = false;
             }
-            //DrawMaze.OnTileAdded -= SetTarget;
         }
 
-    //skipAhead:
         if (_nextTarget != null)
         {
             _currentTarget = _nextTarget;
@@ -344,15 +329,14 @@ public class Runner : MonoBehaviour, IRunner
         }
     }
 
-    protected void AddTileToPath(Tile tile)
+    private void AddTileToPath(Tile tile)
     {
-        //if (!tile.IsStartingTile) { _uncrossedTiles.Add(tile); }
         if (!tile.IsStartingTile && !tile.IsTransitionTile) { _uncrossedTiles.Add(tile); }
         if (!tile.IsStartingTile && tile.IsTransitionTile) { _uncrossedTransitionTiles.Add(tile); }
         if (_approachingDeadEnd) { CalculateNextTargetWrapper(_currentTile); }
     }
 
-    protected void RemoveTileFromPath(Tile tile)
+    private void RemoveTileFromPath(Tile tile)
     {
         if (_uncrossedTiles.Contains(tile)) { _uncrossedTiles.Remove(tile); }
         if (_uncrossedTransitionTiles.Contains(tile)) { _uncrossedTransitionTiles.Remove(tile); }

@@ -39,9 +39,6 @@ public class CameraBehavior : MonoBehaviour
 
     private void SetTargetForTransition()
     {
-        //if (GameManager.CurrentState != GameState.Transition) { return; }
-
-        //Debug.Log("Start camera transition");
         _targetPosition = _transitionPosition;
         _targetRotation = _transitionRotation;
 
@@ -53,7 +50,6 @@ public class CameraBehavior : MonoBehaviour
     {
         if (state != GameState.Progressing) { return; }
 
-        //Debug.Log("Start camera stage");
         _targetPosition = _stagePosition;
         _targetRotation = _stageRotation;
 
