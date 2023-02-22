@@ -372,4 +372,9 @@ public class Runner : MonoBehaviour, IRunner
     {
         _currentTile = tile;
     }
+
+    public void OnDialogueBoxClick()
+    {
+        DialogueManager.Instance.NextSentence();
+    }
 }

@@ -50,7 +50,7 @@ public class DrawMaze : MonoBehaviour
             _hits = Physics.RaycastAll(_ray);
         }
 
-        if (!InputHandler.IsPressingScreen || _hits.Length == 0)
+        if (!InputHandler.IsPressingScreen || _hits.Length == 0 || DialogueManager.Instance.IsDialogueActive)
         {
             DisallowDraw();
             return;

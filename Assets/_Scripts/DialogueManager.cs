@@ -5,8 +5,18 @@ using UnityEngine;
 public class DialogueManager : MonoBehaviour
 {
     private Queue<string> _currentDialogue = new Queue<string>();
+    private bool _isDialogueActive = false;
 
+    public static DialogueManager Instance;
     public static event Action<string> OnNextSentence;
+    public static event Action OnDialogueEnd;
+    public bool IsDialogueActive => _isDialogueActive;
+
+    private void Awake()
+    {
+        if (Instance == null) { Instance = this; }
+        else { Destroy(this); }
+    }
 
     private void OnEnable()
     {
@@ -20,6 +30,7 @@ public class DialogueManager : MonoBehaviour
 
     private void StartDialogue(Dialogue dialogue)
     {
+        _isDialogueActive = true;
         _currentDialogue.Clear();
         foreach (string sentence in dialogue.Lines)
         {
@@ -29,16 +40,12 @@ public class DialogueManager : MonoBehaviour
         NextSentence();
     }
 
-    private void EndDialogue()
-    {
-        Debug.Log("Here is where we start new stage.");
-    }
-
     public void NextSentence()
     {
         if (_currentDialogue.Count == 0)
         {
-            EndDialogue();
+            _isDialogueActive = false;
+            OnDialogueEnd?.Invoke();
             return;
         }
 

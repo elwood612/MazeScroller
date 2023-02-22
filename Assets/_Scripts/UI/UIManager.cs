@@ -35,6 +35,7 @@ public class UIManager : MonoBehaviour
         GameManager.OnLoseCounterChanged += Losing;
         GameManager.OnRunnerSpawned += AssignDialogueBox;
         DialogueManager.OnNextSentence += UpdateDialogueBox;
+        DialogueManager.OnDialogueEnd += HideDialogueBox;
     }
 
     private void OnDisable()
@@ -45,6 +46,7 @@ public class UIManager : MonoBehaviour
         GameManager.OnLoseCounterChanged -= Losing;
         GameManager.OnRunnerSpawned -= AssignDialogueBox;
         DialogueManager.OnNextSentence -= UpdateDialogueBox;
+        DialogueManager.OnDialogueEnd -= HideDialogueBox;
     }
 
     private void UpdateScore(int score)
@@ -109,7 +111,13 @@ public class UIManager : MonoBehaviour
         _dialogueBox = runner.GetComponent<IRunner>().DialogueBox;
     }
 
-    public void Settings()
+    private void HideDialogueBox()
+    {
+        _dialogueBox.text = "";
+        _dialogueBox.transform.parent.gameObject.SetActive(false);
+    }
+
+    public void OnSettingsButtonClick()
     {
         // Open pause menu
     }
