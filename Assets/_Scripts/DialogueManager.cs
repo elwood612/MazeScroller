@@ -45,6 +45,7 @@ public class DialogueManager : MonoBehaviour
         if (_currentDialogue.Count == 0)
         {
             _isDialogueActive = false;
+            if (GameManager.CurrentState == GameState.Transition) { GameManager.Instance.UpdateGameState(GameState.Progressing); }
             OnDialogueEnd?.Invoke();
             return;
         }

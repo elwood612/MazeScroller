@@ -307,16 +307,17 @@ public class GameManager : MonoBehaviour
     {
         if (CurrentState == GameState.Transition)
         {
-            if (_transitionProgress < _transitionLength)
-            {
-                _transitionProgress++;
-            }
-            else
-            {
-                _transitionProgress = 0;
-                Debug.Log("Transition phase ending");
-                Instance.UpdateGameState(GameState.Progressing);
-            }
+
+            //if (_transitionProgress < _transitionLength)
+            //{
+            //    _transitionProgress++;
+            //}
+            //else
+            //{
+            //    _transitionProgress = 0;
+            //    Debug.Log("Transition phase ending");
+            //    Instance.UpdateGameState(GameState.Progressing);
+            //}
         }
         else if (CurrentState == GameState.Progressing)
         {
