@@ -65,7 +65,7 @@ public class CameraBehavior : MonoBehaviour
             _goodToMove = false;
             if (GameManager.CurrentState == GameState.Transition)
             {
-                GameManager.Instance.StartDialogue();
+                GameManager.Instance.EndStage();
             }
         }
     }

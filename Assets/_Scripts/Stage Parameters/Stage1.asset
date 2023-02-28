@@ -46,3 +46,4 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  AssociatedDialogue: {fileID: 11400000, guid: 3202ac00b1f6c7b44a60fa84ce2e3ea5, type: 2}

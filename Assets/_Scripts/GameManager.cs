@@ -52,6 +52,7 @@ public class GameManager : MonoBehaviour
     public static event Action<int> OnTileBonusChanged;
     public static event Action<int> OnSpeedBonusChanged;
     public static event Action<int> OnLoseCounterChanged;
+    public static event Action OnStageEnd;
     public static event Action<Dialogue> OnDialogueStart;
     public static event Action<GameObject> OnRunnerSpawned;
 
@@ -240,6 +241,7 @@ public class GameManager : MonoBehaviour
                 //OnLoseCounterChanged?.Invoke(0);
                 break;
             case GameState.Progressing:
+                Score = 0;
                 break;
             case GameState.Lose:
                 CalculateBoardSpeed(0);
@@ -358,11 +360,30 @@ public class GameManager : MonoBehaviour
         return Vector3Int.RoundToInt(v1) == Vector3Int.RoundToInt(v2);
     }
 
-    public void StartDialogue()
+    public void GoodToBeginDialogue()
     {
         if (Parameters[_currentStage].AssociatedDialogue != null)
         {
             OnDialogueStart?.Invoke(Parameters[_currentStage].AssociatedDialogue);
+        }
+        else
+        {
+            if (CurrentState == GameState.Transition) { UpdateGameState(GameState.Progressing); }
+        }
+    }
+
+    public void EndStage()
+    {
+        if (_currentStage < 1) 
+        {
+            if (Parameters[_currentStage].AssociatedDialogue != null)
+            {
+                OnDialogueStart?.Invoke(Parameters[_currentStage].AssociatedDialogue);
+            }
+        }
+        else
+        {
+            OnStageEnd?.Invoke();
         }
     }
 }
