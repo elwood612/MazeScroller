@@ -10,24 +10,32 @@ public class CameraBehavior : MonoBehaviour
     [SerializeField] private Vector3 _stagePosition;
     [SerializeField] private Quaternion _stageRotation;
 
+    [HideInInspector] public bool _goodToShake = false;
+
     private Vector3 _targetPosition;
     private Vector3 _refVelocity;
     private Quaternion _targetRotation;
     private Quaternion _refDeriv;
     private bool _goodToMove = false;
     private bool _goodToRotate = false;
+    
     private float _delta = 0.1f;
     private float _smooth = 1f; // the larger this is, the slower you move
+    private float _shakeDuration = 0f;
+    private float _shakeAmount = 0.25f;
+    private float _decreaseFactor = 1.0f;
 
     private void OnEnable()
     {
         GameManager.OnStateChanged += SetTargetForStage;
+        GameManager.OnFuckUp += SetCameraShake;
         Runner.OnTransitionReached += SetTargetForTransition;
     }
 
     private void OnDisable()
     {
         GameManager.OnStateChanged -= SetTargetForStage;
+        GameManager.OnFuckUp -= SetCameraShake;
         Runner.OnTransitionReached -= SetTargetForTransition;
     }
 
@@ -35,6 +43,7 @@ public class CameraBehavior : MonoBehaviour
     {
         if (_goodToMove) { MoveCamera(); }
         if (_goodToRotate) { RotateCamera(); }
+        if (_goodToShake) { ShakeCamera(); }
     }
 
     private void SetTargetForTransition()
@@ -57,6 +66,12 @@ public class CameraBehavior : MonoBehaviour
         _goodToRotate = true;
     }
 
+    private void SetCameraShake()
+    {
+        _goodToShake = true;
+        _shakeDuration = 0.5f;
+    }
+
     private void MoveCamera()
     {
         transform.position = Vector3.SmoothDamp(transform.position, _targetPosition, ref _refVelocity, _smooth);
@@ -72,10 +87,25 @@ public class CameraBehavior : MonoBehaviour
 
     private void RotateCamera()
     {
-        transform.rotation = QuaternionHelperMethods.SmoothDamp(transform.rotation, _targetRotation, ref _refDeriv, _smooth);
-        if (QuaternionHelperMethods.CompareQuaternions(transform.rotation, _targetRotation, _delta))
+        transform.rotation = CameraHelperMethods.SmoothDamp(transform.rotation, _targetRotation, ref _refDeriv, _smooth);
+        if (CameraHelperMethods.CompareQuaternions(transform.rotation, _targetRotation, _delta))
         {
             _goodToRotate = false;
+        }
+    }
+
+    private void ShakeCamera()
+    {
+        if (_shakeDuration > 0)
+        {
+            transform.localPosition = _targetPosition + Random.insideUnitSphere * _shakeAmount;
+            _shakeDuration -= Time.deltaTime * _decreaseFactor;
+        }
+        else
+        {
+            _shakeDuration = 0f;
+            transform.localPosition = _targetPosition;
+            _goodToShake = false;
         }
     }
 }

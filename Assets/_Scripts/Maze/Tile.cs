@@ -17,6 +17,8 @@ public class Tile : MonoBehaviour
     [SerializeField] private Material _tileCrossed;
     [SerializeField] private GameObject _tileDeadEnd;
     [SerializeField] private LayerMask _wallLayer;
+    [SerializeField] private AudioSource _audioNegative;
+    [SerializeField] private AudioSource _audioTada;
 
     private Row _parentRow;
     private List<Wall> _neighborWalls = new List<Wall>();
@@ -106,14 +108,16 @@ public class Tile : MonoBehaviour
         {
             if (NeighborPaths.Count == 1)
             {
+                _audioTada.Play();
                 _colorParticles.Stop();
                 _deadEndSuccessParticles.Play();
                 _colorRenderer.enabled = false;
             }
             else if (NeighborPaths.Count > 1)
             {
-                GameManager.Instance.DecreaseTileBonus(100);
+                _audioNegative.Play();
                 SetAsColored(false);
+                GameManager.Instance.FuckUp();
             }
         }
     }

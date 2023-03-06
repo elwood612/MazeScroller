@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GM_Settings _settings;
     [SerializeField] private GameObject _runnerPrefab;
     [SerializeField] private bool _debugMode;
+    [SerializeField] private bool _demoMode;
     public List<StageParameters> Parameters;
 
     private AnimationCurve _tileSpeedCurve;
@@ -55,6 +56,7 @@ public class GameManager : MonoBehaviour
     public static event Action OnStageEnd;
     public static event Action<Dialogue> OnDialogueStart;
     public static event Action<GameObject> OnRunnerSpawned;
+    public static event Action OnFuckUp;
 
     public static GameManager Instance;
     public static float HighestDrawnRowHeight;
@@ -82,7 +84,8 @@ public class GameManager : MonoBehaviour
         get => _score;
         set
         {
-            _score = value + _tileBonus / 5 + _speedBonus / 5;
+            //_score = Mathf.RoundToInt(value * (_tileBonus / 20) * (_speedBonus / 20));
+            _score = value + Mathf.RoundToInt((_tileBonus / 20) * (_speedBonus / 20));
             OnScoreChanged?.Invoke(value);
         }
     }
@@ -107,6 +110,10 @@ public class GameManager : MonoBehaviour
         if (_debugMode)
         {
             Camera.main.GetComponent<AudioSource>().Stop();
+        }
+        if (_demoMode)
+        {
+            _currentStage = 0;
         }
     }
 
@@ -139,27 +146,6 @@ public class GameManager : MonoBehaviour
             {
                 _counterAverageSpeed = 0;
                 CalculateSpeedAverage();
-
-                //if (_loseCounter > 100)
-                //{
-                //    Debug.Log("You lose!");
-                //}
-
-                //if (_speedBonus < 100 && _tileBonus < 100)
-                //{
-                //    _loseCounter++;
-                //    OnLoseCounterChanged?.Invoke(_loseCounter);
-                //}
-                //else if (_speedBonus < 10 || _tileBonus < 10)
-                //{
-                //    _loseCounter++;
-                //    OnLoseCounterChanged?.Invoke(_loseCounter);
-                //}
-                //else
-                //{
-                //    _loseCounter = 0;
-                //    OnLoseCounterChanged?.Invoke(_loseCounter);
-                //}
             }
         }
     }
@@ -214,7 +200,7 @@ public class GameManager : MonoBehaviour
 
     private void SetupNextStage()
     {
-        _currentStage++;
+        if (!_demoMode) { _currentStage++; }
         OnSetupNextStage?.Invoke(_currentStage);
         if (_currentStage >= Parameters.Count)
         {
@@ -374,16 +360,27 @@ public class GameManager : MonoBehaviour
 
     public void EndStage()
     {
-        if (_currentStage < 1) 
+        if (Parameters[_currentStage].AssociatedDialogue != null)
         {
-            if (Parameters[_currentStage].AssociatedDialogue != null)
-            {
-                OnDialogueStart?.Invoke(Parameters[_currentStage].AssociatedDialogue);
-            }
+            OnDialogueStart?.Invoke(Parameters[_currentStage].AssociatedDialogue);
         }
         else
         {
             OnStageEnd?.Invoke();
         }
+    }
+
+    public void FuckUp()
+    {
+        OnFuckUp?.Invoke();
+    }
+
+    public void Quit()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
     }
 }

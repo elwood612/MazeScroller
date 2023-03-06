@@ -40,16 +40,20 @@ public class DialogueManager : MonoBehaviour
         NextSentence();
     }
 
+    private void EndDialogue()
+    {
+        _isDialogueActive = false;
+        if (GameManager.CurrentState == GameState.Transition) { GameManager.Instance.UpdateGameState(GameState.Progressing); }
+        OnDialogueEnd?.Invoke();
+    }
+
     public void NextSentence()
     {
         if (_currentDialogue.Count == 0)
         {
-            _isDialogueActive = false;
-            if (GameManager.CurrentState == GameState.Transition) { GameManager.Instance.UpdateGameState(GameState.Progressing); }
-            OnDialogueEnd?.Invoke();
+            EndDialogue();
             return;
         }
-
         OnNextSentence?.Invoke(_currentDialogue.Dequeue());
     }
 }

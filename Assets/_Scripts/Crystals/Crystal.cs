@@ -9,6 +9,9 @@ public class Crystal : MonoBehaviour
     [SerializeField] private ParticleSystem _particlesExplosion;
     [SerializeField] private ParticleSystem _particlesExplosionMissile;
     [SerializeField] private OrbitMissile _missilePrefab;
+    [SerializeField] private AudioSource _audioBeep;
+    [SerializeField] private AudioSource _audioZap;
+    [SerializeField] private AudioSource _audioNegative;
 
     private ObjectPool<Crystal> _crystalPool;
     private int _level = 0;
@@ -16,6 +19,7 @@ public class Crystal : MonoBehaviour
     private bool _destroyed = false;
     private WaitForSeconds _destroyDelay = new WaitForSeconds(1f);
     private OrbitMissile[] _orbitMissiles = new OrbitMissile[6];
+    
     
     private void Awake()
     {
@@ -30,9 +34,9 @@ public class Crystal : MonoBehaviour
     {
         if (other.CompareTag("Runner") && !_destroyed)
         {
+            _audioBeep.Play();
             if (_level == 0)
             {
-                //if (other.GetComponent<IRunner>()) { } // this should fucking work but it's not
                 PlayerContact();
             }
             else
@@ -57,7 +61,6 @@ public class Crystal : MonoBehaviour
 
     private void PlayerContact()
     {
-        // Need a sound here
         StartCoroutine(Explode());
         GameManager.Score += (int)Mathf.Pow(10, _initialLevel);
     }
@@ -65,7 +68,8 @@ public class Crystal : MonoBehaviour
     private void EndOfBoardContact()
     {
         StartCoroutine(Explode());
-        GameManager.Instance.DecreaseSpeedBonus(100);
+        _audioNegative.Play();
+        GameManager.Instance.FuckUp();
         for (int i = 0; i < _level; i++)
         {
             DestroyOrbitMissile(_orbitMissiles[_level - 1]);
@@ -78,6 +82,7 @@ public class Crystal : MonoBehaviour
         _wireframe.SetActive(false);
         _particlesExplosion.Play();
         _particlesNormal.Stop();
+        _audioZap.Play();
         yield return _destroyDelay;
         _crystalPool.Release(this);
     }

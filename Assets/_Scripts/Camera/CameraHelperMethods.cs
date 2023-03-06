@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class QuaternionHelperMethods
+public class CameraHelperMethods
 {
     public static Quaternion SmoothDamp(Quaternion rot, Quaternion target, ref Quaternion deriv, float time)
     {
