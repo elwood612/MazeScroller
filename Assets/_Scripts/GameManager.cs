@@ -75,11 +75,29 @@ public class GameManager : MonoBehaviour
     public static int StageLength => _stageLength;
     public static float MaxSpeed => _maxSpeed;
     public static int CurrentStage => _currentStage;
-    public static int StageProgress => _stageProgress;
     public static int TransitionProgress => _transitionProgress;
     public static int TileBonus => _tileBonus;
     public static int SpeedBonus => _speedBonus;
     public static int LoseCounter => _loseCounter;
+    public static int StageProgress
+    {
+        get => _stageProgress;
+        set
+        {
+            if (CurrentState == GameState.Progressing)
+            {
+                if (_stageProgress < Instance.Parameters[_currentStage].StageLength)
+                {
+                    _stageProgress = value;
+                }
+                else
+                {
+                    _stageProgress = 0;
+                    Instance.UpdateGameState(GameState.Transition);
+                }
+            }
+        }
+    }
     public static int Score
     {
         get => _score;
@@ -308,36 +326,36 @@ public class GameManager : MonoBehaviour
         OnSpeedBonusChanged?.Invoke(_speedBonus);
     }
 
-    public static void Progress()
-    {
-        if (CurrentState == GameState.Transition)
-        {
+    //public static void Progress()
+    //{
+    //    if (CurrentState == GameState.Transition)
+    //    {
 
-            //if (_transitionProgress < _transitionLength)
-            //{
-            //    _transitionProgress++;
-            //}
-            //else
-            //{
-            //    _transitionProgress = 0;
-            //    Debug.Log("Transition phase ending");
-            //    Instance.UpdateGameState(GameState.Progressing);
-            //}
-        }
-        else if (CurrentState == GameState.Progressing)
-        {
-            if (_stageProgress < Instance.Parameters[_currentStage].StageLength)
-            {
-                _stageProgress++;
-                //OnProgressChanged?.Invoke(_stageProgress);
-            }
-            else
-            {
-                _stageProgress = 0;
-                Instance.UpdateGameState(GameState.Transition);
-            }
-        }
-    }
+    //        //if (_transitionProgress < _transitionLength)
+    //        //{
+    //        //    _transitionProgress++;
+    //        //}
+    //        //else
+    //        //{
+    //        //    _transitionProgress = 0;
+    //        //    Debug.Log("Transition phase ending");
+    //        //    Instance.UpdateGameState(GameState.Progressing);
+    //        //}
+    //    }
+    //    else if (CurrentState == GameState.Progressing)
+    //    {
+    //        if (_stageProgress < Instance.Parameters[_currentStage].StageLength)
+    //        {
+    //            _stageProgress++;
+    //            //OnProgressChanged?.Invoke(_stageProgress);
+    //        }
+    //        else
+    //        {
+    //            _stageProgress = 0;
+    //            Instance.UpdateGameState(GameState.Transition);
+    //        }
+    //    }
+    //}
 
     public void SpawnPlayer(Transform tile)
     {
