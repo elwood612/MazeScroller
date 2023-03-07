@@ -150,6 +150,12 @@ public class Runner : MonoBehaviour, IRunner
 
         if (_currentTile.NeighborPaths.Count == 0) { yield break; }
 
+        if (_isInTransition) 
+        { 
+            _nextTarget = _currentTile.GetNeighborTile(Vector3.forward); 
+            yield break;
+        }
+
         //if (_runnerStopped && !_currentTile.IsStartingTile) // should get you out of a jam if you get stuck
         //{
         //    yield return new WaitUntil(() => ExecutePathfinding(_currentTile, tile)); // possibly pathfind to most recent uncrossed tile??
@@ -234,7 +240,7 @@ public class Runner : MonoBehaviour, IRunner
         foreach (Wall wall in tile.NeighborPaths)
         {
             Vector3 direction = wall.transform.position - tile.transform.position;
-            if (wall.Crossings == 0) { return tile.GetNeighborTile(direction); }
+            if (wall.Crossings == 0) { return tile.GetNeighborTile(direction); } // why is this here
             if (wall.TimeCrossed < firstCrossed)
             {
                 firstCrossed = wall.TimeCrossed;

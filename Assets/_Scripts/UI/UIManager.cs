@@ -15,8 +15,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Slider _tileSlider;
     [SerializeField] private Slider _loseSlider;
     [SerializeField] private Image _redGlow;
-    [SerializeField] private Image _endStagePanel;
-    [SerializeField] private Image _topPanel;
+    [SerializeField] private Canvas _stageCanvas;
+    [SerializeField] private Canvas _topCanvas;
     [SerializeField] private GameObject _starPrefab;
 
     private WaitForSecondsRealtime _delay = new WaitForSecondsRealtime(0.25f);
@@ -34,8 +34,8 @@ public class UIManager : MonoBehaviour
         _loseSlider.value = 0;
         _loseSlider.gameObject.SetActive(false);
         _redGlow.enabled = false;
-        _topPanel.gameObject.SetActive(false);
-        _endStagePanel.gameObject.SetActive(false);
+        _topCanvas.enabled = false;
+        _stageCanvas.enabled = false;
     }
 
     private void OnEnable()
@@ -136,18 +136,17 @@ public class UIManager : MonoBehaviour
     {
         if (state == GameState.Progressing)
         {
-            _topPanel.gameObject.SetActive(true);
+            _topCanvas.enabled = true;
             ResetStars();
         }
     }
 
     private void EndStage()
     {
-        _topPanel.gameObject.SetActive(false);
-        _endStagePanel.gameObject.SetActive(true);
+        _topCanvas.enabled = false;
+        _stageCanvas.enabled = true;
 
-        //_stageScore.text = "Score: " + GameManager.Score; // This is what we need but needs to be fixed
-        _stageScore.text = _scoreText.text;
+        _stageScore.text = "Score: " + (GameManager.Score + GameManager.Stars * 1000); // This is what we need but needs to be fixed
 
         // Start Coroutine for stars
     }
@@ -182,7 +181,7 @@ public class UIManager : MonoBehaviour
     public void OnContinueButtonClick()
     {
         GameManager.Instance.GoodToBeginDialogue();
-        _endStagePanel.gameObject.SetActive(false);
+        _stageCanvas.enabled = false;
     }
 
     public void OnQuitButtonClick()

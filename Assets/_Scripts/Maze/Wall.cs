@@ -14,8 +14,8 @@ public class Wall : MonoBehaviour
     public bool _isPathfindingPath;
     private bool _isHidden = false;
     private int _crossings = 0;
-    private float _timeCrossed;
-    private float _timeDrawn;
+    private float _timeCrossed = Mathf.Infinity;
+    private float _timeDrawn = Mathf.Infinity;
     private Row _parentRow;
     private List<Tile> _neighborTiles = new List<Tile>();
     private Tile _leftTile, _rightTile;
@@ -122,6 +122,8 @@ public class Wall : MonoBehaviour
         _isPath = false;
         _isPathfindingPath = false;
         _isHidden = false;
+        _timeCrossed = Mathf.Infinity;
+        _timeDrawn = Mathf.Infinity;
         DisableWall();
     }
 

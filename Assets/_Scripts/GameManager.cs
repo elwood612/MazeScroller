@@ -85,7 +85,6 @@ public class GameManager : MonoBehaviour
         get => _score;
         set
         {
-            //_score = Mathf.RoundToInt(value * (_tileBonus / 20) * (_speedBonus / 20));
             _score = value + Mathf.RoundToInt((_tileBonus / 20) * (_speedBonus / 20));
             OnScoreChanged?.Invoke(value);
         }
@@ -97,7 +96,9 @@ public class GameManager : MonoBehaviour
         {
             if (value >= 0)
             {
-                Debug.Log("Lose a star bud");
+#if UNITY_ANDROID
+                Taptic.Heavy();
+#endif
                 _stars = value;
                 OnStarLost?.Invoke(value);
             }
@@ -221,7 +222,7 @@ public class GameManager : MonoBehaviour
             StageParameters newStage = ScriptableObject.CreateInstance<StageParameters>();
             Parameters.Add(newStage);
         }
-        _stars = Parameters[_currentStage].Stars;
+        
         _bonusShortDelay = new WaitForSeconds(Parameters[_currentStage].BonusRecoveryTime);
         _bonusLongDelay = new WaitForSeconds(Parameters[_currentStage].BonusRecoveryTime * 3);
     }
@@ -243,6 +244,7 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.Progressing:
                 Score = 0;
+                _stars = Parameters[_currentStage].Stars;
                 break;
             case GameState.Lose:
                 CalculateBoardSpeed(0);

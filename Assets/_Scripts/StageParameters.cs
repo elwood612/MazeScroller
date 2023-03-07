@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "StageParameters", menuName = "Scriptable Objects/Stage Parameters")]
 public class StageParameters : ScriptableObject
 {
-    public int StageLength = 100;
+    public int StageLength = 70;
     public int Stars = 3;
     public float BonusRecoveryTime = 2;
     public float MinSpeed = 10f;
