@@ -117,7 +117,7 @@ public class Tile : MonoBehaviour
             {
                 _audioNegative.Play();
                 SetAsColored(false);
-                GameManager.Instance.FuckUp();
+                GameManager.Stars--;
             }
         }
     }

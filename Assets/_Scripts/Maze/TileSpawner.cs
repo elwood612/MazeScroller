@@ -109,7 +109,7 @@ public class TileSpawner : MonoBehaviour
             if (++_counterSpawnCrystal > _triggerCrystalSpawn)
             {
                 _counterSpawnCrystal = 0;
-                StartCoroutine(SpawnRandomCrystal(other.GetComponent<Row>()));
+                StartCoroutine(SpawnCrystal(other.GetComponent<Row>()));
             }
         }
     }
@@ -191,7 +191,7 @@ public class TileSpawner : MonoBehaviour
         _triggerColorSpawn = Random.Range(_colorSpawnChanceMin, _colorSpawnChanceMax);
     }
 
-    private IEnumerator SpawnRandomCrystal(Row row)
+    private IEnumerator SpawnCrystal(Row row)
     {
         yield return _crystalDelay;
         Tile tile = row.EnabledTiles[Random.Range(0, row.EnabledTiles.Count)];

@@ -3,22 +3,28 @@ using UnityEngine.UI;
 using TMPro;
 using System.Collections;
 using System;
+using System.Collections.Generic;
 
 public class UIManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _scoreText;
     [SerializeField] private TextMeshProUGUI _stageScore;
     [SerializeField] private Slider _speedSlider;
+    [SerializeField] private GameObject _starParent;
+    [SerializeField] private GameObject _stageStarParent;
     [SerializeField] private Slider _tileSlider;
     [SerializeField] private Slider _loseSlider;
     [SerializeField] private Image _redGlow;
     [SerializeField] private Image _endStagePanel;
+    [SerializeField] private Image _topPanel;
+    [SerializeField] private GameObject _starPrefab;
 
     private WaitForSecondsRealtime _delay = new WaitForSecondsRealtime(0.25f);
     private bool _flashing = true;
     private bool _flashRunning = false;
     private TextMeshProUGUI _dialogueBox;
     private int _dialogueIndex = 0;
+    private List<GameObject> _allStars = new List<GameObject>();
 
     private void Awake()
     {
@@ -28,7 +34,7 @@ public class UIManager : MonoBehaviour
         _loseSlider.value = 0;
         _loseSlider.gameObject.SetActive(false);
         _redGlow.enabled = false;
-        _scoreText.enabled = false;
+        _topPanel.gameObject.SetActive(false);
         _endStagePanel.gameObject.SetActive(false);
     }
 
@@ -41,6 +47,7 @@ public class UIManager : MonoBehaviour
         GameManager.OnRunnerSpawned += AssignDialogueBox;
         GameManager.OnStageEnd += EndStage;
         GameManager.OnStateChanged += BeginStage;
+        GameManager.OnStarLost += LoseStar;
         DialogueManager.OnNextSentence += UpdateDialogueBox;
         DialogueManager.OnDialogueEnd += HideDialogueBox;
     }
@@ -61,7 +68,6 @@ public class UIManager : MonoBehaviour
     private void UpdateScore(int score)
     {
         _scoreText.text = "Score: " + score.ToString();
-        // Need to add flash effect
     }
 
     private void UpdateSpeedBonus(int value)
@@ -130,16 +136,42 @@ public class UIManager : MonoBehaviour
     {
         if (state == GameState.Progressing)
         {
-            _scoreText.enabled = true;
-            //_endStagePanel.gameObject.SetActive(false);
+            _topPanel.gameObject.SetActive(true);
+            ResetStars();
         }
     }
 
     private void EndStage()
     {
-        _scoreText.enabled = false;
+        _topPanel.gameObject.SetActive(false);
         _endStagePanel.gameObject.SetActive(true);
-        _stageScore.text = "Score: " + GameManager.Score;
+
+        //_stageScore.text = "Score: " + GameManager.Score; // This is what we need but needs to be fixed
+        _stageScore.text = _scoreText.text;
+
+        // Start Coroutine for stars
+    }
+
+    private void LoseStar(int star)
+    {
+        _starParent.transform.GetChild(star).GetChild(0).gameObject.SetActive(false);
+        _stageStarParent.transform.GetChild(star).GetChild(0).gameObject.SetActive(false);
+    }
+
+    private void ResetStars()
+    {
+        foreach (var star in _allStars)
+        {
+            Destroy(star.gameObject); // ok yes this needs to be better
+        }
+        _allStars.Clear();
+        for (int i = 0; i < GameManager.Instance.Parameters[GameManager.CurrentStage].Stars; i++)
+        {
+            GameObject newStar = Instantiate(_starPrefab, _starParent.transform);
+            GameObject newStageStar = Instantiate(_starPrefab, _stageStarParent.transform);
+            _allStars.Add(newStar);
+            _allStars.Add(newStageStar);
+        }
     }
 
     public void OnSettingsButtonClick()

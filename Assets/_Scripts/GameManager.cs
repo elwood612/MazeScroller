@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour
     private static int _transitionProgress;
     private static int _transitionLength = 30;
     private static int _score = 0;
+    private static int _stars = 0;
     private static int _loseCounter = 0;
     private static int _tileBonus = 100;
     private static int _speedBonus = 100;
@@ -56,7 +57,7 @@ public class GameManager : MonoBehaviour
     public static event Action OnStageEnd;
     public static event Action<Dialogue> OnDialogueStart;
     public static event Action<GameObject> OnRunnerSpawned;
-    public static event Action OnFuckUp;
+    public static event Action<int> OnStarLost;
 
     public static GameManager Instance;
     public static float HighestDrawnRowHeight;
@@ -87,6 +88,19 @@ public class GameManager : MonoBehaviour
             //_score = Mathf.RoundToInt(value * (_tileBonus / 20) * (_speedBonus / 20));
             _score = value + Mathf.RoundToInt((_tileBonus / 20) * (_speedBonus / 20));
             OnScoreChanged?.Invoke(value);
+        }
+    }
+    public static int Stars
+    {
+        get => _stars;
+        set
+        {
+            if (value >= 0)
+            {
+                Debug.Log("Lose a star bud");
+                _stars = value;
+                OnStarLost?.Invoke(value);
+            }
         }
     }
     private float _minSpeed => Parameters[_currentStage].MinSpeed;
@@ -207,6 +221,7 @@ public class GameManager : MonoBehaviour
             StageParameters newStage = ScriptableObject.CreateInstance<StageParameters>();
             Parameters.Add(newStage);
         }
+        _stars = Parameters[_currentStage].Stars;
         _bonusShortDelay = new WaitForSeconds(Parameters[_currentStage].BonusRecoveryTime);
         _bonusLongDelay = new WaitForSeconds(Parameters[_currentStage].BonusRecoveryTime * 3);
     }
@@ -368,11 +383,6 @@ public class GameManager : MonoBehaviour
         {
             OnStageEnd?.Invoke();
         }
-    }
-
-    public void FuckUp()
-    {
-        OnFuckUp?.Invoke();
     }
 
     public void Quit()

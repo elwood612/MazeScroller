@@ -4,6 +4,7 @@ using UnityEngine;
 public class StageParameters : ScriptableObject
 {
     public int StageLength = 100;
+    public int Stars = 3;
     public float BonusRecoveryTime = 2;
     public float MinSpeed = 10f;
     public int EasyIntro = 5;
