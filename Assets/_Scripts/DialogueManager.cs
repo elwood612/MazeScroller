@@ -6,10 +6,12 @@ public class DialogueManager : MonoBehaviour
 {
     private Queue<string> _currentDialogue = new Queue<string>();
     private bool _isDialogueActive = false;
+    private Animator _runnerDialogueAnimator;
 
     public static DialogueManager Instance;
     public static event Action<string> OnNextSentence;
     public static event Action OnDialogueEnd;
+    public static event Action<bool> OnDialogueOpen;
     public bool IsDialogueActive => _isDialogueActive;
 
     private void Awake()
@@ -31,6 +33,7 @@ public class DialogueManager : MonoBehaviour
     private void StartDialogue(Dialogue dialogue)
     {
         _isDialogueActive = true;
+        OnDialogueOpen?.Invoke(true);
         _currentDialogue.Clear();
         foreach (string sentence in dialogue.Lines)
         {
@@ -43,6 +46,7 @@ public class DialogueManager : MonoBehaviour
     private void EndDialogue()
     {
         _isDialogueActive = false;
+        OnDialogueOpen?.Invoke(false);
         if (GameManager.CurrentState == GameState.Transition) { GameManager.Instance.UpdateGameState(GameState.Progressing); }
         OnDialogueEnd?.Invoke();
     }

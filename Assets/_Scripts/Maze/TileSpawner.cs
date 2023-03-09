@@ -41,8 +41,9 @@ public class TileSpawner : MonoBehaviour
         .Evaluate(Random.Range(0f, (float)GameManager.StageProgress / (float)GameManager.Instance.Parameters[GameManager.CurrentStage].StageLength));
     private float _crystalMaxRowsToSpawn => GameManager.Instance.Parameters[GameManager.CurrentStage].CrystalMaxRows
         .Evaluate(Random.Range(0f, (float)GameManager.StageProgress / (float)GameManager.Instance.Parameters[GameManager.CurrentStage].StageLength));
-    private int _crystalLevel => (int)GameManager.Instance.Parameters[GameManager.CurrentStage].CrystalMaxLevel
-        .Evaluate(Random.Range(0f, (float)GameManager.StageProgress / (float)GameManager.Instance.Parameters[GameManager.CurrentStage].StageLength));
+    //private int _crystalLevel => (int)GameManager.Instance.Parameters[GameManager.CurrentStage].CrystalMaxLevel
+    //    .Evaluate(Random.Range(0f, (float)GameManager.StageProgress / (float)GameManager.Instance.Parameters[GameManager.CurrentStage].StageLength));
+    private int _crystalLevel => GameManager.Instance.Parameters[GameManager.CurrentStage].CrystalLevel;
     private float _widthMin => GameManager.Instance.Parameters[GameManager.CurrentStage].TileSpawnerWidthMin;
     private float _widthMax => GameManager.Instance.Parameters[GameManager.CurrentStage].TileSpawnerWidthMax;
     #endregion
@@ -179,7 +180,8 @@ public class TileSpawner : MonoBehaviour
         Tile tile = row.EnabledTiles[Random.Range(0, row.EnabledTiles.Count)];
         if (row.EnabledTiles.Count <= 1) { yield break; }
 
-        _triggerDisableTile = Mathf.RoundToInt(Random.Range(2f * 3 / row.EnabledTiles.Count, 5f * 3 / row.EnabledTiles.Count));
+        _triggerDisableTile = GameManager.Instance.Parameters[GameManager.CurrentStage].TileDestroyMinRows * 
+            Mathf.RoundToInt(Random.Range(2f * 2f / row.EnabledTiles.Count, 5f * 2f / row.EnabledTiles.Count));
         tile.DisableTile(true);
     }
 
@@ -209,6 +211,7 @@ public class TileSpawner : MonoBehaviour
     private void SetupNewStage(int stage)
     {
         //_randomSystem = new Random(stage);
+        _triggerDisableTile = GameManager.Instance.Parameters[GameManager.CurrentStage].TileDestroyMinRows * Mathf.RoundToInt(Random.Range(2f, 5f));
         _triggerColorSpawn = Mathf.RoundToInt(Random.Range(_colorMinRowsToSpawn, _colorMaxRowsToSpawn));
         _triggerCrystalSpawn = Mathf.RoundToInt(Random.Range(_crystalMinRowsToSpawn, _crystalMaxRowsToSpawn));
     }

@@ -92,9 +92,18 @@ public class Tile : MonoBehaviour
         }
     }
 
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Runner"))
+        {
+            ColoredCheck();
+        }
+    }
+
     private void PlayerCrossing(IRunner runner)
     {
         SetMaterial(_tileCrossed);
+        ColoredCheck();
         _crossings++;
         _pathfindingParent = null;
         runner.PreviousTile = runner.CurrentTile;
@@ -103,10 +112,13 @@ public class Tile : MonoBehaviour
         if ((IsTransitionTile || IsPreTransitionTile) && !runner.IsInTransition) { runner.BeginTransition(); }
         if (!IsTransitionTile && runner.IsInTransition) { runner.BeginStage(); }
         if (!IsTransitionTile) { GameManager.Score++; }
+    }
 
+    private void ColoredCheck()
+    {
         if (_isColored)
         {
-            if (NeighborPaths.Count == 1)
+            if (NeighborPaths.Count == 1 && _crossings == 0)
             {
                 _audioTada.Play();
                 _colorParticles.Stop();
@@ -125,15 +137,15 @@ public class Tile : MonoBehaviour
     private void DestroyTile()
     {
         if (!_parentRow.HasSetupBeenRun || !_isEnabled) { return; }
-        if (_crossings == 0) 
-        { 
-            GetComponent<ParticleSystem>().Play();
-            GameManager.Instance.DecreaseTileBonus(30);
-        }
-        else
-        {
-            GameManager.Instance.IncreaseTileBonus(1);
-        }
+        //if (_crossings == 0) 
+        //{ 
+        //    GetComponent<ParticleSystem>().Play();
+        //    GameManager.Instance.DecreaseTileBonus(GameManager.Instance.Parameters[GameManager.CurrentStage].TilePenalty);
+        //}
+        //else
+        //{
+        //    GameManager.Instance.IncreaseTileBonus(1);
+        //}
         OnTileDestroy?.Invoke(this);
     }
 

@@ -103,7 +103,7 @@ public class GameManager : MonoBehaviour
         get => _score;
         set
         {
-            _score = value + Mathf.RoundToInt((_tileBonus / 20) * (_speedBonus / 20));
+            _score = value + Mathf.RoundToInt(_speedBonus / 20);
             OnScoreChanged?.Invoke(value);
         }
     }
@@ -241,8 +241,8 @@ public class GameManager : MonoBehaviour
             Parameters.Add(newStage);
         }
         
-        _bonusShortDelay = new WaitForSeconds(Parameters[_currentStage].BonusRecoveryTime);
-        _bonusLongDelay = new WaitForSeconds(Parameters[_currentStage].BonusRecoveryTime * 3);
+        //_bonusShortDelay = new WaitForSeconds(Parameters[_currentStage].BonusRecoveryTime);
+        //_bonusLongDelay = new WaitForSeconds(Parameters[_currentStage].BonusRecoveryTime * 3);
     }
 
     public void UpdateGameState(GameState newState)

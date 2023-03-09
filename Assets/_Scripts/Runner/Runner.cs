@@ -9,6 +9,7 @@ public class Runner : MonoBehaviour, IRunner
 {
     [SerializeField] private Renderer[] _renderers;
     [SerializeField] private TextMeshProUGUI _dialogueBox;
+    [SerializeField] private Animator _animator;
 
     public Tile _currentTile;
     private Tile _currentTarget;
@@ -55,6 +56,7 @@ public class Runner : MonoBehaviour, IRunner
         DrawMaze.OnTileAdded += AddTileToPath;
         DrawMaze.OnTileRemoved += RemoveTileFromPath;
         Tile.OnTileDestroy += RemoveTileFromPath;
+        DialogueManager.OnDialogueOpen += SetAnimatorTrigger;
     }
 
     private void OnDisable()
@@ -62,6 +64,7 @@ public class Runner : MonoBehaviour, IRunner
         DrawMaze.OnTileAdded -= AddTileToPath;
         DrawMaze.OnTileRemoved -= RemoveTileFromPath;
         Tile.OnTileDestroy -= RemoveTileFromPath;
+        DialogueManager.OnDialogueOpen -= SetAnimatorTrigger;
     }
 
     private void Update()
@@ -113,6 +116,11 @@ public class Runner : MonoBehaviour, IRunner
     {
         if (_currentTarget == null) { return; }
         transform.position = Vector3.MoveTowards(transform.position, _currentTarget.transform.position, Time.deltaTime * _currentSpeed);
+    }
+
+    private void SetAnimatorTrigger(bool isOpen)
+    {
+        _animator.SetBool("IsOpen", isOpen);
     }
 
     private void SetTarget(Tile tile) // On tile center

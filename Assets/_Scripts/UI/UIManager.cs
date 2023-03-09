@@ -118,7 +118,18 @@ public class UIManager : MonoBehaviour
     private void UpdateDialogueBox(string sentence)
     {
         _dialogueBox.transform.parent.gameObject.SetActive(true);
-        _dialogueBox.text = sentence;
+        StopAllCoroutines();
+        StartCoroutine(TypeSentence(sentence));
+    }
+
+    private IEnumerator TypeSentence(string sentence)
+    {
+        _dialogueBox.text = "";
+        foreach (char letter in sentence.ToCharArray())
+        {
+            _dialogueBox.text += letter;
+            yield return null;
+        }
     }
 
     private void AssignDialogueBox(GameObject runner)

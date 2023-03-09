@@ -10,21 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 844953302060c844a8c3e66c78e08ead, type: 3}
-  m_Name: DemoStage
+  m_Name: Tutorial_2
   m_EditorClassIdentifier: 
-  StageLength: 70
-  Stars: 3
-  MinSpeed: 10
-  TilePenalty: 20
-  TileDestroyMinRows: 1
-  TileSpawnerWidthMin: 2.1
-  TileSpawnerWidthMax: 2.9
+  StageLength: 30
+  Stars: 1
+  MinSpeed: 8
+  TilePenalty: 10
+  TileDestroyMinRows: 3
+  TileSpawnerWidthMin: 2.2
+  TileSpawnerWidthMax: 2.6
   ColorMinRows:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 3
+      value: 1000
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -33,7 +33,7 @@ MonoBehaviour:
       outWeight: 0
     - serializedVersion: 3
       time: 1
-      value: 1
+      value: 1000
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -48,7 +48,7 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 8
+      value: 1000
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -57,7 +57,7 @@ MonoBehaviour:
       outWeight: 0
     - serializedVersion: 3
       time: 1
-      value: 3
+      value: 1000
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -81,7 +81,7 @@ MonoBehaviour:
       outWeight: 0
     - serializedVersion: 3
       time: 1
-      value: 0
+      value: 2
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -105,7 +105,7 @@ MonoBehaviour:
       outWeight: 0
     - serializedVersion: 3
       time: 1
-      value: 1
+      value: 4
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -121,40 +121,22 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: Infinity
-      outSlope: Infinity
-      tangentMode: 103
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.15
-      value: 1
-      inSlope: Infinity
-      outSlope: Infinity
-      tangentMode: 103
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.5
-      value: 2
-      inSlope: Infinity
-      outSlope: Infinity
-      tangentMode: 103
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
       time: 1
-      value: 2
-      inSlope: Infinity
-      outSlope: Infinity
-      tangentMode: 103
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  AssociatedDialogue: {fileID: 11400000, guid: c8385568c73c7de41bbdeff1f0aa212e, type: 2}
+  AssociatedDialogue: {fileID: 0}
