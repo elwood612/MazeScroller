@@ -6,7 +6,7 @@ public class StageParameters : ScriptableObject
 {
     [Header("Stage Stats")]
     [Range(0, 100)] public int StageLength = 70;
-    [Range(1, 5)] public int Stars = 3;
+    [Range(1, 5)] public int TotalStars = 3;
     [Range(0, 20)] public float MinSpeed = 10f;
     [Range(0, 50)] public int TilePenalty = 20;
     [Tooltip("The higher this is, the fewer rows have holes.")]

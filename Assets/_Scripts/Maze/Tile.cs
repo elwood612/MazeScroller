@@ -96,14 +96,14 @@ public class Tile : MonoBehaviour
     {
         if (other.CompareTag("Runner"))
         {
-            ColoredCheck();
+            //ColoredCheck();
         }
     }
 
     private void PlayerCrossing(IRunner runner)
     {
         SetMaterial(_tileCrossed);
-        ColoredCheck();
+        //ColoredCheck();
         _crossings++;
         _pathfindingParent = null;
         runner.PreviousTile = runner.CurrentTile;
@@ -114,38 +114,29 @@ public class Tile : MonoBehaviour
         if (!IsTransitionTile) { GameManager.Score++; }
     }
 
-    private void ColoredCheck()
-    {
-        if (_isColored)
-        {
-            if (NeighborPaths.Count == 1 && _crossings == 0)
-            {
-                _audioTada.Play();
-                _colorParticles.Stop();
-                _deadEndSuccessParticles.Play();
-                _colorRenderer.enabled = false;
-            }
-            else if (NeighborPaths.Count > 1)
-            {
-                _audioNegative.Play();
-                SetAsColored(false);
-                GameManager.Stars--;
-            }
-        }
-    }
+    //private void ColoredCheck()
+    //{
+    //    if (_isColored)
+    //    {
+    //        if (NeighborPaths.Count == 1 && _crossings == 0)
+    //        {
+    //            _audioTada.Play();
+    //            _colorParticles.Stop();
+    //            _deadEndSuccessParticles.Play();
+    //            _colorRenderer.enabled = false;
+    //        }
+    //        else if (NeighborPaths.Count > 1)
+    //        {
+    //            _audioNegative.Play();
+    //            SetAsColored(false);
+    //            GameManager.AcquiredStars--;
+    //        }
+    //    }
+    //}
 
     private void DestroyTile()
     {
         if (!_parentRow.HasSetupBeenRun || !_isEnabled) { return; }
-        //if (_crossings == 0) 
-        //{ 
-        //    GetComponent<ParticleSystem>().Play();
-        //    GameManager.Instance.DecreaseTileBonus(GameManager.Instance.Parameters[GameManager.CurrentStage].TilePenalty);
-        //}
-        //else
-        //{
-        //    GameManager.Instance.IncreaseTileBonus(1);
-        //}
         OnTileDestroy?.Invoke(this);
     }
 

@@ -24,8 +24,6 @@ public class Crystal : MonoBehaviour
     private WaitForSeconds _destroyDelay = new WaitForSeconds(1f);
     private OrbitMissile[] _orbitMissiles = new OrbitMissile[6];
 
-
-
     private void Awake()
     {
         for (int i = 0; i < _orbitMissiles.Length; i++)
@@ -52,7 +50,7 @@ public class Crystal : MonoBehaviour
         }
         else if (other.CompareTag("TileDestroyer") && !_destroyed)
         {
-            EndOfBoardContact();
+            //EndOfBoardContact();
         }
     }
 
@@ -75,19 +73,20 @@ public class Crystal : MonoBehaviour
     private void PlayerContact()
     {
         StartCoroutine(Explode());
-        GameManager.Score += (int)Mathf.Pow(10, _initialLevel);
-    }
+        //GameManager.Score += (int)Mathf.Pow(10, _initialLevel);
+        GameManager.Instance.SpeedBonus += 5 * (_initialLevel + 1) / (GameManager.AcquiredStars + 1);
+    } 
 
-    private void EndOfBoardContact()
-    {
-        StartCoroutine(Explode());
-        _audioNegative.Play();
-        GameManager.Stars--;
-        for (int i = 0; i < _level; i++)
-        {
-            DestroyOrbitMissile(_orbitMissiles[_level - 1]);
-        }
-    }
+    //private void EndOfBoardContact()
+    //{
+    //    StartCoroutine(Explode());
+    //    _audioNegative.Play();
+    //    GameManager.AcquiredStars--;
+    //    for (int i = 0; i < _level; i++)
+    //    {
+    //        DestroyOrbitMissile(_orbitMissiles[_level - 1]);
+    //    }
+    //}
 
     private IEnumerator Explode()
     {

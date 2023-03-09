@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DemoStage
   m_EditorClassIdentifier: 
   StageLength: 70
-  Stars: 3
+  TotalStars: 2
   MinSpeed: 10
   TilePenalty: 20
   TileDestroyMinRows: 1
@@ -24,7 +24,7 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 3
+      value: 200
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -72,7 +72,7 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 2
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -96,7 +96,7 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 4
+      value: 2
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -157,4 +157,4 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  AssociatedDialogue: {fileID: 11400000, guid: c8385568c73c7de41bbdeff1f0aa212e, type: 2}
+  AssociatedDialogue: {fileID: 0}

@@ -12,7 +12,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Slider _speedSlider;
     [SerializeField] private GameObject _starParent;
     [SerializeField] private GameObject _stageStarParent;
-    [SerializeField] private Slider _tileSlider;
     [SerializeField] private Slider _loseSlider;
     [SerializeField] private Image _redGlow;
     [SerializeField] private Canvas _stageCanvas;
@@ -24,13 +23,13 @@ public class UIManager : MonoBehaviour
     private bool _flashRunning = false;
     private TextMeshProUGUI _dialogueBox;
     private int _dialogueIndex = 0;
+    private int _newStarIndex = 0;
     private List<GameObject> _allStars = new List<GameObject>();
 
     private void Awake()
     {
         UpdateScore(0);
-        _tileSlider.value = GameManager.TileBonus;
-        _speedSlider.value = GameManager.SpeedBonus;
+        _speedSlider.value = GameManager.Instance.SpeedBonus;
         _loseSlider.value = 0;
         _loseSlider.gameObject.SetActive(false);
         _redGlow.enabled = false;
@@ -42,12 +41,11 @@ public class UIManager : MonoBehaviour
     {
         GameManager.OnScoreChanged += UpdateScore;
         GameManager.OnSpeedBonusChanged += UpdateSpeedBonus;
-        GameManager.OnTileBonusChanged += UpdateTileBonus;
         GameManager.OnLoseCounterChanged += Losing;
         GameManager.OnRunnerSpawned += AssignDialogueBox;
         GameManager.OnStageEnd += EndStage;
         GameManager.OnStateChanged += BeginStage;
-        GameManager.OnStarLost += LoseStar;
+        GameManager.OnStarGained += GainStar;
         DialogueManager.OnNextSentence += UpdateDialogueBox;
         DialogueManager.OnDialogueEnd += HideDialogueBox;
     }
@@ -56,7 +54,6 @@ public class UIManager : MonoBehaviour
     {
         GameManager.OnScoreChanged -= UpdateScore;
         GameManager.OnSpeedBonusChanged -= UpdateSpeedBonus;
-        GameManager.OnTileBonusChanged -= UpdateTileBonus;
         GameManager.OnLoseCounterChanged -= Losing;
         GameManager.OnRunnerSpawned -= AssignDialogueBox;
         GameManager.OnStageEnd -= EndStage;
@@ -73,11 +70,6 @@ public class UIManager : MonoBehaviour
     private void UpdateSpeedBonus(int value)
     {
         _speedSlider.value = value;
-    }
-
-    private void UpdateTileBonus(int value)
-    {
-        _tileSlider.value = value;
     }
 
     private void UpdateLoseSlider(int value)
@@ -148,6 +140,7 @@ public class UIManager : MonoBehaviour
         if (state == GameState.Progressing)
         {
             _topCanvas.enabled = true;
+            _speedSlider.maxValue = GameManager.Instance.Parameters[GameManager.CurrentStage].TotalStars * 100;
             ResetStars();
         }
     }
@@ -156,16 +149,14 @@ public class UIManager : MonoBehaviour
     {
         _topCanvas.enabled = false;
         _stageCanvas.enabled = true;
-
-        _stageScore.text = "Score: " + (GameManager.Score + GameManager.Stars * 1000); // This is what we need but needs to be fixed
-
-        // Start Coroutine for stars
+        _stageScore.text = "Score: " + (GameManager.Score + GameManager.AcquiredStars * 1000);
     }
 
-    private void LoseStar(int star)
+    private void GainStar()
     {
-        _starParent.transform.GetChild(star).GetChild(0).gameObject.SetActive(false);
-        _stageStarParent.transform.GetChild(star).GetChild(0).gameObject.SetActive(false);
+        _starParent.transform.GetChild(_newStarIndex).GetChild(2).gameObject.SetActive(true);
+        _stageStarParent.transform.GetChild(_newStarIndex).GetChild(2).gameObject.SetActive(true);
+        _newStarIndex++;
     }
 
     private void ResetStars()
@@ -175,7 +166,7 @@ public class UIManager : MonoBehaviour
             Destroy(star.gameObject); // ok yes this needs to be better
         }
         _allStars.Clear();
-        for (int i = 0; i < GameManager.Instance.Parameters[GameManager.CurrentStage].Stars; i++)
+        for (int i = 0; i < GameManager.Instance.Parameters[GameManager.CurrentStage].TotalStars; i++)
         {
             GameObject newStar = Instantiate(_starPrefab, _starParent.transform);
             GameObject newStageStar = Instantiate(_starPrefab, _stageStarParent.transform);

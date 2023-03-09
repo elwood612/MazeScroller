@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -23,9 +22,12 @@ public class GameManager : MonoBehaviour
     private int _counterAverageSpeed = 0;
     private int _counterTransitionBonusIncrease = 0;
     private int _triggerCounters = 30;
-    private WaitForSeconds _bonusShortDelay = new WaitForSeconds(2f);
-    private WaitForSeconds _bonusLongDelay = new WaitForSeconds(6f);
+    private int _speedBonus = 0;
+    private WaitForSeconds _bonusDelay = new WaitForSeconds(1f);
+    private WaitForSeconds _bonusStep = new WaitForSeconds(0.5f);
     private bool _startOfGame = true;
+    private bool _decreaseSpeedBonus = true;
+    private bool _triggerBonusStep = true;
     private Queue<float> _rollingSpeedAverage = new Queue<float>();
     private int _rollingSpeedAverageMaxCount = 40;
     private static float _maxSpeed = 50f;
@@ -39,31 +41,28 @@ public class GameManager : MonoBehaviour
     private static int _score = 0;
     private static int _stars = 0;
     private static int _loseCounter = 0;
-    private static int _tileBonus = 100;
-    private static int _speedBonus = 100;
+    
     private static Vector3 _tileSpeed = Vector3.zero;
     private static Vector3 _transitionSpeed = new Vector3(0, 0, -40);
     private static Vector3 _boardLength;
-    private static bool _canIncreaseTileBonus = false;
-    private static bool _canIncreaseSpeedBonus = false;
 
     public static GameState CurrentState;
     public static event Action<GameState> OnStateChanged;
     public static event Action<int> OnSetupNextStage;
     public static event Action<int> OnScoreChanged;
-    public static event Action<int> OnTileBonusChanged;
     public static event Action<int> OnSpeedBonusChanged;
     public static event Action<int> OnLoseCounterChanged;
     public static event Action OnStageEnd;
     public static event Action<Dialogue> OnDialogueStart;
     public static event Action<GameObject> OnRunnerSpawned;
-    public static event Action<int> OnStarLost;
+    public static event Action OnStarGained;
 
     public static GameManager Instance;
     public static float HighestDrawnRowHeight;
     public static float RunnerHeight;
     public static int NumberOfRows;
     public static bool IsRunnerInTransition = false;
+    //private float _minSpeed => Parameters[_currentStage].MinSpeed;
 
     public GameObject CurrentRunner => _currentRunner;
     public static float TileLength => _tileLength;
@@ -76,8 +75,6 @@ public class GameManager : MonoBehaviour
     public static float MaxSpeed => _maxSpeed;
     public static int CurrentStage => _currentStage;
     public static int TransitionProgress => _transitionProgress;
-    public static int TileBonus => _tileBonus;
-    public static int SpeedBonus => _speedBonus;
     public static int LoseCounter => _loseCounter;
     public static int StageProgress
     {
@@ -103,26 +100,38 @@ public class GameManager : MonoBehaviour
         get => _score;
         set
         {
-            _score = value + Mathf.RoundToInt(_speedBonus / 20);
+            _score = value + Mathf.RoundToInt(Instance._speedBonus / 20);
             OnScoreChanged?.Invoke(value);
         }
     }
-    public static int Stars
+    public int SpeedBonus
+    {
+        get => _speedBonus;
+        set
+        {
+            if (value > _speedBonus)
+            {
+                //Debug.Log("Bonus = " + _speedBonus);
+                ResetCoroutines();
+                StartCoroutine(BonusDelay());
+            }
+            _speedBonus = value;
+            OnSpeedBonusChanged?.Invoke(value);
+            if (_speedBonus > 100 * (_stars + 1))
+            {
+                AcquiredStars++;
+            }
+        }
+    }
+    public static int AcquiredStars
     {
         get => _stars;
         set
         {
-            if (value >= 0)
-            {
-#if UNITY_ANDROID
-                Taptic.Heavy();
-#endif
-                _stars = value;
-                OnStarLost?.Invoke(value);
-            }
+            _stars = value;
+            OnStarGained?.Invoke();
         }
     }
-    private float _minSpeed => Parameters[_currentStage].MinSpeed;
     #endregion
 
     #region Initialization
@@ -161,26 +170,7 @@ public class GameManager : MonoBehaviour
         if (CurrentState == GameState.Setup) { return; }
         CalculateBoardSpeed(_speedMultiplier);
 
-        if (IsRunnerInTransition)
-        {
-            if (++_counterTransitionBonusIncrease > _triggerCounters)
-            {
-                _counterTransitionBonusIncrease = 0;
-                IncreaseSpeedBonus(5);
-                IncreaseTileBonus(5);
-            }
-        }
-
-        if (CurrentState == GameState.Progressing)
-        {
-            if (_debugMode) { return; }
-
-            if (++_counterAverageSpeed > _triggerCounters)
-            {
-                _counterAverageSpeed = 0;
-                CalculateSpeedAverage();
-            }
-        }
+        if (_decreaseSpeedBonus && _triggerBonusStep) { StartCoroutine(BonusDecrease()); }
     }
 
     private void CalculateBoardSpeed(float multiplier)
@@ -198,22 +188,6 @@ public class GameManager : MonoBehaviour
         _tileSpeed = new Vector3(0, 0, -heightCurve * _defaultSpeed * multiplier);
     }
 
-    private void CalculateSpeedAverage()
-    {
-        _rollingSpeedAverage.Enqueue(TileSpeed);
-        if (_rollingSpeedAverage.Count > _rollingSpeedAverageMaxCount) { _rollingSpeedAverage.Dequeue(); }
-        _averageSpeed = _rollingSpeedAverage.Average();
-
-        if (_averageSpeed > _minSpeed) 
-        { 
-            IncreaseSpeedBonus(Mathf.CeilToInt((_averageSpeed - _minSpeed) / 4f)); 
-        }
-        else
-        {
-            DecreaseSpeedBonus(1, Mathf.FloorToInt(_averageSpeed * 100 / _minSpeed));
-        }
-    }
-
     private void CalculateBoardLength()
     {
         _boardLength = new Vector3(0, 0, _tileLength * NumberOfRows);
@@ -222,13 +196,6 @@ public class GameManager : MonoBehaviour
     private void OnDestroy()
     {
         if (Instance == this) { Instance = null; }
-    }
-
-    private IEnumerator BonusRecovery(WaitForSeconds delay, int x)
-    {
-        yield return delay;
-        if (x == 0) { _canIncreaseTileBonus = true; }
-        else if (x == 1) { _canIncreaseSpeedBonus = true; }
     }
 
     private void SetupNextStage()
@@ -240,9 +207,27 @@ public class GameManager : MonoBehaviour
             StageParameters newStage = ScriptableObject.CreateInstance<StageParameters>();
             Parameters.Add(newStage);
         }
-        
-        //_bonusShortDelay = new WaitForSeconds(Parameters[_currentStage].BonusRecoveryTime);
-        //_bonusLongDelay = new WaitForSeconds(Parameters[_currentStage].BonusRecoveryTime * 3);
+    }
+
+    private IEnumerator BonusDelay()
+    {
+        _decreaseSpeedBonus = false;
+        yield return _bonusDelay;
+        _decreaseSpeedBonus = true;
+    }
+
+    private IEnumerator BonusDecrease()
+    {
+        _triggerBonusStep = false;
+        yield return _bonusStep;
+        SpeedBonus = SpeedBonus > _stars * 100 ? SpeedBonus - 1 : _stars * 100;
+        _triggerBonusStep = true;
+    }
+
+    private void ResetCoroutines()
+    {
+        StopAllCoroutines();
+        _triggerBonusStep = true;
     }
 
     public void UpdateGameState(GameState newState)
@@ -258,11 +243,10 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.Transition:
                 SetupNextStage();
-                //OnLoseCounterChanged?.Invoke(0);
                 break;
             case GameState.Progressing:
                 Score = 0;
-                _stars = Parameters[_currentStage].Stars;
+                _stars = 0;
                 break;
             case GameState.Lose:
                 CalculateBoardSpeed(0);
@@ -270,92 +254,6 @@ public class GameManager : MonoBehaviour
         }
         OnStateChanged?.Invoke(newState);
     }
-
-    public void IncreaseTileBonus(int value)
-    {
-        if (_canIncreaseTileBonus)
-        {
-            _tileBonus = Mathf.Min(_tileBonus + value, 100);
-            OnTileBonusChanged?.Invoke(_tileBonus);
-        }
-    }
-
-    public void DecreaseTileBonus(int value)
-    {
-        if (value == 100)
-        {
-            StopCoroutine(BonusRecovery(_bonusLongDelay, 0));
-            StartCoroutine(BonusRecovery(_bonusLongDelay, 0));
-        }
-        else
-        {
-            StopCoroutine(BonusRecovery(_bonusShortDelay, 0));
-            StartCoroutine(BonusRecovery(_bonusShortDelay, 0));
-        }
-
-        _canIncreaseTileBonus = false;
-        _tileBonus = Mathf.Max(_tileBonus - value, 0);
-        OnTileBonusChanged?.Invoke(_tileBonus);
-    }
-
-    public void IncreaseSpeedBonus(int value)
-    {
-        if (_canIncreaseSpeedBonus)
-        {
-            _speedBonus = Mathf.Min(_speedBonus + value, 100);
-            OnSpeedBonusChanged?.Invoke(_speedBonus);
-        }
-    }
-
-    public void DecreaseSpeedBonus(int value, int floor = 0)
-    {
-        if (value == 100)
-        {
-            StopCoroutine(BonusRecovery(_bonusLongDelay, 1));
-            StartCoroutine(BonusRecovery(_bonusLongDelay, 1));
-            _rollingSpeedAverage.Clear(); // reset averages
-        }
-        else
-        {
-            StopCoroutine(BonusRecovery(_bonusShortDelay, 1));
-            StartCoroutine(BonusRecovery(_bonusShortDelay, 1));
-        }
-
-        _canIncreaseSpeedBonus = false;
-        _speedBonus = Mathf.Max(_speedBonus - value, Mathf.Min(_speedBonus, floor)); // this logic prevents accidentally increasing the bonus from here
-        OnSpeedBonusChanged?.Invoke(_speedBonus);
-    }
-
-    //public static void Progress()
-    //{
-    //    if (CurrentState == GameState.Transition)
-    //    {
-
-    //        //if (_transitionProgress < _transitionLength)
-    //        //{
-    //        //    _transitionProgress++;
-    //        //}
-    //        //else
-    //        //{
-    //        //    _transitionProgress = 0;
-    //        //    Debug.Log("Transition phase ending");
-    //        //    Instance.UpdateGameState(GameState.Progressing);
-    //        //}
-    //    }
-    //    else if (CurrentState == GameState.Progressing)
-    //    {
-    //        if (_stageProgress < Instance.Parameters[_currentStage].StageLength)
-    //        {
-    //            _stageProgress++;
-    //            //OnProgressChanged?.Invoke(_stageProgress);
-    //        }
-    //        else
-    //        {
-    //            _stageProgress = 0;
-    //            Instance.UpdateGameState(GameState.Transition);
-    //        }
-    //    }
-    //}
 
     public void SpawnPlayer(Transform tile)
     {

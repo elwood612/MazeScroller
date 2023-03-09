@@ -28,14 +28,14 @@ public class CameraBehavior : MonoBehaviour
     private void OnEnable()
     {
         GameManager.OnStateChanged += SetTargetForStage;
-        GameManager.OnStarLost += SetCameraShake;
+        GameManager.OnStarGained += SetCameraShake;
         Runner.OnTransitionReached += SetTargetForTransition;
     }
 
     private void OnDisable()
     {
         GameManager.OnStateChanged -= SetTargetForStage;
-        GameManager.OnStarLost -= SetCameraShake;
+        GameManager.OnStarGained -= SetCameraShake;
         Runner.OnTransitionReached -= SetTargetForTransition;
     }
 
@@ -66,7 +66,7 @@ public class CameraBehavior : MonoBehaviour
         _goodToRotate = true;
     }
 
-    private void SetCameraShake(int star)
+    private void SetCameraShake()
     {
         _goodToShake = true;
         _shakeDuration = 0.5f;
