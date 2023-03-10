@@ -9,9 +9,9 @@ public class UIManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _scoreText;
     [SerializeField] private TextMeshProUGUI _stageScore;
+    [SerializeField] private TextMeshProUGUI _totalStarAmount;
     [SerializeField] private Slider _speedSlider;
     [SerializeField] private GameObject _starParent;
-    [SerializeField] private GameObject _stageStarParent;
     [SerializeField] private Slider _loseSlider;
     [SerializeField] private Image _redGlow;
     [SerializeField] private Canvas _stageCanvas;
@@ -141,6 +141,7 @@ public class UIManager : MonoBehaviour
         {
             _topCanvas.enabled = true;
             _speedSlider.maxValue = GameManager.Instance.Parameters[GameManager.CurrentStage].TotalStars * 100;
+            _speedSlider.value = 0;
             ResetStars();
         }
     }
@@ -149,13 +150,13 @@ public class UIManager : MonoBehaviour
     {
         _topCanvas.enabled = false;
         _stageCanvas.enabled = true;
-        _stageScore.text = "Score: " + (GameManager.Score + GameManager.AcquiredStars * 1000);
+        //_stageScore.text = "Score: " + (GameManager.Score + GameManager.AcquiredStars * 1000);
+        _totalStarAmount.text = GameManager.AcquiredStars.ToString();
     }
 
     private void GainStar()
     {
         _starParent.transform.GetChild(_newStarIndex).GetChild(2).gameObject.SetActive(true);
-        _stageStarParent.transform.GetChild(_newStarIndex).GetChild(2).gameObject.SetActive(true);
         _newStarIndex++;
     }
 
@@ -166,12 +167,11 @@ public class UIManager : MonoBehaviour
             Destroy(star.gameObject); // ok yes this needs to be better
         }
         _allStars.Clear();
+        _newStarIndex = 0;
         for (int i = 0; i < GameManager.Instance.Parameters[GameManager.CurrentStage].TotalStars; i++)
         {
             GameObject newStar = Instantiate(_starPrefab, _starParent.transform);
-            GameObject newStageStar = Instantiate(_starPrefab, _stageStarParent.transform);
             _allStars.Add(newStar);
-            _allStars.Add(newStageStar);
         }
     }
 

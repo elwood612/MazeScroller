@@ -101,7 +101,7 @@ public class GameManager : MonoBehaviour
         set
         {
             _score = value + Mathf.RoundToInt(Instance._speedBonus / 20);
-            OnScoreChanged?.Invoke(value);
+            //OnScoreChanged?.Invoke(value);
         }
     }
     public int SpeedBonus
@@ -111,7 +111,6 @@ public class GameManager : MonoBehaviour
         {
             if (value > _speedBonus)
             {
-                //Debug.Log("Bonus = " + _speedBonus);
                 ResetCoroutines();
                 StartCoroutine(BonusDelay());
             }
@@ -230,6 +229,13 @@ public class GameManager : MonoBehaviour
         _triggerBonusStep = true;
     }
 
+    private void ResetStats()
+    {
+        Score = 0;
+        _speedBonus = 0;
+        _stars = 0;
+    }
+
     public void UpdateGameState(GameState newState)
     {
         if (CurrentState == newState && newState != GameState.Setup) { return; } // avoids spamming events for no reason
@@ -245,8 +251,7 @@ public class GameManager : MonoBehaviour
                 SetupNextStage();
                 break;
             case GameState.Progressing:
-                Score = 0;
-                _stars = 0;
+                ResetStats();
                 break;
             case GameState.Lose:
                 CalculateBoardSpeed(0);
@@ -293,6 +298,7 @@ public class GameManager : MonoBehaviour
 
     public void EndStage()
     {
+
         if (Parameters[_currentStage].AssociatedDialogue != null)
         {
             OnDialogueStart?.Invoke(Parameters[_currentStage].AssociatedDialogue);

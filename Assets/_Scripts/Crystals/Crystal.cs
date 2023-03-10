@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Threading;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -23,6 +22,8 @@ public class Crystal : MonoBehaviour
     private bool _destroyed = false;
     private WaitForSeconds _destroyDelay = new WaitForSeconds(1f);
     private OrbitMissile[] _orbitMissiles = new OrbitMissile[6];
+
+    public static int ScoreBonus = 1;
 
     private void Awake()
     {
@@ -50,7 +51,7 @@ public class Crystal : MonoBehaviour
         }
         else if (other.CompareTag("TileDestroyer") && !_destroyed)
         {
-            //EndOfBoardContact();
+            EndOfBoardContact();
         }
     }
 
@@ -74,28 +75,32 @@ public class Crystal : MonoBehaviour
     {
         StartCoroutine(Explode());
         //GameManager.Score += (int)Mathf.Pow(10, _initialLevel);
-        GameManager.Instance.SpeedBonus += 5 * (_initialLevel + 1) / (GameManager.AcquiredStars + 1);
-    } 
+        //GameManager.Instance.SpeedBonus += 5 * (_initialLevel + 1) / (GameManager.AcquiredStars + 1);
+        GameManager.Instance.SpeedBonus += 5 * (_initialLevel + 1) * ScoreBonus;
+        Debug.Log("Bonus increase:" + (5 * (_initialLevel + 1) * ScoreBonus).ToString());
+        ScoreBonus = 2;
+    }
 
-    //private void EndOfBoardContact()
-    //{
-    //    StartCoroutine(Explode());
-    //    _audioNegative.Play();
-    //    GameManager.AcquiredStars--;
-    //    for (int i = 0; i < _level; i++)
-    //    {
-    //        DestroyOrbitMissile(_orbitMissiles[_level - 1]);
-    //    }
-    //}
+    private void EndOfBoardContact()
+    {
+        StartCoroutine(Explode(true));
+        for (int i = 0; i < _level; i++)
+        {
+            DestroyOrbitMissile(_orbitMissiles[_level - 1]);
+        }
+    }
 
-    private IEnumerator Explode()
+    private IEnumerator Explode(bool endOfBoard = false)
     {
         _destroyed = true;
         _wireframe.SetActive(false);
         _shadow.enabled = false;
-        _particlesExplosion.Play();
         _particlesNormal.Stop();
-        _audioZap.Play();
+        if (!endOfBoard) 
+        { 
+            _audioZap.Play();
+            _particlesExplosion.Play();
+        }
         yield return _destroyDelay;
         _crystalPool.Release(this);
     }
@@ -113,6 +118,11 @@ public class Crystal : MonoBehaviour
             _wireframe.transform.GetChild(i).GetComponent<MeshRenderer>().material = wireframe;
         }
         _shadow.material = shadow;
+    }
+
+    public void ResetScoreBonus(bool stopped)
+    {
+        if (stopped) { Debug.Log("Reset bonus"); ScoreBonus = 1; }
     }
 
     public void Initialize(int level, ObjectPool<Crystal> crystalPool)

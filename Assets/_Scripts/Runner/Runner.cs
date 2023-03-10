@@ -19,7 +19,7 @@ public class Runner : MonoBehaviour, IRunner
     private List<Tile> _uncrossedTransitionTiles = new List<Tile>();
     private float _currentSpeed;
     private int _colliderCheck = 0;
-    public bool _runnerStopped = true;
+    private bool _runnerStopped = true;
     private bool _runnerOffScreen = false;
     private bool _approachingDeadEnd = false;
     public bool _isInTransition = false;
@@ -28,6 +28,18 @@ public class Runner : MonoBehaviour, IRunner
 
     public static event Action OnTransitionReached;
     public TextMeshProUGUI DialogueBox => _dialogueBox;
+    public bool RunnerStopped
+    {
+        get => _runnerStopped;
+        set
+        {
+            if (_runnerStopped != value) 
+            { 
+                _runnerStopped = value;
+                if (value == true) { Crystal.ScoreBonus = 1; }
+            }
+        }
+    }
     public bool IsInTransition
     {
         get => _isInTransition;
@@ -71,9 +83,20 @@ public class Runner : MonoBehaviour, IRunner
     {
         GameManager.AddBoardMotion(transform);
         CalculateSpeed();
-        if (_uncrossedTiles.Count > 0 && !_isInTransition) { Move(); }
-        if (_uncrossedTiles.Count == 0 && _currentTile.IsPreTransitionTile) { Move(); }
-        if (_uncrossedTransitionTiles.Count > 0 && _isInTransition) { Move(); }
+        //if (_uncrossedTiles.Count > 0 && !_isInTransition) { Move(); }
+        //if (_uncrossedTiles.Count == 0 && _currentTile.IsPreTransitionTile) { Move(); }
+        //if (_uncrossedTransitionTiles.Count > 0 && _isInTransition) { Move(); }
+
+        if ((_uncrossedTiles.Count > 0 && !_isInTransition) ||
+            (_uncrossedTiles.Count == 0 && _currentTile.IsPreTransitionTile) ||
+            (_uncrossedTransitionTiles.Count > 0 && _isInTransition))
+        {
+            Move();
+        }
+        else
+        {
+            RunnerStopped = true;
+        }
 
         GameManager.RunnerHeight = Camera.main.WorldToScreenPoint(transform.position).y / Screen.height;
     }
@@ -115,6 +138,7 @@ public class Runner : MonoBehaviour, IRunner
     private void Move()
     {
         if (_currentTarget == null) { return; }
+        RunnerStopped = false;
         transform.position = Vector3.MoveTowards(transform.position, _currentTarget.transform.position, Time.deltaTime * _currentSpeed);
     }
 
@@ -145,7 +169,7 @@ public class Runner : MonoBehaviour, IRunner
         if (_nextTarget != null)
         {
             _currentTarget = _nextTarget;
-            _runnerStopped = false;
+            //_runnerStopped = false;
             DrawMaze.OnTileAdded -= SetTarget;
         }
         
@@ -313,7 +337,7 @@ public class Runner : MonoBehaviour, IRunner
     {
         ClearPathfinding();
         
-        _runnerStopped = true;
+        //_runnerStopped = true;
         _runnerOffScreen = false;
         _currentTile = endTile;
         _currentTarget = endTile;
@@ -360,8 +384,8 @@ public class Runner : MonoBehaviour, IRunner
         if (_uncrossedTiles.Contains(tile)) { _uncrossedTiles.Remove(tile); }
         if (_uncrossedTransitionTiles.Contains(tile)) { _uncrossedTransitionTiles.Remove(tile); }
 
-        if (_uncrossedTiles.Count == 0 && !_isInTransition) { _runnerStopped = true; }
-        if (_uncrossedTransitionTiles.Count == 0 && _isInTransition) { _runnerStopped = true; }
+        //if (_uncrossedTiles.Count == 0 && !_isInTransition) { _runnerStopped = true; }
+        //if (_uncrossedTransitionTiles.Count == 0 && _isInTransition) { _runnerStopped = true; }
     }
 
     public void CalculateNextTargetWrapper(Tile tile)

@@ -103,11 +103,11 @@ public class TileSpawner : MonoBehaviour
                 StartCoroutine(DisableRandomTile(other.GetComponent<Row>()));
             }
 
-            if (++_counterColorSpawn > _triggerColorSpawn)
-            {
-                _counterColorSpawn = 0;
-                StartCoroutine(SpawnColor(other.GetComponent<Row>()));
-            }
+            //if (++_counterColorSpawn > _triggerColorSpawn)
+            //{
+            //    _counterColorSpawn = 0;
+            //    StartCoroutine(SpawnColor(other.GetComponent<Row>()));
+            //}
 
             if (++_counterSpawnCrystal > _triggerCrystalSpawn)
             {
