@@ -26,6 +26,7 @@ public class Tile : MonoBehaviour
     private bool _isPartOfMaze = false;
     private bool _isEnabled = false;
     private bool _isColored = false;
+    private bool _isCharged = false;
     private bool _deadEndPrimed = false;
     private int _crossings = 0;
     private Tile _pathfindingParent;
@@ -34,6 +35,7 @@ public class Tile : MonoBehaviour
     public static event Action<Tile> OnTileDestroy;
     public static event Action<Tile> OnTileDeactivate;
     public static event Action<Crystal> OnCrystalRemoval;
+    public static event Action OnChargedTileHit;
     public bool IsStartingTile = false;
     public bool IsTransitionTile = false;
     public bool IsPreTransitionTile = false;
@@ -44,6 +46,7 @@ public class Tile : MonoBehaviour
     public bool IsPartOfMaze => _isPartOfMaze;
     public bool IsEnabled => _isEnabled;
     public bool IsColored => _isColored;
+    public bool IsCharged => _isCharged;
     public int Crossings => _crossings;
     public Row ParentRow => _parentRow;
     public Tile PathfindingParent
@@ -104,6 +107,7 @@ public class Tile : MonoBehaviour
     {
         SetMaterial(_tileCrossed);
         //ColoredCheck();
+        ChargedCheck();
         _crossings++;
         _pathfindingParent = null;
         runner.PreviousTile = runner.CurrentTile;
@@ -111,7 +115,7 @@ public class Tile : MonoBehaviour
         runner.CalculateNextTargetWrapper(this);
         if ((IsTransitionTile || IsPreTransitionTile) && !runner.IsInTransition) { runner.BeginTransition(); }
         if (!IsTransitionTile && runner.IsInTransition) { runner.BeginStage(); }
-        if (!IsTransitionTile) { GameManager.Score++; }
+        //if (!IsTransitionTile) { GameManager.Score++; }
     }
 
     //private void ColoredCheck()
@@ -133,6 +137,23 @@ public class Tile : MonoBehaviour
     //        }
     //    }
     //}
+
+    private void ChargedCheck()
+    {
+        if (!_isCharged) { return; }
+
+        _audioNegative.Play();
+        SetAsCharged(false);
+        OnChargedTileHit?.Invoke();
+        // destroy all active crystals
+        foreach (Tile tile in BoardManager.AllTiles)
+        {
+            if (tile.AttachedCrystal != null)
+            {
+                tile.RemoveCrystal();
+            }
+        }
+    }
 
     private void DestroyTile()
     {
@@ -224,6 +245,7 @@ public class Tile : MonoBehaviour
     {
         _tileRenderer.enabled = false;
         SetAsColored(false);
+        SetAsCharged(false);
         _isEnabled = false;
         if (_parentRow.EnabledTiles.Contains(this))
         {
@@ -311,6 +333,12 @@ public class Tile : MonoBehaviour
         _colorParticles.Play();
     }
 
+    public void SetAsCharged(bool input)
+    {
+        _isCharged = input;
+        _colorRenderer.enabled = input;
+    }
+
     public void SetStartingTile()
     {
         AddTileToMaze();
@@ -336,6 +364,7 @@ public class Tile : MonoBehaviour
         SetMaterial(_tileBase);
         DisableTile();
         SetAsColored(false);
+        SetAsCharged(false);
         ResetDeadEnd();
         NeighborPaths.Clear();
     }

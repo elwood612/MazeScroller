@@ -9,10 +9,10 @@ public class UIManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _scoreText;
     [SerializeField] private TextMeshProUGUI _stageScore;
-    [SerializeField] private TextMeshProUGUI _totalStarAmount;
-    [SerializeField] private Slider _speedSlider;
+    [SerializeField] private TextMeshProUGUI _topTotalStarAmount;
+    [SerializeField] private TextMeshProUGUI _stageTotalStarAmount;
+    [SerializeField] private Slider[] _speedSliders;
     [SerializeField] private GameObject _starParent;
-    [SerializeField] private Slider _loseSlider;
     [SerializeField] private Image _redGlow;
     [SerializeField] private Canvas _stageCanvas;
     [SerializeField] private Canvas _topCanvas;
@@ -24,14 +24,14 @@ public class UIManager : MonoBehaviour
     private TextMeshProUGUI _dialogueBox;
     private int _dialogueIndex = 0;
     private int _newStarIndex = 0;
+    private int _bonusStarIndex = 0;
     private List<GameObject> _allStars = new List<GameObject>();
+    private Slider _activeSlider;
 
     private void Awake()
     {
         UpdateScore(0);
-        _speedSlider.value = GameManager.Instance.SpeedBonus;
-        _loseSlider.value = 0;
-        _loseSlider.gameObject.SetActive(false);
+        _activeSlider = _speedSliders[0];
         _redGlow.enabled = false;
         _topCanvas.enabled = false;
         _stageCanvas.enabled = false;
@@ -41,7 +41,6 @@ public class UIManager : MonoBehaviour
     {
         GameManager.OnScoreChanged += UpdateScore;
         GameManager.OnSpeedBonusChanged += UpdateSpeedBonus;
-        GameManager.OnLoseCounterChanged += Losing;
         GameManager.OnRunnerSpawned += AssignDialogueBox;
         GameManager.OnStageEnd += EndStage;
         GameManager.OnStateChanged += BeginStage;
@@ -54,10 +53,10 @@ public class UIManager : MonoBehaviour
     {
         GameManager.OnScoreChanged -= UpdateScore;
         GameManager.OnSpeedBonusChanged -= UpdateSpeedBonus;
-        GameManager.OnLoseCounterChanged -= Losing;
         GameManager.OnRunnerSpawned -= AssignDialogueBox;
         GameManager.OnStageEnd -= EndStage;
         GameManager.OnStateChanged -= BeginStage;
+        GameManager.OnStarGained -= GainStar;
         DialogueManager.OnNextSentence -= UpdateDialogueBox;
         DialogueManager.OnDialogueEnd -= HideDialogueBox;
     }
@@ -69,29 +68,7 @@ public class UIManager : MonoBehaviour
 
     private void UpdateSpeedBonus(int value)
     {
-        _speedSlider.value = value;
-    }
-
-    private void UpdateLoseSlider(int value)
-    {
-        _loseSlider.value = value;
-    }
-
-    private void Losing(int value)
-    {
-        _flashing = value > 0;
-        if (_flashing && !_flashRunning) 
-        {
-            _loseSlider.gameObject.SetActive(true);
-            UpdateLoseSlider(value);
-            StartCoroutine(PanelRedFlash()); 
-        }
-        if (!_flashing) 
-        {
-            UpdateLoseSlider(value);
-            _loseSlider.gameObject.SetActive(false);
-            StopCoroutine(PanelRedFlash()); 
-        }
+        _activeSlider.value = value % (GameManager.Instance.Parameters[GameManager.CurrentStage].TotalStars * 100);
     }
 
     private IEnumerator PanelRedFlash()
@@ -140,8 +117,10 @@ public class UIManager : MonoBehaviour
         if (state == GameState.Progressing)
         {
             _topCanvas.enabled = true;
-            _speedSlider.maxValue = GameManager.Instance.Parameters[GameManager.CurrentStage].TotalStars * 100;
-            _speedSlider.value = 0;
+            _activeSlider = _speedSliders[0];
+            _topTotalStarAmount.text = GameManager.AcquiredStars.ToString();
+            _stageTotalStarAmount.text = GameManager.AcquiredStars.ToString();
+            ResetSliders();
             ResetStars();
         }
     }
@@ -150,14 +129,21 @@ public class UIManager : MonoBehaviour
     {
         _topCanvas.enabled = false;
         _stageCanvas.enabled = true;
-        //_stageScore.text = "Score: " + (GameManager.Score + GameManager.AcquiredStars * 1000);
-        _totalStarAmount.text = GameManager.AcquiredStars.ToString();
+        _stageTotalStarAmount.text = GameManager.AcquiredStars.ToString();
     }
 
-    private void GainStar()
+    private void GainStar(int level)
     {
-        _starParent.transform.GetChild(_newStarIndex).GetChild(2).gameObject.SetActive(true);
+        _topTotalStarAmount.text = GameManager.AcquiredStars.ToString();
+        _starParent.transform.GetChild(_newStarIndex % GameManager.Instance.Parameters[GameManager.CurrentStage].TotalStars)
+            .GetChild(2 + _bonusStarIndex).gameObject.SetActive(true);
         _newStarIndex++;
+        if (level > _bonusStarIndex)
+        {
+            _bonusStarIndex = level;
+            _activeSlider = _speedSliders[_bonusStarIndex];
+            _activeSlider.gameObject.SetActive(true);
+        }
     }
 
     private void ResetStars()
@@ -172,6 +158,15 @@ public class UIManager : MonoBehaviour
         {
             GameObject newStar = Instantiate(_starPrefab, _starParent.transform);
             _allStars.Add(newStar);
+        }
+    }
+
+    private void ResetSliders()
+    {
+        foreach (Slider slider in _speedSliders)
+        {
+            slider.maxValue = GameManager.Instance.Parameters[GameManager.CurrentStage].TotalStars * 100;
+            slider.value = 0;
         }
     }
 

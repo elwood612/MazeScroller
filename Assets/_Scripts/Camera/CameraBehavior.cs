@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 [RequireComponent(typeof(Camera))]
 public class CameraBehavior : MonoBehaviour
@@ -28,14 +29,14 @@ public class CameraBehavior : MonoBehaviour
     private void OnEnable()
     {
         GameManager.OnStateChanged += SetTargetForStage;
-        GameManager.OnStarGained += SetCameraShake;
+        Tile.OnChargedTileHit += EnableCameraShake;
         Runner.OnTransitionReached += SetTargetForTransition;
     }
 
     private void OnDisable()
     {
         GameManager.OnStateChanged -= SetTargetForStage;
-        GameManager.OnStarGained -= SetCameraShake;
+        Tile.OnChargedTileHit -= EnableCameraShake;
         Runner.OnTransitionReached -= SetTargetForTransition;
     }
 
@@ -66,7 +67,7 @@ public class CameraBehavior : MonoBehaviour
         _goodToRotate = true;
     }
 
-    private void SetCameraShake()
+    private void EnableCameraShake()
     {
         _goodToShake = true;
         _shakeDuration = 0.5f;

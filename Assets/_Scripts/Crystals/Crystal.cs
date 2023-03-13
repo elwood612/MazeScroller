@@ -77,7 +77,6 @@ public class Crystal : MonoBehaviour
         //GameManager.Score += (int)Mathf.Pow(10, _initialLevel);
         //GameManager.Instance.SpeedBonus += 5 * (_initialLevel + 1) / (GameManager.AcquiredStars + 1);
         GameManager.Instance.SpeedBonus += 5 * (_initialLevel + 1) * ScoreBonus;
-        Debug.Log("Bonus increase:" + (5 * (_initialLevel + 1) * ScoreBonus).ToString());
         ScoreBonus = 2;
     }
 

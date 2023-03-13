@@ -103,11 +103,11 @@ public class TileSpawner : MonoBehaviour
                 StartCoroutine(DisableRandomTile(other.GetComponent<Row>()));
             }
 
-            //if (++_counterColorSpawn > _triggerColorSpawn)
-            //{
-            //    _counterColorSpawn = 0;
-            //    StartCoroutine(SpawnColor(other.GetComponent<Row>()));
-            //}
+            if (++_counterColorSpawn > _triggerColorSpawn)
+            {
+                _counterColorSpawn = 0;
+                StartCoroutine(SpawnColor(other.GetComponent<Row>()));
+            }
 
             if (++_counterSpawnCrystal > _triggerCrystalSpawn)
             {
@@ -191,7 +191,8 @@ public class TileSpawner : MonoBehaviour
         Tile tile = row.EnabledTiles[Random.Range(0, row.EnabledTiles.Count)];
         if (!tile.IsEnabled || row.EnabledTiles.Count <= 2) { yield break; }
 
-        tile.SetAsColored(true);
+        //tile.SetAsColored(true);
+        tile.SetAsCharged(true);
         _triggerColorSpawn = Mathf.RoundToInt(Random.Range(_colorMinRowsToSpawn, _colorMaxRowsToSpawn));
     }
 
@@ -199,7 +200,7 @@ public class TileSpawner : MonoBehaviour
     {
         yield return _crystalDelay;
         Tile tile = row.EnabledTiles[Random.Range(0, row.EnabledTiles.Count)];
-        if (!tile.IsEnabled || tile.IsColored || row.EnabledTiles.Count <= 2) { yield break; }
+        if (!tile.IsEnabled || tile.IsCharged || row.EnabledTiles.Count <= 2) { yield break; }
 
         Crystal newCrystal = _crystalPool.Get();
         newCrystal.transform.SetParent(tile.transform, false);

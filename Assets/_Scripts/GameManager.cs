@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     private int _counterAverageSpeed = 0;
     private int _counterTransitionBonusIncrease = 0;
     private int _triggerCounters = 30;
+    
     private int _speedBonus = 0;
     private WaitForSeconds _bonusDelay = new WaitForSeconds(1f);
     private WaitForSeconds _bonusStep = new WaitForSeconds(0.5f);
@@ -41,7 +42,8 @@ public class GameManager : MonoBehaviour
     private static int _score = 0;
     private static int _stars = 0;
     private static int _loseCounter = 0;
-    
+    private static int _bonusStarLevel = 0;
+
     private static Vector3 _tileSpeed = Vector3.zero;
     private static Vector3 _transitionSpeed = new Vector3(0, 0, -40);
     private static Vector3 _boardLength;
@@ -55,7 +57,7 @@ public class GameManager : MonoBehaviour
     public static event Action OnStageEnd;
     public static event Action<Dialogue> OnDialogueStart;
     public static event Action<GameObject> OnRunnerSpawned;
-    public static event Action OnStarGained;
+    public static event Action<int> OnStarGained;
 
     public static GameManager Instance;
     public static float HighestDrawnRowHeight;
@@ -128,7 +130,11 @@ public class GameManager : MonoBehaviour
         set
         {
             _stars = value;
-            OnStarGained?.Invoke();
+            if (_stars % Instance.Parameters[_currentStage].TotalStars == 0)
+            {
+                _bonusStarLevel++;
+            }
+            OnStarGained?.Invoke(_bonusStarLevel);
         }
     }
     #endregion
@@ -234,6 +240,7 @@ public class GameManager : MonoBehaviour
         Score = 0;
         _speedBonus = 0;
         _stars = 0;
+        _bonusStarLevel = 0;
     }
 
     public void UpdateGameState(GameState newState)
