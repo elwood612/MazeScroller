@@ -34,7 +34,8 @@ public class GameManager : MonoBehaviour
     private static float _maxSpeed = 50f;
     private static float _tileLength;
     private static float _speedMultiplier = 1f;
-    private static int _currentStage = -1; // so that we start off by incrementing to 0
+    private static float _tileAlpha = 1f;
+    private static int _currentStage = 0; // so that we start off by incrementing to 0
     private static int _stageProgress;
     private static int _stageLength = 100;
     private static int _transitionProgress;
@@ -50,7 +51,7 @@ public class GameManager : MonoBehaviour
 
     public static GameState CurrentState;
     public static event Action<GameState> OnStateChanged;
-    public static event Action<int> OnSetupNextStage;
+    public static event Action OnSetupNextStage;
     public static event Action<int> OnScoreChanged;
     public static event Action<int> OnSpeedBonusChanged;
     public static event Action<int> OnLoseCounterChanged;
@@ -75,6 +76,7 @@ public class GameManager : MonoBehaviour
     public AnimationCurve TileSpawnerWidthCurve => _tileSpawnerWidthCurve;
     public static int StageLength => _stageLength;
     public static float MaxSpeed => _maxSpeed;
+    public static float TileAlpha => _tileAlpha;
     public static int CurrentStage => _currentStage;
     public static int TransitionProgress => _transitionProgress;
     public static int LoseCounter => _loseCounter;
@@ -88,6 +90,10 @@ public class GameManager : MonoBehaviour
                 if (_stageProgress < Instance.Parameters[_currentStage].StageLength)
                 {
                     _stageProgress = value;
+                    if (_stageProgress > Instance.Parameters[_currentStage].StageLength / 2)
+                    {
+                        _tileAlpha = Mathf.Max(_tileAlpha - 2f / Instance.Parameters[_currentStage].StageLength, 0);
+                    }
                 }
                 else
                 {
@@ -203,17 +209,6 @@ public class GameManager : MonoBehaviour
         if (Instance == this) { Instance = null; }
     }
 
-    private void SetupNextStage()
-    {
-        if (!_demoMode) { _currentStage++; }
-        OnSetupNextStage?.Invoke(_currentStage);
-        if (_currentStage >= Parameters.Count)
-        {
-            StageParameters newStage = ScriptableObject.CreateInstance<StageParameters>();
-            Parameters.Add(newStage);
-        }
-    }
-
     private IEnumerator BonusDelay()
     {
         _decreaseSpeedBonus = false;
@@ -241,6 +236,7 @@ public class GameManager : MonoBehaviour
         _speedBonus = 0;
         _stars = 0;
         _bonusStarLevel = 0;
+        _tileAlpha = 1f;
     }
 
     public void UpdateGameState(GameState newState)
@@ -255,7 +251,7 @@ public class GameManager : MonoBehaviour
                 CalculateBoardLength();
                 break;
             case GameState.Transition:
-                SetupNextStage();
+                //SetupNextStage();
                 break;
             case GameState.Progressing:
                 ResetStats();
@@ -289,6 +285,18 @@ public class GameManager : MonoBehaviour
     public static bool CompareVectorsAsInts(Vector3 v1, Vector3 v2)
     {
         return Vector3Int.RoundToInt(v1) == Vector3Int.RoundToInt(v2);
+    }
+
+    public void SetupNextStage()
+    {
+        if (!_demoMode) { _currentStage++; }
+        
+        if (_currentStage >= Parameters.Count)
+        {
+            StageParameters newStage = ScriptableObject.CreateInstance<StageParameters>();
+            Parameters.Add(newStage);
+        }
+        OnSetupNextStage?.Invoke();
     }
 
     public void GoodToBeginDialogue()

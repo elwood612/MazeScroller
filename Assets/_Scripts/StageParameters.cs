@@ -11,6 +11,7 @@ public class StageParameters : ScriptableObject
     [Range(0, 50)] public int TilePenalty = 20;
     [Tooltip("The higher this is, the fewer rows have holes.")]
     [Range(0, 10)] public int TileDestroyMinRows = 1;
+    public Color TileColor = new Color(0.1725489f, 0.3896077f, 0.490196f, 1f);
 
     [Header("Spawner Width")]
     public float TileSpawnerWidthMin = 2.1f;

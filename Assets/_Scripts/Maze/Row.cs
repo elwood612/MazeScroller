@@ -10,6 +10,7 @@ public class Row : MonoBehaviour
 
     public event Action OnRowReset;
     public event Action OnRowSetup;
+    public event Action<float> OnRowTransition;
 
     public bool HasSetupBeenRun => _hasSetupBeenRun;
     public List<Tile> EnabledTiles
@@ -60,6 +61,10 @@ public class Row : MonoBehaviour
         {
             OnRowSetup?.Invoke();
             _hasSetupBeenRun = true;
+        }
+        if (GameManager.CurrentState == GameState.Transition)
+        {
+            OnRowTransition?.Invoke(1f);
         }
     }
 

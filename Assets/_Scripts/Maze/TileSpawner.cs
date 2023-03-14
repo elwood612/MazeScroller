@@ -56,6 +56,7 @@ public class TileSpawner : MonoBehaviour
         _middleOfScreen = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height, 100)).x;
         _edgeOfScreen = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 100)).x;
         InitializeCrystalPool();
+        SetupNewStage();
     }
 
     private void OnEnable()
@@ -209,9 +210,8 @@ public class TileSpawner : MonoBehaviour
         _triggerCrystalSpawn = Mathf.RoundToInt(Random.Range(_crystalMinRowsToSpawn, _crystalMaxRowsToSpawn));
     }
 
-    private void SetupNewStage(int stage)
+    private void SetupNewStage()
     {
-        //_randomSystem = new Random(stage);
         _triggerDisableTile = GameManager.Instance.Parameters[GameManager.CurrentStage].TileDestroyMinRows * Mathf.RoundToInt(Random.Range(2f, 5f));
         _triggerColorSpawn = Mathf.RoundToInt(Random.Range(_colorMinRowsToSpawn, _colorMaxRowsToSpawn));
         _triggerCrystalSpawn = Mathf.RoundToInt(Random.Range(_crystalMinRowsToSpawn, _crystalMaxRowsToSpawn));

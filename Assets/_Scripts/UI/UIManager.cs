@@ -17,6 +17,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Canvas _stageCanvas;
     [SerializeField] private Canvas _topCanvas;
     [SerializeField] private GameObject _starPrefab;
+    [SerializeField] private Button _continueButton;
 
     private WaitForSecondsRealtime _delay = new WaitForSecondsRealtime(0.25f);
     private bool _flashing = true;
@@ -35,6 +36,7 @@ public class UIManager : MonoBehaviour
         _redGlow.enabled = false;
         _topCanvas.enabled = false;
         _stageCanvas.enabled = false;
+        _continueButton.interactable = false;
     }
 
     private void OnEnable()
@@ -129,7 +131,17 @@ public class UIManager : MonoBehaviour
     {
         _topCanvas.enabled = false;
         _stageCanvas.enabled = true;
-        _stageTotalStarAmount.text = GameManager.AcquiredStars.ToString();
+        _stageTotalStarAmount.text = GameManager.AcquiredStars.ToString() + " ("
+            + GameManager.Instance.Parameters[GameManager.CurrentStage].TotalStars.ToString()
+            + " req.)";
+        if (GameManager.AcquiredStars >= GameManager.Instance.Parameters[GameManager.CurrentStage].TotalStars)
+        {
+            _continueButton.interactable = true;
+        }
+        else
+        {
+            _continueButton.interactable = false;
+        }
     }
 
     private void GainStar(int level)
@@ -167,6 +179,7 @@ public class UIManager : MonoBehaviour
         {
             slider.maxValue = GameManager.Instance.Parameters[GameManager.CurrentStage].TotalStars * 100;
             slider.value = 0;
+            if (slider != _speedSliders[0]) { slider.gameObject.SetActive(false); }
         }
     }
 
@@ -177,12 +190,14 @@ public class UIManager : MonoBehaviour
 
     public void OnContinueButtonClick()
     {
+        GameManager.Instance.SetupNextStage();
         GameManager.Instance.GoodToBeginDialogue();
         _stageCanvas.enabled = false;
     }
 
-    public void OnQuitButtonClick()
+    public void OnRestartButtonClick()
     {
-        // Quit to menu
+        GameManager.Instance.GoodToBeginDialogue();
+        _stageCanvas.enabled = false;
     }
 }

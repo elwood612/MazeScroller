@@ -124,6 +124,11 @@ public class Crystal : MonoBehaviour
         if (stopped) { Debug.Log("Reset bonus"); ScoreBonus = 1; }
     }
 
+    public void RemoveCrystal()
+    {
+        StartCoroutine(Explode(true));
+    }
+
     public void Initialize(int level, ObjectPool<Crystal> crystalPool)
     {
         _destroyed = false;

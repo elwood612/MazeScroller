@@ -27,10 +27,12 @@ public class Tile : MonoBehaviour
     private bool _isEnabled = false;
     private bool _isColored = false;
     private bool _isCharged = false;
+    public bool _firstSpawnInStage = true;
     private bool _deadEndPrimed = false;
     private int _crossings = 0;
     private Tile _pathfindingParent;
     private static bool _firstTile = true;
+    private Material _baseMaterial;
 
     public static event Action<Tile> OnTileDestroy;
     public static event Action<Tile> OnTileDeactivate;
@@ -60,6 +62,8 @@ public class Tile : MonoBehaviour
         _parentRow = transform.GetComponentInParent<Row>();
         _colorRenderer.enabled = false;
         _tileDeadEnd.SetActive(false);
+        _baseMaterial = new Material(_tileBase);
+        _tileRenderer.material = _baseMaterial;
         DisableTile();
     }
 
@@ -67,12 +71,16 @@ public class Tile : MonoBehaviour
     {
         _parentRow.OnRowReset += ResetTile;
         _parentRow.OnRowSetup += GetNeighbors;
+        _parentRow.OnRowTransition += SetAlpha;
+        _parentRow.OnRowTransition += ResetColor;
     }
 
     private void OnDisable()
     {
         _parentRow.OnRowReset -= ResetTile;
         _parentRow.OnRowSetup -= GetNeighbors;
+        _parentRow.OnRowTransition -= SetAlpha;
+        _parentRow.OnRowTransition -= ResetColor;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -148,7 +156,7 @@ public class Tile : MonoBehaviour
         // destroy all active crystals
         foreach (Tile tile in BoardManager.AllTiles)
         {
-            if (tile.AttachedCrystal != null)
+            if (tile.AttachedCrystal != null && tile.AttachedCrystal.isActiveAndEnabled)
             {
                 tile.RemoveCrystal();
             }
@@ -166,11 +174,30 @@ public class Tile : MonoBehaviour
         _tileRenderer.enabled = true;
         _isEnabled = true;
         _parentRow.EnabledTiles.Add(this);
+        if (_firstSpawnInStage && GameManager.CurrentState == GameState.Progressing)
+        {
+            _baseMaterial.color = GameManager.Instance.Parameters[GameManager.CurrentStage].TileColor;
+            SetMaterial(_baseMaterial);
+            _firstSpawnInStage = false;
+        }
     }
 
     private void SetMaterial(Material material)
     {
         _tileRenderer.material = material;
+    }
+
+    private void SetAlpha(float newAlpha)
+    {
+        Color color = _tileRenderer.material.color;
+        color.a = newAlpha;
+        _tileRenderer.material.color = color;
+    }
+
+    private void ResetColor(float unused)
+    {
+        _firstSpawnInStage = true;
+        _baseMaterial = new Material(_tileBase);
     }
 
     private void ResetDeadEnd()
@@ -238,6 +265,7 @@ public class Tile : MonoBehaviour
                 t.IsTransitionTile = false;
                 DrawMaze.TileAddingItselfToMaze(t);
             }
+            SetAlpha(GameManager.TileAlpha);
         }
 }
 
@@ -269,7 +297,8 @@ public class Tile : MonoBehaviour
     public void RemoveTileFromMaze()
     {
         _isPartOfMaze = false;
-        SetMaterial(_tileBase);
+        //SetMaterial(_tileBase);
+        SetMaterial(_baseMaterial);
     }
 
     public void SetTileAsDeadEnd(Transform wall)
@@ -322,7 +351,8 @@ public class Tile : MonoBehaviour
 
     public void RemoveCrystal()
     {
-        OnCrystalRemoval?.Invoke(AttachedCrystal);
+        //OnCrystalRemoval?.Invoke(AttachedCrystal);
+        AttachedCrystal.RemoveCrystal();
         AttachedCrystal = null;
     }
 
@@ -361,7 +391,8 @@ public class Tile : MonoBehaviour
         IsTransitionTile = false;
         IsPreTransitionTile = false;
         RemoveTileFromMaze();
-        SetMaterial(_tileBase);
+        //SetMaterial(_tileBase);
+        SetMaterial(_baseMaterial);
         DisableTile();
         SetAsColored(false);
         SetAsCharged(false);
