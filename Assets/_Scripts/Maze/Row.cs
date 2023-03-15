@@ -37,7 +37,7 @@ public class Row : MonoBehaviour
         else if (other.CompareTag("RowQA")) 
         { 
             CheckRow(); 
-            if (_hasSetupBeenRun) { GameManager.StageProgress++; }
+            if (_hasSetupBeenRun && !GameManager.DoTutorial) { GameManager.StageProgress++; }
         }
         //else if (other.CompareTag("TileSpawner") && _hasSetupBeenRun) { GameManager.Progress(); }
     }

@@ -17,6 +17,11 @@ public class TileSpawner : MonoBehaviour
     private int _triggerDisableTile = 2;
     private int _triggerColorSpawn = 1000;
     private int _triggerCrystalSpawn = 1000;
+    private int _triggerTutorialCrystalSpawn = 5;
+    private int _triggerTutorialColorSpawn = 20;
+    private bool _tutorialFirstCrystal = true;
+    private bool _tutorialSecondCrystal = false;
+    private bool _tutorialThirdCrystal = false;
     public float _width = 0.5f;
     private float _transitionWidth = 0.5f;
     private float _xPos;
@@ -64,6 +69,9 @@ public class TileSpawner : MonoBehaviour
         Tile.OnCrystalRemoval += RemoveCrystal;
         GameManager.OnStateChanged += SetNewScale;
         GameManager.OnSetupNextStage += SetupNewStage;
+        Crystal.OnFirstCrystal += EnableSecondCrystal;
+        Crystal.OnSecondCrystal += EnableThirdCrystal;
+        Crystal.OnThirdCrystal += EnableTutorialFreeDraw;
     }
 
     private void OnDisable()
@@ -71,6 +79,9 @@ public class TileSpawner : MonoBehaviour
         Tile.OnCrystalRemoval -= RemoveCrystal;
         GameManager.OnStateChanged -= SetNewScale;
         GameManager.OnSetupNextStage -= SetupNewStage;
+        Crystal.OnFirstCrystal -= EnableSecondCrystal;
+        Crystal.OnSecondCrystal -= EnableThirdCrystal;
+        Crystal.OnThirdCrystal -= EnableTutorialFreeDraw;
     }
 
     private void InitializeCrystalPool()
@@ -104,16 +115,55 @@ public class TileSpawner : MonoBehaviour
                 StartCoroutine(DisableRandomTile(other.GetComponent<Row>()));
             }
 
-            if (++_counterColorSpawn > _triggerColorSpawn)
+            if (!GameManager.DoTutorial)
             {
-                _counterColorSpawn = 0;
-                StartCoroutine(SpawnColor(other.GetComponent<Row>()));
-            }
+                if (++_counterColorSpawn > _triggerColorSpawn)
+                {
+                    _counterColorSpawn = 0;
+                    StartCoroutine(SpawnRandomColor(other.GetComponent<Row>()));
+                }
 
-            if (++_counterSpawnCrystal > _triggerCrystalSpawn)
+                if (++_counterSpawnCrystal > _triggerCrystalSpawn)
+                {
+                    _counterSpawnCrystal = 0;
+                    StartCoroutine(SpawnRandomCrystal(other.GetComponent<Row>()));
+                }
+            }
+            else
             {
-                _counterSpawnCrystal = 0;
-                StartCoroutine(SpawnCrystal(other.GetComponent<Row>()));
+                if (++_counterColorSpawn > _triggerTutorialColorSpawn)
+                {
+                    _counterColorSpawn = 0;
+                    StartCoroutine(SpawnSpecificColor(other.GetComponent<Row>()));
+                }
+
+                if (++_counterSpawnCrystal > _triggerTutorialCrystalSpawn)
+                {
+                    
+                    if (_tutorialFirstCrystal)
+                    {
+                        _counterSpawnCrystal = 0;
+                        _tutorialFirstCrystal = false;
+                        _tutorialSecondCrystal = true;
+                        StartCoroutine(SpawnSpecificCrystal(other.GetComponent<Row>(), 0));
+                        return;
+                    }
+                    if (_tutorialSecondCrystal)
+                    {
+                        _counterSpawnCrystal = 0;
+                        _tutorialSecondCrystal = false;
+                        _tutorialThirdCrystal = true;
+                        StartCoroutine(SpawnSpecificCrystal(other.GetComponent<Row>(), 0));
+                        return;
+                    }
+                    if (_tutorialThirdCrystal)
+                    {
+                        _counterSpawnCrystal = 0;
+                        _tutorialThirdCrystal = false;
+                        StartCoroutine(SpawnSpecificCrystal(other.GetComponent<Row>(), 1));
+                        return;
+                    }
+                }
             }
         }
     }
@@ -181,12 +231,12 @@ public class TileSpawner : MonoBehaviour
         Tile tile = row.EnabledTiles[Random.Range(0, row.EnabledTiles.Count)];
         if (row.EnabledTiles.Count <= 1) { yield break; }
 
-        _triggerDisableTile = GameManager.Instance.Parameters[GameManager.CurrentStage].TileDestroyMinRows * 
+        _triggerDisableTile = GameManager.Instance.Parameters[GameManager.CurrentStage].MissingTilesChance * 
             Mathf.RoundToInt(Random.Range(2f * 2f / row.EnabledTiles.Count, 5f * 2f / row.EnabledTiles.Count));
         tile.DisableTile(true);
     }
 
-    private IEnumerator SpawnColor(Row row)
+    private IEnumerator SpawnRandomColor(Row row)
     {
         yield return _colorDelay;
         Tile tile = row.EnabledTiles[Random.Range(0, row.EnabledTiles.Count)];
@@ -197,7 +247,17 @@ public class TileSpawner : MonoBehaviour
         _triggerColorSpawn = Mathf.RoundToInt(Random.Range(_colorMinRowsToSpawn, _colorMaxRowsToSpawn));
     }
 
-    private IEnumerator SpawnCrystal(Row row)
+    private IEnumerator SpawnSpecificColor(Row row)
+    {
+        Debug.Log("Spawn specific color");
+        yield return _colorDelay;
+        Tile tile = row.EnabledTiles[Random.Range(0, row.EnabledTiles.Count)];
+
+        tile.SetAsCharged(true);
+        _triggerColorSpawn = 10;
+    }
+
+    private IEnumerator SpawnRandomCrystal(Row row)
     {
         yield return _crystalDelay;
         Tile tile = row.EnabledTiles[Random.Range(0, row.EnabledTiles.Count)];
@@ -210,11 +270,48 @@ public class TileSpawner : MonoBehaviour
         _triggerCrystalSpawn = Mathf.RoundToInt(Random.Range(_crystalMinRowsToSpawn, _crystalMaxRowsToSpawn));
     }
 
+    private IEnumerator SpawnSpecificCrystal(Row row, int level)
+    {
+        Debug.Log("Spawn specific crystal");
+        yield return _crystalDelay;
+        Tile tile = row.EnabledTiles[Random.Range(0, row.EnabledTiles.Count)];
+        if (tile.IsCharged) { yield break; }
+
+        Crystal newCrystal = _crystalPool.Get();
+        newCrystal.transform.SetParent(tile.transform, false);
+        newCrystal.Initialize(level, _crystalPool);
+        tile.AttachedCrystal = newCrystal;
+        _triggerTutorialCrystalSpawn = 5;
+        //_triggerCrystalSpawn = Mathf.RoundToInt(Random.Range(_crystalMinRowsToSpawn, _crystalMaxRowsToSpawn));
+    }
+
     private void SetupNewStage()
     {
-        _triggerDisableTile = GameManager.Instance.Parameters[GameManager.CurrentStage].TileDestroyMinRows * Mathf.RoundToInt(Random.Range(2f, 5f));
+        _triggerDisableTile = GameManager.Instance.Parameters[GameManager.CurrentStage].MissingTilesChance * Mathf.RoundToInt(Random.Range(2f, 5f));
         _triggerColorSpawn = Mathf.RoundToInt(Random.Range(_colorMinRowsToSpawn, _colorMaxRowsToSpawn));
         _triggerCrystalSpawn = Mathf.RoundToInt(Random.Range(_crystalMinRowsToSpawn, _crystalMaxRowsToSpawn));
+
+        _tutorialFirstCrystal = true;
+        _tutorialSecondCrystal = false;
+        _tutorialThirdCrystal = false;
+        _triggerTutorialColorSpawn = 20;
+        _triggerTutorialCrystalSpawn = 5;
+    }
+
+    private void EnableSecondCrystal()
+    {
+        _tutorialSecondCrystal = true;
+    }
+
+    private void EnableThirdCrystal()
+    {
+        _tutorialThirdCrystal = true;
+    }
+
+    private void EnableTutorialFreeDraw()
+    {
+        GameManager.DoTutorial = false;
+        Debug.Log("Free draw!");
     }
 
     public void RemoveCrystal(Crystal crystal)

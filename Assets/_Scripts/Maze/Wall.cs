@@ -18,6 +18,7 @@ public class Wall : MonoBehaviour
     private int _crossings = 0;
     private float _timeCrossed = Mathf.Infinity;
     private float _timeDrawn = Mathf.Infinity;
+    private float _emissionColorIntensity = 3.5f;
     private Row _parentRow;
     private List<Tile> _neighborTiles = new List<Tile>();
     private Tile _leftTile, _rightTile;
@@ -163,7 +164,7 @@ public class Wall : MonoBehaviour
         if (_firstSpawnInStage && GameManager.CurrentState == GameState.Progressing)
         {
             _baseMaterial.color = GameManager.Instance.Parameters[GameManager.CurrentStage].TileColor;
-            _baseMaterial.SetColor("_EmissionColor", _baseMaterial.color * 3f);
+            _baseMaterial.SetColor("_EmissionColor", _baseMaterial.color * _emissionColorIntensity);
             _lineRenderer.material = _baseMaterial;
             _firstSpawnInStage = false;
         }

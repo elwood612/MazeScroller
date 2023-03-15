@@ -158,7 +158,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    private void ResetStars()
+    private void ResetStars() // for some reason extra stars appear on random stage parameters??
     {
         foreach (var star in _allStars)
         {

@@ -10,21 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 844953302060c844a8c3e66c78e08ead, type: 3}
-  m_Name: Tutorial_2
+  m_Name: _TutorialStage
   m_EditorClassIdentifier: 
-  StageLength: 30
-  Stars: 1
-  MinSpeed: 8
-  TilePenalty: 10
-  TileDestroyMinRows: 3
-  TileSpawnerWidthMin: 2.2
+  TutorialStage: 1
+  StageLength: 20
+  TotalStars: 1
+  MissingTilesChance: 3
+  TileColor: {r: 0.1725489, g: 0.3896077, b: 0.490196, a: 1}
+  TileSpawnerWidthMin: 2.1
   TileSpawnerWidthMax: 2.6
   ColorMinRows:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1000
+      value: 3
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -33,7 +33,7 @@ MonoBehaviour:
       outWeight: 0
     - serializedVersion: 3
       time: 1
-      value: 1000
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -48,7 +48,7 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1000
+      value: 8
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -57,7 +57,7 @@ MonoBehaviour:
       outWeight: 0
     - serializedVersion: 3
       time: 1
-      value: 1000
+      value: 3
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -81,7 +81,7 @@ MonoBehaviour:
       outWeight: 0
     - serializedVersion: 3
       time: 1
-      value: 2
+      value: 0
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -105,7 +105,7 @@ MonoBehaviour:
       outWeight: 0
     - serializedVersion: 3
       time: 1
-      value: 4
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -129,7 +129,7 @@ MonoBehaviour:
       outWeight: 0
     - serializedVersion: 3
       time: 1
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Pool;
@@ -20,10 +21,16 @@ public class Crystal : MonoBehaviour
     private int _level = 0;
     private int _initialLevel;
     private bool _destroyed = false;
+    private bool _firstCrystal = true;
+    private bool _secondCrystal = false;
+    private bool _thirdCrystal = false;
     private WaitForSeconds _destroyDelay = new WaitForSeconds(1f);
     private OrbitMissile[] _orbitMissiles = new OrbitMissile[6];
 
-    public static int ScoreBonus = 1;
+    public static event Action OnFirstCrystal;
+    public static event Action OnSecondCrystal;
+    public static event Action OnThirdCrystal;
+    public static int ScoreBonus = 1; // this is public so Runner can reset it
 
     private void Awake()
     {
@@ -47,6 +54,26 @@ public class Crystal : MonoBehaviour
             {
                 DestroyOrbitMissile(_orbitMissiles[_level - 1]);
                 _level--;
+            }
+            if (_firstCrystal)
+            {
+                _firstCrystal = false;
+                _secondCrystal = true;
+                OnFirstCrystal?.Invoke();
+                return;
+            }
+            if (_secondCrystal)
+            {
+                _secondCrystal = false;
+                _thirdCrystal = true;
+                OnSecondCrystal?.Invoke();
+                return;
+            }
+            if (_thirdCrystal)
+            {
+                _thirdCrystal = false;
+                OnThirdCrystal?.Invoke();
+                return;
             }
         }
         else if (other.CompareTag("TileDestroyer") && !_destroyed)

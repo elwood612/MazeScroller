@@ -12,12 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 844953302060c844a8c3e66c78e08ead, type: 3}
   m_Name: DemoStage
   m_EditorClassIdentifier: 
+  TutorialStage: 0
   StageLength: 70
   TotalStars: 2
-  MinSpeed: 10
-  TilePenalty: 20
-  TileDestroyMinRows: 1
-  TileColor: {r: 0.20960791, g: 0.49019608, b: 0.17254905, a: 1}
+  MissingTilesChance: 1
+  TileColor: {r: 0.17254905, g: 0.3132998, b: 0.49019608, a: 1}
   TileSpawnerWidthMin: 2.1
   TileSpawnerWidthMax: 2.9
   ColorMinRows:

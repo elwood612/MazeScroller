@@ -4,13 +4,15 @@ using UnityEngine.UIElements;
 [CreateAssetMenu(fileName = "StageParameters", menuName = "Scriptable Objects/Stage Parameters")]
 public class StageParameters : ScriptableObject
 {
+    public bool TutorialStage;
+
     [Header("Stage Stats")]
     [Range(0, 100)] public int StageLength = 70;
     [Range(1, 5)] public int TotalStars = 3;
-    [Range(0, 20)] public float MinSpeed = 10f;
-    [Range(0, 50)] public int TilePenalty = 20;
+    //[Range(0, 20)] public float MinSpeed = 10f;
+    //[Range(0, 50)] public int TilePenalty = 20;
     [Tooltip("The higher this is, the fewer rows have holes.")]
-    [Range(0, 10)] public int TileDestroyMinRows = 1;
+    [Range(0, 10)] public int MissingTilesChance = 1;
     public Color TileColor = new Color(0.1725489f, 0.3896077f, 0.490196f, 1f);
 
     [Header("Spawner Width")]

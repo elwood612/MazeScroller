@@ -5721,7 +5721,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: _debugMode
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: _startingInstability
@@ -5729,20 +5729,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: Parameters.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: Parameters.Array.data[0]
       value: 
-      objectReference: {fileID: 11400000, guid: 44166dc49bfc90d4596e5364990a6ecf, type: 2}
+      objectReference: {fileID: 11400000, guid: 04007f7de1ac16440831166aa44a057c, type: 2}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: Parameters.Array.data[1]
       value: 
-      objectReference: {fileID: 11400000, guid: faaf632ac3075244b9cae2ab681fb302, type: 2}
+      objectReference: {fileID: 11400000, guid: 44166dc49bfc90d4596e5364990a6ecf, type: 2}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: Parameters.Array.data[2]
       value: 
-      objectReference: {fileID: 11400000, guid: ee9e92025c3c73d41a38cc0d152b7153, type: 2}
+      objectReference: {fileID: 11400000, guid: faaf632ac3075244b9cae2ab681fb302, type: 2}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: Parameters.Array.data[3]
       value: 
