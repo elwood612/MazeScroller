@@ -6,6 +6,7 @@ public class Row : MonoBehaviour
 {
     private bool _isHighestDrawnRow;
     private bool _hasSetupBeenRun = false;
+    private static bool _endTutorial = false;
     private List<Tile> _enabledTiles = new List<Tile>();
 
     public event Action OnRowReset;
@@ -24,6 +25,18 @@ public class Row : MonoBehaviour
         set => _isHighestDrawnRow = value;
     }
 
+    private void OnEnable()
+    {
+        GameManager.OnStarGained += EndTutorial;
+        GameManager.OnSetupNextStage += ResetTutorial;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.OnStarGained -= EndTutorial;
+        GameManager.OnSetupNextStage -= ResetTutorial;
+    }
+
     private void Update()
     {
         GameManager.AddBoardMotion(transform);
@@ -37,9 +50,11 @@ public class Row : MonoBehaviour
         else if (other.CompareTag("RowQA")) 
         { 
             CheckRow(); 
-            if (_hasSetupBeenRun && !GameManager.DoTutorial) { GameManager.StageProgress++; }
+            if (_hasSetupBeenRun && _endTutorial)
+            {
+                GameManager.StageProgress++;
+            }
         }
-        //else if (other.CompareTag("TileSpawner") && _hasSetupBeenRun) { GameManager.Progress(); }
     }
 
     private float CalculateHeight()
@@ -108,6 +123,23 @@ public class Row : MonoBehaviour
             if (isBoxedInByColor && isAColor && t.IsEnabled) { t.SetAsColored(false); }
             //if (t.IsColored && t.GetNeighborTile(Vector3.right).NeighborPaths.Count == 1) { t.SetAsColored(false); }
             //if (t.IsColored && t.GetNeighborTile(Vector3.left).NeighborPaths.Count == 1) { t.SetAsColored(false); }
+        }
+    }
+
+    private void EndTutorial(int unused)
+    {
+        if (!_endTutorial)
+        {
+            _endTutorial = true;
+            Debug.Log("Got it! We're almost done here. Try to get a bonus star on your way out!");
+        }
+    }
+
+    private void ResetTutorial()
+    {
+        if (GameManager.Instance.Parameters[GameManager.CurrentStage].TutorialStage)
+        {
+            _endTutorial = false;
         }
     }
 }

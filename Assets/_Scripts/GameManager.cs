@@ -66,6 +66,7 @@ public class GameManager : MonoBehaviour
     public static int NumberOfRows;
     public static bool IsRunnerInTransition = false;
     public static bool DoTutorial = true;
+    public static bool EndTutorial = false;
     //private float _minSpeed => Parameters[_currentStage].MinSpeed;
 
     public GameObject CurrentRunner => _currentRunner;

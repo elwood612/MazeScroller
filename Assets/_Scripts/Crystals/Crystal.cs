@@ -21,15 +21,17 @@ public class Crystal : MonoBehaviour
     private int _level = 0;
     private int _initialLevel;
     private bool _destroyed = false;
-    private bool _firstCrystal = true;
-    private bool _secondCrystal = false;
-    private bool _thirdCrystal = false;
+    private static bool _firstCrystal = true;
+    private static bool _secondCrystal = false;
+    private static bool _firstBlueCrystal = false;
+    private static bool _thirdCrystal = false;
     private WaitForSeconds _destroyDelay = new WaitForSeconds(1f);
     private OrbitMissile[] _orbitMissiles = new OrbitMissile[6];
 
     public static event Action OnFirstCrystal;
     public static event Action OnSecondCrystal;
-    public static event Action OnThirdCrystal;
+    public static event Action OnFirstBlueCrystal;
+    public static event Action OnFirstBlueCrystalPopped;
     public static int ScoreBonus = 1; // this is public so Runner can reset it
 
     private void Awake()
@@ -39,6 +41,16 @@ public class Crystal : MonoBehaviour
             _orbitMissiles[i] = Instantiate(_missilePrefab, transform);
             _orbitMissiles[i].gameObject.SetActive(false);
         }
+    }
+
+    private void OnEnable()
+    {
+        GameManager.OnSetupNextStage += ResetTutorial;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.OnSetupNextStage -= ResetTutorial;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -55,26 +67,39 @@ public class Crystal : MonoBehaviour
                 DestroyOrbitMissile(_orbitMissiles[_level - 1]);
                 _level--;
             }
+
+            #region Tutorial Stuff
             if (_firstCrystal)
             {
                 _firstCrystal = false;
                 _secondCrystal = true;
+                _firstBlueCrystal = true;
                 OnFirstCrystal?.Invoke();
+                Debug.Log("Good job! Notice the progress bar up top. Break more crystals to get a star.");
+                return;
+            }
+            if (_firstBlueCrystal && _initialLevel == 1)
+            {
+                _firstBlueCrystal = false;
+                _thirdCrystal = true;
+                OnFirstBlueCrystal?.Invoke();
+                Debug.Log("This crystal was shielded! Try hitting it a second time.");
+                return;
+            }
+            if (_thirdCrystal && _initialLevel == 1 && _destroyed)
+            {
+                _thirdCrystal = false;
+                OnFirstBlueCrystalPopped?.Invoke();
+                Debug.Log("Easy enough. Now keep going and get us that star!");
                 return;
             }
             if (_secondCrystal)
             {
+                Debug.Log("Now you're getting it! Tip: stay away from those charged tiles.");
                 _secondCrystal = false;
-                _thirdCrystal = true;
                 OnSecondCrystal?.Invoke();
-                return;
             }
-            if (_thirdCrystal)
-            {
-                _thirdCrystal = false;
-                OnThirdCrystal?.Invoke();
-                return;
-            }
+            #endregion
         }
         else if (other.CompareTag("TileDestroyer") && !_destroyed)
         {
@@ -101,8 +126,7 @@ public class Crystal : MonoBehaviour
     private void PlayerContact()
     {
         StartCoroutine(Explode());
-        //GameManager.Score += (int)Mathf.Pow(10, _initialLevel);
-        //GameManager.Instance.SpeedBonus += 5 * (_initialLevel + 1) / (GameManager.AcquiredStars + 1);
+        if (GameManager.Instance.Parameters[GameManager.CurrentStage].TutorialStage) { ScoreBonus = 5; }
         GameManager.Instance.SpeedBonus += 5 * (_initialLevel + 1) * ScoreBonus;
         ScoreBonus = 2;
     }
@@ -144,6 +168,14 @@ public class Crystal : MonoBehaviour
             _wireframe.transform.GetChild(i).GetComponent<MeshRenderer>().material = wireframe;
         }
         _shadow.material = shadow;
+    }
+
+    private void ResetTutorial()
+    {
+        _firstCrystal = true;
+        _secondCrystal = false;
+        _firstBlueCrystal = false;
+        _thirdCrystal = false;
     }
 
     public void ResetScoreBonus(bool stopped)

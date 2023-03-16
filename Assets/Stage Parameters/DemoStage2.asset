@@ -12,12 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 844953302060c844a8c3e66c78e08ead, type: 3}
   m_Name: DemoStage2
   m_EditorClassIdentifier: 
+  TutorialStage: 0
   StageLength: 70
-  TotalStars: 2
-  MinSpeed: 10
-  TilePenalty: 20
-  TileDestroyMinRows: 1
-  TileColor: {r: 0.49019608, g: 0.17254905, b: 0.32078433, a: 1}
+  TotalStars: 3
+  MissingTilesChance: 1
+  TileColor: {r: 0.17254905, g: 0.3132998, b: 0.49019608, a: 1}
   TileSpawnerWidthMin: 2.1
   TileSpawnerWidthMax: 2.9
   ColorMinRows:
@@ -25,7 +24,7 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 4
+      value: 3
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -49,7 +48,7 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 8
+      value: 7
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -73,7 +72,7 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 2
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -82,7 +81,7 @@ MonoBehaviour:
       outWeight: 0
     - serializedVersion: 3
       time: 1
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -97,7 +96,7 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1
+      value: 3
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -106,7 +105,7 @@ MonoBehaviour:
       outWeight: 0
     - serializedVersion: 3
       time: 1
-      value: 1
+      value: 2
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -121,7 +120,7 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: Infinity
       outSlope: Infinity
       tangentMode: 103
@@ -138,7 +137,7 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.5
+      time: 0.3
       value: 2
       inSlope: Infinity
       outSlope: Infinity

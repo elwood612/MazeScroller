@@ -11,7 +11,7 @@ public class Runner : MonoBehaviour, IRunner
     [SerializeField] private TextMeshProUGUI _dialogueBox;
     [SerializeField] private Animator _animator;
 
-    public Tile _currentTile;
+    private Tile _currentTile;
     private Tile _currentTarget;
     private Tile _nextTarget;
     private Tile _previousTile;
@@ -22,11 +22,13 @@ public class Runner : MonoBehaviour, IRunner
     private bool _runnerStopped = true;
     private bool _runnerOffScreen = false;
     private bool _approachingDeadEnd = false;
-    public bool _isInTransition = false;
+    private bool _isInTransition = false;
+    private bool _firstTimeStopping = true;
     private AnimationCurve _speedCurve;
     private AnimationCurve _transitionCurve;
 
     public static event Action OnTransitionReached;
+    public static event Action OnFirstStop;
     public TextMeshProUGUI DialogueBox => _dialogueBox;
     public bool RunnerStopped
     {
@@ -69,6 +71,7 @@ public class Runner : MonoBehaviour, IRunner
         DrawMaze.OnTileRemoved += RemoveTileFromPath;
         Tile.OnTileDestroy += RemoveTileFromPath;
         DialogueManager.OnDialogueOpen += SetAnimatorTrigger;
+        GameManager.OnSetupNextStage += ResetTutorial;
     }
 
     private void OnDisable()
@@ -77,6 +80,7 @@ public class Runner : MonoBehaviour, IRunner
         DrawMaze.OnTileRemoved -= RemoveTileFromPath;
         Tile.OnTileDestroy -= RemoveTileFromPath;
         DialogueManager.OnDialogueOpen -= SetAnimatorTrigger;
+        GameManager.OnSetupNextStage -= ResetTutorial;
     }
 
     private void Update()
@@ -95,6 +99,12 @@ public class Runner : MonoBehaviour, IRunner
         }
         else
         {
+            if (_firstTimeStopping && !_isInTransition)
+            {
+                _firstTimeStopping = false;
+                OnFirstStop?.Invoke();
+                Debug.Log("Go ahead and draw me a path to that crystal there.");
+            }
             RunnerStopped = true;
         }
 
@@ -386,6 +396,14 @@ public class Runner : MonoBehaviour, IRunner
 
         //if (_uncrossedTiles.Count == 0 && !_isInTransition) { _runnerStopped = true; }
         //if (_uncrossedTransitionTiles.Count == 0 && _isInTransition) { _runnerStopped = true; }
+    }
+
+    private void ResetTutorial()
+    {
+        if (GameManager.Instance.Parameters[GameManager.CurrentStage].TutorialStage)
+        {
+            _firstTimeStopping = true;
+        }
     }
 
     public void CalculateNextTargetWrapper(Tile tile)

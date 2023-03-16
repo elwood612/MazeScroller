@@ -5721,7 +5721,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: _debugMode
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: _startingInstability
@@ -5742,7 +5742,7 @@ PrefabInstance:
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: Parameters.Array.data[2]
       value: 
-      objectReference: {fileID: 11400000, guid: faaf632ac3075244b9cae2ab681fb302, type: 2}
+      objectReference: {fileID: 11400000, guid: 88f3c7b5b8b46e54dacd9f18f496247f, type: 2}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: Parameters.Array.data[3]
       value: 
