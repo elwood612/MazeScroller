@@ -70,8 +70,6 @@ public class TileSpawner : MonoBehaviour
         GameManager.OnStateChanged += SetNewScale;
         GameManager.OnSetupNextStage += SetupNewStage;
         Crystal.OnFirstCrystal += EnableSecondCrystal;
-        //Crystal.OnSecondCrystal += EnableThirdCrystal;
-        Crystal.OnFirstBlueCrystalPopped += EnableTutorialFreeDraw;
     }
 
     private void OnDisable()
@@ -80,8 +78,6 @@ public class TileSpawner : MonoBehaviour
         GameManager.OnStateChanged -= SetNewScale;
         GameManager.OnSetupNextStage -= SetupNewStage;
         Crystal.OnFirstCrystal -= EnableSecondCrystal;
-        //Crystal.OnSecondCrystal -= EnableThirdCrystal;
-        Crystal.OnFirstBlueCrystalPopped -= EnableTutorialFreeDraw;
     }
 
     private void InitializeCrystalPool()
@@ -248,12 +244,11 @@ public class TileSpawner : MonoBehaviour
 
     private IEnumerator SpawnSpecificCharged(Row row)
     {
-        //Debug.Log("Spawn specific color");
         yield return _colorDelay;
         Tile tile = row.EnabledTiles[Random.Range(0, row.EnabledTiles.Count)];
 
         tile.SetAsCharged(true);
-        _triggerColorSpawn = 12;
+        _triggerColorSpawn = 6;
     }
 
     private IEnumerator SpawnRandomCrystal(Row row)
@@ -271,7 +266,6 @@ public class TileSpawner : MonoBehaviour
 
     private IEnumerator SpawnSpecificCrystal(Row row, int level)
     {
-        //Debug.Log("Spawn specific crystal");
         yield return _crystalDelay;
         Tile tile = row.EnabledTiles[Random.Range(0, row.EnabledTiles.Count)];
         if (tile.IsCharged) { yield break; }
@@ -280,8 +274,7 @@ public class TileSpawner : MonoBehaviour
         newCrystal.transform.SetParent(tile.transform, false);
         newCrystal.Initialize(level, _crystalPool);
         tile.AttachedCrystal = newCrystal;
-        _triggerTutorialCrystalSpawn = 5;
-        //_triggerCrystalSpawn = Mathf.RoundToInt(Random.Range(_crystalMinRowsToSpawn, _crystalMaxRowsToSpawn));
+        _triggerTutorialCrystalSpawn = 2;
     }
 
     private void SetupNewStage()
@@ -293,19 +286,14 @@ public class TileSpawner : MonoBehaviour
         _tutorialFirstCrystal = true;
         _tutorialSecondCrystal = false;
         _tutorialThirdCrystal = false;
-        _triggerTutorialColorSpawn = 10;
-        _triggerTutorialCrystalSpawn = 5;
+        _triggerTutorialColorSpawn = 6;
+        _triggerTutorialCrystalSpawn = 4;
     }
 
     private void EnableSecondCrystal()
     {
         _tutorialFirstCrystal = false;
         _tutorialSecondCrystal = true;
-    }
-
-    private void EnableTutorialFreeDraw()
-    {
-        GameManager.DoTutorial = false;
     }
 
     public void RemoveCrystal(Crystal crystal)

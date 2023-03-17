@@ -438,6 +438,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64c8a58908a700948a0ab8e1d823db99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tutorialDialogue:
+  - {fileID: 11400000, guid: 158dd174785c472448a8e93555f63902, type: 2}
+  - {fileID: 11400000, guid: e56767a67c3bc6c47babd606d277ab40, type: 2}
+  - {fileID: 11400000, guid: f145757d109c2a5468fcd5523ead9b08, type: 2}
+  - {fileID: 11400000, guid: 6459ef19d3037da4e880e2bbaeb63854, type: 2}
+  - {fileID: 11400000, guid: 2cfdbf21cdf99b446a916b9fdb58d7fe, type: 2}
+  - {fileID: 11400000, guid: 2369b16fb3708a6478646c6483d0b28e, type: 2}
+  - {fileID: 11400000, guid: 537ef16f570878644afce9ab86ead853, type: 2}
 --- !u!1 &132310913
 GameObject:
   m_ObjectHideFlags: 0
@@ -1689,8 +1697,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.84000003, y: 0.128}
   m_AnchorMax: {x: 0.98600006, y: 0.91600007}
-  m_AnchoredPosition: {x: -798.5, y: -121}
-  m_SizeDelta: {x: 144.5, y: -202.5}
+  m_AnchoredPosition: {x: -426, y: -121}
+  m_SizeDelta: {x: 174.9, y: -202.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &707410525
 MonoBehaviour:
@@ -4726,7 +4734,7 @@ GameObject:
   - component: {fileID: 1921266059}
   - component: {fileID: 1921266058}
   m_Layer: 5
-  m_Name: RestartButton
+  m_Name: TryAgainButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4750,8 +4758,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.84000003, y: 0.128}
   m_AnchorMax: {x: 0.98600006, y: 0.91600007}
-  m_AnchoredPosition: {x: -436, y: -121}
-  m_SizeDelta: {x: 179.1, y: -202.5}
+  m_AnchoredPosition: {x: -787.5, y: -121}
+  m_SizeDelta: {x: 166, y: -202.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1921266058
 MonoBehaviour:

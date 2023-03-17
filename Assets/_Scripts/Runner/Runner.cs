@@ -103,7 +103,7 @@ public class Runner : MonoBehaviour, IRunner
             {
                 _firstTimeStopping = false;
                 OnFirstStop?.Invoke();
-                Debug.Log("Go ahead and draw me a path to that crystal there.");
+                DialogueManager.Instance.NextTutorialDialogue(0);
             }
             RunnerStopped = true;
         }

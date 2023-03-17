@@ -27,11 +27,12 @@ public class Tile : MonoBehaviour
     private bool _isEnabled = false;
     private bool _isColored = false;
     private bool _isCharged = false;
-    public bool _firstSpawnInStage = true;
+    private bool _firstSpawnInStage = true;
     private bool _deadEndPrimed = false;
     private int _crossings = 0;
     private Tile _pathfindingParent;
     private static bool _firstTile = true;
+    private static bool _firstChargedTile = true;
     private Material _baseMaterial;
 
     public static event Action<Tile> OnTileDestroy;
@@ -160,6 +161,12 @@ public class Tile : MonoBehaviour
             {
                 tile.RemoveCrystal();
             }
+        }
+
+        if (_firstChargedTile)
+        {
+            _firstChargedTile = false;
+            DialogueManager.Instance.NextTutorialDialogue(3);
         }
     }
 

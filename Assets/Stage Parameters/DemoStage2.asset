@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: DemoStage2
   m_EditorClassIdentifier: 
   TutorialStage: 0
-  StageLength: 70
+  StageLength: 80
   TotalStars: 3
   MissingTilesChance: 1
-  TileColor: {r: 0.17254905, g: 0.3132998, b: 0.49019608, a: 1}
+  TileColor: {r: 0.60400003, g: 0.21317647, b: 0.58217585, a: 1}
   TileSpawnerWidthMin: 2.1
   TileSpawnerWidthMax: 2.9
   ColorMinRows:

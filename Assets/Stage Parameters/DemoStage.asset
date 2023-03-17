@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: DemoStage
   m_EditorClassIdentifier: 
   TutorialStage: 0
-  StageLength: 70
+  StageLength: 80
   TotalStars: 2
   MissingTilesChance: 1
-  TileColor: {r: 0.17254905, g: 0.3132998, b: 0.49019608, a: 1}
+  TileColor: {r: 0.17254905, g: 0.49019608, b: 0.2943137, a: 1}
   TileSpawnerWidthMin: 2.1
   TileSpawnerWidthMax: 2.9
   ColorMinRows:
@@ -72,7 +72,7 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 2
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -81,7 +81,7 @@ MonoBehaviour:
       outWeight: 0
     - serializedVersion: 3
       time: 1
-      value: 1
+      value: 0
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -96,7 +96,7 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 4
+      value: 2
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -105,7 +105,7 @@ MonoBehaviour:
       outWeight: 0
     - serializedVersion: 3
       time: 1
-      value: 2
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -157,4 +157,4 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  AssociatedDialogue: {fileID: 0}
+  AssociatedDialogue: {fileID: 11400000, guid: 47d4615ed814b024a87dfed36a9720a2, type: 2}

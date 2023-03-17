@@ -131,7 +131,6 @@ public class Row : MonoBehaviour
         if (!_endTutorial)
         {
             _endTutorial = true;
-            Debug.Log("Got it! We're almost done here. Try to get a bonus star on your way out!");
         }
     }
 

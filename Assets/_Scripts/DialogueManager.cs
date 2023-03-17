@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class DialogueManager : MonoBehaviour
 {
+    [SerializeField] private Dialogue[] _tutorialDialogue;
+
     private Queue<string> _currentDialogue = new Queue<string>();
     private bool _isDialogueActive = false;
+    private int _tutorialDialogueIndex = 0;
     private Animator _runnerDialogueAnimator;
 
     public static DialogueManager Instance;
@@ -48,6 +51,7 @@ public class DialogueManager : MonoBehaviour
         _isDialogueActive = false;
         OnDialogueOpen?.Invoke(false);
         if (GameManager.CurrentState == GameState.Transition) { GameManager.Instance.UpdateGameState(GameState.Progressing); }
+        if (GameManager.DoTutorial && _tutorialDialogueIndex == 5) { GameManager.DoTutorial = false; }
         OnDialogueEnd?.Invoke();
     }
 
@@ -59,5 +63,11 @@ public class DialogueManager : MonoBehaviour
             return;
         }
         OnNextSentence?.Invoke(_currentDialogue.Dequeue());
+    }
+
+    public void NextTutorialDialogue(int index)
+    {
+        _tutorialDialogueIndex = index;
+        StartDialogue(_tutorialDialogue[index]);
     }
 }

@@ -44,6 +44,7 @@ public class GameManager : MonoBehaviour
     private static int _stars = 0;
     private static int _loseCounter = 0;
     private static int _bonusStarLevel = 0;
+    private static bool _firstStarGained = true;
 
     private static Vector3 _tileSpeed = Vector3.zero;
     private static Vector3 _transitionSpeed = new Vector3(0, 0, -40);
@@ -66,7 +67,6 @@ public class GameManager : MonoBehaviour
     public static int NumberOfRows;
     public static bool IsRunnerInTransition = false;
     public static bool DoTutorial = true;
-    public static bool EndTutorial = false;
     //private float _minSpeed => Parameters[_currentStage].MinSpeed;
 
     public GameObject CurrentRunner => _currentRunner;
@@ -138,6 +138,11 @@ public class GameManager : MonoBehaviour
         set
         {
             _stars = value;
+            if (_firstStarGained)
+            {
+                _firstStarGained = false;
+                DialogueManager.Instance.NextTutorialDialogue(6);
+            }
             if (_stars % Instance.Parameters[_currentStage].TotalStars == 0)
             {
                 _bonusStarLevel++;
@@ -183,7 +188,7 @@ public class GameManager : MonoBehaviour
         if (CurrentState == GameState.Setup) { return; }
         CalculateBoardSpeed(_speedMultiplier);
 
-        if (_decreaseSpeedBonus && _triggerBonusStep) { StartCoroutine(BonusDecrease()); }
+        if (_decreaseSpeedBonus && _triggerBonusStep && !DialogueManager.Instance.IsDialogueActive) { StartCoroutine(BonusDecrease()); }
     }
 
     private void CalculateBoardSpeed(float multiplier)
@@ -239,6 +244,7 @@ public class GameManager : MonoBehaviour
         _stars = 0;
         _bonusStarLevel = 0;
         _tileAlpha = 1f;
+        if (Parameters[_currentStage].TutorialStage) { _firstStarGained = true; }
     }
 
     public void UpdateGameState(GameState newState)
@@ -274,6 +280,8 @@ public class GameManager : MonoBehaviour
 
     public static void AddBoardMotion(Transform t)
     {
+        if (DialogueManager.Instance.IsDialogueActive && DoTutorial) { return; }
+
         if (IsRunnerInTransition)
         {
             t.Translate(_transitionSpeed * Time.deltaTime);
@@ -315,15 +323,15 @@ public class GameManager : MonoBehaviour
 
     public void EndStage()
     {
-
-        if (Parameters[_currentStage].AssociatedDialogue != null)
-        {
-            OnDialogueStart?.Invoke(Parameters[_currentStage].AssociatedDialogue);
-        }
-        else
-        {
-            OnStageEnd?.Invoke();
-        }
+        OnStageEnd?.Invoke();
+        //if (Parameters[_currentStage].AssociatedDialogue != null)
+        //{
+        //    OnDialogueStart?.Invoke(Parameters[_currentStage].AssociatedDialogue);
+        //}
+        //else
+        //{
+        //    OnStageEnd?.Invoke();
+        //}
     }
 
     public void Quit()

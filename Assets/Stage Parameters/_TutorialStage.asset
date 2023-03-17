@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: _TutorialStage
   m_EditorClassIdentifier: 
   TutorialStage: 1
-  StageLength: 20
+  StageLength: 12
   TotalStars: 1
   MissingTilesChance: 3
   TileColor: {r: 0.1725489, g: 0.3896077, b: 0.490196, a: 1}
@@ -72,7 +72,7 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 4
+      value: 2
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -81,7 +81,7 @@ MonoBehaviour:
       outWeight: 0
     - serializedVersion: 3
       time: 1
-      value: 3
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -96,7 +96,7 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 5
+      value: 3
       inSlope: 0
       outSlope: 0
       tangentMode: 0

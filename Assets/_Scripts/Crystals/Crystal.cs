@@ -75,7 +75,7 @@ public class Crystal : MonoBehaviour
                 _secondCrystal = true;
                 _firstBlueCrystal = true;
                 OnFirstCrystal?.Invoke();
-                Debug.Log("Good job! Notice the progress bar up top. Break more crystals to get a star.");
+                DialogueManager.Instance.NextTutorialDialogue(1);
                 return;
             }
             if (_firstBlueCrystal && _initialLevel == 1)
@@ -83,19 +83,19 @@ public class Crystal : MonoBehaviour
                 _firstBlueCrystal = false;
                 _thirdCrystal = true;
                 OnFirstBlueCrystal?.Invoke();
-                Debug.Log("This crystal was shielded! Try hitting it a second time.");
+                DialogueManager.Instance.NextTutorialDialogue(4);
                 return;
             }
             if (_thirdCrystal && _initialLevel == 1 && _destroyed)
             {
                 _thirdCrystal = false;
                 OnFirstBlueCrystalPopped?.Invoke();
-                Debug.Log("Easy enough. Now keep going and get us that star!");
+                DialogueManager.Instance.NextTutorialDialogue(5);
                 return;
             }
             if (_secondCrystal)
             {
-                Debug.Log("Now you're getting it! Tip: stay away from those charged tiles.");
+                DialogueManager.Instance.NextTutorialDialogue(2);
                 _secondCrystal = false;
                 OnSecondCrystal?.Invoke();
             }
@@ -126,9 +126,9 @@ public class Crystal : MonoBehaviour
     private void PlayerContact()
     {
         StartCoroutine(Explode());
-        if (GameManager.Instance.Parameters[GameManager.CurrentStage].TutorialStage) { ScoreBonus = 5; }
+        if (GameManager.Instance.Parameters[GameManager.CurrentStage].TutorialStage) { ScoreBonus = 3; }
         GameManager.Instance.SpeedBonus += 5 * (_initialLevel + 1) * ScoreBonus;
-        ScoreBonus = 2;
+        ScoreBonus = 3;
     }
 
     private void EndOfBoardContact()

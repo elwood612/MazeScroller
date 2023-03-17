@@ -166,6 +166,7 @@ public class UIManager : MonoBehaviour
         }
         _allStars.Clear();
         _newStarIndex = 0;
+        _bonusStarIndex = 0;
         for (int i = 0; i < GameManager.Instance.Parameters[GameManager.CurrentStage].TotalStars; i++)
         {
             GameObject newStar = Instantiate(_starPrefab, _starParent.transform);

@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f89513250b17cb949a8c273e46c8e857, type: 3}
+  m_Name: Tutorial4
+  m_EditorClassIdentifier: 
+  _lines:
+  - Hmm, that crystal had a shield around it, did you notice?
+  - I can break shields the same way I break crystals.
+  - But now I need to hit this crystal again. Do it!
