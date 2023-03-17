@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _lines:
   - Good, you're getting the hang of this!
-  - 'See that white tile though? DO NOT have me go over it. You WILL regret it. '
+  - By the way, if you see any glowing white tiles, DO NOT path over them please.
+    They hurt!

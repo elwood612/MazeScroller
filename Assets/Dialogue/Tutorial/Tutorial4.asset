@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Tutorial4
   m_EditorClassIdentifier: 
   _lines:
-  - Hmm, that crystal had a shield around it, did you notice?
+  - See how this crystal had a shield around it?
   - I can break shields the same way I break crystals.
-  - But now I need to hit this crystal again. Do it!
+  - 'But now I need to hit this crystal again to get rid of it. '
+  - Go ahead and make me hit this same crystal again.
+  - Remember I'll take the shortest route to wherever you draw.

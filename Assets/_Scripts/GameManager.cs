@@ -244,7 +244,11 @@ public class GameManager : MonoBehaviour
         _stars = 0;
         _bonusStarLevel = 0;
         _tileAlpha = 1f;
-        if (Parameters[_currentStage].TutorialStage) { _firstStarGained = true; }
+        if (Parameters[_currentStage].TutorialStage) 
+        { 
+            _firstStarGained = true;
+            DoTutorial = true;
+        }
     }
 
     public void UpdateGameState(GameState newState)

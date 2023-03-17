@@ -7,21 +7,21 @@ using System.Collections.Generic;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI _scoreText;
-    [SerializeField] private TextMeshProUGUI _stageScore;
     [SerializeField] private TextMeshProUGUI _topTotalStarAmount;
     [SerializeField] private TextMeshProUGUI _stageTotalStarAmount;
     [SerializeField] private Slider[] _speedSliders;
     [SerializeField] private GameObject _starParent;
-    [SerializeField] private Image _redGlow;
     [SerializeField] private Canvas _stageCanvas;
     [SerializeField] private Canvas _topCanvas;
     [SerializeField] private GameObject _starPrefab;
     [SerializeField] private Button _continueButton;
+    [SerializeField] private Button _tryAgainButton;
 
-    private WaitForSecondsRealtime _delay = new WaitForSecondsRealtime(0.25f);
+    private WaitForSecondsRealtime _flashDelay = new WaitForSecondsRealtime(0.25f);
+    private WaitForSecondsRealtime _sentenceDelay = new WaitForSecondsRealtime(1f);
     private bool _flashing = true;
     private bool _flashRunning = false;
+    private bool _typeOutSentence = true;
     private TextMeshProUGUI _dialogueBox;
     private int _dialogueIndex = 0;
     private int _newStarIndex = 0;
@@ -31,9 +31,7 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
-        UpdateScore(0);
         _activeSlider = _speedSliders[0];
-        _redGlow.enabled = false;
         _topCanvas.enabled = false;
         _stageCanvas.enabled = false;
         _continueButton.interactable = false;
@@ -41,7 +39,6 @@ public class UIManager : MonoBehaviour
 
     private void OnEnable()
     {
-        GameManager.OnScoreChanged += UpdateScore;
         GameManager.OnSpeedBonusChanged += UpdateSpeedBonus;
         GameManager.OnRunnerSpawned += AssignDialogueBox;
         GameManager.OnStageEnd += EndStage;
@@ -53,7 +50,6 @@ public class UIManager : MonoBehaviour
 
     private void OnDisable()
     {
-        GameManager.OnScoreChanged -= UpdateScore;
         GameManager.OnSpeedBonusChanged -= UpdateSpeedBonus;
         GameManager.OnRunnerSpawned -= AssignDialogueBox;
         GameManager.OnStageEnd -= EndStage;
@@ -63,34 +59,31 @@ public class UIManager : MonoBehaviour
         DialogueManager.OnDialogueEnd -= HideDialogueBox;
     }
 
-    private void UpdateScore(int score)
-    {
-        _scoreText.text = "Score: " + score.ToString();
-    }
-
     private void UpdateSpeedBonus(int value)
     {
         _activeSlider.value = value % (GameManager.Instance.Parameters[GameManager.CurrentStage].TotalStars * 100);
     }
 
-    private IEnumerator PanelRedFlash()
-    {
-        _flashRunning = true;
-        while (_flashing)
-        {
-            yield return _delay;
-            _redGlow.enabled = true;
-            yield return _delay;
-            _redGlow.enabled = false;
-        }
-        _flashRunning = false;
-    }
+    //private IEnumerator PanelRedFlash()
+    //{
+    //    _flashRunning = true;
+    //    while (_flashing)
+    //    {
+    //        yield return _flashDelay;
+    //        _redGlow.enabled = true;
+    //        yield return _flashDelay;
+    //        _redGlow.enabled = false;
+    //    }
+    //    _flashRunning = false;
+    //}
 
     private void UpdateDialogueBox(string sentence)
     {
         _dialogueBox.transform.parent.gameObject.SetActive(true);
         StopAllCoroutines();
+        _typeOutSentence = true;
         StartCoroutine(TypeSentence(sentence));
+        StartCoroutine(FinishSentence(sentence));
     }
 
     private IEnumerator TypeSentence(string sentence)
@@ -98,9 +91,23 @@ public class UIManager : MonoBehaviour
         _dialogueBox.text = "";
         foreach (char letter in sentence.ToCharArray())
         {
-            _dialogueBox.text += letter;
-            yield return null;
+            if (_typeOutSentence)
+            {
+                _dialogueBox.text += letter;
+                yield return null;
+            }
+            else
+            {
+                break;
+            }
         }
+    }
+
+    private IEnumerator FinishSentence(string sentence) // ensures dialogue doesn't take too long to appear
+    {
+        yield return _sentenceDelay;
+        _typeOutSentence = false;
+        _dialogueBox.text = sentence;
     }
 
     private void AssignDialogueBox(GameObject runner)
@@ -124,6 +131,7 @@ public class UIManager : MonoBehaviour
             _stageTotalStarAmount.text = GameManager.AcquiredStars.ToString();
             ResetSliders();
             ResetStars();
+
         }
     }
 
@@ -137,11 +145,27 @@ public class UIManager : MonoBehaviour
         if (GameManager.AcquiredStars >= GameManager.Instance.Parameters[GameManager.CurrentStage].TotalStars)
         {
             _continueButton.interactable = true;
+            _tryAgainButton.interactable = true;
         }
         else
         {
             _continueButton.interactable = false;
+            _tryAgainButton.interactable = true;
         }
+
+        if (GameManager.DoTutorial)
+        {
+            _tryAgainButton.GetComponentInChildren<TextMeshProUGUI>().text = "Start";
+        }
+        else
+        {
+            _tryAgainButton.GetComponentInChildren<TextMeshProUGUI>().text = "Try Again";
+            if (GameManager.Instance.Parameters[GameManager.CurrentStage].TutorialStage)
+            {
+                _tryAgainButton.interactable = false;
+            }
+        }
+        
     }
 
     private void GainStar(int level)

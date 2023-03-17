@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TutorialStage: 0
   StageLength: 80
-  TotalStars: 3
+  TotalStars: 2
   MissingTilesChance: 1
-  TileColor: {r: 0.60400003, g: 0.21317647, b: 0.58217585, a: 1}
+  TileColor: {r: 0.3064675, g: 0.8687075, b: 0.874, a: 1}
   TileSpawnerWidthMin: 2.1
   TileSpawnerWidthMax: 2.9
   ColorMinRows:
@@ -24,7 +24,7 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 3
+      value: 4
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -48,7 +48,7 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 7
+      value: 8
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -72,7 +72,7 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 2
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -81,7 +81,7 @@ MonoBehaviour:
       outWeight: 0
     - serializedVersion: 3
       time: 1
-      value: 1
+      value: 0
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -96,7 +96,7 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 3
+      value: 2
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -105,7 +105,7 @@ MonoBehaviour:
       outWeight: 0
     - serializedVersion: 3
       time: 1
-      value: 2
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -146,8 +146,17 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
+      time: 0.5
+      value: 3
+      inSlope: Infinity
+      outSlope: Infinity
+      tangentMode: 103
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
       time: 1
-      value: 2
+      value: 3
       inSlope: Infinity
       outSlope: Infinity
       tangentMode: 103
