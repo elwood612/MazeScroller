@@ -69,35 +69,38 @@ public class Crystal : MonoBehaviour
             }
 
             #region Tutorial Stuff
-            if (_firstCrystal)
+            if (GameManager.DoTutorial)
             {
-                _firstCrystal = false;
-                _secondCrystal = true;
-                _firstBlueCrystal = true;
-                OnFirstCrystal?.Invoke();
-                DialogueManager.Instance.NextTutorialDialogue(1);
-                return;
-            }
-            if (_firstBlueCrystal && _initialLevel == 1)
-            {
-                _firstBlueCrystal = false;
-                _thirdCrystal = true;
-                OnFirstBlueCrystal?.Invoke();
-                DialogueManager.Instance.NextTutorialDialogue(4);
-                return;
-            }
-            if (_thirdCrystal && _initialLevel == 1 && _destroyed)
-            {
-                _thirdCrystal = false;
-                OnFirstBlueCrystalPopped?.Invoke();
-                DialogueManager.Instance.NextTutorialDialogue(5);
-                return;
-            }
-            if (_secondCrystal)
-            {
-                DialogueManager.Instance.NextTutorialDialogue(2);
-                _secondCrystal = false;
-                OnSecondCrystal?.Invoke();
+                if (_firstCrystal)
+                {
+                    _firstCrystal = false;
+                    _secondCrystal = true;
+                    _firstBlueCrystal = true;
+                    OnFirstCrystal?.Invoke();
+                    DialogueManager.Instance.NextTutorialDialogue(1);
+                    return;
+                }
+                if (_firstBlueCrystal && _initialLevel == 1)
+                {
+                    _firstBlueCrystal = false;
+                    _thirdCrystal = true;
+                    OnFirstBlueCrystal?.Invoke();
+                    DialogueManager.Instance.NextTutorialDialogue(4);
+                    return;
+                }
+                if (_thirdCrystal && _initialLevel == 1 && _destroyed)
+                {
+                    _thirdCrystal = false;
+                    OnFirstBlueCrystalPopped?.Invoke();
+                    DialogueManager.Instance.NextTutorialDialogue(5);
+                    return;
+                }
+                if (_secondCrystal)
+                {
+                    DialogueManager.Instance.NextTutorialDialogue(2);
+                    _secondCrystal = false;
+                    OnSecondCrystal?.Invoke();
+                }
             }
             #endregion
         }

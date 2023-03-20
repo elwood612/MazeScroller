@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject _runnerPrefab;
     [SerializeField] private bool _debugMode;
     [SerializeField] private bool _demoMode;
+    [SerializeField] private int _startingStage;
     public List<StageParameters> Parameters;
 
     private AnimationCurve _tileSpeedCurve;
@@ -171,10 +172,10 @@ public class GameManager : MonoBehaviour
         {
             Camera.main.GetComponent<AudioSource>().Stop();
         }
-        if (_demoMode)
-        {
-            _currentStage = 0;
-        }
+
+        _currentStage = _startingStage;
+        if (_currentStage == 0) { DoTutorial = true; }
+        else { DoTutorial = false; }
     }
 
     private void Start()
@@ -244,10 +245,15 @@ public class GameManager : MonoBehaviour
         _stars = 0;
         _bonusStarLevel = 0;
         _tileAlpha = 1f;
-        if (Parameters[_currentStage].TutorialStage) 
+        if (Parameters[_currentStage].TutorialStage)
         { 
             _firstStarGained = true;
             DoTutorial = true;
+        }
+        else
+        {
+            _firstStarGained = false;
+            DoTutorial = false;
         }
     }
 

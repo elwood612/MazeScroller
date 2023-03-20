@@ -63,6 +63,8 @@ public class Runner : MonoBehaviour, IRunner
         _dialogueBox.transform.parent.gameObject.SetActive(false);
         _speedCurve = GameManager.Instance.RunnerSpeedCurve;
         _transitionCurve = GameManager.Instance.RunnerTransitionCurve;
+        if (GameManager.DoTutorial) { _firstTimeStopping = true; }
+        else { _firstTimeStopping = false; }
     }
 
     private void OnEnable()

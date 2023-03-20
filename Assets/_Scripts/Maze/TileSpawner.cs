@@ -125,6 +125,7 @@ public class TileSpawner : MonoBehaviour
                     StartCoroutine(SpawnRandomCrystal(other.GetComponent<Row>()));
                 }
             }
+            #region Tutorial Stuff
             else
             {
                 if (++_counterColorSpawn > _triggerTutorialColorSpawn)
@@ -161,6 +162,7 @@ public class TileSpawner : MonoBehaviour
                     }
                 }
             }
+            #endregion
         }
     }
 
