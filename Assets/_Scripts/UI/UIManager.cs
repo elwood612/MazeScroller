@@ -177,7 +177,10 @@ public class UIManager : MonoBehaviour
         if (level > _bonusStarIndex)
         {
             _bonusStarIndex = level;
-            _activeSlider = _speedSliders[_bonusStarIndex];
+            if (_bonusStarIndex < _speedSliders.Length)
+            {
+                _activeSlider = _speedSliders[_bonusStarIndex];
+            }
             _activeSlider.gameObject.SetActive(true);
         }
     }

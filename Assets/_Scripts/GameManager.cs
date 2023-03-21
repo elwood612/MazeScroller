@@ -25,8 +25,8 @@ public class GameManager : MonoBehaviour
     private int _triggerCounters = 30;
     
     private int _speedBonus = 0;
-    private WaitForSeconds _bonusDelay = new WaitForSeconds(1f);
-    private WaitForSeconds _bonusStep = new WaitForSeconds(0.5f);
+    private WaitForSeconds _bonusDelay = new WaitForSeconds(0.5f);
+    private WaitForSeconds _bonusStep = new WaitForSeconds(0.2f);
     private bool _startOfGame = true;
     private bool _decreaseSpeedBonus = true;
     private bool _triggerBonusStep = true;
@@ -334,14 +334,6 @@ public class GameManager : MonoBehaviour
     public void EndStage()
     {
         OnStageEnd?.Invoke();
-        //if (Parameters[_currentStage].AssociatedDialogue != null)
-        //{
-        //    OnDialogueStart?.Invoke(Parameters[_currentStage].AssociatedDialogue);
-        //}
-        //else
-        //{
-        //    OnStageEnd?.Invoke();
-        //}
     }
 
     public void Quit()

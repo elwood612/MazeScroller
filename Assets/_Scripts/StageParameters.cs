@@ -22,9 +22,8 @@ public class StageParameters : ScriptableObject
     public AnimationCurve ColorMaxRows = new AnimationCurve(new Keyframe(0, 8), new Keyframe(1, 4));
 
     [Header("Crystals Over Time")]
-    public AnimationCurve CrystalMinRows = new AnimationCurve(new Keyframe(0, 1), new Keyframe(1, 0));
-    public AnimationCurve CrystalMaxRows = new AnimationCurve(new Keyframe(0, 2), new Keyframe(1, 1));
     public AnimationCurve CrystalMaxLevel = new AnimationCurve(new Keyframe(0, 0), new Keyframe(1, 3));
+    public AnimationCurve CrystalSpawnChance = new AnimationCurve(new Keyframe(0, 0.2f), new Keyframe(1, 0.5f));
 
     [Header("Dialogue")]
     public Dialogue AssociatedDialogue;
