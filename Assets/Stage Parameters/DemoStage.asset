@@ -133,4 +133,4 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  AssociatedDialogue: {fileID: 11400000, guid: 47d4615ed814b024a87dfed36a9720a2, type: 2}
+  AssociatedDialogue: {fileID: 0}

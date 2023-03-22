@@ -25,20 +25,25 @@ public class DialogueManager : MonoBehaviour
 
     private void OnEnable()
     {
-        GameManager.OnDialogueStart += StartDialogue;
+        GameManager.OnNextDialogue += ParseDialogue;
     }
 
     private void OnDisable()
     {
-        GameManager.OnDialogueStart -= StartDialogue;
+        GameManager.OnNextDialogue -= ParseDialogue;
     }
 
-    private void StartDialogue(Dialogue dialogue)
+    private void ParseDialogue(Dialogue dialogue)
+    {
+        StartDialogue(dialogue.Lines);
+    }
+
+    private void StartDialogue(string[] sentences)
     {
         _isDialogueActive = true;
         OnDialogueOpen?.Invoke(true);
         _currentDialogue.Clear();
-        foreach (string sentence in dialogue.Lines)
+        foreach (string sentence in sentences)
         {
             _currentDialogue.Enqueue(sentence);
         }
@@ -68,6 +73,23 @@ public class DialogueManager : MonoBehaviour
     public void NextTutorialDialogue(int index)
     {
         _tutorialDialogueIndex = index;
-        StartDialogue(_tutorialDialogue[index]);
+        StartDialogue(_tutorialDialogue[index].Lines);
+    }
+
+    public void NextQuery(StageDialogue stageDialogue)
+    {
+        string query = "<incoming query>\n" + stageDialogue.Query;
+        string[] sentences = { query };
+        StartDialogue(sentences);
+    }
+
+    private void NextComment(StageDialogue stageDialogue)
+    {
+        StartDialogue(stageDialogue.Comment);
+    }
+
+    private void NextAnswer(StageDialogue stageDialogue)
+    {
+        StartDialogue(stageDialogue.Answer);
     }
 }

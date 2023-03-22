@@ -28,7 +28,6 @@ public class Runner : MonoBehaviour, IRunner
     private AnimationCurve _transitionCurve;
 
     public static event Action OnTransitionReached;
-    public static event Action OnFirstStop;
     public TextMeshProUGUI DialogueBox => _dialogueBox;
     public bool RunnerStopped
     {
@@ -63,8 +62,8 @@ public class Runner : MonoBehaviour, IRunner
         _dialogueBox.transform.parent.gameObject.SetActive(false);
         _speedCurve = GameManager.Instance.RunnerSpeedCurve;
         _transitionCurve = GameManager.Instance.RunnerTransitionCurve;
-        if (GameManager.DoTutorial) { _firstTimeStopping = true; }
-        else { _firstTimeStopping = false; }
+        //if (GameManager.DoTutorial) { _firstTimeStopping = true; }
+        //else { _firstTimeStopping = false; }
     }
 
     private void OnEnable()
@@ -73,7 +72,7 @@ public class Runner : MonoBehaviour, IRunner
         DrawMaze.OnTileRemoved += RemoveTileFromPath;
         Tile.OnTileDestroy += RemoveTileFromPath;
         DialogueManager.OnDialogueOpen += SetAnimatorTrigger;
-        GameManager.OnSetupNextStage += ResetTutorial;
+        GameManager.OnSetupNextStage += ResetFirstStop;
     }
 
     private void OnDisable()
@@ -82,7 +81,7 @@ public class Runner : MonoBehaviour, IRunner
         DrawMaze.OnTileRemoved -= RemoveTileFromPath;
         Tile.OnTileDestroy -= RemoveTileFromPath;
         DialogueManager.OnDialogueOpen -= SetAnimatorTrigger;
-        GameManager.OnSetupNextStage -= ResetTutorial;
+        GameManager.OnSetupNextStage -= ResetFirstStop;
     }
 
     private void Update()
@@ -104,8 +103,9 @@ public class Runner : MonoBehaviour, IRunner
             if (_firstTimeStopping && !_isInTransition)
             {
                 _firstTimeStopping = false;
-                OnFirstStop?.Invoke();
-                DialogueManager.Instance.NextTutorialDialogue(0);
+                DialogueManager.Instance.NextQuery(GameManager.Instance.StageDialogue[0]);
+                if (GameManager.DoTutorial) { DialogueManager.Instance.NextTutorialDialogue(0); }
+                
             }
             RunnerStopped = true;
         }
@@ -400,12 +400,9 @@ public class Runner : MonoBehaviour, IRunner
         //if (_uncrossedTransitionTiles.Count == 0 && _isInTransition) { _runnerStopped = true; }
     }
 
-    private void ResetTutorial()
+    private void ResetFirstStop()
     {
-        if (GameManager.Instance.Parameters[GameManager.CurrentStage].TutorialStage)
-        {
-            _firstTimeStopping = true;
-        }
+        _firstTimeStopping = true;
     }
 
     public void CalculateNextTargetWrapper(Tile tile)

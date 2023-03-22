@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private bool _demoMode;
     [SerializeField] private int _startingStage;
     public List<StageParameters> Parameters;
+    public List<StageDialogue> StageDialogue;
 
     private AnimationCurve _tileSpeedCurve;
     private AnimationCurve _runnerSpeedCurve;
@@ -58,7 +59,10 @@ public class GameManager : MonoBehaviour
     public static event Action<int> OnSpeedBonusChanged;
     public static event Action<int> OnLoseCounterChanged;
     public static event Action OnStageEnd;
-    public static event Action<Dialogue> OnDialogueStart;
+    public static event Action<Dialogue> OnNextDialogue;
+    public static event Action<StageDialogue> OnNextQuery;
+    public static event Action<StageDialogue> OnNextComment;
+    public static event Action<StageDialogue> OnNextAnswer;
     public static event Action<GameObject> OnRunnerSpawned;
     public static event Action<int> OnStarGained;
 
@@ -323,7 +327,7 @@ public class GameManager : MonoBehaviour
     {
         if (Parameters[_currentStage].AssociatedDialogue != null)
         {
-            OnDialogueStart?.Invoke(Parameters[_currentStage].AssociatedDialogue);
+            OnNextDialogue?.Invoke(Parameters[_currentStage].AssociatedDialogue);
         }
         else
         {
