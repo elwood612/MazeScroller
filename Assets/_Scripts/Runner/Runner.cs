@@ -103,8 +103,8 @@ public class Runner : MonoBehaviour, IRunner
             if (_firstTimeStopping && !_isInTransition)
             {
                 _firstTimeStopping = false;
-                DialogueManager.Instance.NextQuery(GameManager.Instance.StageDialogue[0]);
                 if (GameManager.DoTutorial) { DialogueManager.Instance.NextTutorialDialogue(0); }
+                else { DialogueManager.Instance.NextComment(GameManager.CurrentStageDialogue); }
                 
             }
             RunnerStopped = true;

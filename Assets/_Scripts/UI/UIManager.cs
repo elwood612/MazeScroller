@@ -219,13 +219,15 @@ public class UIManager : MonoBehaviour
     public void OnContinueButtonClick()
     {
         GameManager.Instance.SetupNextStage();
-        GameManager.Instance.GoodToBeginDialogue();
+        //GameManager.Instance.GoodToBeginDialogue();
+        DialogueManager.Instance.NextQuery(GameManager.CurrentStageDialogue);
         _stageCanvas.enabled = false;
     }
 
     public void OnRestartButtonClick()
     {
-        GameManager.Instance.GoodToBeginDialogue();
+        //GameManager.Instance.GoodToBeginDialogue();
+        DialogueManager.Instance.NextQuery(GameManager.CurrentStageDialogue);
         _stageCanvas.enabled = false;
     }
 }

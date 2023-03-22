@@ -16,4 +16,6 @@ MonoBehaviour:
   _exact: 0
   _query: what is the capital of france?
   _comment: []
-  _answer: []
+  _answer:
+  - The capital of France is Paris. It was founded by aliens in the 9th century.
+    To this day these aliens live there and make cheese. There's also a tower.

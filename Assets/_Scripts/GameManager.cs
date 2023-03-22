@@ -12,13 +12,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] private bool _demoMode;
     [SerializeField] private int _startingStage;
     public List<StageParameters> Parameters;
-    public List<StageDialogue> StageDialogue;
+    public List<StageDialogue> StageDialogues;
 
     private AnimationCurve _tileSpeedCurve;
     private AnimationCurve _runnerSpeedCurve;
     private AnimationCurve _runnerTransitionCurve;
     private AnimationCurve _tileSpawnerWidthCurve;
     private GameObject _currentRunner;
+    private static StageDialogue _currentStageDialogue;
     private float _defaultSpeed = 1f;
     private float _averageSpeed;
     private int _counterAverageSpeed = 0;
@@ -87,6 +88,7 @@ public class GameManager : MonoBehaviour
     public static int CurrentStage => _currentStage;
     public static int TransitionProgress => _transitionProgress;
     public static int LoseCounter => _loseCounter;
+    public static StageDialogue CurrentStageDialogue => _currentStageDialogue;
     public static int StageProgress
     {
         get => _stageProgress;
@@ -178,6 +180,7 @@ public class GameManager : MonoBehaviour
         }
 
         _currentStage = _startingStage;
+        _currentStageDialogue = StageDialogues[0]; // temp
         if (_currentStage == 0) { DoTutorial = true; }
         else { DoTutorial = false; }
     }
@@ -313,13 +316,14 @@ public class GameManager : MonoBehaviour
 
     public void SetupNextStage()
     {
-        if (!_demoMode) { _currentStage++; }
-        
-        if (_currentStage >= Parameters.Count)
-        {
-            StageParameters newStage = ScriptableObject.CreateInstance<StageParameters>();
-            Parameters.Add(newStage);
-        }
+        //if (!_demoMode) { _currentStage++; }
+
+        //if (_currentStage >= Parameters.Count)
+        //{
+        //    StageParameters newStage = ScriptableObject.CreateInstance<StageParameters>();
+        //    Parameters.Add(newStage);
+        //}
+        _currentStageDialogue = StageDialogues[0];
         OnSetupNextStage?.Invoke();
     }
 
@@ -337,6 +341,7 @@ public class GameManager : MonoBehaviour
 
     public void EndStage()
     {
+        DialogueManager.Instance.NextAnswer(_currentStageDialogue);
         OnStageEnd?.Invoke();
     }
 

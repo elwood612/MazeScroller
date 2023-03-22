@@ -47,7 +47,6 @@ public class DialogueManager : MonoBehaviour
         {
             _currentDialogue.Enqueue(sentence);
         }
-
         NextSentence();
     }
 
@@ -78,18 +77,21 @@ public class DialogueManager : MonoBehaviour
 
     public void NextQuery(StageDialogue stageDialogue)
     {
+        if (stageDialogue == null) { EndDialogue(); return; }
         string query = "<incoming query>\n" + stageDialogue.Query;
         string[] sentences = { query };
         StartDialogue(sentences);
     }
 
-    private void NextComment(StageDialogue stageDialogue)
+    public void NextComment(StageDialogue stageDialogue)
     {
+        if (stageDialogue == null) { EndDialogue(); return; }
         StartDialogue(stageDialogue.Comment);
     }
 
-    private void NextAnswer(StageDialogue stageDialogue)
+    public void NextAnswer(StageDialogue stageDialogue)
     {
+        if (stageDialogue == null) { EndDialogue(); return; }
         StartDialogue(stageDialogue.Answer);
     }
 }
