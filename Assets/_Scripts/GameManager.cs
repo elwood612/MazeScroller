@@ -316,13 +316,6 @@ public class GameManager : MonoBehaviour
 
     public void SetupNextStage()
     {
-        //if (!_demoMode) { _currentStage++; }
-
-        //if (_currentStage >= Parameters.Count)
-        //{
-        //    StageParameters newStage = ScriptableObject.CreateInstance<StageParameters>();
-        //    Parameters.Add(newStage);
-        //}
         _currentStageDialogue = StageDialogues[0];
         OnSetupNextStage?.Invoke();
     }
@@ -341,7 +334,6 @@ public class GameManager : MonoBehaviour
 
     public void EndStage()
     {
-        DialogueManager.Instance.NextAnswer(_currentStageDialogue);
         OnStageEnd?.Invoke();
     }
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -7,15 +8,17 @@ public class Crystal : MonoBehaviour
 {
     [SerializeField] private GameObject _wireframe;
     [SerializeField] private MeshRenderer _shadow;
-    [SerializeField] private ParticleSystem _particlesNormal;
     [SerializeField] private ParticleSystem _particlesExplosion;
     [SerializeField] private ParticleSystem _particlesExplosionMissile;
     [SerializeField] private OrbitMissile _missilePrefab;
     [SerializeField] private AudioSource _audioBeep;
     [SerializeField] private AudioSource _audioZap;
     [SerializeField] private AudioSource _audioNegative;
+    [SerializeField] private TextMeshProUGUI _word;
+    [SerializeField] private Animation _wordAnimation;
     [SerializeField] private Material[] _wireframeMaterials;
     [SerializeField] private Material[] _shadowMaterials;
+    
 
     private ObjectPool<Crystal> _crystalPool;
     private int _level = 0;
@@ -41,6 +44,7 @@ public class Crystal : MonoBehaviour
             _orbitMissiles[i] = Instantiate(_missilePrefab, transform);
             _orbitMissiles[i].gameObject.SetActive(false);
         }
+        _word.gameObject.SetActive(false);
     }
 
     private void OnEnable()
@@ -129,6 +133,10 @@ public class Crystal : MonoBehaviour
     private void PlayerContact()
     {
         StartCoroutine(Explode());
+        _audioZap.Play();
+        _particlesExplosion.Play();
+        _word.gameObject.SetActive(true);
+        _wordAnimation.Play();
         if (GameManager.Instance.Parameters[GameManager.CurrentStage].TutorialStage) { ScoreBonus = 3; }
         GameManager.Instance.SpeedBonus += 5 * (_initialLevel + 1) * ScoreBonus;
         ScoreBonus = 3;
@@ -136,24 +144,19 @@ public class Crystal : MonoBehaviour
 
     private void EndOfBoardContact()
     {
-        StartCoroutine(Explode(true));
+        StartCoroutine(Explode());
         for (int i = 0; i < _level; i++)
         {
             DestroyOrbitMissile(_orbitMissiles[_level - 1]);
         }
     }
 
-    private IEnumerator Explode(bool endOfBoard = false)
+    private IEnumerator Explode()
     {
         _destroyed = true;
         _wireframe.SetActive(false);
         _shadow.enabled = false;
-        _particlesNormal.Stop();
-        if (!endOfBoard) 
-        { 
-            _audioZap.Play();
-            _particlesExplosion.Play();
-        }
+
         yield return _destroyDelay;
         _crystalPool.Release(this);
     }
@@ -181,6 +184,12 @@ public class Crystal : MonoBehaviour
         _thirdCrystal = false;
     }
 
+    private void ResetWord()
+    {
+        _word.gameObject.SetActive(false);
+        _word.text = DialogueManager.Instance.GetRandomWord(GameManager.CurrentStageDialogue);
+    }
+
     public void ResetScoreBonus(bool stopped)
     {
         if (stopped) { Debug.Log("Reset bonus"); ScoreBonus = 1; }
@@ -188,7 +197,7 @@ public class Crystal : MonoBehaviour
 
     public void RemoveCrystal()
     {
-        StartCoroutine(Explode(true));
+        StartCoroutine(Explode());
     }
 
     public void Initialize(int level, ObjectPool<Crystal> crystalPool)
@@ -202,5 +211,6 @@ public class Crystal : MonoBehaviour
         SetMaterials(_wireframeMaterials[_level], _shadowMaterials[_level]);
         ResetOrbitMissiles();
         SpawnOrbitMissiles();
+        ResetWord();
     }
 }

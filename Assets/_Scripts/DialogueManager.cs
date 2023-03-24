@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -86,12 +87,18 @@ public class DialogueManager : MonoBehaviour
     public void NextComment(StageDialogue stageDialogue)
     {
         if (stageDialogue == null) { EndDialogue(); return; }
-        StartDialogue(stageDialogue.Comment);
+        StartDialogue(stageDialogue.Comments);
     }
 
-    public void NextAnswer(StageDialogue stageDialogue)
+    //public void NextAnswer(StageDialogue stageDialogue)
+    //{
+    //    if (stageDialogue == null) { EndDialogue(); return; }
+    //    StartDialogue(stageDialogue.Answer);
+    //}
+
+    public string GetRandomWord(StageDialogue stageDialogue)
     {
-        if (stageDialogue == null) { EndDialogue(); return; }
-        StartDialogue(stageDialogue.Answer);
+        string[] words = stageDialogue.Answer.Split(' ');
+        return words[Random.Range(0, words.Length)];
     }
 }

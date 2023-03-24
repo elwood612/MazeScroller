@@ -2,7 +2,8 @@
     "name": "Project.Crystals",
     "rootNamespace": "",
     "references": [
-        "GUID:8166730be2347c04da47c9d71b2408ca"
+        "GUID:8166730be2347c04da47c9d71b2408ca",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
