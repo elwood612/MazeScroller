@@ -39,9 +39,9 @@ public class DialogueManager : MonoBehaviour
         StartDialogue(dialogue.Lines);
     }
 
-    private void StartDialogue(string[] sentences)
+    private void StartDialogue(string[] sentences, bool query = false)
     {
-        _isDialogueActive = true;
+        if (!query) { _isDialogueActive = true; }
         OnDialogueOpen?.Invoke(true);
         _currentDialogue.Clear();
         foreach (string sentence in sentences)
@@ -81,7 +81,7 @@ public class DialogueManager : MonoBehaviour
         if (stageDialogue == null) { EndDialogue(); return; }
         string query = "<incoming query>\n" + stageDialogue.Query;
         string[] sentences = { query };
-        StartDialogue(sentences);
+        StartDialogue(sentences, true);
     }
 
     public void NextComment(StageDialogue stageDialogue)

@@ -9,19 +9,20 @@ public class UIManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _topTotalStarAmount;
     [SerializeField] private TextMeshProUGUI _stageTotalStarAmount;
+    [SerializeField] private TextMeshProUGUI _stageAssessment;
     [SerializeField] private Slider[] _speedSliders;
     [SerializeField] private GameObject _starParent;
     [SerializeField] private Canvas _stageCanvas;
     [SerializeField] private Canvas _topCanvas;
     [SerializeField] private GameObject _starPrefab;
     [SerializeField] private Button _continueButton;
-    [SerializeField] private Button _tryAgainButton;
 
     private WaitForSecondsRealtime _flashDelay = new WaitForSecondsRealtime(0.25f);
     private WaitForSecondsRealtime _sentenceDelay = new WaitForSecondsRealtime(1f);
     private bool _flashing = true;
     private bool _flashRunning = false;
     private bool _typeOutSentence = true;
+    private bool _firstStage = true;
     private TextMeshProUGUI _dialogueBox;
     private int _dialogueIndex = 0;
     private int _newStarIndex = 0;
@@ -34,7 +35,6 @@ public class UIManager : MonoBehaviour
         _activeSlider = _speedSliders[0];
         _topCanvas.enabled = false;
         _stageCanvas.enabled = false;
-        _continueButton.interactable = false;
     }
 
     private void OnEnable()
@@ -63,19 +63,6 @@ public class UIManager : MonoBehaviour
     {
         _activeSlider.value = value % (GameManager.Instance.Parameters[GameManager.CurrentStage].TotalStars * 100);
     }
-
-    //private IEnumerator PanelRedFlash()
-    //{
-    //    _flashRunning = true;
-    //    while (_flashing)
-    //    {
-    //        yield return _flashDelay;
-    //        _redGlow.enabled = true;
-    //        yield return _flashDelay;
-    //        _redGlow.enabled = false;
-    //    }
-    //    _flashRunning = false;
-    //}
 
     private void UpdateDialogueBox(string sentence)
     {
@@ -131,41 +118,37 @@ public class UIManager : MonoBehaviour
             _stageTotalStarAmount.text = GameManager.AcquiredStars.ToString();
             ResetSliders();
             ResetStars();
-
         }
     }
 
     private void EndStage()
     {
         _topCanvas.enabled = false;
+
+        if (_firstStage)
+        {
+            _firstStage = false;
+            OnContinueButtonClick();
+            return;
+        }
         _stageCanvas.enabled = true;
+
         _stageTotalStarAmount.text = GameManager.AcquiredStars.ToString() + " ("
             + GameManager.Instance.Parameters[GameManager.CurrentStage].TotalStars.ToString()
             + " req.)";
-        if (GameManager.AcquiredStars >= GameManager.Instance.Parameters[GameManager.CurrentStage].TotalStars)
+        if (GameManager.AcquiredStars < GameManager.Instance.Parameters[GameManager.CurrentStage].TotalStars)
         {
-            _continueButton.interactable = true;
-            _tryAgainButton.interactable = true;
+            _stageAssessment.text = "You gave a suboptimal answer.";
+        }
+        else if (GameManager.AcquiredStars == GameManager.Instance.Parameters[GameManager.CurrentStage].TotalStars)
+        {
+            _stageAssessment.text = "You gave an adequate answer.";
         }
         else
         {
-            _continueButton.interactable = false;
-            _tryAgainButton.interactable = true;
+            _stageAssessment.text = "You gave an excellent answer!";
         }
-
-        if (GameManager.DoTutorial)
-        {
-            _tryAgainButton.GetComponentInChildren<TextMeshProUGUI>().text = "Start";
-        }
-        else
-        {
-            _tryAgainButton.GetComponentInChildren<TextMeshProUGUI>().text = "Try Again";
-            if (GameManager.Instance.Parameters[GameManager.CurrentStage].TutorialStage)
-            {
-                _tryAgainButton.interactable = false;
-            }
-        }
-        
+        // more conditions pls
     }
 
     private void GainStar(int level)
@@ -219,13 +202,6 @@ public class UIManager : MonoBehaviour
     public void OnContinueButtonClick()
     {
         GameManager.Instance.SetupNextStage();
-        //GameManager.Instance.GoodToBeginDialogue();
-        DialogueManager.Instance.NextQuery(GameManager.CurrentStageDialogue);
-        _stageCanvas.enabled = false;
-    }
-
-    public void OnRestartButtonClick()
-    {
         //GameManager.Instance.GoodToBeginDialogue();
         DialogueManager.Instance.NextQuery(GameManager.CurrentStageDialogue);
         _stageCanvas.enabled = false;
