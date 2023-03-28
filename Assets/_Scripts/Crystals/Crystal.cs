@@ -137,7 +137,7 @@ public class Crystal : MonoBehaviour
         _particlesExplosion.Play();
         _word.gameObject.SetActive(true);
         _wordAnimation.Play();
-        if (GameManager.Instance.Parameters[GameManager.CurrentStage].TutorialStage) { ScoreBonus = 3; }
+        if (GameManager.DoTutorial) { ScoreBonus = 3; }
         GameManager.Instance.SpeedBonus += 5 * (_initialLevel + 1) * ScoreBonus;
         ScoreBonus = 3;
     }

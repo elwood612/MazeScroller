@@ -4,14 +4,14 @@ using UnityEngine.UIElements;
 [CreateAssetMenu(fileName = "StageParameters", menuName = "Scriptable Objects/Stage Parameters")]
 public class StageParameters : ScriptableObject
 {
-    public bool TutorialStage;
+    //public bool TutorialStage;
 
-    [Header("Stage Stats")]
-    [Range(0, 100)] public int StageLength = 80;
-    [Range(1, 5)] public int TotalStars = 2;
-    [Tooltip("The higher this is, the fewer rows have holes.")]
+    //[Header("Stage Stats")]
+    //[Range(0, 100)] public int StageLength = 80;
+    //[Range(1, 5)] public int TotalStars = 2;
+    //[Tooltip("The higher this is, the fewer rows have holes.")]
     //[Range(0, 10)] public int MissingTilesChance = 1;
-    public Color TileColor = new Color(0.1725489f, 0.3896077f, 0.490196f, 1f);
+    //public Color TileColor = new Color(0.1725489f, 0.3896077f, 0.490196f, 1f);
 
     //[Header("Spawner Width")]
     //public float TileSpawnerWidthMin = 2.1f;
@@ -25,6 +25,6 @@ public class StageParameters : ScriptableObject
     //public AnimationCurve CrystalMaxLevel = new AnimationCurve(new Keyframe(0, 0), new Keyframe(1, 3));
     //public AnimationCurve CrystalSpawnChance = new AnimationCurve(new Keyframe(0, 0.2f), new Keyframe(1, 0.5f));
 
-    [Header("Dialogue")]
-    public Dialogue AssociatedDialogue;
+    //[Header("Dialogue")]
+    //public Dialogue AssociatedDialogue;
 }

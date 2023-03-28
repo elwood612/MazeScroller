@@ -47,7 +47,7 @@ public class TileSpawner : MonoBehaviour
     private float _widthMax = 2.9f;
     private float _crystalSpawnModifier = 1f;
     private float _crystalSpawnChance => _crystalSpawnModifier * GameManager.Instance.GameSettings.CrystalSpawnChance
-            .Evaluate(Random.Range(0f, (float)GameManager.StageProgress / (float)GameManager.Instance.Parameters[GameManager.CurrentStage].StageLength));
+            .Evaluate(Random.Range(0f, (float)GameManager.StageProgress / (float)GameManager.StageLength));
     #endregion
 
     #region Initialization

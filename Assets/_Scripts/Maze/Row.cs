@@ -7,11 +7,13 @@ public class Row : MonoBehaviour
     private bool _isHighestDrawnRow;
     private bool _hasSetupBeenRun = false;
     private static bool _endTutorial = false;
+    private static bool _firstEnabledRow = true;
     private List<Tile> _enabledTiles = new List<Tile>();
 
     public event Action OnRowReset;
     public event Action OnRowSetup;
     public event Action<float> OnRowTransition;
+    public static event Action OnFirstRowsReady;
 
     public bool HasSetupBeenRun => _hasSetupBeenRun;
     public List<Tile> EnabledTiles
@@ -66,6 +68,11 @@ public class Row : MonoBehaviour
     private void ResetRow()
     {
         transform.position += GameManager.BoardLength;
+        if (_firstEnabledRow && _hasSetupBeenRun)
+        {
+            _firstEnabledRow = false;
+            OnFirstRowsReady?.Invoke();
+        }
         _enabledTiles.Clear();
         OnRowReset?.Invoke();
     }
@@ -136,7 +143,7 @@ public class Row : MonoBehaviour
 
     private void ResetTutorial()
     {
-        if (GameManager.Instance.Parameters[GameManager.CurrentStage].TutorialStage)
+        if (GameManager.DoTutorial)
         {
             _endTutorial = false;
         }

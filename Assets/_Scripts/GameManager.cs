@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private bool _debugMode;
     [SerializeField] private bool _demoMode;
     [SerializeField] private int _startingStage;
-    public List<StageParameters> Parameters;
+    //public List<StageParameters> Parameters;
     public List<StageDialogue> StageDialogues;
 
     private AnimationCurve _tileSpeedCurve;
@@ -44,8 +44,9 @@ public class GameManager : MonoBehaviour
     private static int _stageLength = 100;
     private static int _transitionProgress;
     private static int _transitionLength = 30;
-    private static int _score = 0;
-    private static int _stars = 0;
+    private static int _acquiredStars = 0;
+    private static int _requiredStars = 1;
+    private static int _lifetimeStars = 0;
     private static int _loseCounter = 0;
     private static int _bonusStarLevel = 0;
     private static float _tileColorHue = 0;
@@ -91,7 +92,9 @@ public class GameManager : MonoBehaviour
     public static int CurrentStage => _currentStage;
     public static int TransitionProgress => _transitionProgress;
     public static int LoseCounter => _loseCounter;
-    public static float TileColorOffset => _tileColorHue;
+    public static int RequiredStars => _requiredStars;
+    public static int LifetimeStars => _lifetimeStars;
+    public static float TileColorHue => _tileColorHue;
     public static StageDialogue CurrentStageDialogue => _currentStageDialogue;
     public static int StageProgress
     {
@@ -100,12 +103,12 @@ public class GameManager : MonoBehaviour
         {
             if (CurrentState == GameState.Progressing)
             {
-                if (_stageProgress < Instance.Parameters[_currentStage].StageLength)
+                if (_stageProgress < _stageLength)
                 {
                     _stageProgress = value;
-                    if (_stageProgress > Instance.Parameters[_currentStage].StageLength / 2)
+                    if (_stageProgress > _stageLength / 2)
                     {
-                        _tileAlpha = Mathf.Max(_tileAlpha - 2f / Instance.Parameters[_currentStage].StageLength, 0);
+                        _tileAlpha = Mathf.Max(_tileAlpha - 2f / _stageLength, 0);
                     }
                 }
                 else
@@ -114,15 +117,6 @@ public class GameManager : MonoBehaviour
                     Instance.UpdateGameState(GameState.Transition);
                 }
             }
-        }
-    }
-    public static int Score
-    {
-        get => _score;
-        set
-        {
-            _score = value + Mathf.RoundToInt(Instance._speedBonus / 20);
-            //OnScoreChanged?.Invoke(value);
         }
     }
     public int SpeedBonus
@@ -137,7 +131,7 @@ public class GameManager : MonoBehaviour
             }
             _speedBonus = value;
             OnSpeedBonusChanged?.Invoke(value);
-            if (_speedBonus > 100 * (_stars + 1))
+            if (_speedBonus > 100 * (_acquiredStars + 1))
             {
                 AcquiredStars++;
             }
@@ -145,16 +139,16 @@ public class GameManager : MonoBehaviour
     }
     public static int AcquiredStars
     {
-        get => _stars;
+        get => _acquiredStars;
         set
         {
-            _stars = value;
+            _acquiredStars = value;
             if (_firstStarGained)
             {
                 _firstStarGained = false;
                 DialogueManager.Instance.NextTutorialDialogue(6);
             }
-            if (_stars % Instance.Parameters[_currentStage].TotalStars == 0)
+            if (_acquiredStars % _requiredStars == 0)
             {
                 _bonusStarLevel++;
             }
@@ -185,7 +179,7 @@ public class GameManager : MonoBehaviour
 
         _currentStage = _startingStage;
         _currentStageDialogue = StageDialogues[0]; // temp
-        if (_currentStage == 0) { DoTutorial = true; }
+        if (_currentStage == 0) { DoTutorial = true; } // temp
         else { DoTutorial = false; }
     }
 
@@ -239,7 +233,7 @@ public class GameManager : MonoBehaviour
     {
         _triggerBonusStep = false;
         yield return _bonusStep;
-        SpeedBonus = SpeedBonus > _stars * 100 ? SpeedBonus - 1 : _stars * 100;
+        SpeedBonus = SpeedBonus > _acquiredStars * 100 ? SpeedBonus - 1 : _acquiredStars * 100;
         _triggerBonusStep = true;
     }
 
@@ -251,11 +245,12 @@ public class GameManager : MonoBehaviour
 
     private void ResetStats()
     {
-        Score = 0;
         _speedBonus = 0;
-        _stars = 0;
+        _acquiredStars = 0;
         _bonusStarLevel = 0;
         _tileAlpha = 1f;
+
+        /*
         if (Parameters[_currentStage].TutorialStage)
         { 
             _firstStarGained = true;
@@ -266,6 +261,7 @@ public class GameManager : MonoBehaviour
             _firstStarGained = false;
             DoTutorial = false;
         }
+        */
     }
 
     public void UpdateGameState(GameState newState)
@@ -320,22 +316,33 @@ public class GameManager : MonoBehaviour
 
     public void SetupNextStage()
     {
-        _currentStageDialogue = StageDialogues[0];
-        _tileColorHue = Mathf.Clamp(Random.Range(0f, 1f), 0.1f, 0.9f);
-        OnSetupNextStage?.Invoke();
-    }
-
-    public void GoodToBeginDialogue()
-    {
-        if (Parameters[_currentStage].AssociatedDialogue != null)
+        _currentStageDialogue = StageDialogues[0]; // temp
+        if (DoTutorial)
         {
-            OnNextDialogue?.Invoke(Parameters[_currentStage].AssociatedDialogue);
+            _tileColorHue = 0.552778f;
+            _requiredStars = 1;
+            _stageLength = 30;
         }
         else
         {
-            if (CurrentState == GameState.Transition) { UpdateGameState(GameState.Progressing); }
+            _tileColorHue = Mathf.Clamp(Random.Range(0f, 1f), 0.1f, 0.9f);
+            _requiredStars = Mathf.Clamp(Random.Range(0, _lifetimeStars % 20), 1, 3);
+            _stageLength = _requiredStars * 60;
         }
+        OnSetupNextStage?.Invoke();
     }
+
+    //public void GoodToBeginDialogue()
+    //{
+    //    if (Parameters[_currentStage].AssociatedDialogue != null)
+    //    {
+    //        OnNextDialogue?.Invoke(Parameters[_currentStage].AssociatedDialogue);
+    //    }
+    //    else
+    //    {
+    //        if (CurrentState == GameState.Transition) { UpdateGameState(GameState.Progressing); }
+    //    }
+    //}
 
     public void EndStage()
     {

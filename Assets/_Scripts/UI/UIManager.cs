@@ -14,8 +14,11 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject _starParent;
     [SerializeField] private Canvas _stageCanvas;
     [SerializeField] private Canvas _topCanvas;
+    [SerializeField] private Canvas _mainMenuCanvas;
     [SerializeField] private GameObject _starPrefab;
     [SerializeField] private Button _continueButton;
+    [SerializeField] private Image _blackScreen;
+    [SerializeField] private Animation _blackScreenFadeOut;
 
     private WaitForSecondsRealtime _flashDelay = new WaitForSecondsRealtime(0.25f);
     private WaitForSecondsRealtime _sentenceDelay = new WaitForSecondsRealtime(1f);
@@ -35,6 +38,8 @@ public class UIManager : MonoBehaviour
         _activeSlider = _speedSliders[0];
         _topCanvas.enabled = false;
         _stageCanvas.enabled = false;
+        _mainMenuCanvas.enabled = true;
+        _blackScreen.enabled = true;
     }
 
     private void OnEnable()
@@ -46,6 +51,7 @@ public class UIManager : MonoBehaviour
         GameManager.OnStarGained += GainStar;
         DialogueManager.OnNextSentence += UpdateDialogueBox;
         DialogueManager.OnDialogueEnd += HideDialogueBox;
+        Row.OnFirstRowsReady += BlackScreenFade;
     }
 
     private void OnDisable()
@@ -57,11 +63,12 @@ public class UIManager : MonoBehaviour
         GameManager.OnStarGained -= GainStar;
         DialogueManager.OnNextSentence -= UpdateDialogueBox;
         DialogueManager.OnDialogueEnd -= HideDialogueBox;
+        Row.OnFirstRowsReady -= BlackScreenFade;
     }
 
     private void UpdateSpeedBonus(int value)
     {
-        _activeSlider.value = value % (GameManager.Instance.Parameters[GameManager.CurrentStage].TotalStars * 100);
+        _activeSlider.value = value % (GameManager.RequiredStars * 100);
     }
 
     private void UpdateDialogueBox(string sentence)
@@ -128,19 +135,19 @@ public class UIManager : MonoBehaviour
         if (_firstStage)
         {
             _firstStage = false;
-            OnContinueButtonClick();
             return;
         }
+
         _stageCanvas.enabled = true;
 
         _stageTotalStarAmount.text = GameManager.AcquiredStars.ToString() + " ("
-            + GameManager.Instance.Parameters[GameManager.CurrentStage].TotalStars.ToString()
+            + GameManager.RequiredStars.ToString()
             + " req.)";
-        if (GameManager.AcquiredStars < GameManager.Instance.Parameters[GameManager.CurrentStage].TotalStars)
+        if (GameManager.AcquiredStars < GameManager.RequiredStars)
         {
             _stageAssessment.text = "You gave a suboptimal answer.";
         }
-        else if (GameManager.AcquiredStars == GameManager.Instance.Parameters[GameManager.CurrentStage].TotalStars)
+        else if (GameManager.AcquiredStars == GameManager.RequiredStars)
         {
             _stageAssessment.text = "You gave an adequate answer.";
         }
@@ -154,7 +161,7 @@ public class UIManager : MonoBehaviour
     private void GainStar(int level)
     {
         _topTotalStarAmount.text = GameManager.AcquiredStars.ToString();
-        _starParent.transform.GetChild(_newStarIndex % GameManager.Instance.Parameters[GameManager.CurrentStage].TotalStars)
+        _starParent.transform.GetChild(_newStarIndex % GameManager.RequiredStars)
             .GetChild(2 + _bonusStarIndex).gameObject.SetActive(true);
         _newStarIndex++;
         if (level > _bonusStarIndex)
@@ -168,7 +175,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    private void ResetStars() // for some reason extra stars appear on random stage parameters??
+    private void ResetStars() 
     {
         foreach (var star in _allStars)
         {
@@ -177,7 +184,7 @@ public class UIManager : MonoBehaviour
         _allStars.Clear();
         _newStarIndex = 0;
         _bonusStarIndex = 0;
-        for (int i = 0; i < GameManager.Instance.Parameters[GameManager.CurrentStage].TotalStars; i++)
+        for (int i = 0; i < GameManager.RequiredStars; i++)
         {
             GameObject newStar = Instantiate(_starPrefab, _starParent.transform);
             _allStars.Add(newStar);
@@ -188,10 +195,16 @@ public class UIManager : MonoBehaviour
     {
         foreach (Slider slider in _speedSliders)
         {
-            slider.maxValue = GameManager.Instance.Parameters[GameManager.CurrentStage].TotalStars * 100;
+            slider.maxValue = GameManager.RequiredStars * 100;
             slider.value = 0;
             if (slider != _speedSliders[0]) { slider.gameObject.SetActive(false); }
         }
+    }
+
+    private void BlackScreenFade()
+    {
+        _blackScreenFadeOut.Play();
+        //OnContinueButtonClick(); // temp, this should be called from main menu
     }
 
     public void OnSettingsButtonClick()
@@ -202,8 +215,13 @@ public class UIManager : MonoBehaviour
     public void OnContinueButtonClick()
     {
         GameManager.Instance.SetupNextStage();
-        //GameManager.Instance.GoodToBeginDialogue();
         DialogueManager.Instance.NextQuery(GameManager.CurrentStageDialogue);
         _stageCanvas.enabled = false;
+    }
+
+    public void OnStartButtonClick()
+    {
+        _mainMenuCanvas.enabled = false;
+        OnContinueButtonClick();
     }
 }

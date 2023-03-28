@@ -208,7 +208,7 @@ public class Tile : MonoBehaviour
 
     private void ResetColor()
     {
-        _newTileColor = GetTileColor(GameManager.TileColorOffset);
+        _newTileColor = GetTileColor(GameManager.TileColorHue);
         _newMaterial.color = _newTileColor;
     }
 

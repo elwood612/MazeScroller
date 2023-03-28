@@ -174,7 +174,7 @@ public class Wall : MonoBehaviour
 
         if (_firstSpawnInStage && GameManager.CurrentState == GameState.Progressing)
         {
-            _newMaterial.color = GetWallColor(GameManager.TileColorOffset);
+            _newMaterial.color = GetWallColor(GameManager.TileColorHue);
             _newMaterial.SetColor("_EmissionColor", _newMaterial.color * _emissionColorIntensity);
             _lineRenderer.material = _newMaterial;
             _firstSpawnInStage = false;
