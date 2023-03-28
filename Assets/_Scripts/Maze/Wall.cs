@@ -22,7 +22,9 @@ public class Wall : MonoBehaviour
     private Row _parentRow;
     private List<Tile> _neighborTiles = new List<Tile>();
     private Tile _leftTile, _rightTile;
-    private Material _baseMaterial;
+    private Material _newMaterial;
+    private static Color _baseWallColor = new Color(0.1725489f, 0.3896077f, 0.490196f, 1f);
+    private static Color _newWallColor;
 
     public bool IsBorder => _isBorder;
     public bool IsPath => _isPath;
@@ -38,8 +40,8 @@ public class Wall : MonoBehaviour
 
     private void Awake()
     {
-        _baseMaterial = new Material(_lineBase);
-        _lineRenderer.material = _baseMaterial;
+        _newMaterial = new Material(_lineBase);
+        _lineRenderer.material = _newMaterial;
         _parentRow = GetComponentInParent<Row>();
         DisableWall();
     }
@@ -95,7 +97,7 @@ public class Wall : MonoBehaviour
 
     private void ResetColor(float unused)
     {
-        _baseMaterial = new Material(_lineBase);
+        _newMaterial = new Material(_lineBase);
         _firstSpawnInStage = true;
     }
 
@@ -156,6 +158,15 @@ public class Wall : MonoBehaviour
         _isHidden = true;
     }
 
+    private Color GetWallColor(float newHue)
+    {
+        Color tmpBaseColor = new Color(_baseWallColor.r, _baseWallColor.g, _baseWallColor.b);
+        float h, s, v;
+        Color.RGBToHSV(tmpBaseColor, out h, out s, out v);
+        Color newColor = Color.HSVToRGB(newHue, s, v);
+        return newColor;
+    }
+
     public void EnableWall()
     {
         _lineRenderer.enabled = true;
@@ -163,9 +174,9 @@ public class Wall : MonoBehaviour
 
         if (_firstSpawnInStage && GameManager.CurrentState == GameState.Progressing)
         {
-            _baseMaterial.color = GameManager.Instance.Parameters[GameManager.CurrentStage].TileColor;
-            _baseMaterial.SetColor("_EmissionColor", _baseMaterial.color * _emissionColorIntensity);
-            _lineRenderer.material = _baseMaterial;
+            _newMaterial.color = GetWallColor(GameManager.TileColorOffset);
+            _newMaterial.SetColor("_EmissionColor", _newMaterial.color * _emissionColorIntensity);
+            _lineRenderer.material = _newMaterial;
             _firstSpawnInStage = false;
         }
     }

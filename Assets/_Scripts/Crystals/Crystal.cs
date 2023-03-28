@@ -197,6 +197,7 @@ public class Crystal : MonoBehaviour
 
     public void RemoveCrystal()
     {
+        if (!isActiveAndEnabled) { return; }
         StartCoroutine(Explode());
     }
 

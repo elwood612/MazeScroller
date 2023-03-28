@@ -7,4 +7,5 @@ public class GM_Settings : ScriptableObject
     public AnimationCurve RunnerSpeedCurve;
     public AnimationCurve RunnerTransitionCurve;
     public AnimationCurve TileSpawnerWidthCurve;
+    public AnimationCurve CrystalSpawnChance;
 }

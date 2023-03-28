@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
@@ -47,6 +48,7 @@ public class GameManager : MonoBehaviour
     private static int _stars = 0;
     private static int _loseCounter = 0;
     private static int _bonusStarLevel = 0;
+    private static float _tileColorHue = 0;
     private static bool _firstStarGained = true;
 
     private static Vector3 _tileSpeed = Vector3.zero;
@@ -76,6 +78,7 @@ public class GameManager : MonoBehaviour
     //private float _minSpeed => Parameters[_currentStage].MinSpeed;
 
     public GameObject CurrentRunner => _currentRunner;
+    public GM_Settings GameSettings => _settings;
     public static float TileLength => _tileLength;
     public static Vector3 BoardLength => _boardLength;
     public static float TileSpeed => Mathf.Abs(_tileSpeed.z);
@@ -88,6 +91,7 @@ public class GameManager : MonoBehaviour
     public static int CurrentStage => _currentStage;
     public static int TransitionProgress => _transitionProgress;
     public static int LoseCounter => _loseCounter;
+    public static float TileColorOffset => _tileColorHue;
     public static StageDialogue CurrentStageDialogue => _currentStageDialogue;
     public static int StageProgress
     {
@@ -317,6 +321,7 @@ public class GameManager : MonoBehaviour
     public void SetupNextStage()
     {
         _currentStageDialogue = StageDialogues[0];
+        _tileColorHue = Mathf.Clamp(Random.Range(0f, 1f), 0.1f, 0.9f);
         OnSetupNextStage?.Invoke();
     }
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Tile : MonoBehaviour
 {
@@ -30,10 +31,13 @@ public class Tile : MonoBehaviour
     private bool _firstSpawnInStage = true;
     private bool _deadEndPrimed = false;
     private int _crossings = 0;
+    private int _tileColorOffset = 0;
     private Tile _pathfindingParent;
     private static bool _firstTile = true;
     private static bool _firstChargedTile = true;
-    private Material _baseMaterial;
+    private Material _newMaterial;
+    private static Color _baseTileColor = new Color(0.1725489f, 0.3896077f, 0.490196f, 1f);
+    private static Color _newTileColor;
 
     public static event Action<Tile> OnTileDestroy;
     public static event Action<Tile> OnTileDeactivate;
@@ -63,8 +67,8 @@ public class Tile : MonoBehaviour
         _parentRow = transform.GetComponentInParent<Row>();
         _colorRenderer.enabled = false;
         _tileDeadEnd.SetActive(false);
-        _baseMaterial = new Material(_tileBase);
-        _tileRenderer.material = _baseMaterial;
+        _newMaterial = new Material(_tileBase);
+        _tileRenderer.material = _newMaterial;
         DisableTile();
         if (GameManager.DoTutorial) { _firstChargedTile = true; }
         else {  _firstChargedTile = false; }
@@ -75,7 +79,7 @@ public class Tile : MonoBehaviour
         _parentRow.OnRowReset += ResetTile;
         _parentRow.OnRowSetup += GetNeighbors;
         _parentRow.OnRowTransition += SetAlpha;
-        _parentRow.OnRowTransition += ResetColor;
+        GameManager.OnSetupNextStage += ResetColor;
     }
 
     private void OnDisable()
@@ -83,7 +87,7 @@ public class Tile : MonoBehaviour
         _parentRow.OnRowReset -= ResetTile;
         _parentRow.OnRowSetup -= GetNeighbors;
         _parentRow.OnRowTransition -= SetAlpha;
-        _parentRow.OnRowTransition -= ResetColor;
+        GameManager.OnSetupNextStage -= ResetColor;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -185,8 +189,7 @@ public class Tile : MonoBehaviour
         _parentRow.EnabledTiles.Add(this);
         if (_firstSpawnInStage && GameManager.CurrentState == GameState.Progressing)
         {
-            _baseMaterial.color = GameManager.Instance.Parameters[GameManager.CurrentStage].TileColor;
-            SetMaterial(_baseMaterial);
+            SetMaterial(_newMaterial);
             _firstSpawnInStage = false;
         }
     }
@@ -203,10 +206,19 @@ public class Tile : MonoBehaviour
         _tileRenderer.material.color = color;
     }
 
-    private void ResetColor(float unused)
+    private void ResetColor()
     {
-        _firstSpawnInStage = true;
-        _baseMaterial = new Material(_tileBase);
+        _newTileColor = GetTileColor(GameManager.TileColorOffset);
+        _newMaterial.color = _newTileColor;
+    }
+
+    private Color GetTileColor(float newHue)
+    {
+        Color tmpBaseColor = new Color(_baseTileColor.r, _baseTileColor.g, _baseTileColor.b);
+        float h, s, v;
+        Color.RGBToHSV(tmpBaseColor, out h, out s, out v);
+        Color newColor = Color.HSVToRGB(newHue, s, v);
+        return newColor;
     }
 
     private void ResetDeadEnd()
@@ -307,7 +319,7 @@ public class Tile : MonoBehaviour
     {
         _isPartOfMaze = false;
         //SetMaterial(_tileBase);
-        SetMaterial(_baseMaterial);
+        SetMaterial(_newMaterial);
     }
 
     public void SetTileAsDeadEnd(Transform wall)
@@ -401,7 +413,7 @@ public class Tile : MonoBehaviour
         IsPreTransitionTile = false;
         RemoveTileFromMaze();
         //SetMaterial(_tileBase);
-        SetMaterial(_baseMaterial);
+        SetMaterial(_newMaterial);
         DisableTile();
         SetAsColored(false);
         SetAsCharged(false);
