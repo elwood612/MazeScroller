@@ -25,7 +25,6 @@ public class UIManager : MonoBehaviour
     private bool _flashing = true;
     private bool _flashRunning = false;
     private bool _typeOutSentence = true;
-    private bool _firstStage = true;
     private TextMeshProUGUI _dialogueBox;
     private int _dialogueIndex = 0;
     private int _newStarIndex = 0;
@@ -38,7 +37,6 @@ public class UIManager : MonoBehaviour
         _activeSlider = _speedSliders[0];
         _topCanvas.enabled = false;
         _stageCanvas.enabled = false;
-        _mainMenuCanvas.enabled = true;
         _blackScreen.enabled = true;
     }
 
@@ -48,6 +46,7 @@ public class UIManager : MonoBehaviour
         GameManager.OnRunnerSpawned += AssignDialogueBox;
         GameManager.OnStageEnd += EndStage;
         GameManager.OnStateChanged += BeginStage;
+        GameManager.OnMainMenuOpen += MainMenu;
         GameManager.OnStarGained += GainStar;
         DialogueManager.OnNextSentence += UpdateDialogueBox;
         DialogueManager.OnDialogueEnd += HideDialogueBox;
@@ -60,6 +59,7 @@ public class UIManager : MonoBehaviour
         GameManager.OnRunnerSpawned -= AssignDialogueBox;
         GameManager.OnStageEnd -= EndStage;
         GameManager.OnStateChanged -= BeginStage;
+        GameManager.OnMainMenuOpen -= MainMenu;
         GameManager.OnStarGained -= GainStar;
         DialogueManager.OnNextSentence -= UpdateDialogueBox;
         DialogueManager.OnDialogueEnd -= HideDialogueBox;
@@ -115,6 +115,11 @@ public class UIManager : MonoBehaviour
         _dialogueBox.transform.parent.gameObject.SetActive(false);
     }
 
+    private void MainMenu()
+    {
+        _mainMenuCanvas.enabled = true;
+    }
+
     private void BeginStage(GameState state)
     {
         if (state == GameState.Progressing)
@@ -131,13 +136,6 @@ public class UIManager : MonoBehaviour
     private void EndStage()
     {
         _topCanvas.enabled = false;
-
-        if (_firstStage)
-        {
-            _firstStage = false;
-            return;
-        }
-
         _stageCanvas.enabled = true;
 
         _stageTotalStarAmount.text = GameManager.AcquiredStars.ToString() + " ("
@@ -204,7 +202,7 @@ public class UIManager : MonoBehaviour
     private void BlackScreenFade()
     {
         _blackScreenFadeOut.Play();
-        //OnContinueButtonClick(); // temp, this should be called from main menu
+        GameManager.Instance.OpenMainMenu();
     }
 
     public void OnSettingsButtonClick()
@@ -222,6 +220,7 @@ public class UIManager : MonoBehaviour
     public void OnStartButtonClick()
     {
         _mainMenuCanvas.enabled = false;
+        GameManager.Instance.CloseMainMenu();
         OnContinueButtonClick();
     }
 }

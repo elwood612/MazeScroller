@@ -10,6 +10,9 @@ public class CameraBehavior : MonoBehaviour
     [Header("Stage Position & Rotation")]
     [SerializeField] private Vector3 _stagePosition;
     [SerializeField] private Quaternion _stageRotation;
+    [Header("Main Menu Position & Rotation")]
+    [SerializeField] private Vector3 _menuPosition;
+    [SerializeField] private Quaternion _menuRotation;
 
     [HideInInspector] public bool _goodToShake = false;
 
@@ -19,6 +22,7 @@ public class CameraBehavior : MonoBehaviour
     private Quaternion _refDeriv;
     private bool _goodToMove = false;
     private bool _goodToRotate = false;
+    private bool _firstMove = true;
     
     private float _delta = 0.1f;
     private float _smooth = 1f; // the larger this is, the slower you move
@@ -29,6 +33,8 @@ public class CameraBehavior : MonoBehaviour
     private void OnEnable()
     {
         GameManager.OnStateChanged += SetTargetForStage;
+        GameManager.OnMainMenuOpen += SetTargetForMenu;
+        GameManager.OnMainMenuClose += SetTargetForTransition;
         Tile.OnChargedTileHit += EnableCameraShake;
         Runner.OnTransitionReached += SetTargetForTransition;
     }
@@ -36,6 +42,8 @@ public class CameraBehavior : MonoBehaviour
     private void OnDisable()
     {
         GameManager.OnStateChanged -= SetTargetForStage;
+        GameManager.OnMainMenuOpen -= SetTargetForMenu;
+        GameManager.OnMainMenuClose -= SetTargetForTransition;
         Tile.OnChargedTileHit -= EnableCameraShake;
         Runner.OnTransitionReached -= SetTargetForTransition;
     }
@@ -49,6 +57,12 @@ public class CameraBehavior : MonoBehaviour
 
     private void SetTargetForTransition()
     {
+        if (_firstMove) 
+        { 
+            _firstMove = false;
+            return; 
+        }
+
         _targetPosition = _transitionPosition;
         _targetRotation = _transitionRotation;
 
@@ -67,6 +81,15 @@ public class CameraBehavior : MonoBehaviour
         _goodToRotate = true;
     }
 
+    private void SetTargetForMenu()
+    {
+        _targetPosition = _menuPosition;
+        _targetRotation = _menuRotation;
+
+        _goodToMove = true;
+        _goodToRotate = true;
+    }
+
     private void EnableCameraShake()
     {
         _goodToShake = true;
@@ -79,7 +102,7 @@ public class CameraBehavior : MonoBehaviour
         if (GameManager.CompareVectorsAsInts(transform.position, _targetPosition))
         {
             _goodToMove = false;
-            if (GameManager.CurrentState == GameState.Transition)
+            if (GameManager.CurrentState == GameState.Transition && GameManager.IsStageOver)
             {
                 GameManager.Instance.EndStage();
             }

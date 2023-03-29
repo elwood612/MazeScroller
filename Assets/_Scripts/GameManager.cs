@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviour
     private static float _tileLength;
     private static float _speedMultiplier = 1f;
     private static float _tileAlpha = 1f;
-    private static int _currentStage = 0; // so that we start off by incrementing to 0
+    //private static int _currentStage = 0; // so that we start off by incrementing to 0
     private static int _stageProgress;
     private static int _stageLength = 100;
     private static int _transitionProgress;
@@ -69,6 +69,8 @@ public class GameManager : MonoBehaviour
     public static event Action<StageDialogue> OnNextAnswer;
     public static event Action<GameObject> OnRunnerSpawned;
     public static event Action<int> OnStarGained;
+    public static event Action OnMainMenuOpen;
+    public static event Action OnMainMenuClose;
 
     public static GameManager Instance;
     public static float HighestDrawnRowHeight;
@@ -76,7 +78,7 @@ public class GameManager : MonoBehaviour
     public static int NumberOfRows;
     public static bool IsRunnerInTransition = false;
     public static bool DoTutorial = true;
-    //private float _minSpeed => Parameters[_currentStage].MinSpeed;
+    public static bool IsStageOver = false;
 
     public GameObject CurrentRunner => _currentRunner;
     public GM_Settings GameSettings => _settings;
@@ -89,7 +91,7 @@ public class GameManager : MonoBehaviour
     public static int StageLength => _stageLength;
     public static float MaxSpeed => _maxSpeed;
     public static float TileAlpha => _tileAlpha;
-    public static int CurrentStage => _currentStage;
+    //public static int CurrentStage => _currentStage;
     public static int TransitionProgress => _transitionProgress;
     public static int LoseCounter => _loseCounter;
     public static int RequiredStars => _requiredStars;
@@ -114,6 +116,7 @@ public class GameManager : MonoBehaviour
                 else
                 {
                     _stageProgress = 0;
+                    IsStageOver = true;
                     Instance.UpdateGameState(GameState.Transition);
                 }
             }
@@ -134,6 +137,7 @@ public class GameManager : MonoBehaviour
             if (_speedBonus > 100 * (_acquiredStars + 1))
             {
                 AcquiredStars++;
+                _lifetimeStars++;
             }
         }
     }
@@ -143,7 +147,7 @@ public class GameManager : MonoBehaviour
         set
         {
             _acquiredStars = value;
-            if (_firstStarGained)
+            if (_firstStarGained && DoTutorial)
             {
                 _firstStarGained = false;
                 DialogueManager.Instance.NextTutorialDialogue(6);
@@ -175,12 +179,10 @@ public class GameManager : MonoBehaviour
         if (_debugMode)
         {
             Camera.main.GetComponent<AudioSource>().Stop();
+            DoTutorial = false;
         }
 
-        _currentStage = _startingStage;
         _currentStageDialogue = StageDialogues[0]; // temp
-        if (_currentStage == 0) { DoTutorial = true; } // temp
-        else { DoTutorial = false; }
     }
 
     private void Start()
@@ -249,19 +251,6 @@ public class GameManager : MonoBehaviour
         _acquiredStars = 0;
         _bonusStarLevel = 0;
         _tileAlpha = 1f;
-
-        /*
-        if (Parameters[_currentStage].TutorialStage)
-        { 
-            _firstStarGained = true;
-            DoTutorial = true;
-        }
-        else
-        {
-            _firstStarGained = false;
-            DoTutorial = false;
-        }
-        */
     }
 
     public void UpdateGameState(GameState newState)
@@ -276,13 +265,9 @@ public class GameManager : MonoBehaviour
                 CalculateBoardLength();
                 break;
             case GameState.Transition:
-                //SetupNextStage();
                 break;
             case GameState.Progressing:
                 ResetStats();
-                break;
-            case GameState.Lose:
-                CalculateBoardSpeed(0);
                 break;
         }
         OnStateChanged?.Invoke(newState);
@@ -332,21 +317,20 @@ public class GameManager : MonoBehaviour
         OnSetupNextStage?.Invoke();
     }
 
-    //public void GoodToBeginDialogue()
-    //{
-    //    if (Parameters[_currentStage].AssociatedDialogue != null)
-    //    {
-    //        OnNextDialogue?.Invoke(Parameters[_currentStage].AssociatedDialogue);
-    //    }
-    //    else
-    //    {
-    //        if (CurrentState == GameState.Transition) { UpdateGameState(GameState.Progressing); }
-    //    }
-    //}
-
     public void EndStage()
     {
+        IsStageOver = false;
         OnStageEnd?.Invoke();
+    }
+
+    public void OpenMainMenu()
+    {
+        OnMainMenuOpen?.Invoke();
+    }
+
+    public void CloseMainMenu()
+    {
+        OnMainMenuClose?.Invoke();
     }
 
     public void Quit()

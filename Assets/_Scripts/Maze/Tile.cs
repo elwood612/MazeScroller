@@ -169,7 +169,7 @@ public class Tile : MonoBehaviour
             }
         }
 
-        if (_firstChargedTile)
+        if (_firstChargedTile && GameManager.DoTutorial)
         {
             _firstChargedTile = false;
             DialogueManager.Instance.NextTutorialDialogue(3);
