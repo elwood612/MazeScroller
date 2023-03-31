@@ -15,7 +15,7 @@ public class Wall : MonoBehaviour
     public bool _isPathfindingPath;
     private bool _isHidden = false;
     private bool _firstSpawnInStage = true;
-    private int _crossings = 0;
+    public int _crossings = 0;
     private float _timeCrossed = Mathf.Infinity;
     private float _timeDrawn = Mathf.Infinity;
     private float _emissionColorIntensity = 3.5f;
@@ -216,5 +216,11 @@ public class Wall : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (_crossings > 0) { Gizmos.DrawSphere(transform.position, 1f); }
+        if (_isPath) { Gizmos.DrawWireSphere(transform.position, 1.5f); }
     }
 }

@@ -56,7 +56,7 @@ public class DialogueManager : MonoBehaviour
         _isDialogueActive = false;
         OnDialogueOpen?.Invoke(false);
         if (GameManager.CurrentState == GameState.Transition) { GameManager.Instance.UpdateGameState(GameState.Progressing); }
-        if (GameManager.DoTutorial && _tutorialDialogueIndex == 5) { GameManager.DoTutorial = false; }
+        //if (GameManager.DoTutorial && _tutorialDialogueIndex == 5) { GameManager.DoTutorial = false; }
         OnDialogueEnd?.Invoke();
     }
 

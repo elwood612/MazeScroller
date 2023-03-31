@@ -24,6 +24,7 @@ public class Runner : MonoBehaviour, IRunner
     private bool _approachingDeadEnd = false;
     private bool _isInTransition = false;
     private bool _firstTimeStopping = true;
+    private bool _pathfinding = false;
     private AnimationCurve _speedCurve;
     private AnimationCurve _transitionCurve;
 
@@ -88,9 +89,6 @@ public class Runner : MonoBehaviour, IRunner
     {
         GameManager.AddBoardMotion(transform);
         CalculateSpeed();
-        //if (_uncrossedTiles.Count > 0 && !_isInTransition) { Move(); }
-        //if (_uncrossedTiles.Count == 0 && _currentTile.IsPreTransitionTile) { Move(); }
-        //if (_uncrossedTransitionTiles.Count > 0 && _isInTransition) { Move(); }
 
         if ((_uncrossedTiles.Count > 0 && !_isInTransition) ||
             (_uncrossedTiles.Count == 0 && _currentTile.IsPreTransitionTile) ||
@@ -107,6 +105,7 @@ public class Runner : MonoBehaviour, IRunner
                 else { DialogueManager.Instance.NextComment(GameManager.CurrentStageDialogue); }
                 
             }
+            //_nextTarget = null; // maybe??
             RunnerStopped = true;
         }
 
@@ -118,6 +117,7 @@ public class Runner : MonoBehaviour, IRunner
         if (other.CompareTag("TileCenter") && _colliderCheck == 0)
         {
             _colliderCheck++;
+            RemoveTileFromPath(_currentTile);
             SetTarget(other.GetComponentInParent<Tile>());
         }
         else if (other.CompareTag("TileDestroyer"))
@@ -161,8 +161,6 @@ public class Runner : MonoBehaviour, IRunner
 
     private void SetTarget(Tile tile) // On tile center
     {
-        RemoveTileFromPath(_currentTile);
-
         if ((_uncrossedTiles.Count == 0 && !_isInTransition && !_currentTile.IsPreTransitionTile) ||
             (_uncrossedTransitionTiles.Count == 0 && _isInTransition))
         {
@@ -195,16 +193,17 @@ public class Runner : MonoBehaviour, IRunner
         if (_currentTile.NeighborPaths.Count == 0) { yield break; }
 
         if (_isInTransition) 
-        { 
+        {
+            _currentTile.DebugChoice = "Transition choice";
             _nextTarget = _currentTile.GetNeighborTile(Vector3.forward); 
             yield break;
         }
 
-        //if (_runnerStopped && !_currentTile.IsStartingTile) // should get you out of a jam if you get stuck
+        //if (_runnerStopped && !_currentTile.IsStartingTile)
         //{
-        //    yield return new WaitUntil(() => ExecutePathfinding(_currentTile, tile)); // possibly pathfind to most recent uncrossed tile??
+        //    yield return new WaitUntil(() => ExecutePathfinding(_currentTile, _uncrossedTiles[_uncrossedTiles.Count - 1]));
         //    _nextTarget = GetPathfindingPath(_currentTile);
-        //    _currentTarget = _nextTarget;
+        //    _currentTarget = _nextTarget; // ??
         //    _runnerStopped = false;
         //    yield break;
         //}
@@ -230,6 +229,15 @@ public class Runner : MonoBehaviour, IRunner
         switch (tile.NeighborPaths.Count)
         {
             case 1:
+                if (_uncrossedTiles.Count > 1) // confirmed this isn't the issue
+                {
+                    //Debug.Log("Only one path available");
+                    foreach (Tile t in _uncrossedTiles)
+                    {
+                        t.DebugUncrossedTile = true;
+                    }
+                }
+                goto case 2;
             case 2:
                 if (GetOldestCrossedPath(_currentTile) != _currentTile)
                 {
@@ -261,6 +269,8 @@ public class Runner : MonoBehaviour, IRunner
 
     private Tile GetFirstUncrossedPath(Tile tile)
     {
+        _pathfinding = false;
+        tile.DebugChoice = "First uncrossed path";
         float firstDrawn = Mathf.Infinity;
         Tile toReturn = tile;
 
@@ -279,12 +289,14 @@ public class Runner : MonoBehaviour, IRunner
 
     private Tile GetOldestCrossedPath(Tile tile)
     {
+        _pathfinding = false;
+        tile.DebugChoice = "Oldest crossed path";
         float firstCrossed = Mathf.Infinity;
         Tile toReturn = tile;
         foreach (Wall wall in tile.NeighborPaths)
         {
             Vector3 direction = wall.transform.position - tile.transform.position;
-            if (wall.Crossings == 0) { return tile.GetNeighborTile(direction); } // why is this here
+            if (wall.Crossings == 0) { return tile.GetNeighborTile(direction); }
             if (wall.TimeCrossed < firstCrossed)
             {
                 firstCrossed = wall.TimeCrossed;
@@ -296,6 +308,8 @@ public class Runner : MonoBehaviour, IRunner
 
     private Tile GetPathfindingPath(Tile tile)
     {
+        _pathfinding = true;
+        tile.DebugChoice = "Pathfinding path";
         Tile toReturn = tile;
         foreach (Wall wall in tile.NeighborPaths)
         {
@@ -431,5 +445,11 @@ public class Runner : MonoBehaviour, IRunner
     public void OnDialogueBoxClick()
     {
         DialogueManager.Instance.NextSentence();
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (_pathfinding) { Gizmos.DrawSphere(transform.position + new Vector3(0, 1, 0), 3f); }
+        else { Gizmos.DrawSphere(transform.position, 0.1f); }
     }
 }

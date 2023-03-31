@@ -10,7 +10,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GM_Settings _settings;
     [SerializeField] private GameObject _runnerPrefab;
     [SerializeField] private bool _debugMode;
-    [SerializeField] private bool _demoMode;
     [SerializeField] private int _startingStage;
     //public List<StageParameters> Parameters;
     public List<StageDialogue> StageDialogues;
@@ -95,7 +94,6 @@ public class GameManager : MonoBehaviour
     public static int TransitionProgress => _transitionProgress;
     public static int LoseCounter => _loseCounter;
     public static int RequiredStars => _requiredStars;
-    public static int LifetimeStars => _lifetimeStars;
     public static float TileColorHue => _tileColorHue;
     public static StageDialogue CurrentStageDialogue => _currentStageDialogue;
     public static int StageProgress
@@ -117,6 +115,11 @@ public class GameManager : MonoBehaviour
                 {
                     _stageProgress = 0;
                     IsStageOver = true;
+                    if (DoTutorial)
+                    { 
+                        DoTutorial = false;
+                        PlayerPrefs.SetInt("DoTutorial", 0);
+                    }
                     Instance.UpdateGameState(GameState.Transition);
                 }
             }
@@ -137,7 +140,7 @@ public class GameManager : MonoBehaviour
             if (_speedBonus > 100 * (_acquiredStars + 1))
             {
                 AcquiredStars++;
-                _lifetimeStars++;
+                LifetimeStars++;
             }
         }
     }
@@ -159,6 +162,15 @@ public class GameManager : MonoBehaviour
             OnStarGained?.Invoke(_bonusStarLevel);
         }
     }
+    public static int LifetimeStars
+    {
+        get => _lifetimeStars;
+        set
+        {
+            _lifetimeStars = value;
+            PlayerPrefs.SetInt("LifetimeStars", LifetimeStars);
+        }
+    }
     #endregion
 
     #region Initialization
@@ -167,11 +179,8 @@ public class GameManager : MonoBehaviour
         if (Instance == null) { Instance = this; }
         else { Destroy(this); }
 
-        _tileSpeedCurve = _settings.TileSpeedCurve;
-        _runnerSpeedCurve = _settings.RunnerSpeedCurve;
-        _runnerTransitionCurve = _settings.RunnerTransitionCurve;
-        _tileSpawnerWidthCurve = _settings.TileSpawnerWidthCurve;
-        _tileLength = GameObject.FindGameObjectWithTag("Tile").GetComponent<BoxCollider>().bounds.size.x;
+        LoadSettings();
+        LoadPlayerPrefs();
 
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 60;
@@ -197,6 +206,21 @@ public class GameManager : MonoBehaviour
         CalculateBoardSpeed(_speedMultiplier);
 
         if (_decreaseSpeedBonus && _triggerBonusStep && !DialogueManager.Instance.IsDialogueActive) { StartCoroutine(BonusDecrease()); }
+    }
+
+    private void LoadSettings()
+    {
+        _tileSpeedCurve = _settings.TileSpeedCurve;
+        _runnerSpeedCurve = _settings.RunnerSpeedCurve;
+        _runnerTransitionCurve = _settings.RunnerTransitionCurve;
+        _tileSpawnerWidthCurve = _settings.TileSpawnerWidthCurve;
+        _tileLength = GameObject.FindGameObjectWithTag("Tile").GetComponent<BoxCollider>().bounds.size.x;
+    }
+
+    private void LoadPlayerPrefs()
+    {
+        _lifetimeStars = PlayerPrefs.GetInt("LifetimeStars", 0);
+        DoTutorial = PlayerPrefs.GetInt("DoTutorial", 1) == 0 ? false : true;
     }
 
     private void CalculateBoardSpeed(float multiplier)
@@ -267,6 +291,7 @@ public class GameManager : MonoBehaviour
             case GameState.Transition:
                 break;
             case GameState.Progressing:
+                //Time.timeScale = 0.1f;
                 ResetStats();
                 break;
         }
@@ -320,6 +345,7 @@ public class GameManager : MonoBehaviour
     public void EndStage()
     {
         IsStageOver = false;
+        PlayerPrefs.Save();
         OnStageEnd?.Invoke();
     }
 

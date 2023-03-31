@@ -5,6 +5,8 @@ using Random = UnityEngine.Random;
 
 public class Tile : MonoBehaviour
 {
+    public string DebugChoice;
+    public bool DebugUncrossedTile = false;
     [SerializeField] private Crystal _crystalPrefab;
     [SerializeField] private Renderer _tileRenderer;
     [SerializeField] private Renderer _colorRenderer;
@@ -30,7 +32,7 @@ public class Tile : MonoBehaviour
     private bool _isCharged = false;
     private bool _firstSpawnInStage = true;
     private bool _deadEndPrimed = false;
-    private int _crossings = 0;
+    public int _crossings = 0;
     private int _tileColorOffset = 0;
     private Tile _pathfindingParent;
     private static bool _firstTile = true;
@@ -115,11 +117,13 @@ public class Tile : MonoBehaviour
         if (other.CompareTag("Runner"))
         {
             //ColoredCheck();
+            DebugUncrossedTile = false;
         }
     }
 
     private void PlayerCrossing(IRunner runner)
     {
+        
         SetMaterial(_tileCrossed);
         //ColoredCheck();
         ChargedCheck();
@@ -419,5 +423,16 @@ public class Tile : MonoBehaviour
         SetAsCharged(false);
         ResetDeadEnd();
         NeighborPaths.Clear();
+
+        DebugChoice = "";
+        DebugUncrossedTile = false;
+    }
+
+    public void OnDrawGizmos()
+    {
+        if (DebugUncrossedTile)
+        {
+            Gizmos.DrawCube(transform.position, new Vector3(1, 1, 1));
+        }
     }
 }
