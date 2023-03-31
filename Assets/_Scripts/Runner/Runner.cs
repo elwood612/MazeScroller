@@ -166,6 +166,7 @@ public class Runner : MonoBehaviour, IRunner
         {
             DrawMaze.OnTileAdded += SetTarget;
             _nextTarget = null;
+            _currentTarget = null;
             return;
         }
         else
@@ -179,7 +180,6 @@ public class Runner : MonoBehaviour, IRunner
         if (_nextTarget != null)
         {
             _currentTarget = _nextTarget;
-            //_runnerStopped = false;
             DrawMaze.OnTileAdded -= SetTarget;
         }
         
@@ -192,7 +192,7 @@ public class Runner : MonoBehaviour, IRunner
 
         if (_currentTile.NeighborPaths.Count == 0) { yield break; }
 
-        if (_isInTransition) 
+        if (_isInTransition || tile.GetNeighborTile(Vector3.forward).IsTransitionTile) 
         {
             _currentTile.DebugChoice = "Transition choice";
             _nextTarget = _currentTile.GetNeighborTile(Vector3.forward); 
@@ -209,7 +209,7 @@ public class Runner : MonoBehaviour, IRunner
         //}
 
         Tile pathfindingTarget = tile;
-        if (_uncrossedTiles.Count > 0) { pathfindingTarget = _uncrossedTiles[0]; }
+        if (_uncrossedTiles.Count > 0) { pathfindingTarget = _uncrossedTiles[_uncrossedTiles.Count - 1]; }
         else if (_uncrossedTransitionTiles.Count > 0) { pathfindingTarget = _uncrossedTransitionTiles[0]; }
 
         if (_runnerOffScreen)
@@ -229,12 +229,12 @@ public class Runner : MonoBehaviour, IRunner
         switch (tile.NeighborPaths.Count)
         {
             case 1:
+                // DEBUG
                 if (_uncrossedTiles.Count > 1) // confirmed this isn't the issue
                 {
-                    //Debug.Log("Only one path available");
                     foreach (Tile t in _uncrossedTiles)
                     {
-                        t.DebugUncrossedTile = true;
+                        t.DebugUncrossedTile = true; // debug
                     }
                 }
                 goto case 2;
@@ -287,22 +287,58 @@ public class Runner : MonoBehaviour, IRunner
         return toReturn;
     }
 
-    private Tile GetOldestCrossedPath(Tile tile)
+    private Tile Arbitration(Tile tile)
     {
-        _pathfinding = false;
-        tile.DebugChoice = "Oldest crossed path";
-        float firstCrossed = Mathf.Infinity;
         Tile toReturn = tile;
         foreach (Wall wall in tile.NeighborPaths)
         {
             Vector3 direction = wall.transform.position - tile.transform.position;
-            if (wall.Crossings == 0) { return tile.GetNeighborTile(direction); }
+            if (tile.GetNeighborTile(direction).Crossings == 0)
+            {
+                return tile.GetNeighborTile(direction);
+            }
+        }
+        return toReturn;
+    }
+
+    private Tile GetOldestCrossedPath(Tile tile)
+    {
+        _pathfinding = false;
+        float firstCrossed = Mathf.Infinity;
+        Tile toReturn = tile;
+        bool foundUncrossedPath = false;
+        float wall1time = 0, wall2time = 0;
+        Wall wall1 = tile.NeighborWalls[0];
+        Wall wall2 = tile.NeighborWalls[1];
+        foreach (Wall wall in tile.NeighborPaths)
+        {
+            Vector3 direction = wall.transform.position - tile.transform.position;
+
+            if (wall.Crossings == 0) 
+            {
+                if (foundUncrossedPath)
+                {
+                    Debug.Log("ERROR! Multiple uncrossed paths");
+                    if (Arbitration(tile) != tile) { return Arbitration(tile); }
+                    else { Debug.Log("Arbitration failed!"); return Arbitration(tile); }
+                }
+                else
+                {
+                    foundUncrossedPath = true;
+                    toReturn = tile.GetNeighborTile(direction);
+                    continue;
+                }
+            }
             if (wall.TimeCrossed < firstCrossed)
             {
                 firstCrossed = wall.TimeCrossed;
+                if (wall1time == 0) { wall1time = wall.TimeCrossed; wall1 = wall; }
+                else if (wall2time == 0) { wall2time = wall.TimeCrossed; wall2 = wall; }
                 toReturn = tile.GetNeighborTile(direction);
             }
         }
+        tile.DebugChoice = tile.NeighborPaths.Count + " paths available, wall1 = " + wall1time + ", wall2 = " + wall2time
+            + ", wall1X = " + wall1.Crossings + ", wall2X = " + wall2.Crossings;
         return toReturn;
     }
 
@@ -332,6 +368,7 @@ public class Runner : MonoBehaviour, IRunner
 
         while (openSet.Count > 0)
         {
+            //Debug.Log("Calculating pathfinding");
             Tile currentTile = openSet.Dequeue();
             closedSet.Add(currentTile);
 
@@ -409,9 +446,6 @@ public class Runner : MonoBehaviour, IRunner
     {
         if (_uncrossedTiles.Contains(tile)) { _uncrossedTiles.Remove(tile); }
         if (_uncrossedTransitionTiles.Contains(tile)) { _uncrossedTransitionTiles.Remove(tile); }
-
-        //if (_uncrossedTiles.Count == 0 && !_isInTransition) { _runnerStopped = true; }
-        //if (_uncrossedTransitionTiles.Count == 0 && _isInTransition) { _runnerStopped = true; }
     }
 
     private void ResetFirstStop()

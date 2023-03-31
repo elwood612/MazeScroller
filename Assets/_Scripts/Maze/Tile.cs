@@ -348,6 +348,7 @@ public class Tile : MonoBehaviour
             }
         }
         Debug.Log("Couldn't find neighbor tile");
+        DebugChoice = "Couldn't find neighbor tile";
         return this;
     }
 
