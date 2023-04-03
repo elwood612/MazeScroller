@@ -7,7 +7,6 @@ using UnityEngine.UI;
 
 public class Runner : MonoBehaviour, IRunner
 {
-    [SerializeField] private Renderer[] _renderers;
     [SerializeField] private TextMeshProUGUI _dialogueBox;
     [SerializeField] private Animator _animator;
 
@@ -316,11 +315,10 @@ public class Runner : MonoBehaviour, IRunner
 
             if (wall.Crossings == 0) 
             {
-                if (foundUncrossedPath)
+                if (foundUncrossedPath) // this means a wall's crossings is incorrectly 0
                 {
-                    Debug.Log("ERROR! Multiple uncrossed paths");
                     if (Arbitration(tile) != tile) { return Arbitration(tile); }
-                    else { Debug.Log("Arbitration failed!"); return Arbitration(tile); }
+                    else { Debug.Log("Arbitration failed!"); return Arbitration(tile); } // tmp debug
                 }
                 else
                 {
