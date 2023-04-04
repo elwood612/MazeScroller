@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject _runnerPrefab;
     [SerializeField] private bool _debugMode;
     [SerializeField] private int _startingStage;
+    public Transform SampleTileTransform;
     //public List<StageParameters> Parameters;
     public List<StageDialogue> StageDialogues;
 
@@ -214,7 +215,7 @@ public class GameManager : MonoBehaviour
         _runnerSpeedCurve = _settings.RunnerSpeedCurve;
         _runnerTransitionCurve = _settings.RunnerTransitionCurve;
         _tileSpawnerWidthCurve = _settings.TileSpawnerWidthCurve;
-        _tileLength = GameObject.FindGameObjectWithTag("Tile").GetComponent<BoxCollider>().bounds.size.x;
+        _tileLength = SampleTileTransform.GetComponent<BoxCollider>().bounds.size.x;
     }
 
     private void LoadPlayerPrefs()

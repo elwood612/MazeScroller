@@ -20,7 +20,7 @@ public class Runner : MonoBehaviour, IRunner
     private List<Tile> _uncrossedTransitionTiles = new List<Tile>();
     private float _currentSpeed;
     private int _colliderCheck = 0;
-    private bool _runnerStopped = true;
+    private static bool _runnerStopped = true;
     private bool _runnerOffScreen = false;
     private bool _approachingDeadEnd = false;
     private bool _isInTransition = false;
@@ -32,7 +32,7 @@ public class Runner : MonoBehaviour, IRunner
 
     public static event Action OnTransitionReached;
     public TextMeshProUGUI DialogueBox => _dialogueBox;
-    public bool RunnerStopped
+    public static bool RunnerStopped
     {
         get => _runnerStopped;
         set
@@ -40,7 +40,10 @@ public class Runner : MonoBehaviour, IRunner
             if (_runnerStopped != value) 
             { 
                 _runnerStopped = value;
-                if (value == true) { Crystal.ScoreBonus = 1; }
+                if (value == true) 
+                { 
+                    Crystal.ScoreBonus = 1;
+                }
             }
         }
     }
@@ -66,7 +69,7 @@ public class Runner : MonoBehaviour, IRunner
         _speedCurve = GameManager.Instance.RunnerSpeedCurve;
         _transitionCurve = GameManager.Instance.RunnerTransitionCurve;
         _trailParticlesMainModule = _trailParticles.main;
-        _trailParticlesMainModule.customSimulationSpace = BoardManager.AllTiles[0].transform;
+        _trailParticlesMainModule.customSimulationSpace = GameManager.Instance.SampleTileTransform;
         //if (GameManager.DoTutorial) { _firstTimeStopping = true; }
         //else { _firstTimeStopping = false; }
     }
@@ -109,7 +112,6 @@ public class Runner : MonoBehaviour, IRunner
                 else { DialogueManager.Instance.NextComment(GameManager.CurrentStageDialogue); }
                 
             }
-            //_nextTarget = null; // maybe??
             RunnerStopped = true;
         }
 

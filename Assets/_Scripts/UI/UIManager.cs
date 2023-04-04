@@ -18,6 +18,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject _starPrefab;
     [SerializeField] private Button _continueButton;
     [SerializeField] private Image _blackScreen;
+    [SerializeField] private Image _loadingScreen;
     [SerializeField] private Animation _blackScreenFadeOut;
 
     private WaitForSecondsRealtime _flashDelay = new WaitForSecondsRealtime(0.25f);
@@ -38,6 +39,7 @@ public class UIManager : MonoBehaviour
         _topCanvas.enabled = false;
         _stageCanvas.enabled = false;
         _blackScreen.enabled = true;
+        _loadingScreen.enabled = true;
     }
 
     private void OnEnable()
@@ -118,6 +120,7 @@ public class UIManager : MonoBehaviour
     private void MainMenu()
     {
         _mainMenuCanvas.enabled = true;
+        _loadingScreen.enabled = false;
     }
 
     private void BeginStage(GameState state)
