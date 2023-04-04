@@ -9,6 +9,8 @@ public class Runner : MonoBehaviour, IRunner
 {
     [SerializeField] private TextMeshProUGUI _dialogueBox;
     [SerializeField] private Animator _animator;
+    [SerializeField] private ParticleSystem _trailParticles;
+    [SerializeField] private Transform _spaceshipTransform;
 
     private Tile _currentTile;
     private Tile _currentTarget;
@@ -24,6 +26,7 @@ public class Runner : MonoBehaviour, IRunner
     private bool _isInTransition = false;
     private bool _firstTimeStopping = true;
     private bool _pathfinding = false;
+    private ParticleSystem.MainModule _trailParticlesMainModule;
     private AnimationCurve _speedCurve;
     private AnimationCurve _transitionCurve;
 
@@ -62,6 +65,8 @@ public class Runner : MonoBehaviour, IRunner
         _dialogueBox.transform.parent.gameObject.SetActive(false);
         _speedCurve = GameManager.Instance.RunnerSpeedCurve;
         _transitionCurve = GameManager.Instance.RunnerTransitionCurve;
+        _trailParticlesMainModule = _trailParticles.main;
+        _trailParticlesMainModule.customSimulationSpace = BoardManager.AllTiles[0].transform;
         //if (GameManager.DoTutorial) { _firstTimeStopping = true; }
         //else { _firstTimeStopping = false; }
     }
@@ -182,7 +187,7 @@ public class Runner : MonoBehaviour, IRunner
             DrawMaze.OnTileAdded -= SetTarget;
         }
         
-        if (_currentTarget != null) { transform.GetChild(0).LookAt(_currentTarget.transform); }
+        if (_currentTarget != null) { _spaceshipTransform.LookAt(_currentTarget.transform); }
     }
 
     private IEnumerator CalculateNextTarget(Tile tile) // On tile edge
