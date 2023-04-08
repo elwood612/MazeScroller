@@ -15,8 +15,15 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Canvas _stageCanvas;
     [SerializeField] private Canvas _topCanvas;
     [SerializeField] private Canvas _mainMenuCanvas;
+    [SerializeField] private Canvas _menuSettingsCanvas;
     [SerializeField] private GameObject _starPrefab;
-    [SerializeField] private Button _continueButton;
+    [SerializeField] private GameObject _buttons;
+    [SerializeField] private GameObject _mainPage;
+    [SerializeField] private GameObject _backPage;
+    [SerializeField] private Button _storyModeButton;
+    [SerializeField] private Button _challengeModeButton;
+    [SerializeField] private Button _quitButton;
+    [SerializeField] private Toggle _resetToggle;
     [SerializeField] private Image _blackScreen;
     [SerializeField] private Image _loadingScreen;
     [SerializeField] private Animation _blackScreenFadeOut;
@@ -38,8 +45,15 @@ public class UIManager : MonoBehaviour
         _activeSlider = _speedSliders[0];
         _topCanvas.enabled = false;
         _stageCanvas.enabled = false;
+        _menuSettingsCanvas.enabled = false;
         _blackScreen.enabled = true;
         _loadingScreen.enabled = true;
+        _resetToggle.isOn = false;
+
+        _mainPage.SetActive(true);
+        _backPage.SetActive(false);
+
+        ChallengeModeCheck();
     }
 
     private void OnEnable()
@@ -156,6 +170,8 @@ public class UIManager : MonoBehaviour
         {
             _stageAssessment.text = "You gave an excellent answer!";
         }
+
+        ChallengeModeCheck();
         // more conditions pls
     }
 
@@ -202,13 +218,20 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    private void ChallengeModeCheck()
+    {
+        //_challengeModeButton.interactable = GameManager.LifetimeStars > 20;
+
+        _challengeModeButton.interactable = false; // temp until, you know, there IS a challenge mode
+    }
+
     private void BlackScreenFade()
     {
         _blackScreenFadeOut.Play();
         GameManager.Instance.OpenMainMenu();
     }
 
-    public void OnSettingsButtonClick()
+    public void OnChallengeModeButtonClick()
     {
         // Open pause menu
     }
@@ -220,10 +243,36 @@ public class UIManager : MonoBehaviour
         _stageCanvas.enabled = false;
     }
 
-    public void OnStartButtonClick()
+    public void OnStoryModeButtonClick()
     {
         _mainMenuCanvas.enabled = false;
         GameManager.Instance.CloseMainMenu();
         OnContinueButtonClick();
+        if (_resetToggle.isOn)
+        {
+            _resetToggle.isOn = false;
+        }
+    }
+
+    public void OnMenuSettingsClick()
+    {
+        _menuSettingsCanvas.enabled = true;
+        _storyModeButton.enabled = false;
+        _challengeModeButton.enabled = false;
+        _quitButton.enabled = false;
+    }
+
+    public void OnBackButtonClick()
+    {
+        if (_resetToggle.isOn)
+        {
+            _backPage.SetActive(true);
+            _mainPage.SetActive(false);
+        }
+        else
+        {
+            _buttons.SetActive(true);
+            _menuSettingsCanvas.enabled = false;
+        }
     }
 }

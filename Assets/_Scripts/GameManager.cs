@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour
     //public List<StageParameters> Parameters;
     public List<StageDialogue> StageDialogues;
 
+    
+
     private AnimationCurve _tileSpeedCurve;
     private AnimationCurve _runnerSpeedCurve;
     private AnimationCurve _runnerTransitionCurve;
@@ -51,6 +53,7 @@ public class GameManager : MonoBehaviour
     private static int _bonusStarLevel = 0;
     private static float _tileColorHue = 0;
     private static bool _firstStarGained = true;
+    private static bool _resetStoryMode = false;
 
     private static Vector3 _tileSpeed = Vector3.zero;
     private static Vector3 _transitionSpeed = new Vector3(0, 0, -40);
@@ -97,6 +100,15 @@ public class GameManager : MonoBehaviour
     public static int RequiredStars => _requiredStars;
     public static float TileColorHue => _tileColorHue;
     public static StageDialogue CurrentStageDialogue => _currentStageDialogue;
+    public static bool ResetStoryMode
+    {
+        get => _resetStoryMode;
+        set
+        {
+            _resetStoryMode = value;
+            //Debug.Log("Reset story mode here");
+        }
+    }
     public static int StageProgress
     {
         get => _stageProgress;
