@@ -14,11 +14,23 @@ public class ButtonToggle : MonoBehaviour
         // if (gameObject.name == "AudioFX") { _isEnabled = GameManager.EnableAudio; } // or something similar
     }
 
-    public void OnButtonClick()
+    private void OnButtonClick()
     {
         _isEnabled = _isEnabled? false : true;
 
         _enabledImage.enabled = _isEnabled;
         _disabledImage.enabled = !_isEnabled;
+    }
+
+    public void OnAudioMute()
+    {
+        OnButtonClick();
+        AudioManager.Instance.MuteAudio(_isEnabled);
+    }
+
+    public void OnMusicMute()
+    {
+        OnButtonClick();
+        AudioManager.Instance.MuteMusic(_isEnabled);
     }
 }

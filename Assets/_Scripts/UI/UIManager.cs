@@ -48,7 +48,7 @@ public class UIManager : MonoBehaviour
         _menuSettingsCanvas.enabled = false;
         _blackScreen.enabled = true;
         _loadingScreen.enabled = true;
-        _resetToggle.isOn = false;
+        //_resetToggle.isOn = false;
 
         _mainPage.SetActive(true);
         _backPage.SetActive(false);

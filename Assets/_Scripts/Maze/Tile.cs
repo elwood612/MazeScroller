@@ -20,8 +20,8 @@ public class Tile : MonoBehaviour
     [SerializeField] private Material _tileCrossed;
     [SerializeField] private GameObject _tileDeadEnd;
     [SerializeField] private LayerMask _wallLayer;
-    [SerializeField] private AudioSource _audioNegative;
-    [SerializeField] private AudioSource _audioTada;
+    //[SerializeField] private AudioSource _audioNegative;
+    //[SerializeField] private AudioSource _audioTada;
 
     private Row _parentRow;
     private List<Wall> _neighborWalls = new List<Wall>();
@@ -161,7 +161,8 @@ public class Tile : MonoBehaviour
     {
         if (!_isCharged) { return; }
 
-        _audioNegative.Play();
+        //_audioNegative.Play();
+        AudioManager.Instance.Negative.Play();
         SetAsCharged(false);
         OnChargedTileHit?.Invoke();
         // destroy all active crystals

@@ -11,9 +11,9 @@ public class Crystal : MonoBehaviour
     [SerializeField] private ParticleSystem _particlesExplosion;
     [SerializeField] private ParticleSystem _particlesExplosionMissile;
     [SerializeField] private OrbitMissile _missilePrefab;
-    [SerializeField] private AudioSource _audioBeep;
-    [SerializeField] private AudioSource _audioZap;
-    [SerializeField] private AudioSource _audioNegative;
+    //[SerializeField] private AudioSource _audioBeep;
+    //[SerializeField] private AudioSource _audioZap;
+    //[SerializeField] private AudioSource _audioNegative;
     [SerializeField] private TextMeshProUGUI _word;
     [SerializeField] private Animation _wordAnimation;
     [SerializeField] private Material[] _wireframeMaterials;
@@ -61,7 +61,8 @@ public class Crystal : MonoBehaviour
     {
         if (other.CompareTag("Runner") && !_destroyed)
         {
-            _audioBeep.Play();
+            //_audioBeep.Play();
+            AudioManager.Instance.Beep.Play();
             if (_level == 0)
             {
                 PlayerContact();
@@ -133,7 +134,8 @@ public class Crystal : MonoBehaviour
     private void PlayerContact()
     {
         StartCoroutine(Explode());
-        _audioZap.Play();
+        //_audioZap.Play();
+        AudioManager.Instance.Zap.Play();
         _particlesExplosion.Play();
         _word.gameObject.SetActive(true);
         _wordAnimation.Play();
