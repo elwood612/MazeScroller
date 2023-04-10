@@ -20,13 +20,11 @@ public class SampleTile : MonoBehaviour
         GameManager.AddBoardMotion(transform);
     }
 
+    // This avoids floating point errors. Possibly a dumb solution but it works for now.
     private void ResetTransformWrapper() { StartCoroutine(ResetTransform()); }
     private IEnumerator ResetTransform()
     {
         yield return _resetDelay;
-        Debug.Log("Reset transform");
         transform.position = new Vector3(-100, 0, 0);
     }
-
-
 }

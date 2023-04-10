@@ -24,19 +24,22 @@ public class AudioManager : MonoBehaviour
     {
         if (Instance == null) { Instance = this; }
         else { Destroy(this); }
+
+        MuteAudio(GameManager.IsAudioEnabled);
+        MuteMusic(GameManager.IsMusicEnabled);
     }
 
-    public void MuteAudio(bool mute)
+    public void MuteAudio(bool enabled)
     {
-        Beep.volume = mute ? 0 : _beepVol;
-        Zap.volume = mute ? 0 : _zapVol;
-        Negative.volume = mute ? 0 : _negativeVol;
-        UIClick.volume = mute ? 0 : _UIClickVol;
-        UIZap.volume = mute ? 0 : _UIZapVol;
+        Beep.volume = enabled ? _beepVol : 0;
+        Zap.volume = enabled ? _zapVol : 0;
+        Negative.volume = enabled ? _negativeVol : 0;
+        UIClick.volume = enabled ? _UIClickVol : 0;
+        UIZap.volume = enabled ? _UIZapVol : 0;
     }
 
-    public void MuteMusic(bool mute)
+    public void MuteMusic(bool enabled)
     {
-        Music.volume = mute ? 0 : _musicVol;
+        Music.volume = enabled ? _musicVol : 0;
     }
 }

@@ -70,8 +70,6 @@ public class Runner : MonoBehaviour, IRunner
         _transitionCurve = GameManager.Instance.RunnerTransitionCurve;
         _trailParticlesMainModule = _trailParticles.main;
         _trailParticlesMainModule.customSimulationSpace = GameManager.Instance.SampleTileTransform;
-        //if (GameManager.DoTutorial) { _firstTimeStopping = true; }
-        //else { _firstTimeStopping = false; }
     }
 
     private void OnEnable()

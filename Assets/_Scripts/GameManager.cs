@@ -54,6 +54,8 @@ public class GameManager : MonoBehaviour
     private static float _tileColorHue = 0;
     private static bool _firstStarGained = true;
     private static bool _resetStoryMode = false;
+    private static bool _isAudioEnabled = false;
+    private static bool _isMusicEnabled = false;
 
     private static Vector3 _tileSpeed = Vector3.zero;
     private static Vector3 _transitionSpeed = new Vector3(0, 0, -40);
@@ -100,6 +102,26 @@ public class GameManager : MonoBehaviour
     public static int RequiredStars => _requiredStars;
     public static float TileColorHue => _tileColorHue;
     public static StageDialogue CurrentStageDialogue => _currentStageDialogue;
+    public static bool IsAudioEnabled
+    {
+        get => _isAudioEnabled;
+        set
+        {
+            _isAudioEnabled = value;
+            PlayerPrefs.SetInt("IsAudioEnabled", _isAudioEnabled ? 1 : 0);
+            PlayerPrefs.Save();
+        }
+    }
+    public static bool IsMusicEnabled
+    {
+        get => _isMusicEnabled;
+        set
+        {
+            _isMusicEnabled = value;
+            PlayerPrefs.SetInt("IsMusicEnabled", _isMusicEnabled ? 1 : 0);
+            PlayerPrefs.Save();
+        }
+    }
     public static bool ResetStoryMode
     {
         get => _resetStoryMode;
@@ -132,6 +154,7 @@ public class GameManager : MonoBehaviour
                     { 
                         DoTutorial = false;
                         PlayerPrefs.SetInt("DoTutorial", 0);
+                        PlayerPrefs.Save();
                     }
                     Instance.UpdateGameState(GameState.Transition);
                 }
@@ -182,6 +205,7 @@ public class GameManager : MonoBehaviour
         {
             _lifetimeStars = value;
             PlayerPrefs.SetInt("LifetimeStars", LifetimeStars);
+            //PlayerPrefs.Save();
         }
     }
     #endregion
@@ -234,6 +258,8 @@ public class GameManager : MonoBehaviour
     {
         _lifetimeStars = PlayerPrefs.GetInt("LifetimeStars", 0);
         DoTutorial = PlayerPrefs.GetInt("DoTutorial", 1) == 0 ? false : true;
+        _isAudioEnabled = PlayerPrefs.GetInt("IsAudioEnabled", 1) == 0 ? false : true;
+        _isMusicEnabled = PlayerPrefs.GetInt("IsMusicEnabled", 1) == 0 ? false : true;
     }
 
     private void CalculateBoardSpeed(float multiplier)

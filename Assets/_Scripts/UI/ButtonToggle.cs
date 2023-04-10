@@ -3,6 +3,12 @@ using UnityEngine.UI;
 
 public class ButtonToggle : MonoBehaviour
 {
+    private enum ButtonType
+    {
+        AudioFX,
+        Music
+    }
+    [SerializeField] private ButtonType _buttonType;
     [SerializeField] private Image _enabledImage;
     [SerializeField] private Image _disabledImage;
 
@@ -10,27 +16,43 @@ public class ButtonToggle : MonoBehaviour
 
     private void Awake()
     {
-        // Need to load from save file here
-        // if (gameObject.name == "AudioFX") { _isEnabled = GameManager.EnableAudio; } // or something similar
+        // Syncing the toggle with PlayerPrefs
+        if (_buttonType == ButtonType.AudioFX) 
+        { 
+            _isEnabled = GameManager.IsAudioEnabled;
+        }
+        else if (_buttonType == ButtonType.Music)
+        {
+            _isEnabled = GameManager.IsMusicEnabled;
+        }
+
+        UpdateImage();
     }
 
-    private void OnButtonClick()
+    private void Toggle()
     {
         _isEnabled = _isEnabled? false : true;
+    }
 
+    private void UpdateImage()
+    {
         _enabledImage.enabled = _isEnabled;
         _disabledImage.enabled = !_isEnabled;
     }
 
     public void OnAudioMute()
     {
-        OnButtonClick();
+        Toggle();
+        UpdateImage();
         AudioManager.Instance.MuteAudio(_isEnabled);
+        GameManager.IsAudioEnabled = _isEnabled;
     }
 
     public void OnMusicMute()
     {
-        OnButtonClick();
+        Toggle();
+        UpdateImage();
         AudioManager.Instance.MuteMusic(_isEnabled);
+        GameManager.IsMusicEnabled = _isEnabled;
     }
 }
