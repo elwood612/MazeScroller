@@ -330,7 +330,6 @@ public class GameManager : MonoBehaviour
             case GameState.Transition:
                 break;
             case GameState.Progressing:
-                //Time.timeScale = 0.1f;
                 ResetStats();
                 break;
         }
@@ -366,6 +365,7 @@ public class GameManager : MonoBehaviour
     public void SetupNextStage()
     {
         _currentStageDialogue = StageDialogues[0]; // temp
+
         if (DoTutorial)
         {
             _tileColorHue = 0.552778f;
@@ -375,7 +375,8 @@ public class GameManager : MonoBehaviour
         else
         {
             _tileColorHue = Mathf.Clamp(Random.Range(0f, 1f), 0.1f, 0.9f);
-            _requiredStars = Mathf.Clamp(Random.Range(0, _lifetimeStars % 20), 1, 3);
+            //_requiredStars = Mathf.Clamp(Random.Range(0, _lifetimeStars % 20), 1, 3);
+            _requiredStars = 1;
             _stageLength = _requiredStars * 60;
         }
         OnSetupNextStage?.Invoke();
