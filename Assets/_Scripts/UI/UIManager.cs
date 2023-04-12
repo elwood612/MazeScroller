@@ -36,12 +36,15 @@ public class UIManager : MonoBehaviour
     private bool _flashing = true;
     private bool _flashRunning = false;
     private bool _typeOutSentence = true;
+    private bool _needDialogueHint = true;
+    private bool _isDialogueBoxOpen = false;
     private TextMeshProUGUI _dialogueBox;
     private int _dialogueIndex = 0;
     private int _newStarIndex = 0;
     private int _bonusStarIndex = 0;
     private List<GameObject> _allStars = new List<GameObject>();
     private Slider _activeSlider;
+    private WaitForSecondsRealtime _hintDelay = new WaitForSecondsRealtime(3f);
 
     private void Awake()
     {
@@ -93,11 +96,13 @@ public class UIManager : MonoBehaviour
 
     private void UpdateDialogueBox(string sentence)
     {
-        _dialogueBox.transform.parent.gameObject.SetActive(true);
+        _isDialogueBoxOpen = true;
+        _dialogueBox.transform.GetComponentInParent<Canvas>().enabled = true;
         StopAllCoroutines();
         _typeOutSentence = true;
         StartCoroutine(TypeSentence(sentence));
         StartCoroutine(FinishSentence(sentence));
+        if (GameManager.NeedDialogueBoxHint) { StartCoroutine(HintDialogue()); }
     }
 
     private IEnumerator TypeSentence(string sentence)
@@ -132,7 +137,9 @@ public class UIManager : MonoBehaviour
     private void HideDialogueBox()
     {
         _dialogueBox.text = "";
-        _dialogueBox.transform.parent.gameObject.SetActive(false);
+        _dialogueBox.transform.GetChild(0).gameObject.SetActive(false);
+        _dialogueBox.transform.GetComponentInParent<Canvas>().enabled = false;
+        _isDialogueBoxOpen = false;
     }
 
     private void MainMenu()
@@ -260,6 +267,17 @@ public class UIManager : MonoBehaviour
     {
         _blackScreenFadeOut.Play();
         GameManager.Instance.OpenMainMenu();
+    }
+
+    private IEnumerator HintDialogue()
+    {
+        //_needDialogueHint = false;
+        GameManager.NeedDialogueBoxHint = false;
+        yield return _hintDelay;
+        if (_isDialogueBoxOpen)
+        {
+            _dialogueBox.transform.GetChild(0).gameObject.SetActive(true);
+        }
     }
 
     public void OnChallengeModeButtonClick()

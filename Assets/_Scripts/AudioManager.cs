@@ -7,6 +7,7 @@ public class AudioManager : MonoBehaviour
         _beepVol,
         _zapVol,
         _negativeVol,
+        _starGainVol,
         _UIClickVol,
         _UIZapVol,
         _UIstarVol,
@@ -16,6 +17,7 @@ public class AudioManager : MonoBehaviour
     public AudioSource Beep;
     public AudioSource Zap;
     public AudioSource Negative;
+    public AudioSource StarGain;
     public AudioSource UIClick;
     public AudioSource UIZap;
     public AudioSource UIStar;
@@ -38,6 +40,7 @@ public class AudioManager : MonoBehaviour
         Beep.volume = enabled ? _beepVol : 0;
         Zap.volume = enabled ? _zapVol : 0;
         Negative.volume = enabled ? _negativeVol : 0;
+        StarGain.volume = enabled ? _starGainVol : 0;
         UIClick.volume = enabled ? _UIClickVol : 0;
         UIZap.volume = enabled ? _UIZapVol : 0;
         UIStar.volume = enabled ? _UIstarVol : 0;

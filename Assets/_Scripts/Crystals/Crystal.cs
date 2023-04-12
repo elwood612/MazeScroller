@@ -7,6 +7,7 @@ using UnityEngine.Pool;
 public class Crystal : MonoBehaviour
 {
     [SerializeField] private GameObject _wireframe;
+    [SerializeField] private GameObject _star;
     [SerializeField] private MeshRenderer _shadow;
     [SerializeField] private ParticleSystem _particlesExplosion;
     [SerializeField] private ParticleSystem _particlesExplosionMissile;
@@ -24,6 +25,7 @@ public class Crystal : MonoBehaviour
     private int _level = 0;
     private int _initialLevel;
     private bool _destroyed = false;
+    //private bool _lastCrystal = false;
     private static bool _firstCrystal = true;
     private static bool _secondCrystal = false;
     private static bool _firstBlueCrystal = false;
@@ -45,16 +47,19 @@ public class Crystal : MonoBehaviour
             _orbitMissiles[i].gameObject.SetActive(false);
         }
         _word.gameObject.SetActive(false);
+        _star.SetActive(false);
     }
 
     private void OnEnable()
     {
         GameManager.OnSetupNextStage += ResetTutorial;
+        GameManager.OnStarGained += StarGained;
     }
 
     private void OnDisable()
     {
         GameManager.OnSetupNextStage -= ResetTutorial;
+        GameManager.OnStarGained -= StarGained;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -133,15 +138,19 @@ public class Crystal : MonoBehaviour
 
     private void PlayerContact()
     {
+        //_lastCrystal = true;
+        GameManager.LastCrystal = this.gameObject;
         StartCoroutine(Explode());
-        //_audioZap.Play();
         AudioManager.Instance.Zap.Play();
         _particlesExplosion.Play();
         _word.gameObject.SetActive(true);
         _wordAnimation.Play();
         if (GameManager.DoTutorial) { ScoreBonus = 3; }
-        GameManager.Instance.SpeedBonus += 5 * (_initialLevel + 1) * ScoreBonus;
-        ScoreBonus = 3;
+        //GameManager.Instance.SpeedBonus += 3 * (_initialLevel + 1) * ScoreBonus;
+        GameManager.Instance.SpeedBonus +=
+            //(int)Mathf.Clamp((Mathf.Pow(3, _initialLevel) - 1) * ScoreBonus * 8, 2, 100);
+            (int)Mathf.Clamp(_initialLevel * _initialLevel * ScoreBonus * 10, 1, 100);
+        ScoreBonus = 2;
     }
 
     private void EndOfBoardContact()
@@ -192,6 +201,15 @@ public class Crystal : MonoBehaviour
         _word.text = DialogueManager.Instance.GetRandomWord(GameManager.CurrentStageDialogue);
     }
 
+    private void StarGained(int unused)
+    {
+        if (GameManager.LastCrystal == this.gameObject)
+        {
+            //_lastCrystal = false;
+            _star.SetActive(true);
+        }
+    }
+
     public void ResetScoreBonus(bool stopped)
     {
         if (stopped) { Debug.Log("Reset bonus"); ScoreBonus = 1; }
@@ -207,6 +225,7 @@ public class Crystal : MonoBehaviour
     {
         _destroyed = false;
         _wireframe.SetActive(true);
+        _star.SetActive(false);
         _shadow.enabled = true;
         _level = level;
         _initialLevel = level;

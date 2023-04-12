@@ -123,9 +123,7 @@ public class Tile : MonoBehaviour
 
     private void PlayerCrossing(IRunner runner)
     {
-        
         SetMaterial(_tileCrossed);
-        //ColoredCheck();
         ChargedCheck();
         _crossings++;
         _pathfindingParent = null;
@@ -134,34 +132,12 @@ public class Tile : MonoBehaviour
         runner.CalculateNextTargetWrapper(this);
         if ((IsTransitionTile || IsPreTransitionTile) && !runner.IsInTransition) { runner.BeginTransition(); }
         if (!IsTransitionTile && runner.IsInTransition) { runner.BeginStage(); }
-        //if (!IsTransitionTile) { GameManager.Score++; }
     }
-
-    //private void ColoredCheck()
-    //{
-    //    if (_isColored)
-    //    {
-    //        if (NeighborPaths.Count == 1 && _crossings == 0)
-    //        {
-    //            _audioTada.Play();
-    //            _colorParticles.Stop();
-    //            _deadEndSuccessParticles.Play();
-    //            _colorRenderer.enabled = false;
-    //        }
-    //        else if (NeighborPaths.Count > 1)
-    //        {
-    //            _audioNegative.Play();
-    //            SetAsColored(false);
-    //            GameManager.AcquiredStars--;
-    //        }
-    //    }
-    //}
 
     private void ChargedCheck()
     {
         if (!_isCharged) { return; }
 
-        //_audioNegative.Play();
         AudioManager.Instance.Negative.Play();
         SetAsCharged(false);
         OnChargedTileHit?.Invoke();
@@ -414,6 +390,7 @@ public class Tile : MonoBehaviour
     public void ResetTile()
     {
         _crossings = 0;
+        AttachedCrystal = null;
         IsStartingTile = false;
         IsTransitionTile = false;
         IsPreTransitionTile = false;
@@ -421,8 +398,6 @@ public class Tile : MonoBehaviour
         //SetMaterial(_tileBase);
         SetMaterial(_newMaterial);
         DisableTile();
-        SetAsColored(false);
-        SetAsCharged(false);
         ResetDeadEnd();
         NeighborPaths.Clear();
 

@@ -24,15 +24,15 @@ public class DialogueManager : MonoBehaviour
         else { Destroy(this); }
     }
 
-    private void OnEnable()
-    {
-        GameManager.OnNextDialogue += ParseDialogue;
-    }
+    //private void OnEnable()
+    //{
+    //    GameManager.OnNextDialogue += ParseDialogue;
+    //}
 
-    private void OnDisable()
-    {
-        GameManager.OnNextDialogue -= ParseDialogue;
-    }
+    //private void OnDisable()
+    //{
+    //    GameManager.OnNextDialogue -= ParseDialogue;
+    //}
 
     private void ParseDialogue(Dialogue dialogue)
     {
@@ -56,7 +56,6 @@ public class DialogueManager : MonoBehaviour
         _isDialogueActive = false;
         OnDialogueOpen?.Invoke(false);
         if (GameManager.CurrentState == GameState.Transition) { GameManager.Instance.UpdateGameState(GameState.Progressing); }
-        //if (GameManager.DoTutorial && _tutorialDialogueIndex == 5) { GameManager.DoTutorial = false; }
         OnDialogueEnd?.Invoke();
     }
 
@@ -79,7 +78,7 @@ public class DialogueManager : MonoBehaviour
     public void NextQuery(StageDialogue stageDialogue)
     {
         if (stageDialogue == null) { EndDialogue(); return; }
-        string query = "<incoming query>\n" + stageDialogue.Query;
+        string query = "<receiving incoming query>\n" + stageDialogue.Query;
         string[] sentences = { query };
         StartDialogue(sentences, true);
     }
@@ -89,12 +88,6 @@ public class DialogueManager : MonoBehaviour
         if (stageDialogue == null) { EndDialogue(); return; }
         StartDialogue(stageDialogue.Comments);
     }
-
-    //public void NextAnswer(StageDialogue stageDialogue)
-    //{
-    //    if (stageDialogue == null) { EndDialogue(); return; }
-    //    StartDialogue(stageDialogue.Answer);
-    //}
 
     public string GetRandomWord(StageDialogue stageDialogue)
     {

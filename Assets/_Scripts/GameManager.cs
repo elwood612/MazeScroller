@@ -12,10 +12,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private bool _debugMode;
     [SerializeField] private int _startingStage;
     public Transform SampleTileTransform;
-    //public List<StageParameters> Parameters;
     public List<StageDialogue> StageDialogues;
-
-    
 
     private AnimationCurve _tileSpeedCurve;
     private AnimationCurve _runnerSpeedCurve;
@@ -23,61 +20,58 @@ public class GameManager : MonoBehaviour
     private AnimationCurve _tileSpawnerWidthCurve;
     private GameObject _currentRunner;
     private static StageDialogue _currentStageDialogue;
-    private float _defaultSpeed = 1f;
-    private float _averageSpeed;
-    private int _counterAverageSpeed = 0;
-    private int _counterTransitionBonusIncrease = 0;
-    private int _triggerCounters = 30;
-    
+    private float _defaultSpeed = 1f;    
     private int _speedBonus = 0;
-    private WaitForSeconds _bonusDelay = new WaitForSeconds(0.5f);
-    private WaitForSeconds _bonusStep = new WaitForSeconds(0.2f);
+    private WaitForSeconds _bonusDelay = new WaitForSeconds(1f);
+    private WaitForSeconds _bonusStep = new WaitForSeconds(0.4f);
     private bool _startOfGame = true;
     private bool _decreaseSpeedBonus = true;
     private bool _triggerBonusStep = true;
-    private Queue<float> _rollingSpeedAverage = new Queue<float>();
-    private int _rollingSpeedAverageMaxCount = 40;
     private static float _maxSpeed = 50f;
     private static float _tileLength;
     private static float _speedMultiplier = 1f;
     private static float _tileAlpha = 1f;
     //private static int _currentStage = 0; // so that we start off by incrementing to 0
     private static int _stageProgress;
-    private static int _stageLength = 100;
+    private static int _stageLength = 80;
     private static int _transitionProgress;
-    private static int _transitionLength = 30;
     private static int _acquiredStars = 0;
     private static int _requiredStars = 1;
     private static int _lifetimeStars = 0;
     private static int _loseCounter = 0;
     private static int _bonusStarLevel = 0;
+    private static int _spawnChargedTileChance = 6;
     private static float _tileColorHue = 0;
     private static bool _firstStarGained = true;
     private static bool _resetStoryMode = false;
     private static bool _isAudioEnabled = false;
     private static bool _isMusicEnabled = false;
+    private static bool _needDialogueBoxHint = true;
+    private static bool _spawnPurpleCrystal = false;
+    private static bool _spawnGoldCrystal = false;
 
     private static Vector3 _tileSpeed = Vector3.zero;
     private static Vector3 _transitionSpeed = new Vector3(0, 0, -40);
-    private static Vector3 _boardLength;
+    private static Vector3 _boardLength; 
 
     public static GameState CurrentState;
     public static event Action<GameState> OnStateChanged;
     public static event Action OnSetupNextStage;
-    public static event Action<int> OnScoreChanged;
+    //public static event Action<int> OnScoreChanged;
     public static event Action<int> OnSpeedBonusChanged;
-    public static event Action<int> OnLoseCounterChanged;
+    //public static event Action<int> OnLoseCounterChanged;
     public static event Action OnStageEnd;
-    public static event Action<Dialogue> OnNextDialogue;
-    public static event Action<StageDialogue> OnNextQuery;
-    public static event Action<StageDialogue> OnNextComment;
-    public static event Action<StageDialogue> OnNextAnswer;
+    //public static event Action<Dialogue> OnNextDialogue;
+    //public static event Action<StageDialogue> OnNextQuery;
+    //public static event Action<StageDialogue> OnNextComment;
+    //public static event Action<StageDialogue> OnNextAnswer;
     public static event Action<GameObject> OnRunnerSpawned;
     public static event Action<int> OnStarGained;
     public static event Action OnMainMenuOpen;
     public static event Action OnMainMenuClose;
 
     public static GameManager Instance;
+    public static GameObject LastCrystal;
     public static float HighestDrawnRowHeight;
     public static float RunnerHeight;
     public static int NumberOfRows;
@@ -101,6 +95,9 @@ public class GameManager : MonoBehaviour
     public static int RequiredStars => _requiredStars;
     public static float TileColorHue => _tileColorHue;
     public static StageDialogue CurrentStageDialogue => _currentStageDialogue;
+    public static int SpawnChargedTileChance => _spawnChargedTileChance;
+    public static bool SpawnPurpleCrystal => _spawnPurpleCrystal;
+    public static bool SpawnGoldCrystal => _spawnGoldCrystal;
     public static bool IsAudioEnabled
     {
         get => _isAudioEnabled;
@@ -118,6 +115,16 @@ public class GameManager : MonoBehaviour
         {
             _isMusicEnabled = value;
             PlayerPrefs.SetInt("IsMusicEnabled", _isMusicEnabled ? 1 : 0);
+            PlayerPrefs.Save();
+        }
+    }
+    public static bool NeedDialogueBoxHint
+    {
+        get => _needDialogueBoxHint;
+        set
+        {
+            _needDialogueBoxHint = value;
+            PlayerPrefs.SetInt("NeedDialogueBoxHint", _needDialogueBoxHint ? 1 : 0);
             PlayerPrefs.Save();
         }
     }
@@ -185,6 +192,7 @@ public class GameManager : MonoBehaviour
         set
         {
             _acquiredStars = value;
+            AudioManager.Instance.StarGain.Play();
             if (_firstStarGained && DoTutorial)
             {
                 _firstStarGained = false;
@@ -259,6 +267,7 @@ public class GameManager : MonoBehaviour
         DoTutorial = PlayerPrefs.GetInt("DoTutorial", 1) == 0 ? false : true;
         _isAudioEnabled = PlayerPrefs.GetInt("IsAudioEnabled", 1) == 0 ? false : true;
         _isMusicEnabled = PlayerPrefs.GetInt("IsMusicEnabled", 1) == 0 ? false : true;
+        _needDialogueBoxHint = PlayerPrefs.GetInt("NeedDialogueBoxHint", 1) == 0 ? false : true;
     }
 
     private void CalculateBoardSpeed(float multiplier)
@@ -365,6 +374,25 @@ public class GameManager : MonoBehaviour
     {
         _currentStageDialogue = StageDialogues[0]; // temp
 
+        if (_lifetimeStars > 20 && _acquiredStars > _requiredStars)
+        {
+            _spawnGoldCrystal = true;
+            _spawnPurpleCrystal = true;
+            _spawnChargedTileChance = 4;
+        }
+        else if (_lifetimeStars > 10 && _acquiredStars >= _requiredStars)
+        {
+            _spawnGoldCrystal = false;
+            _spawnPurpleCrystal = true;
+            _spawnChargedTileChance = 5;
+        }
+        else 
+        { 
+            _spawnPurpleCrystal = false;
+            _spawnGoldCrystal = false;
+            _spawnChargedTileChance = 6;
+        }
+        
         if (DoTutorial)
         {
             _tileColorHue = 0.552778f;
@@ -376,7 +404,8 @@ public class GameManager : MonoBehaviour
             _tileColorHue = Mathf.Clamp(Random.Range(0f, 1f), 0.1f, 0.9f);
             //_requiredStars = Mathf.Clamp(Random.Range(0, _lifetimeStars % 20), 1, 3);
             _requiredStars = 1;
-            _stageLength = _requiredStars * 60;
+            _stageLength = _requiredStars * 80;
+            
         }
         OnSetupNextStage?.Invoke();
     }

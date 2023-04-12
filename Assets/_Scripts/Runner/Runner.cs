@@ -9,6 +9,7 @@ public class Runner : MonoBehaviour, IRunner
 {
     [SerializeField] private TextMeshProUGUI _dialogueBox;
     [SerializeField] private Animator _animator;
+    //[SerializeField] private Animation _starGain;
     [SerializeField] private ParticleSystem _trailParticles;
     [SerializeField] private Transform _spaceshipTransform;
 
@@ -29,6 +30,7 @@ public class Runner : MonoBehaviour, IRunner
     private ParticleSystem.MainModule _trailParticlesMainModule;
     private AnimationCurve _speedCurve;
     private AnimationCurve _transitionCurve;
+    private WaitForSecondsRealtime _starGainDelay = new WaitForSecondsRealtime(0.5f);
 
     public static event Action OnTransitionReached;
     public TextMeshProUGUI DialogueBox => _dialogueBox;
@@ -65,7 +67,7 @@ public class Runner : MonoBehaviour, IRunner
 
     private void Awake()
     {
-        _dialogueBox.transform.parent.gameObject.SetActive(false);
+        _dialogueBox.transform.GetComponentInParent<Canvas>().enabled = false;
         _speedCurve = GameManager.Instance.RunnerSpeedCurve;
         _transitionCurve = GameManager.Instance.RunnerTransitionCurve;
         _trailParticlesMainModule = _trailParticles.main;
@@ -75,7 +77,7 @@ public class Runner : MonoBehaviour, IRunner
     private void OnEnable()
     {
         DrawMaze.OnTileAdded += AddTileToPath;
-        DrawMaze.OnTileRemoved += RemoveTileFromPath;
+        //DrawMaze.OnTileRemoved += RemoveTileFromPath;
         Tile.OnTileDestroy += RemoveTileFromPath;
         DialogueManager.OnDialogueOpen += SetAnimatorTrigger;
         GameManager.OnSetupNextStage += ResetFirstStop;
@@ -84,7 +86,7 @@ public class Runner : MonoBehaviour, IRunner
     private void OnDisable()
     {
         DrawMaze.OnTileAdded -= AddTileToPath;
-        DrawMaze.OnTileRemoved -= RemoveTileFromPath;
+        //DrawMaze.OnTileRemoved -= RemoveTileFromPath;
         Tile.OnTileDestroy -= RemoveTileFromPath;
         DialogueManager.OnDialogueOpen -= SetAnimatorTrigger;
         GameManager.OnSetupNextStage -= ResetFirstStop;

@@ -16,7 +16,7 @@ public class DrawMaze : MonoBehaviour
     private Stack<Dictionary<Wall, bool>> _wallHistory = new Stack<Dictionary<Wall, bool>>();
 
     public static event Action<Tile> OnTileAdded;
-    public static event Action<Tile> OnTileRemoved;
+    //public static event Action<Tile> OnTileRemoved;
 
     public static Row HighestDrawnRow
     {
