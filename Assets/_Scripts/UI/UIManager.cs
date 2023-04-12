@@ -10,7 +10,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _topTotalStarAmount;
     [SerializeField] private TextMeshProUGUI _stageTotalStarAmount;
     [SerializeField] private TextMeshProUGUI _stageAssessment;
+    [SerializeField] private TextMeshProUGUI _lifetimeStarsAmountMenu;
     [SerializeField] private Slider[] _speedSliders;
+    [SerializeField] private GameObject _requiredStars;
     [SerializeField] private GameObject _starParent;
     [SerializeField] private Canvas _stageCanvas;
     [SerializeField] private Canvas _topCanvas;
@@ -30,6 +32,7 @@ public class UIManager : MonoBehaviour
 
     private WaitForSecondsRealtime _flashDelay = new WaitForSecondsRealtime(0.25f);
     private WaitForSecondsRealtime _sentenceDelay = new WaitForSecondsRealtime(1f);
+    private WaitForSecondsRealtime _starGainDelay = new WaitForSecondsRealtime(0.4f);
     private bool _flashing = true;
     private bool _flashRunning = false;
     private bool _typeOutSentence = true;
@@ -43,6 +46,7 @@ public class UIManager : MonoBehaviour
     private void Awake()
     {
         _activeSlider = _speedSliders[0];
+        _lifetimeStarsAmountMenu.text = GameManager.LifetimeStars.ToString();
         _topCanvas.enabled = false;
         _stageCanvas.enabled = false;
         _menuSettingsCanvas.enabled = false;
@@ -142,9 +146,13 @@ public class UIManager : MonoBehaviour
         if (state == GameState.Progressing)
         {
             _topCanvas.enabled = true;
+            _requiredStars.SetActive(true);
             _activeSlider = _speedSliders[0];
-            _topTotalStarAmount.text = GameManager.AcquiredStars.ToString();
-            _stageTotalStarAmount.text = GameManager.AcquiredStars.ToString();
+            _topTotalStarAmount.text = GameManager.AcquiredStars.ToString() + " ("
+            + GameManager.RequiredStars.ToString()
+            + " req.)";
+
+            _stageTotalStarAmount.text = GameManager.LifetimeStars.ToString();
             ResetSliders();
             ResetStars();
         }
@@ -152,32 +160,55 @@ public class UIManager : MonoBehaviour
 
     private void EndStage()
     {
-        _topCanvas.enabled = false;
+        _requiredStars.SetActive(false);
         _stageCanvas.enabled = true;
+        _stageTotalStarAmount.text = (GameManager.LifetimeStars - GameManager.AcquiredStars).ToString();
+        _lifetimeStarsAmountMenu.text = GameManager.LifetimeStars.ToString();
+        Assessment();
 
-        _stageTotalStarAmount.text = GameManager.AcquiredStars.ToString() + " ("
-            + GameManager.RequiredStars.ToString()
-            + " req.)";
-        if (GameManager.AcquiredStars < GameManager.RequiredStars)
-        {
-            _stageAssessment.text = "You gave a suboptimal answer.";
-        }
-        else if (GameManager.AcquiredStars == GameManager.RequiredStars)
-        {
-            _stageAssessment.text = "You gave an adequate answer.";
-        }
-        else
-        {
-            _stageAssessment.text = "You gave an excellent answer!";
-        }
+        StartCoroutine(BankStars(GameManager.AcquiredStars));
 
         ChallengeModeCheck();
         // more conditions pls
     }
 
+    private IEnumerator BankStars(int stars)
+    {
+        for (int i = 1; i <= stars; i++)
+        {
+            yield return _starGainDelay;
+            _stageTotalStarAmount.text = (GameManager.LifetimeStars - GameManager.AcquiredStars + i).ToString();
+            _topTotalStarAmount.text = (GameManager.AcquiredStars - i).ToString() + " ("
+            + GameManager.RequiredStars.ToString()
+            + " req.)";
+            AudioManager.Instance.UIStar.Play();
+        }
+        _stageAssessment.enabled = true;
+        AudioManager.Instance.UILevelDone.Play();
+    }
+
+    private void Assessment()
+    {
+        if (GameManager.AcquiredStars < GameManager.RequiredStars)
+        {
+            _stageAssessment.text = "Terrible answer.";
+        }
+        else if (GameManager.AcquiredStars == GameManager.RequiredStars)
+        {
+            _stageAssessment.text = "Acceptable answer.";
+        }
+        else
+        {
+            _stageAssessment.text = "Excellent answer!";
+        }
+    }
+
     private void GainStar(int level)
     {
-        _topTotalStarAmount.text = GameManager.AcquiredStars.ToString();
+        //_topTotalStarAmount.text = GameManager.AcquiredStars.ToString();
+        _topTotalStarAmount.text = GameManager.AcquiredStars.ToString() + " ("
+            + GameManager.RequiredStars.ToString()
+            + " req.)";
         _starParent.transform.GetChild(_newStarIndex % GameManager.RequiredStars)
             .GetChild(2 + _bonusStarIndex).gameObject.SetActive(true);
         _newStarIndex++;
@@ -241,6 +272,7 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.SetupNextStage();
         DialogueManager.Instance.NextQuery(GameManager.CurrentStageDialogue);
         _stageCanvas.enabled = false;
+        _stageAssessment.enabled = false;
     }
 
     public void OnStoryModeButtonClick()

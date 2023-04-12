@@ -96,7 +96,6 @@ public class GameManager : MonoBehaviour
     public static int StageLength => _stageLength;
     public static float MaxSpeed => _maxSpeed;
     public static float TileAlpha => _tileAlpha;
-    //public static int CurrentStage => _currentStage;
     public static int TransitionProgress => _transitionProgress;
     public static int LoseCounter => _loseCounter;
     public static int RequiredStars => _requiredStars;
