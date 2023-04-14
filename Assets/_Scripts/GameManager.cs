@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
@@ -12,14 +13,16 @@ public class GameManager : MonoBehaviour
     [SerializeField] private bool _debugMode;
     [SerializeField] private int _startingStage;
     public Transform SampleTileTransform;
-    public List<StageDialogue> StageDialogues;
+    //public List<StageDialogue> StageDialogues;
 
+    private static Object[] _allStageDialogue;
+    private static List<StageDialogue> _stageDialogue = new List<StageDialogue>();
+    private static StageDialogue _currentStageDialogue;
     private AnimationCurve _tileSpeedCurve;
     private AnimationCurve _runnerSpeedCurve;
     private AnimationCurve _runnerTransitionCurve;
     private AnimationCurve _tileSpawnerWidthCurve;
     private GameObject _currentRunner;
-    private static StageDialogue _currentStageDialogue;
     private float _defaultSpeed = 1f;    
     private int _speedBonus = 0;
     private WaitForSeconds _bonusDelay = new WaitForSeconds(1f);
@@ -49,7 +52,6 @@ public class GameManager : MonoBehaviour
     private static bool _needDialogueBoxHint = true;
     private static bool _spawnPurpleCrystal = false;
     private static bool _spawnGoldCrystal = false;
-
     private static Vector3 _tileSpeed = Vector3.zero;
     private static Vector3 _transitionSpeed = new Vector3(0, 0, -40);
     private static Vector3 _boardLength; 
@@ -57,14 +59,8 @@ public class GameManager : MonoBehaviour
     public static GameState CurrentState;
     public static event Action<GameState> OnStateChanged;
     public static event Action OnSetupNextStage;
-    //public static event Action<int> OnScoreChanged;
     public static event Action<int> OnSpeedBonusChanged;
-    //public static event Action<int> OnLoseCounterChanged;
     public static event Action OnStageEnd;
-    //public static event Action<Dialogue> OnNextDialogue;
-    //public static event Action<StageDialogue> OnNextQuery;
-    //public static event Action<StageDialogue> OnNextComment;
-    //public static event Action<StageDialogue> OnNextAnswer;
     public static event Action<GameObject> OnRunnerSpawned;
     public static event Action<int> OnStarGained;
     public static event Action OnMainMenuOpen;
@@ -225,17 +221,16 @@ public class GameManager : MonoBehaviour
 
         LoadSettings();
         LoadPlayerPrefs();
+        LoadStageDialogue();
 
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 60;
 
         if (_debugMode)
         {
-            Camera.main.GetComponent<AudioSource>().Stop();
+            AudioManager.Instance.Music.Stop();
             DoTutorial = false;
         }
-
-        _currentStageDialogue = StageDialogues[0]; // temp
     }
 
     private void Start()
@@ -268,6 +263,17 @@ public class GameManager : MonoBehaviour
         _isAudioEnabled = PlayerPrefs.GetInt("IsAudioEnabled", 1) == 0 ? false : true;
         _isMusicEnabled = PlayerPrefs.GetInt("IsMusicEnabled", 1) == 0 ? false : true;
         _needDialogueBoxHint = PlayerPrefs.GetInt("NeedDialogueBoxHint", 1) == 0 ? false : true;
+    }
+
+    private void LoadStageDialogue()
+    {
+        _allStageDialogue = Resources.LoadAll("StageDialogue", typeof(StageDialogue));
+        foreach (var dialogue in _allStageDialogue)
+        {
+            // Need multiple lists, and conditions
+            _stageDialogue.Add((StageDialogue)dialogue);
+        }
+        _currentStageDialogue = _stageDialogue[Random.Range(0, _stageDialogue.Count)];
     }
 
     private void CalculateBoardSpeed(float multiplier)
@@ -372,7 +378,7 @@ public class GameManager : MonoBehaviour
 
     public void SetupNextStage()
     {
-        _currentStageDialogue = StageDialogues[0]; // temp
+        _currentStageDialogue = _stageDialogue[Random.Range(0, _stageDialogue.Count)];
 
         if (_lifetimeStars > 20 && _acquiredStars > _requiredStars)
         {

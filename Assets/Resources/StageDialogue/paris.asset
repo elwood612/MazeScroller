@@ -15,7 +15,8 @@ MonoBehaviour:
   _minimumStars: 0
   _exact: 0
   _query: what is the capital of france?
-  _comments: []
+  _comments:
+  - There's a state called france? Never knew that.
   _answer: Paris is the capital of France, located in the northern part of the country.
     It is known for its rich history, artistic heritage, and romantic charm. The
     city is home to world-renowned landmarks such as the Eiffel Tower, the Louvre
