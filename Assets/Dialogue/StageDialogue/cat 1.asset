@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05e5f14c5d7212c4d989ab449795f473, type: 3}
+  m_Name: cat 1
+  m_EditorClassIdentifier: 
+  _minimumStars: 0
+  _exact: 0
+  _query: "how to care for a kitten?\t"
+  _comments: []
+  _answer: 'To care for a kitten, follow these steps: 1) Provide a safe and comfortable
+    living space with food, water, litter box, and toys. 2) Feed a balanced diet
+    of kitten-specific food, and provide fresh water at all times. 3) Socialize and
+    play with your kitten daily to encourage healthy development. 4) Schedule regular
+    veterinary check-ups and vaccinations. 5) Groom your kitten regularly with a
+    soft brush and trim their nails as needed.'

@@ -92,6 +92,11 @@ public class DialogueManager : MonoBehaviour
     public string GetRandomWord(StageDialogue stageDialogue)
     {
         string[] words = stageDialogue.Answer.Split(' ');
-        return words[Random.Range(0, words.Length)];
+        List<string> parsedWords = new List<string>();
+        foreach (string word in words)
+        {
+            if (word.Length > 3) { parsedWords.Add(word); }
+        }
+        return parsedWords[Random.Range(0, parsedWords.Count)];
     }
 }

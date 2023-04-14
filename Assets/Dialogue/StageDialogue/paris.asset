@@ -10,11 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 05e5f14c5d7212c4d989ab449795f473, type: 3}
-  m_Name: TestStageDialogue
+  m_Name: paris
   m_EditorClassIdentifier: 
   _minimumStars: 0
   _exact: 0
   _query: what is the capital of france?
   _comments: []
-  _answer: The capital of France is Paris. It is a great city, known for the Louvres
-    and the Eiffel Tower. Millions of people visit it every year.
+  _answer: Paris is the capital of France, located in the northern part of the country.
+    It is known for its rich history, artistic heritage, and romantic charm. The
+    city is home to world-renowned landmarks such as the Eiffel Tower, the Louvre
+    Museum, and Notre-Dame Cathedral. It is also a center for fashion, cuisine, and
+    business, making it one of the most important cities in Europe.

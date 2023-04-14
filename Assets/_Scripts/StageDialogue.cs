@@ -13,7 +13,7 @@ public class StageDialogue : ScriptableObject
     [SerializeField] private string _query;
     [TextArea]
     [SerializeField] private string[] _comments;
-    [TextArea]
+    [TextArea(15, 20)]
     [SerializeField] private string _answer;
     public string Query => _query;
     public string[] Comments => _comments;
