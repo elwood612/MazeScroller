@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05e5f14c5d7212c4d989ab449795f473, type: 3}
+  m_Name: social 2
+  m_EditorClassIdentifier: 
+  _minimumStars: 0
+  _exact: 0
+  _query: how to stop bully
+  _comments: []
+  _answer: Stopping bullying requires a comprehensive approach involving parents,
+    teachers, and the community. Some strategies that have been effective include
+    educating students and adults about bullying, providing support for victims,
+    and promoting positive behaviors and attitudes. It's also important to establish
+    clear policies and consequences for bullying behavior, and to involve law enforcement
+    when necessary.

@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05e5f14c5d7212c4d989ab449795f473, type: 3}
+  m_Name: social
+  m_EditorClassIdentifier: 
+  _minimumStars: 0
+  _exact: 0
+  _query: will anyone love me with braces
+  _comments: []
+  _answer: Braces are a common orthodontic treatment used to straighten teeth and
+    improve oral health. They should not affect a person's ability to be loved or
+    to find romantic relationships. Braces are often considered a temporary inconvenience
+    with long-term benefits. It's important to focus on building confidence and self-esteem
+    regardless of appearance.
