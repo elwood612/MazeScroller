@@ -171,12 +171,10 @@ public class UIManager : MonoBehaviour
         _stageCanvas.enabled = true;
         _stageTotalStarAmount.text = (GameManager.LifetimeStars - GameManager.AcquiredStars).ToString();
         _lifetimeStarsAmountMenu.text = GameManager.LifetimeStars.ToString();
-        Assessment();
 
+        Assessment(GameManager.StageAnswer);
         StartCoroutine(BankStars(GameManager.AcquiredStars));
-
-        ChallengeModeCheck();
-        // more conditions pls
+        //DialogueManager.Instance.NextAnswer(GameManager.CurrentStageDialogue);
     }
 
     private IEnumerator BankStars(int stars)
@@ -194,20 +192,21 @@ public class UIManager : MonoBehaviour
         AudioManager.Instance.UILevelDone.Play();
     }
 
-    private void Assessment()
+    private void Assessment(Answer answer)
     {
-        if (GameManager.AcquiredStars < GameManager.RequiredStars)
+        if (answer == Answer.Poor)
         {
             _stageAssessment.text = "Terrible answer.";
         }
-        else if (GameManager.AcquiredStars == GameManager.RequiredStars)
+        else if (answer == Answer.Acceptable)
         {
             _stageAssessment.text = "Acceptable answer.";
         }
-        else
+        else if (answer == Answer.Excellent)
         {
             _stageAssessment.text = "Excellent answer!";
         }
+        // One more condition for Compassionate answer here
     }
 
     private void GainStar(int level)

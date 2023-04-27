@@ -89,6 +89,27 @@ public class DialogueManager : MonoBehaviour
         StartDialogue(stageDialogue.Comments);
     }
 
+    public void NextAnswer(StageDialogue stageDialogue)
+    {
+        if (stageDialogue == null) { EndDialogue(); return; }
+        string intro = "";
+        if (GameManager.StageAnswer == Answer.Poor)
+        {
+            intro = "Don't worry, I'll make something up.\n";
+        }
+        else if (GameManager.StageAnswer == Answer.Acceptable)
+        {
+            intro = "Got your answer.\n";
+        }
+        else if (GameManager.StageAnswer == Answer.Excellent)
+        {
+            intro = "Oh we nailed this one!\n";
+        }
+        string answer = intro + stageDialogue.Answer;
+        string[] sentences = { answer };
+        StartDialogue(sentences, true);
+    }
+
     public string GetRandomWord(StageDialogue stageDialogue)
     {
         string[] words = stageDialogue.Answer.Split(' ');

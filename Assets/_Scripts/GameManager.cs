@@ -54,7 +54,8 @@ public class GameManager : MonoBehaviour
     private static bool _spawnGoldCrystal = false;
     private static Vector3 _tileSpeed = Vector3.zero;
     private static Vector3 _transitionSpeed = new Vector3(0, 0, -40);
-    private static Vector3 _boardLength; 
+    private static Vector3 _boardLength;
+    private static Answer _stageAnswer = Answer.Poor;
 
     public static GameState CurrentState;
     public static event Action<GameState> OnStateChanged;
@@ -94,6 +95,7 @@ public class GameManager : MonoBehaviour
     public static int SpawnChargedTileChance => _spawnChargedTileChance;
     public static bool SpawnPurpleCrystal => _spawnPurpleCrystal;
     public static bool SpawnGoldCrystal => _spawnGoldCrystal;
+    public static Answer StageAnswer => _stageAnswer;
     public static bool IsAudioEnabled
     {
         get => _isAudioEnabled;
@@ -228,8 +230,8 @@ public class GameManager : MonoBehaviour
 
         if (_debugMode)
         {
-            AudioManager.Instance.Music.Stop();
-            DoTutorial = false;
+            //AudioManager.Instance.Music.Stop();
+            DoTutorial = false; 
         }
     }
 
@@ -411,7 +413,6 @@ public class GameManager : MonoBehaviour
             //_requiredStars = Mathf.Clamp(Random.Range(0, _lifetimeStars % 20), 1, 3);
             _requiredStars = 1;
             _stageLength = _requiredStars * 80;
-            
         }
         OnSetupNextStage?.Invoke();
     }
@@ -420,6 +421,21 @@ public class GameManager : MonoBehaviour
     {
         IsStageOver = false;
         PlayerPrefs.Save();
+
+        if (_acquiredStars < _requiredStars)
+        {
+            _stageAnswer = Answer.Poor;
+        }
+        else if (_acquiredStars == _requiredStars)
+        {
+            _stageAnswer = Answer.Acceptable;
+        }
+        else if (_acquiredStars > _requiredStars)
+        {
+            _stageAnswer = Answer.Excellent;
+        }
+        // one more condition for Compassionate answer here
+
         OnStageEnd?.Invoke();
     }
 
