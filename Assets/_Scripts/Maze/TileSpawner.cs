@@ -257,7 +257,6 @@ public class TileSpawner : MonoBehaviour
             {
                 if (Random.Range(0f, 1f) < _crystalSpawnChance || ++_minimumTileCounter > _minimumTileChance)
                 {
-                    if (_minimumTileCounter > _minimumTileChance) Debug.Log("Minimum spawn");
                     if (++_counterCrystalLevel > _triggerCrystalLevel)
                     {
                         _counterCrystalLevel = 0;

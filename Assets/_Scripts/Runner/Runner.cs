@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class Runner : MonoBehaviour, IRunner
 {
     [SerializeField] private TextMeshProUGUI _dialogueBox;
+    [SerializeField] private TextMeshProUGUI _answerBox;
     [SerializeField] private Animator _animator;
     //[SerializeField] private Animation _starGain;
     [SerializeField] private ParticleSystem _trailParticles;
@@ -34,6 +35,7 @@ public class Runner : MonoBehaviour, IRunner
 
     public static event Action OnTransitionReached;
     public TextMeshProUGUI DialogueBox => _dialogueBox;
+    public TextMeshProUGUI AnswerBox => _answerBox;
     public static bool RunnerStopped
     {
         get => _runnerStopped;

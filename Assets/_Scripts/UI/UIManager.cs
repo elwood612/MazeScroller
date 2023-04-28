@@ -39,6 +39,7 @@ public class UIManager : MonoBehaviour
     private bool _needDialogueHint = true;
     private bool _isDialogueBoxOpen = false;
     private TextMeshProUGUI _dialogueBox;
+    private TextMeshProUGUI _answerBox;
     private int _dialogueIndex = 0;
     private int _newStarIndex = 0;
     private int _bonusStarIndex = 0;
@@ -72,6 +73,7 @@ public class UIManager : MonoBehaviour
         GameManager.OnMainMenuOpen += MainMenu;
         GameManager.OnStarGained += GainStar;
         DialogueManager.OnNextSentence += UpdateDialogueBox;
+        DialogueManager.OnNextAnswer += UpdateAnswerBox;
         DialogueManager.OnDialogueEnd += HideDialogueBox;
         Row.OnFirstRowsReady += BlackScreenFade;
     }
@@ -85,6 +87,7 @@ public class UIManager : MonoBehaviour
         GameManager.OnMainMenuOpen -= MainMenu;
         GameManager.OnStarGained -= GainStar;
         DialogueManager.OnNextSentence -= UpdateDialogueBox;
+        DialogueManager.OnNextAnswer -= UpdateAnswerBox;
         DialogueManager.OnDialogueEnd -= HideDialogueBox;
         Row.OnFirstRowsReady -= BlackScreenFade;
     }
@@ -96,13 +99,22 @@ public class UIManager : MonoBehaviour
 
     private void UpdateDialogueBox(string sentence)
     {
+        //if (answer) { UpdateAnswerBox(); return; }
         _isDialogueBoxOpen = true;
         _dialogueBox.transform.GetComponentInParent<Canvas>().enabled = true;
-        StopAllCoroutines();
+        //StopAllCoroutines();
+        StopCoroutine(TypeSentence(sentence));
+        StopCoroutine(FinishSentence(sentence));
         _typeOutSentence = true;
         StartCoroutine(TypeSentence(sentence));
         StartCoroutine(FinishSentence(sentence));
         if (GameManager.NeedDialogueBoxHint) { StartCoroutine(HintDialogue()); }
+    }
+
+    private void UpdateAnswerBox(string sentence)
+    {
+        _answerBox.transform.parent.gameObject.SetActive(true);
+        _answerBox.text = sentence;
     }
 
     private IEnumerator TypeSentence(string sentence)
@@ -132,12 +144,14 @@ public class UIManager : MonoBehaviour
     private void AssignDialogueBox(GameObject runner)
     {
         _dialogueBox = runner.GetComponent<IRunner>().DialogueBox;
+        _answerBox = runner.GetComponent<IRunner>().AnswerBox;
     }
 
     private void HideDialogueBox()
     {
         _dialogueBox.text = "";
         _dialogueBox.transform.GetChild(0).gameObject.SetActive(false);
+        _answerBox.transform.parent.gameObject.SetActive(false);
         _dialogueBox.transform.GetComponentInParent<Canvas>().enabled = false;
         _isDialogueBoxOpen = false;
     }
@@ -174,7 +188,7 @@ public class UIManager : MonoBehaviour
 
         Assessment(GameManager.StageAnswer);
         StartCoroutine(BankStars(GameManager.AcquiredStars));
-        //DialogueManager.Instance.NextAnswer(GameManager.CurrentStageDialogue);
+        DialogueManager.Instance.NextAnswer(GameManager.CurrentStageDialogue);
     }
 
     private IEnumerator BankStars(int stars)
@@ -287,6 +301,7 @@ public class UIManager : MonoBehaviour
     public void OnContinueButtonClick()
     {
         GameManager.Instance.SetupNextStage();
+        DialogueManager.Instance.EndDialogue();
         DialogueManager.Instance.NextQuery(GameManager.CurrentStageDialogue);
         _stageCanvas.enabled = false;
         _stageAssessment.enabled = false;
