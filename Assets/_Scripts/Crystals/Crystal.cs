@@ -167,6 +167,7 @@ public class Crystal : MonoBehaviour
         else
         {
             Debug.Log("Increase Compassionate score");
+            GameManager.Instance.CompassionateBonus++;
         }
     }
 
@@ -193,7 +194,7 @@ public class Crystal : MonoBehaviour
     {
         _compassionateScore = true;
         yield return _compassionateDelay;
-        if (_compassionateScore) { PlayerContact(); }
+        if (_compassionateScore && GameManager.Instance.CompassionateBonus < 3) { PlayerContact(); }
     }
 
     private void DestroyOrbitMissile(OrbitMissile missile)

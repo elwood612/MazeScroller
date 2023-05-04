@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
     private GameObject _currentRunner;
     private float _defaultSpeed = 1f;    
     private int _speedBonus = 0;
+    private int _compassionateBonus = 0;
     private WaitForSeconds _bonusDelay = new WaitForSeconds(1f);
     private WaitForSeconds _bonusStep = new WaitForSeconds(0.4f);
     private bool _startOfGame = true;
@@ -61,6 +62,7 @@ public class GameManager : MonoBehaviour
     public static event Action<GameState> OnStateChanged;
     public static event Action OnSetupNextStage;
     public static event Action<int> OnSpeedBonusChanged;
+    public static event Action<int> OnCompassionateBonusChanged;
     public static event Action OnStageEnd;
     public static event Action<GameObject> OnRunnerSpawned;
     public static event Action<int> OnStarGained;
@@ -181,6 +183,18 @@ public class GameManager : MonoBehaviour
             {
                 AcquiredStars++;
                 LifetimeStars++;
+            }
+        }
+    }
+    public int CompassionateBonus
+    {
+        get => _compassionateBonus;
+        set
+        {
+            if (value <= 3 && value >= 0)
+            {
+                _compassionateBonus = value;
+                OnCompassionateBonusChanged?.Invoke(value);
             }
         }
     }
@@ -327,6 +341,7 @@ public class GameManager : MonoBehaviour
     private void ResetStats()
     {
         _speedBonus = 0;
+        _compassionateBonus = 0;
         _acquiredStars = 0;
         _bonusStarLevel = 0;
         _tileAlpha = 1f;

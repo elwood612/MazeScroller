@@ -14,6 +14,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Slider[] _speedSliders;
     [SerializeField] private GameObject _requiredStars;
     [SerializeField] private GameObject _starParent;
+    [SerializeField] private GameObject _compassionateStars;
     [SerializeField] private Canvas _stageCanvas;
     [SerializeField] private Canvas _topCanvas;
     [SerializeField] private Canvas _mainMenuCanvas;
@@ -56,7 +57,6 @@ public class UIManager : MonoBehaviour
         _menuSettingsCanvas.enabled = false;
         _blackScreen.enabled = true;
         _loadingScreen.enabled = true;
-        //_resetToggle.isOn = false;
 
         _mainPage.SetActive(true);
         _backPage.SetActive(false);
@@ -67,6 +67,7 @@ public class UIManager : MonoBehaviour
     private void OnEnable()
     {
         GameManager.OnSpeedBonusChanged += UpdateSpeedBonus;
+        GameManager.OnCompassionateBonusChanged += UpdateCompassionateBonus;
         GameManager.OnRunnerSpawned += AssignDialogueBox;
         GameManager.OnStageEnd += EndStage;
         GameManager.OnStateChanged += BeginStage;
@@ -81,6 +82,7 @@ public class UIManager : MonoBehaviour
     private void OnDisable()
     {
         GameManager.OnSpeedBonusChanged -= UpdateSpeedBonus;
+        GameManager.OnCompassionateBonusChanged -= UpdateCompassionateBonus;
         GameManager.OnRunnerSpawned -= AssignDialogueBox;
         GameManager.OnStageEnd -= EndStage;
         GameManager.OnStateChanged -= BeginStage;
@@ -97,12 +99,15 @@ public class UIManager : MonoBehaviour
         _activeSlider.value = value % (GameManager.RequiredStars * 100);
     }
 
+    private void UpdateCompassionateBonus(int value)
+    {
+        _compassionateStars.transform.GetChild(value - 1).gameObject.SetActive(true);
+    }
+
     private void UpdateDialogueBox(string sentence)
     {
-        //if (answer) { UpdateAnswerBox(); return; }
         _isDialogueBoxOpen = true;
         _dialogueBox.transform.GetComponentInParent<Canvas>().enabled = true;
-        //StopAllCoroutines();
         StopCoroutine(TypeSentence(sentence));
         StopCoroutine(FinishSentence(sentence));
         _typeOutSentence = true;
@@ -220,12 +225,14 @@ public class UIManager : MonoBehaviour
         {
             _stageAssessment.text = "Excellent answer!";
         }
-        // One more condition for Compassionate answer here
+        else if (answer == Answer.Compassionate)
+        {
+            _stageAssessment.text = "Necessary answer.";
+        }
     }
 
     private void GainStar(int level)
     {
-        //_topTotalStarAmount.text = GameManager.AcquiredStars.ToString();
         _topTotalStarAmount.text = GameManager.AcquiredStars.ToString() + " ("
             + GameManager.RequiredStars.ToString()
             + " req.)";
@@ -257,6 +264,10 @@ public class UIManager : MonoBehaviour
             GameObject newStar = Instantiate(_starPrefab, _starParent.transform);
             _allStars.Add(newStar);
         }
+        for (int i = 0; i < 3; i++)
+        {
+            _compassionateStars.transform.GetChild(i).gameObject.SetActive(false);
+        }
     }
 
     private void ResetSliders()
@@ -271,8 +282,6 @@ public class UIManager : MonoBehaviour
 
     private void ChallengeModeCheck()
     {
-        //_challengeModeButton.interactable = GameManager.LifetimeStars > 20;
-
         _challengeModeButton.interactable = false; // temp until, you know, there IS a challenge mode
     }
 
@@ -284,7 +293,6 @@ public class UIManager : MonoBehaviour
 
     private IEnumerator HintDialogue()
     {
-        //_needDialogueHint = false;
         GameManager.NeedDialogueBoxHint = false;
         yield return _hintDelay;
         if (_isDialogueBoxOpen)
@@ -295,7 +303,7 @@ public class UIManager : MonoBehaviour
 
     public void OnChallengeModeButtonClick()
     {
-        // Open pause menu
+        // Open challenge mode
     }
 
     public void OnContinueButtonClick()
