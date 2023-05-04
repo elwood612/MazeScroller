@@ -271,6 +271,7 @@ public class TileSpawner : MonoBehaviour
                             }
                         }
                     }
+                    level = 4; // THIS IS VERY TEMP
                     Crystal newCrystal = _crystalPool.Get();
                     newCrystal.transform.SetParent(tile.transform, false);
                     newCrystal.Initialize(level, _crystalPool);

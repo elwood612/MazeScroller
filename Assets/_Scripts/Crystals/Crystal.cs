@@ -12,25 +12,22 @@ public class Crystal : MonoBehaviour
     [SerializeField] private ParticleSystem _particlesExplosion;
     [SerializeField] private ParticleSystem _particlesExplosionMissile;
     [SerializeField] private OrbitMissile _missilePrefab;
-    //[SerializeField] private AudioSource _audioBeep;
-    //[SerializeField] private AudioSource _audioZap;
-    //[SerializeField] private AudioSource _audioNegative;
     [SerializeField] private TextMeshProUGUI _word;
     [SerializeField] private Animation _wordAnimation;
     [SerializeField] private Material[] _wireframeMaterials;
     [SerializeField] private Material[] _shadowMaterials;
     
-
     private ObjectPool<Crystal> _crystalPool;
     private int _level = 0;
     private int _initialLevel;
     private bool _destroyed = false;
-    //private bool _lastCrystal = false;
+    private bool _compassionateScore = false;
     private static bool _firstCrystal = true;
     private static bool _secondCrystal = false;
     private static bool _firstBlueCrystal = false;
     private static bool _thirdCrystal = false;
     private WaitForSeconds _destroyDelay = new WaitForSeconds(1f);
+    private WaitForSecondsRealtime _compassionateDelay = new WaitForSecondsRealtime(2.5f);
     private OrbitMissile[] _orbitMissiles = new OrbitMissile[6];
 
     public static event Action OnFirstCrystal;
@@ -66,7 +63,6 @@ public class Crystal : MonoBehaviour
     {
         if (other.CompareTag("Runner") && !_destroyed)
         {
-            //_audioBeep.Play();
             AudioManager.Instance.Beep.Play();
             if (_level == 0)
             {
@@ -74,6 +70,11 @@ public class Crystal : MonoBehaviour
             }
             else
             {
+                if (_level == 4)
+                {
+                    StartCoroutine(CompassionateCrystalContact());
+                    return;
+                }
                 DestroyOrbitMissile(_orbitMissiles[_level - 1]);
                 _level--;
             }
@@ -120,8 +121,19 @@ public class Crystal : MonoBehaviour
         }
     }
 
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Runner") && !_destroyed && _initialLevel == 4)
+        {
+            //StopCoroutine(CompassionateCrystalContact());
+            _compassionateScore = false;
+        }
+    }
+
     private void SpawnOrbitMissiles()
     {
+        if (_level == 4) { return; }
+
         for (int i = 0; i < _level; i++)
         {
             _orbitMissiles[i].Spawn(i, _level);
@@ -138,7 +150,6 @@ public class Crystal : MonoBehaviour
 
     private void PlayerContact()
     {
-        //_lastCrystal = true;
         GameManager.LastCrystal = this.gameObject;
         StartCoroutine(Explode());
         AudioManager.Instance.Zap.Play();
@@ -146,11 +157,17 @@ public class Crystal : MonoBehaviour
         _word.gameObject.SetActive(true);
         _wordAnimation.Play();
         if (GameManager.DoTutorial) { ScoreBonus = 3; }
-        //GameManager.Instance.SpeedBonus += 3 * (_initialLevel + 1) * ScoreBonus;
-        GameManager.Instance.SpeedBonus +=
-            //(int)Mathf.Clamp((Mathf.Pow(3, _initialLevel) - 1) * ScoreBonus * 8, 2, 100);
+
+        if (_initialLevel < 4)
+        {
+            GameManager.Instance.SpeedBonus +=
             (int)Mathf.Clamp(_initialLevel * _initialLevel * ScoreBonus * 10, 1, 100);
-        ScoreBonus = 2;
+            ScoreBonus = 2;
+        }
+        else
+        {
+            Debug.Log("Increase Compassionate score");
+        }
     }
 
     private void EndOfBoardContact()
@@ -170,6 +187,13 @@ public class Crystal : MonoBehaviour
 
         yield return _destroyDelay;
         _crystalPool.Release(this);
+    }
+
+    private IEnumerator CompassionateCrystalContact()
+    {
+        _compassionateScore = true;
+        yield return _compassionateDelay;
+        if (_compassionateScore) { PlayerContact(); }
     }
 
     private void DestroyOrbitMissile(OrbitMissile missile)
@@ -205,7 +229,6 @@ public class Crystal : MonoBehaviour
     {
         if (GameManager.LastCrystal == this.gameObject)
         {
-            //_lastCrystal = false;
             _star.SetActive(true);
         }
     }

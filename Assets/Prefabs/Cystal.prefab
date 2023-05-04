@@ -373,11 +373,13 @@ MonoBehaviour:
   - {fileID: 2100000, guid: ada91bbb970fa4744b7cc7b0e093dc1b, type: 2}
   - {fileID: 2100000, guid: 3c6b02cdd0351ef4484d9cb187b80b5e, type: 2}
   - {fileID: 2100000, guid: 0399af2cc1f4e23479dd252cdbf4a70e, type: 2}
+  - {fileID: 2100000, guid: 596d52fff4ebe264e8a4fa4689e4f8e4, type: 2}
   _shadowMaterials:
   - {fileID: 2100000, guid: ca6f40d855fb9c9428d5bc83c79df8a9, type: 2}
   - {fileID: 2100000, guid: 2328a4500a1c8bd4d893d573f867015f, type: 2}
   - {fileID: 2100000, guid: 30b8785817c5d254bbe62904cf595af4, type: 2}
   - {fileID: 2100000, guid: c499f3eeb9d37fa48899346916b5b3c7, type: 2}
+  - {fileID: 2100000, guid: 9a3f373f46de1bf458f4c6a7c573c1c4, type: 2}
 --- !u!1 &4450170851172000845
 GameObject:
   m_ObjectHideFlags: 0

@@ -230,7 +230,7 @@ public class GameManager : MonoBehaviour
 
         if (_debugMode)
         {
-            //AudioManager.Instance.Music.Stop();
+            _isMusicEnabled = false;
             DoTutorial = false; 
         }
     }
