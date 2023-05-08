@@ -170,9 +170,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 0f5ab9728a3895e4b91c505ec91ca91c, type: 3}
+  m_audioClip: {fileID: 8300000, guid: a3af72a70a642044c806bc7d3b48cef6, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.2
+  m_Volume: 0.25
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -1087,7 +1087,7 @@ MonoBehaviour:
   _UIstarVol: 0.25
   _UIlevelDoneVol: 0.15
   _musicVol: 0.1
-  _powerUpVol: 0.2
+  _powerUpVol: 0.25
   Beep: {fileID: 1084486584569135088}
   Zap: {fileID: 1471882481663084691}
   Negative: {fileID: 6084617318536509793}

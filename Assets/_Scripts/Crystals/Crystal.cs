@@ -35,6 +35,7 @@ public class Crystal : MonoBehaviour
     public static event Action OnFirstBlueCrystal;
     public static event Action OnFirstBlueCrystalPopped;
     public static int ScoreBonus = 1; // this is public so Runner can reset it
+    public int InitialLevel => _initialLevel;
 
     private void Awake()
     {
@@ -126,6 +127,7 @@ public class Crystal : MonoBehaviour
         if (other.CompareTag("Runner") && !_destroyed && _initialLevel == 4)
         {
             _compassionateScore = false;
+            AudioManager.Instance.PowerUp.Stop();
         }
     }
 

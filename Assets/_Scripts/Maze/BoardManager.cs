@@ -45,11 +45,13 @@ public class BoardManager : MonoBehaviour
     private void OnEnable()
     {
         GameManager.OnStateChanged += GenerateBoard;
+        GameManager.OnCompassionateVictory += ClearAllCrystals;
     }
 
     private void OnDisable()
     {
         GameManager.OnStateChanged -= GenerateBoard;
+        GameManager.OnCompassionateVictory -= ClearAllCrystals;
     }
 
     private void GenerateBoard(GameState state)
@@ -89,5 +91,16 @@ public class BoardManager : MonoBehaviour
         Instantiate(_rowQACollider, _rowQAPos, Quaternion.identity, transform);
         Instantiate(_tileSpawnerPrefab, _tileSpawnerPos, Quaternion.identity, transform);
         Instantiate(_tileDestroyCollider, _tileDestroyPos, Quaternion.identity, transform);
+    }
+
+    private void ClearAllCrystals()
+    {
+        foreach (Tile tile in _allTiles)
+        {
+            if (tile.AttachedCrystal != null && tile.AttachedCrystal.isActiveAndEnabled)
+            {
+                tile.RemoveCrystal();
+            }
+        }
     }
 }

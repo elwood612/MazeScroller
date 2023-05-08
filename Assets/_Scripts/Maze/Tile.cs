@@ -144,7 +144,7 @@ public class Tile : MonoBehaviour
         // destroy all active crystals
         foreach (Tile tile in BoardManager.AllTiles)
         {
-            if (tile.AttachedCrystal != null && tile.AttachedCrystal.isActiveAndEnabled)
+            if (tile.AttachedCrystal != null && tile.AttachedCrystal.isActiveAndEnabled && tile.AttachedCrystal.InitialLevel < 4)
             {
                 tile.RemoveCrystal();
             }

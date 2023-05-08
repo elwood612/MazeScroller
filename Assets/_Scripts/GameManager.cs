@@ -63,6 +63,7 @@ public class GameManager : MonoBehaviour
     public static event Action OnSetupNextStage;
     public static event Action<int> OnSpeedBonusChanged;
     public static event Action<int> OnCompassionateBonusChanged;
+    public static event Action OnCompassionateVictory;
     public static event Action OnStageEnd;
     public static event Action<GameObject> OnRunnerSpawned;
     public static event Action<int> OnStarGained;
@@ -134,7 +135,6 @@ public class GameManager : MonoBehaviour
         set
         {
             _resetStoryMode = value;
-            //Debug.Log("Reset story mode here");
         }
     }
     public static int StageProgress
@@ -195,6 +195,10 @@ public class GameManager : MonoBehaviour
             {
                 _compassionateBonus = value;
                 OnCompassionateBonusChanged?.Invoke(value);
+                if (value == 3)
+                {
+                    CompassionateVictory();
+                }
             }
         }
     }
@@ -347,6 +351,13 @@ public class GameManager : MonoBehaviour
         _tileAlpha = 1f;
     }
 
+    private void CompassionateVictory()
+    {
+        AudioManager.Instance.StarGain.Play(); // should probably be a different sound??
+        _stageProgress = _stageLength - 5;
+        OnCompassionateVictory?.Invoke();
+    }
+
     public void UpdateGameState(GameState newState)
     {
         if (CurrentState == newState && newState != GameState.Setup) { return; } // avoids spamming events for no reason
@@ -449,7 +460,11 @@ public class GameManager : MonoBehaviour
         {
             _stageAnswer = Answer.Excellent;
         }
-        // one more condition for Compassionate answer here
+
+        if (_compassionateBonus == 3)
+        {
+            _stageAnswer = Answer.Compassionate;
+        }
 
         OnStageEnd?.Invoke();
     }
