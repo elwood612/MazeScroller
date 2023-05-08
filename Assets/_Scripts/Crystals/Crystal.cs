@@ -125,7 +125,6 @@ public class Crystal : MonoBehaviour
     {
         if (other.CompareTag("Runner") && !_destroyed && _initialLevel == 4)
         {
-            //StopCoroutine(CompassionateCrystalContact());
             _compassionateScore = false;
         }
     }
@@ -166,7 +165,7 @@ public class Crystal : MonoBehaviour
         }
         else
         {
-            Debug.Log("Increase Compassionate score");
+            AudioManager.Instance.PowerUp.Stop();
             GameManager.Instance.CompassionateBonus++;
         }
     }
@@ -193,8 +192,12 @@ public class Crystal : MonoBehaviour
     private IEnumerator CompassionateCrystalContact()
     {
         _compassionateScore = true;
-        yield return _compassionateDelay;
-        if (_compassionateScore && GameManager.Instance.CompassionateBonus < 3) { PlayerContact(); }
+        if (GameManager.Instance.CompassionateBonus < 3)
+        { 
+            AudioManager.Instance.PowerUp.Play();
+            yield return _compassionateDelay;
+            if (_compassionateScore) { PlayerContact(); }
+        }
     }
 
     private void DestroyOrbitMissile(OrbitMissile missile)

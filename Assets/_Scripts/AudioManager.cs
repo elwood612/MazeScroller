@@ -12,7 +12,8 @@ public class AudioManager : MonoBehaviour
         _UIZapVol,
         _UIstarVol,
         _UIlevelDoneVol,
-        _musicVol;
+        _musicVol,
+        _powerUpVol;
 
     public AudioSource Beep;
     public AudioSource Zap;
@@ -23,6 +24,7 @@ public class AudioManager : MonoBehaviour
     public AudioSource UIStar;
     public AudioSource UILevelDone;
     public AudioSource Music;
+    public AudioSource PowerUp;
 
     public static AudioManager Instance;
 
@@ -45,6 +47,7 @@ public class AudioManager : MonoBehaviour
         UIZap.volume = enabled ? _UIZapVol : 0;
         UIStar.volume = enabled ? _UIstarVol : 0;
         UILevelDone.volume = enabled ? _UIlevelDoneVol : 0;
+        PowerUp.volume = enabled ? _powerUpVol : 0;
     }
 
     public void MuteMusic(bool enabled)
