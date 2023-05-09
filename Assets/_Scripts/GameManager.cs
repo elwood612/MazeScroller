@@ -52,6 +52,7 @@ public class GameManager : MonoBehaviour
     private static bool _needDialogueBoxHint = true;
     private static bool _spawnPurpleCrystal = false;
     private static bool _spawnGoldCrystal = false;
+    private static bool _spawnGreenCrystal = false;
     private static Vector3 _tileSpeed = Vector3.zero;
     private static Vector3 _transitionSpeed = new Vector3(0, 0, -40);
     private static Vector3 _boardLength;
@@ -97,6 +98,7 @@ public class GameManager : MonoBehaviour
     public static int SpawnChargedTileChance => _spawnChargedTileChance;
     public static bool SpawnPurpleCrystal => _spawnPurpleCrystal;
     public static bool SpawnGoldCrystal => _spawnGoldCrystal;
+    public static bool SpawnGreenCrystal => _spawnGreenCrystal;
     public static Answer StageAnswer => _stageAnswer;
     public static bool IsAudioEnabled
     {
@@ -143,7 +145,6 @@ public class GameManager : MonoBehaviour
         {
             if (CurrentState == GameState.Progressing)
             {
-                Debug.Log("Stage progress: " + _stageProgress + " / " + _stageLength);
                 if (_stageProgress < _stageLength)
                 {
                     _stageProgress = value;
@@ -358,6 +359,11 @@ public class GameManager : MonoBehaviour
         OnCompassionateVictory?.Invoke();
     }
 
+    private StageDialogue SelectStageDialogue()
+    {
+        return _stageDialogue[Random.Range(0, _stageDialogue.Count)];
+    } 
+
     public void UpdateGameState(GameState newState)
     {
         if (CurrentState == newState && newState != GameState.Setup) { return; } // avoids spamming events for no reason
@@ -406,7 +412,7 @@ public class GameManager : MonoBehaviour
 
     public void SetupNextStage()
     {
-        _currentStageDialogue = _stageDialogue[Random.Range(0, _stageDialogue.Count)];
+        _currentStageDialogue = SelectStageDialogue();
 
         if (_lifetimeStars > 20 && _acquiredStars > _requiredStars)
         {
@@ -426,7 +432,12 @@ public class GameManager : MonoBehaviour
             _spawnGoldCrystal = false;
             _spawnChargedTileChance = 6;
         }
-        
+
+        if (_currentStageDialogue.CompassionateAnswer != "")
+        {
+            _spawnGreenCrystal = true;
+        }
+
         if (DoTutorial)
         {
             _tileColorHue = 0.552778f;
@@ -436,10 +447,10 @@ public class GameManager : MonoBehaviour
         else
         {
             _tileColorHue = Mathf.Clamp(Random.Range(0f, 1f), 0.1f, 0.9f);
-            //_requiredStars = Mathf.Clamp(Random.Range(0, _lifetimeStars % 20), 1, 3);
             _requiredStars = 1;
             _stageLength = _requiredStars * 80;
         }
+        
         OnSetupNextStage?.Invoke();
     }
 

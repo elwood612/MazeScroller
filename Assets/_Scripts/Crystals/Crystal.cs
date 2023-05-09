@@ -34,6 +34,7 @@ public class Crystal : MonoBehaviour
     public static event Action OnSecondCrystal;
     public static event Action OnFirstBlueCrystal;
     public static event Action OnFirstBlueCrystalPopped;
+    public static event Action OnGreenCrystalPopped;
     public static int ScoreBonus = 1; // this is public so Runner can reset it
     public int InitialLevel => _initialLevel;
 
@@ -161,14 +162,16 @@ public class Crystal : MonoBehaviour
 
         if (_initialLevel < 4)
         {
+            GameManager.Instance.CompassionateBonus = 0;
             GameManager.Instance.SpeedBonus +=
-            (int)Mathf.Clamp(_initialLevel * _initialLevel * ScoreBonus * 10, 1, 100);
+                (int)Mathf.Clamp(_initialLevel * _initialLevel * ScoreBonus * 10, 1, 100);
             ScoreBonus = 2;
         }
         else
         {
             AudioManager.Instance.PowerUp.Stop();
             GameManager.Instance.CompassionateBonus++;
+            OnGreenCrystalPopped?.Invoke();
         }
     }
 

@@ -24,6 +24,7 @@ public class TileSpawner : MonoBehaviour
     private bool _tutorialFirstCrystal = true;
     private bool _tutorialSecondCrystal = false;
     private bool _tutorialThirdCrystal = false;
+    private bool _goodToSpawnGreen = true;
     private bool _goldCrystalCanBeSpawned = true;
     public float _width = 0.5f;
     private float _transitionWidth = 0.5f;
@@ -69,6 +70,7 @@ public class TileSpawner : MonoBehaviour
         GameManager.OnStateChanged += SetNewScale;
         GameManager.OnSetupNextStage += SetupNewStage;
         Crystal.OnFirstCrystal += EnableSecondCrystal;
+        Crystal.OnGreenCrystalPopped += EnableGreenCrystal;
     }
 
     private void OnDisable()
@@ -77,6 +79,7 @@ public class TileSpawner : MonoBehaviour
         GameManager.OnStateChanged -= SetNewScale;
         GameManager.OnSetupNextStage -= SetupNewStage;
         Crystal.OnFirstCrystal -= EnableSecondCrystal;
+        Crystal.OnGreenCrystalPopped -= EnableGreenCrystal;
     }
 
     private void InitializeCrystalPool()
@@ -270,8 +273,13 @@ public class TileSpawner : MonoBehaviour
                                 level++;
                             }
                         }
+                        if (GameManager.SpawnGreenCrystal && _goodToSpawnGreen)
+                        {
+                            level = 4;
+                            _goodToSpawnGreen = false;
+                        }
                     }
-                    level = 4; // THIS IS VERY TEMP
+                    //level = 4; // THIS IS VERY TEMP
                     Crystal newCrystal = _crystalPool.Get();
                     newCrystal.transform.SetParent(tile.transform, false);
                     newCrystal.Initialize(level, _crystalPool);
@@ -301,6 +309,7 @@ public class TileSpawner : MonoBehaviour
         _chargedMinRows = Random.Range(2, 5);
         _chargedMaxRows = Random.Range(4, 8);
         _missingTilesChance = Random.Range(1, 3);
+        _goodToSpawnGreen = true;
 
         _tutorialFirstCrystal = true;
         _tutorialSecondCrystal = false;
@@ -313,6 +322,11 @@ public class TileSpawner : MonoBehaviour
     {
         _tutorialFirstCrystal = false;
         _tutorialSecondCrystal = true;
+    }
+
+    private void EnableGreenCrystal()
+    {
+        _goodToSpawnGreen = true;
     }
 
     public void RemoveCrystal(Crystal crystal)

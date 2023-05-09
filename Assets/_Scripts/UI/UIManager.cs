@@ -101,7 +101,18 @@ public class UIManager : MonoBehaviour
 
     private void UpdateCompassionateBonus(int value)
     {
-        _compassionateStars.transform.GetChild(value - 1).gameObject.SetActive(true);
+        for (int i = 0; i < 3; i++)
+        {
+            if (i < value)
+            {
+                _compassionateStars.transform.GetChild(i).gameObject.SetActive(true);
+            }
+            else
+            {
+                _compassionateStars.transform.GetChild(i).gameObject.SetActive(false);
+            }
+        }
+        //_compassionateStars.transform.GetChild(value - 1).gameObject.SetActive(true);
     }
 
     private void UpdateDialogueBox(string sentence)

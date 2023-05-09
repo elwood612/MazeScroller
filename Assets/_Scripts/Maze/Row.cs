@@ -52,7 +52,6 @@ public class Row : MonoBehaviour
         else if (other.CompareTag("RowQA")) 
         { 
             CheckRow();
-            Debug.Log("Progress? Setup has been run: " + _hasSetupBeenRun + ", tutorial has ended: " + _endTutorial);
             if (_hasSetupBeenRun && _endTutorial)
             {
                 GameManager.StageProgress++;
