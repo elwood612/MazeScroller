@@ -259,6 +259,7 @@ public class Crystal : MonoBehaviour
         _level = level;
         _initialLevel = level;
         _crystalPool = crystalPool;
+        _compassionateScore = false;
         SetMaterials(_wireframeMaterials[_level], _shadowMaterials[_level]);
         ResetOrbitMissiles();
         SpawnOrbitMissiles();

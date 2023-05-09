@@ -51,7 +51,8 @@ public class Row : MonoBehaviour
         else if (other.CompareTag("RowSetup")) { SetupRow(); }
         else if (other.CompareTag("RowQA")) 
         { 
-            CheckRow(); 
+            CheckRow();
+            Debug.Log("Progress? Setup has been run: " + _hasSetupBeenRun + ", tutorial has ended: " + _endTutorial);
             if (_hasSetupBeenRun && _endTutorial)
             {
                 GameManager.StageProgress++;
@@ -128,12 +129,10 @@ public class Row : MonoBehaviour
             if (!canPathThrough && !t.IsEnabled) { t.SpawnTile(); } // this is currently overkill
             if (!canPathAroundColor && isAColor && t.IsEnabled) { t.SetAsColored(false); }
             if (isBoxedInByColor && isAColor && t.IsEnabled) { t.SetAsColored(false); }
-            //if (t.IsColored && t.GetNeighborTile(Vector3.right).NeighborPaths.Count == 1) { t.SetAsColored(false); }
-            //if (t.IsColored && t.GetNeighborTile(Vector3.left).NeighborPaths.Count == 1) { t.SetAsColored(false); }
         }
     }
 
-    private void EndTutorial(int unused)
+    private void EndTutorial(int unused) 
     {
         if (!_endTutorial)
         {
@@ -143,9 +142,6 @@ public class Row : MonoBehaviour
 
     private void ResetTutorial()
     {
-        if (GameManager.DoTutorial)
-        {
-            _endTutorial = false;
-        }
+        _endTutorial = !GameManager.DoTutorial;
     }
 }

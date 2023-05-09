@@ -11,7 +11,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GM_Settings _settings;
     [SerializeField] private GameObject _runnerPrefab;
     [SerializeField] private bool _debugMode;
-    [SerializeField] private int _startingStage;
     public Transform SampleTileTransform;
     //public List<StageDialogue> StageDialogues;
 
@@ -144,6 +143,7 @@ public class GameManager : MonoBehaviour
         {
             if (CurrentState == GameState.Progressing)
             {
+                Debug.Log("Stage progress: " + _stageProgress + " / " + _stageLength);
                 if (_stageProgress < _stageLength)
                 {
                     _stageProgress = value;
@@ -354,7 +354,7 @@ public class GameManager : MonoBehaviour
     private void CompassionateVictory()
     {
         AudioManager.Instance.StarGain.Play(); // should probably be a different sound??
-        _stageProgress = _stageLength - 5;
+        _stageProgress = _stageLength - 5; // not working
         OnCompassionateVictory?.Invoke();
     }
 
