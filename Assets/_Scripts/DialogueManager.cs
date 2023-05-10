@@ -103,7 +103,7 @@ public class DialogueManager : MonoBehaviour
         string intro = "";
         string answer = 
             stageDialogue.Query +
-            ":\n" + "\"" +
+            ":" + "\n" + "\"" +
             stageDialogue.Answer
             + "\"";
         if (GameManager.StageAnswer == Answer.Poor)

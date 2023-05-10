@@ -3,11 +3,14 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "StageDialogue", menuName = "Scriptable Objects/Stage Dialogue")]
 public class StageDialogue : ScriptableObject
 {
-    [SerializeField] private int _minimumStars;
-    [SerializeField] private bool _exact;
-    public int MinimumStars => _minimumStars;
-    public bool Exact => _exact;
-
+    public enum Types
+    {
+        early,
+        mid,
+        late,
+        special
+    }
+    [SerializeField] private Types _type;
 
     [TextArea]
     [SerializeField] private string _query;
@@ -21,4 +24,5 @@ public class StageDialogue : ScriptableObject
     public string[] Comments => _comments;
     public string Answer => _answer;
     public string CompassionateAnswer => _compassionateAnswer;
+    public Types Type => _type;
 }
