@@ -18,10 +18,12 @@ public class GameManager : MonoBehaviour
     private static Object[] _earlyStageDialogueObjects;
     private static Object[] _midStageDialogueObjects;
     private static Object[] _lateStageDialogueObjects;
-    private static List<StageDialogue> _stageDialogue = new List<StageDialogue>();
+    private static Object[] _specialStageDialogueObjects;
+    private static List<StageDialogue> _allStageDialogue = new List<StageDialogue>();
     private static Queue<StageDialogue> _stageDialogue_early = new Queue<StageDialogue>();
     private static Queue<StageDialogue> _stageDialogue_mid = new Queue<StageDialogue>();
     private static Queue<StageDialogue> _stageDialogue_late = new Queue<StageDialogue>();
+    private static Queue<StageDialogue> _stageDialogue_special = new Queue<StageDialogue>();
     private static StageDialogue _currentStageDialogue;
     private AnimationCurve _tileSpeedCurve;
     private AnimationCurve _runnerSpeedCurve;
@@ -50,6 +52,7 @@ public class GameManager : MonoBehaviour
     private static int _loseCounter = 0;
     private static int _bonusStarLevel = 0;
     private static int _spawnChargedTileChance = 6;
+    private static int _specialDialogueCounter = 0;
     private static float _tileColorHue = 0;
     private static bool _firstStarGained = true;
     private static bool _resetStoryMode = false;
@@ -234,8 +237,16 @@ public class GameManager : MonoBehaviour
         set
         {
             _lifetimeStars = value;
-            PlayerPrefs.SetInt("LifetimeStars", LifetimeStars);
-            //PlayerPrefs.Save();
+            PlayerPrefs.SetInt("LifetimeStars", value);
+        }
+    }
+    public static int SpecialDialogueCounter
+    {
+        get => _specialDialogueCounter;
+        set
+        {
+            _specialDialogueCounter = value;
+            PlayerPrefs.SetInt("SpecialDialogueCounter", value);
         }
     }
     #endregion
@@ -286,6 +297,7 @@ public class GameManager : MonoBehaviour
     private void LoadPlayerPrefs()
     {
         _lifetimeStars = PlayerPrefs.GetInt("LifetimeStars", 0);
+        _specialDialogueCounter = PlayerPrefs.GetInt("SpecialDialogueCounter", 0);
         DoTutorial = PlayerPrefs.GetInt("DoTutorial", 1) == 0 ? false : true;
         _isAudioEnabled = PlayerPrefs.GetInt("IsAudioEnabled", 1) == 0 ? false : true;
         _isMusicEnabled = PlayerPrefs.GetInt("IsMusicEnabled", 1) == 0 ? false : true;
@@ -294,16 +306,18 @@ public class GameManager : MonoBehaviour
 
     private void LoadStageDialogue()
     {
-        _allStageDialogueObjects = Resources.LoadAll("StageDialogue", typeof(StageDialogue));
-        _earlyStageDialogueObjects = Resources.LoadAll("StageDialogue/early", typeof(StageDialogue));
-        _midStageDialogueObjects = Resources.LoadAll("StageDialogue/mid", typeof(StageDialogue));
-        _lateStageDialogueObjects = Resources.LoadAll("StageDialogue/late", typeof(StageDialogue));
+        _allStageDialogueObjects = Resources.LoadAll("StageDialogue", typeof (StageDialogue));
+        _earlyStageDialogueObjects = Resources.LoadAll("StageDialogue/early", typeof (StageDialogue));
+        _midStageDialogueObjects = Resources.LoadAll("StageDialogue/mid", typeof (StageDialogue));
+        _lateStageDialogueObjects = Resources.LoadAll("StageDialogue/late", typeof (StageDialogue));
+        _specialStageDialogueObjects = Resources.LoadAll("StageDialogue/special", typeof (StageDialogue));
         foreach (var dialogue in _allStageDialogueObjects)
         {
-            _stageDialogue.Add((StageDialogue)dialogue);
+            _allStageDialogue.Add((StageDialogue)dialogue);
             if (_earlyStageDialogueObjects.Contains(dialogue)) { _stageDialogue_early.Enqueue((StageDialogue)dialogue); }
             else if (_midStageDialogueObjects.Contains(dialogue)) { _stageDialogue_mid.Enqueue((StageDialogue)dialogue); }
             else if (_lateStageDialogueObjects.Contains(dialogue)) { _stageDialogue_late.Enqueue((StageDialogue)dialogue); }
+            else if (_specialStageDialogueObjects.Contains(dialogue)) { _stageDialogue_special.Enqueue((StageDialogue)dialogue); }
         }
         _currentStageDialogue = SelectStageDialogue();
     }
@@ -372,7 +386,22 @@ public class GameManager : MonoBehaviour
 
     private StageDialogue SelectStageDialogue()
     {
-        if (_lifetimeStars < 9)
+        if (_lifetimeStars == 0 && _specialDialogueCounter == 0)
+        {
+            SpecialDialogueCounter++;
+            return _stageDialogue_special.Dequeue();
+        }
+        else if (_lifetimeStars > 8 && _specialDialogueCounter == 1)
+        {
+            SpecialDialogueCounter++;
+            return _stageDialogue_special.Dequeue();
+        }
+        else if (_lifetimeStars > 20 && _specialDialogueCounter == 2)
+        {
+            SpecialDialogueCounter++;
+            return _stageDialogue_special.Dequeue();
+        }
+        else if (_lifetimeStars < 9)
         {
             if (_stageDialogue_early.Count == 0)
             {
