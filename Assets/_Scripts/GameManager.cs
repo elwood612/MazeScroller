@@ -396,12 +396,12 @@ public class GameManager : MonoBehaviour
             SpecialDialogueCounter++;
             return _stageDialogue_special.Dequeue();
         }
-        else if (_lifetimeStars > 20 && _specialDialogueCounter == 2)
+        else if (_lifetimeStars > 12 && _specialDialogueCounter == 2)
         {
             SpecialDialogueCounter++;
             return _stageDialogue_special.Dequeue();
         }
-        else if (_lifetimeStars < 9)
+        else if (_lifetimeStars < 6)
         {
             if (_stageDialogue_early.Count == 0)
             {
@@ -409,7 +409,7 @@ public class GameManager : MonoBehaviour
             }
             return _stageDialogue_early.Dequeue();
         }
-        else if (_lifetimeStars >= 9 && _lifetimeStars < 16)
+        else if (_lifetimeStars >= 6 && _lifetimeStars < 11)
         {
             if (_stageDialogue_mid.Count == 0)
             {
@@ -425,7 +425,6 @@ public class GameManager : MonoBehaviour
             }
             return _stageDialogue_late.Dequeue();
         }
-        //return _stageDialogue[Random.Range(0, _stageDialogue.Count)];
     } 
 
     public void UpdateGameState(GameState newState)

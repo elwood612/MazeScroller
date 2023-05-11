@@ -120,7 +120,6 @@ public class TileSpawner : MonoBehaviour
                     _counterColorSpawn = 0;
                     StartCoroutine(SpawnRandomCharged(other.GetComponent<Row>()));
                 }
-
                 StartCoroutine(SpawnCrystal(other.GetComponent<Row>()));
             }
             #region Tutorial Stuff
@@ -279,7 +278,6 @@ public class TileSpawner : MonoBehaviour
                             _goodToSpawnGreen = false;
                         }
                     }
-                    //level = 4; // THIS IS VERY TEMP
                     Crystal newCrystal = _crystalPool.Get();
                     newCrystal.transform.SetParent(tile.transform, false);
                     newCrystal.Initialize(level, _crystalPool);
