@@ -12,9 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05e5f14c5d7212c4d989ab449795f473, type: 3}
   m_Name: cat 2
   m_EditorClassIdentifier: 
-  _minimumStars: 0
-  _exact: 0
-  _query: "how to stop kitten eating plastic\t"
+  _query: how to stop kitten eating plastic
   _comments: []
   _answer: 'To stop a kitten from eating plastic, try these steps: 1) Remove any
     plastic items from your kitten''s environment. 2) Provide safe and appropriate
@@ -22,3 +20,4 @@ MonoBehaviour:
     playing or exploring to prevent them from accessing plastic. 4) Use deterrent
     sprays or unpleasant tastes to discourage chewing. 5) If the behavior continues,
     consult with a veterinarian or animal behaviorist for additional advice.'
+  _compassionateAnswer: 

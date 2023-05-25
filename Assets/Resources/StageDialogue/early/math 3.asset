@@ -12,11 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05e5f14c5d7212c4d989ab449795f473, type: 3}
   m_Name: math 3
   m_EditorClassIdentifier: 
-  _minimumStars: 0
-  _exact: 0
-  _query: "can you do my homework for me\t"
+  _query: can you do my homework for me
   _comments: []
   _answer: I am unable to physically complete homework assignments for students.
     It is important to work through homework assignments independently to develop
     critical thinking and problem-solving skills. However, I am here to help answer
     questions or provide guidance on specific topics if needed.
+  _compassionateAnswer: 

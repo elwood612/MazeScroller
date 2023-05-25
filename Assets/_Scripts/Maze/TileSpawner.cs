@@ -24,9 +24,11 @@ public class TileSpawner : MonoBehaviour
     private bool _tutorialFirstCrystal = true;
     private bool _tutorialSecondCrystal = false;
     private bool _tutorialThirdCrystal = false;
+    private bool _firstGreenCrystal = true;
     private bool _goodToSpawnGreen = true;
+    private bool _haveSpawnedFirstGreen = false;
     private bool _goldCrystalCanBeSpawned = true;
-    public float _width = 0.5f;
+    private float _width = 0.5f;
     private float _transitionWidth = 0.5f;
     private float _xPos;
     private float _smooth = 3f; // the larger this is, the slower you move
@@ -49,6 +51,7 @@ public class TileSpawner : MonoBehaviour
     private float _widthMin = 2.1f;
     private float _widthMax = 2.9f;
     private float _crystalSpawnModifier = 1f;
+    private static int _greenCrystalOnScreenCounter = 0;
     private float _crystalSpawnChance => _crystalSpawnModifier * GameManager.Instance.GameSettings.CrystalSpawnChance
             .Evaluate(Random.Range(0f, (float)GameManager.StageProgress / (float)GameManager.StageLength));
     #endregion
@@ -111,6 +114,13 @@ public class TileSpawner : MonoBehaviour
             {
                 _counterDisableTile = 0;
                 StartCoroutine(DisableRandomTile(other.GetComponent<Row>()));
+            }
+
+            if (_haveSpawnedFirstGreen && ++_greenCrystalOnScreenCounter > 3)
+            {
+                _haveSpawnedFirstGreen = false;
+                _greenCrystalOnScreenCounter = 0;
+                DialogueManager.Instance.NextTutorialDialogue(7); // for now
             }
 
             if (!GameManager.DoTutorial)
@@ -276,6 +286,11 @@ public class TileSpawner : MonoBehaviour
                         {
                             level = 4;
                             _goodToSpawnGreen = false;
+                            if (_firstGreenCrystal) 
+                            { 
+                                _haveSpawnedFirstGreen = true;
+                                _firstGreenCrystal = false;
+                            }
                         }
                     }
                     Crystal newCrystal = _crystalPool.Get();
@@ -308,6 +323,7 @@ public class TileSpawner : MonoBehaviour
         _chargedMaxRows = Random.Range(4, 8);
         _missingTilesChance = Random.Range(1, 3);
         _goodToSpawnGreen = true;
+        _firstGreenCrystal = true;
 
         _tutorialFirstCrystal = true;
         _tutorialSecondCrystal = false;

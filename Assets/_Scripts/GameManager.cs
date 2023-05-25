@@ -496,7 +496,8 @@ public class GameManager : MonoBehaviour
             _spawnChargedTileChance = 6;
         }
 
-        _spawnGreenCrystal = _currentStageDialogue.CompassionateAnswer != "";
+        //_spawnGreenCrystal = _currentStageDialogue.CompassionateAnswer != ""; // Keep this!
+        _spawnGreenCrystal = true;
 
         if (DoTutorial)
         {
