@@ -116,11 +116,20 @@ public class TileSpawner : MonoBehaviour
                 StartCoroutine(DisableRandomTile(other.GetComponent<Row>()));
             }
 
+            // This triggers upon seeing the stage's first green crystal
             if (_haveSpawnedFirstGreen && ++_greenCrystalOnScreenCounter > 3)
             {
                 _haveSpawnedFirstGreen = false;
                 _greenCrystalOnScreenCounter = 0;
-                DialogueManager.Instance.NextTutorialDialogue(7); // for now
+                if (GameManager.SpecialDialogueCounter == 2)
+                {
+                    DialogueManager.Instance.NextTutorialDialogue(7);
+                }
+                else if (GameManager.SpecialDialogueCounter >= 3)
+                {
+                    DialogueManager.Instance.NextTutorialDialogue(8);
+                }
+
             }
 
             if (!GameManager.DoTutorial)

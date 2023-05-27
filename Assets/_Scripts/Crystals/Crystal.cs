@@ -26,7 +26,7 @@ public class Crystal : MonoBehaviour
     private static bool _secondCrystal = false;
     private static bool _firstBlueCrystal = false;
     private static bool _thirdCrystal = false;
-    private static bool _firstGreenCrystal = false;
+    private static bool _firstGreenCrystal = true;
     private WaitForSeconds _destroyDelay = new WaitForSeconds(1f);
     private WaitForSecondsRealtime _compassionateDelay = new WaitForSecondsRealtime(2.5f);
     private OrbitMissile[] _orbitMissiles = new OrbitMissile[6];
@@ -51,13 +51,13 @@ public class Crystal : MonoBehaviour
 
     private void OnEnable()
     {
-        GameManager.OnSetupNextStage += ResetTutorial;
+        GameManager.OnSetupNextStage += ResetStage;
         GameManager.OnStarGained += StarGained;
     }
 
     private void OnDisable()
     {
-        GameManager.OnSetupNextStage -= ResetTutorial;
+        GameManager.OnSetupNextStage -= ResetStage;
         GameManager.OnStarGained -= StarGained;
     }
 
@@ -125,10 +125,22 @@ public class Crystal : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Runner") && !_destroyed && _initialLevel == 4)
+        if (other.CompareTag("Runner") && _initialLevel == 4)
         {
-            _compassionateScore = false;
-            AudioManager.Instance.PowerUp.Stop();
+            if (!_destroyed)
+            {
+                _compassionateScore = false;
+                AudioManager.Instance.PowerUp.Stop();
+                DialogueManager.Instance.NextTutorialDialogue(9);
+            }
+            else
+            {
+                if (_firstGreenCrystal)
+                {
+                    _firstGreenCrystal = false;
+                    DialogueManager.Instance.NextTutorialDialogue(10);
+                }
+            }
         }
     }
 
@@ -220,15 +232,15 @@ public class Crystal : MonoBehaviour
         _shadow.material = shadow;
     }
 
-    private void ResetTutorial()
+    private void ResetStage()
     {
+        _firstGreenCrystal = true;
         if (GameManager.DoTutorial)
         {
             _firstCrystal = true;
             _secondCrystal = false;
             _firstBlueCrystal = false;
             _thirdCrystal = false;
-            _firstGreenCrystal = false;
         }
     }
 
