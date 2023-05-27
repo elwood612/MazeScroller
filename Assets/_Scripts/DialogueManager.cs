@@ -27,20 +27,15 @@ public class DialogueManager : MonoBehaviour
         else { Destroy(this); }
     }
 
-    //private void OnEnable()
-    //{
-    //    GameManager.OnNextDialogue += ParseDialogue;
-    //}
+    private void OnEnable()
+    {
+        GameManager.OnNextTutorial += NextTutorialDialogue;
+    }
 
-    //private void OnDisable()
-    //{
-    //    GameManager.OnNextDialogue -= ParseDialogue;
-    //}
-
-    //private void ParseDialogue(Dialogue dialogue)
-    //{
-    //    StartDialogue(dialogue.Lines);
-    //}
+    private void OnDisable()
+    {
+        GameManager.OnNextTutorial -= NextTutorialDialogue;
+    }
 
     private void StartDialogue(string[] sentences)
     {

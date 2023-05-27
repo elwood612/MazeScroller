@@ -79,6 +79,9 @@ public class GameManager : MonoBehaviour
     public static event Action OnMainMenuOpen;
     public static event Action OnMainMenuClose;
 
+    public delegate void NextDialogue(int index);
+    public static NextDialogue OnNextTutorial;
+
     public static GameManager Instance;
     public static GameObject LastCrystal;
     public static float HighestDrawnRowHeight;
@@ -222,7 +225,7 @@ public class GameManager : MonoBehaviour
             if (_firstStarGained && DoTutorial)
             {
                 _firstStarGained = false;
-                DialogueManager.Instance.NextTutorialDialogue(6);
+                OnNextTutorial?.Invoke(6);
             }
             if (_acquiredStars % _requiredStars == 0)
             {
@@ -380,7 +383,9 @@ public class GameManager : MonoBehaviour
     private void CompassionateVictory()
     {
         AudioManager.Instance.StarGain.Play(); // should probably be a different sound??
-        _stageProgress = _stageLength - 5; 
+        //_stageProgress = _stageLength - 5; // should go directly to end of stage
+        StageProgress = _stageLength;
+        OnNextTutorial?.Invoke(12);
         OnCompassionateVictory?.Invoke();
     }
 

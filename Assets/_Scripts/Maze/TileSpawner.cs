@@ -123,11 +123,11 @@ public class TileSpawner : MonoBehaviour
                 _greenCrystalOnScreenCounter = 0;
                 if (GameManager.SpecialDialogueCounter == 2)
                 {
-                    DialogueManager.Instance.NextTutorialDialogue(7);
+                    GameManager.OnNextTutorial?.Invoke(7);
                 }
                 else if (GameManager.SpecialDialogueCounter >= 3)
                 {
-                    DialogueManager.Instance.NextTutorialDialogue(8);
+                    GameManager.OnNextTutorial?.Invoke(8);
                 }
 
             }

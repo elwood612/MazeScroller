@@ -27,6 +27,7 @@ public class Crystal : MonoBehaviour
     private static bool _firstBlueCrystal = false;
     private static bool _thirdCrystal = false;
     private static bool _firstGreenCrystal = true;
+    private static bool _firstGreenCrystalPopped = true;
     private WaitForSeconds _destroyDelay = new WaitForSeconds(1f);
     private WaitForSecondsRealtime _compassionateDelay = new WaitForSecondsRealtime(2.5f);
     private OrbitMissile[] _orbitMissiles = new OrbitMissile[6];
@@ -90,7 +91,7 @@ public class Crystal : MonoBehaviour
                     _secondCrystal = true;
                     _firstBlueCrystal = true;
                     OnFirstCrystal?.Invoke();
-                    DialogueManager.Instance.NextTutorialDialogue(1);
+                    GameManager.OnNextTutorial?.Invoke(1);
                     return;
                 }
                 if (_firstBlueCrystal && _initialLevel == 1)
@@ -98,19 +99,19 @@ public class Crystal : MonoBehaviour
                     _firstBlueCrystal = false;
                     _thirdCrystal = true;
                     OnFirstBlueCrystal?.Invoke();
-                    DialogueManager.Instance.NextTutorialDialogue(4);
+                    GameManager.OnNextTutorial?.Invoke(4);
                     return;
                 }
                 if (_thirdCrystal && _initialLevel == 1 && _destroyed)
                 {
                     _thirdCrystal = false;
                     OnFirstBlueCrystalPopped?.Invoke();
-                    DialogueManager.Instance.NextTutorialDialogue(5);
+                    GameManager.OnNextTutorial?.Invoke(5);
                     return;
                 }
                 if (_secondCrystal)
                 {
-                    DialogueManager.Instance.NextTutorialDialogue(2);
+                    GameManager.OnNextTutorial?.Invoke(2);
                     _secondCrystal = false;
                     OnSecondCrystal?.Invoke();
                 }
@@ -131,15 +132,7 @@ public class Crystal : MonoBehaviour
             {
                 _compassionateScore = false;
                 AudioManager.Instance.PowerUp.Stop();
-                DialogueManager.Instance.NextTutorialDialogue(9);
-            }
-            else
-            {
-                if (_firstGreenCrystal)
-                {
-                    _firstGreenCrystal = false;
-                    DialogueManager.Instance.NextTutorialDialogue(10);
-                }
+                GameManager.OnNextTutorial?.Invoke(9);
             }
         }
     }
@@ -174,7 +167,15 @@ public class Crystal : MonoBehaviour
 
         if (_initialLevel < 4)
         {
-            GameManager.Instance.CompassionateBonus = 0;
+            if (GameManager.Instance.CompassionateBonus > 0)
+            {
+                GameManager.Instance.CompassionateBonus = 0;
+                if (_firstGreenCrystalPopped)
+                {
+                    _firstGreenCrystalPopped = false;
+                    GameManager.OnNextTutorial?.Invoke(11);
+                }
+            }
             GameManager.Instance.SpeedBonus +=
                 (int)Mathf.Clamp(_initialLevel * _initialLevel * ScoreBonus * 10, 1, 100);
             ScoreBonus = 2;
@@ -213,7 +214,15 @@ public class Crystal : MonoBehaviour
         { 
             AudioManager.Instance.PowerUp.Play();
             yield return _compassionateDelay;
-            if (_compassionateScore) { PlayerContact(); }
+            if (_compassionateScore) 
+            { 
+                PlayerContact();
+                if (_firstGreenCrystal)
+                {
+                    _firstGreenCrystal = false;
+                    GameManager.OnNextTutorial?.Invoke(10);
+                }
+            }
         }
     }
 
