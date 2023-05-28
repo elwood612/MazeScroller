@@ -27,9 +27,11 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button _challengeModeButton;
     [SerializeField] private Button _quitButton;
     [SerializeField] private Toggle _resetToggle;
-    [SerializeField] private Image _blackScreen;
     [SerializeField] private Image _loadingScreen;
+    [SerializeField] private Image _blackScreenStart;
+    [SerializeField] private Image _blackScreenEnd;
     [SerializeField] private Animation _blackScreenFadeOut;
+    [SerializeField] private Animation _blackScreenFadeIn;
 
     private WaitForSecondsRealtime _flashDelay = new WaitForSecondsRealtime(0.25f);
     private WaitForSecondsRealtime _sentenceDelay = new WaitForSecondsRealtime(1f);
@@ -55,12 +57,11 @@ public class UIManager : MonoBehaviour
         _topCanvas.enabled = false;
         _stageCanvas.enabled = false;
         _menuSettingsCanvas.enabled = false;
-        _blackScreen.enabled = true;
+        _blackScreenStart.enabled = true;
+        _blackScreenEnd.enabled = false;
         _loadingScreen.enabled = true;
-
         _mainPage.SetActive(true);
         _backPage.SetActive(false);
-
         ChallengeModeCheck();
     }
 
@@ -73,10 +74,11 @@ public class UIManager : MonoBehaviour
         GameManager.OnStateChanged += BeginStage;
         GameManager.OnMainMenuOpen += MainMenu;
         GameManager.OnStarGained += GainStar;
+        GameManager.OnGameOver += BlackScreenFadeIn;
         DialogueManager.OnNextSentence += UpdateDialogueBox;
         DialogueManager.OnNextAnswer += UpdateAnswerBox;
         DialogueManager.OnDialogueEnd += HideDialogueBox;
-        Row.OnFirstRowsReady += BlackScreenFade;
+        Row.OnFirstRowsReady += BlackScreenFadeOut;
     }
 
     private void OnDisable()
@@ -88,10 +90,11 @@ public class UIManager : MonoBehaviour
         GameManager.OnStateChanged -= BeginStage;
         GameManager.OnMainMenuOpen -= MainMenu;
         GameManager.OnStarGained -= GainStar;
+        GameManager.OnGameOver -= BlackScreenFadeIn;
         DialogueManager.OnNextSentence -= UpdateDialogueBox;
         DialogueManager.OnNextAnswer -= UpdateAnswerBox;
         DialogueManager.OnDialogueEnd -= HideDialogueBox;
-        Row.OnFirstRowsReady -= BlackScreenFade;
+        Row.OnFirstRowsReady -= BlackScreenFadeOut;
     }
 
     private void UpdateSpeedBonus(int value)
@@ -296,10 +299,16 @@ public class UIManager : MonoBehaviour
         _challengeModeButton.interactable = false; // temp until, you know, there IS a challenge mode
     }
 
-    private void BlackScreenFade()
+    private void BlackScreenFadeOut()
     {
         _blackScreenFadeOut.Play();
         GameManager.Instance.OpenMainMenu();
+    }
+
+    private void BlackScreenFadeIn()
+    {
+        _blackScreenEnd.enabled = true;
+        _blackScreenFadeIn.Play();
     }
 
     private IEnumerator HintDialogue()
@@ -319,11 +328,21 @@ public class UIManager : MonoBehaviour
 
     public void OnContinueButtonClick()
     {
-        GameManager.Instance.SetupNextStage();
-        DialogueManager.Instance.EndDialogue();
-        DialogueManager.Instance.NextQuery(GameManager.CurrentStageDialogue);
         _stageCanvas.enabled = false;
         _stageAssessment.enabled = false;
+
+        if (GameManager.IsGameOver)
+        {
+            GameManager.OnNextTutorial(14);
+            GameManager.Instance.UpdateGameState(GameState.Transition);
+            return;
+        }
+        else
+        {
+            GameManager.Instance.SetupNextStage();
+            DialogueManager.Instance.EndDialogue();
+            DialogueManager.Instance.NextQuery(GameManager.CurrentStageDialogue);
+        }
     }
 
     public void OnStoryModeButtonClick()

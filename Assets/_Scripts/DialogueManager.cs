@@ -53,12 +53,21 @@ public class DialogueManager : MonoBehaviour
     {
         _isDialogueActive = false;
         OnDialogueOpen?.Invoke(false);
-        if (GameManager.CurrentState == GameState.Transition && _isQuery)
-        { 
-            GameManager.Instance.UpdateGameState(GameState.Progressing);
-            _isQuery = false;
-        }
         OnDialogueEnd?.Invoke();
+        if (GameManager.CurrentState == GameState.Transition)
+        { 
+            if (GameManager.IsGameOver)
+            {
+                GameManager.Instance.GameOver();
+                return;
+            }
+            if (_isQuery)
+            {
+                GameManager.Instance.UpdateGameState(GameState.Progressing);
+                _isQuery = false;
+            }
+        }
+        
     }
 
     public void NextSentence()

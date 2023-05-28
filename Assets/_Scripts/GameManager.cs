@@ -62,12 +62,12 @@ public class GameManager : MonoBehaviour
     private static bool _spawnPurpleCrystal = false;
     private static bool _spawnGoldCrystal = false;
     private static bool _spawnGreenCrystal = false;
+    private static bool _isGameOver = false;
     private static Vector3 _tileSpeed = Vector3.zero;
     private static Vector3 _transitionSpeed = new Vector3(0, 0, -40);
     private static Vector3 _boardLength;
     private static Answer _stageAnswer = Answer.Poor;
 
-    public static GameState CurrentState;
     public static event Action<GameState> OnStateChanged;
     public static event Action OnSetupNextStage;
     public static event Action<int> OnSpeedBonusChanged;
@@ -78,10 +78,12 @@ public class GameManager : MonoBehaviour
     public static event Action<int> OnStarGained;
     public static event Action OnMainMenuOpen;
     public static event Action OnMainMenuClose;
+    public static event Action OnGameOver;
 
     public delegate void NextDialogue(int index);
     public static NextDialogue OnNextTutorial;
 
+    public static GameState CurrentState;
     public static GameManager Instance;
     public static GameObject LastCrystal;
     public static float HighestDrawnRowHeight;
@@ -111,6 +113,7 @@ public class GameManager : MonoBehaviour
     public static bool SpawnPurpleCrystal => _spawnPurpleCrystal;
     public static bool SpawnGoldCrystal => _spawnGoldCrystal;
     public static bool SpawnGreenCrystal => _spawnGreenCrystal;
+    public static bool IsGameOver => _isGameOver;
     public static Answer StageAnswer => _stageAnswer;
     public static bool IsAudioEnabled
     {
@@ -385,7 +388,12 @@ public class GameManager : MonoBehaviour
         AudioManager.Instance.StarGain.Play(); // should probably be a different sound??
         //_stageProgress = _stageLength - 5; // should go directly to end of stage
         StageProgress = _stageLength;
-        OnNextTutorial?.Invoke(12);
+        if (_specialDialogueCounter == 2) 
+        {
+            _isGameOver = true;
+            OnNextTutorial?.Invoke(13); 
+        }
+        else { OnNextTutorial?.Invoke(12); }
         OnCompassionateVictory?.Invoke();
     }
 
@@ -403,7 +411,7 @@ public class GameManager : MonoBehaviour
         }
         else if (_lifetimeStars > 12 && _specialDialogueCounter == 2)
         {
-            SpecialDialogueCounter++;
+            //SpecialDialogueCounter++;
             return _stageDialogue_special.Dequeue();
         }
         else if (_lifetimeStars < 6)
@@ -544,6 +552,18 @@ public class GameManager : MonoBehaviour
         }
 
         OnStageEnd?.Invoke();
+    }
+
+    public void GameOver()
+    {
+        // do end stuff
+        // fade to black - DONE
+        // credits
+        // back to main menu (restart & fade out)
+        // unlock challenge mode
+        // reset story mode
+
+        OnGameOver?.Invoke();
     }
 
     public void OpenMainMenu()
