@@ -30,8 +30,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Image _loadingScreen;
     [SerializeField] private Image _blackScreenStart;
     [SerializeField] private Image _blackScreenEnd;
+    [SerializeField] private GameObject _endCreditsObj;
     [SerializeField] private Animation _blackScreenFadeOut;
     [SerializeField] private Animation _blackScreenFadeIn;
+    [SerializeField] private Animation _endCreditsAnimation;
 
     private WaitForSecondsRealtime _flashDelay = new WaitForSecondsRealtime(0.25f);
     private WaitForSecondsRealtime _sentenceDelay = new WaitForSecondsRealtime(1f);
@@ -309,6 +311,13 @@ public class UIManager : MonoBehaviour
     {
         _blackScreenEnd.enabled = true;
         _blackScreenFadeIn.Play();
+        EndCreditsRoll();
+    }
+
+    private void EndCreditsRoll()
+    {
+        _endCreditsObj.SetActive(true);
+        _endCreditsAnimation.Play();
     }
 
     private IEnumerator HintDialogue()

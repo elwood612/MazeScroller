@@ -557,8 +557,9 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         // do end stuff
+        //
         // fade to black - DONE
-        // credits
+        // credits - DONE
         // back to main menu (restart & fade out)
         // unlock challenge mode
         // reset story mode
