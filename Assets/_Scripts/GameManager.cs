@@ -20,9 +20,9 @@ public class GameManager : MonoBehaviour
     private static Object[] _lateStageDialogueObjects;
     private static Object[] _specialStageDialogueObjects;
     private static List<StageDialogue> _allStageDialogue = new List<StageDialogue>();
-    private static Queue<StageDialogue> _stageDialogue_early = new Queue<StageDialogue>();
-    private static Queue<StageDialogue> _stageDialogue_mid = new Queue<StageDialogue>();
-    private static Queue<StageDialogue> _stageDialogue_late = new Queue<StageDialogue>();
+    private static List<StageDialogue> _stageDialogue_early = new List<StageDialogue>();
+    private static List<StageDialogue> _stageDialogue_mid = new List<StageDialogue>();
+    private static List<StageDialogue> _stageDialogue_late = new List<StageDialogue>();
     private static Queue<StageDialogue> _stageDialogue_special = new Queue<StageDialogue>();
     private static StageDialogue _currentStageDialogue;
     private AnimationCurve _tileSpeedCurve;
@@ -320,9 +320,9 @@ public class GameManager : MonoBehaviour
         foreach (var dialogue in _allStageDialogueObjects)
         {
             _allStageDialogue.Add((StageDialogue)dialogue);
-            if (_earlyStageDialogueObjects.Contains(dialogue)) { _stageDialogue_early.Enqueue((StageDialogue)dialogue); }
-            else if (_midStageDialogueObjects.Contains(dialogue)) { _stageDialogue_mid.Enqueue((StageDialogue)dialogue); }
-            else if (_lateStageDialogueObjects.Contains(dialogue)) { _stageDialogue_late.Enqueue((StageDialogue)dialogue); }
+            if (_earlyStageDialogueObjects.Contains(dialogue)) { _stageDialogue_early.Add((StageDialogue)dialogue); }
+            else if (_midStageDialogueObjects.Contains(dialogue)) { _stageDialogue_mid.Add((StageDialogue)dialogue); }
+            else if (_lateStageDialogueObjects.Contains(dialogue)) { _stageDialogue_late.Add((StageDialogue)dialogue); }
             else if (_specialStageDialogueObjects.Contains(dialogue)) { _stageDialogue_special.Enqueue((StageDialogue)dialogue); }
         }
         _currentStageDialogue = SelectStageDialogue();
@@ -397,6 +397,14 @@ public class GameManager : MonoBehaviour
         OnCompassionateVictory?.Invoke();
     }
 
+    private StageDialogue RandomizeDialogue(ref List<StageDialogue> dialogue)
+    {
+        int index = Random.Range(0, dialogue.Count);
+        StageDialogue randomDialogue = dialogue[index];
+        dialogue.RemoveAt(index);
+        return randomDialogue;
+    }
+
     private StageDialogue SelectStageDialogue()
     {
         if (_lifetimeStars == 0 && _specialDialogueCounter == 0)
@@ -418,25 +426,25 @@ public class GameManager : MonoBehaviour
         {
             if (_stageDialogue_early.Count == 0)
             {
-                foreach (var dialogue in _earlyStageDialogueObjects) { _stageDialogue_early.Enqueue((StageDialogue)dialogue); }
+                foreach (var dialogue in _earlyStageDialogueObjects) { _stageDialogue_early.Add((StageDialogue)dialogue); }
             }
-            return _stageDialogue_early.Dequeue();
+            return RandomizeDialogue(ref _stageDialogue_early);
         }
         else if (_lifetimeStars >= 6 && _lifetimeStars < 11)
         {
             if (_stageDialogue_mid.Count == 0)
             {
-                foreach (var dialogue in _midStageDialogueObjects) { _stageDialogue_mid.Enqueue((StageDialogue)dialogue); }
+                foreach (var dialogue in _midStageDialogueObjects) { _stageDialogue_mid.Add((StageDialogue)dialogue); }
             }
-            return _stageDialogue_mid.Dequeue();
+            return RandomizeDialogue(ref _stageDialogue_mid);
         }
         else
         {
             if (_stageDialogue_late.Count == 0)
             {
-                foreach (var dialogue in _lateStageDialogueObjects) { _stageDialogue_late.Enqueue((StageDialogue)dialogue); }
+                foreach (var dialogue in _lateStageDialogueObjects) { _stageDialogue_late.Add((StageDialogue)dialogue); }
             }
-            return _stageDialogue_late.Dequeue();
+            return RandomizeDialogue(ref _stageDialogue_late);
         }
     } 
 

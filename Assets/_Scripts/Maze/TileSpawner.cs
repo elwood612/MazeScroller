@@ -272,44 +272,51 @@ public class TileSpawner : MonoBehaviour
     {
         yield return _crystalDelay;
         int level = 0;
+        int numCrystalsInOneRow = 0;
         foreach (Tile tile in row.EnabledTiles)
         {
-            if (tile.IsEnabled && !tile.IsCharged && !tile.AttachedCrystal)
+            if (!tile.IsEnabled || 
+                tile.IsCharged || 
+                tile.AttachedCrystal) 
+            { continue; }
+
+            level = 0;
+
+            if (Random.Range(0f, 1f) < _crystalSpawnChance || ++_minimumTileCounter > _minimumTileChance)
             {
-                if (Random.Range(0f, 1f) < _crystalSpawnChance || ++_minimumTileCounter > _minimumTileChance)
+                if (++_counterCrystalLevel > _triggerCrystalLevel && numCrystalsInOneRow == 0)
                 {
-                    if (++_counterCrystalLevel > _triggerCrystalLevel)
+                    _counterCrystalLevel = 0;
+                    _triggerCrystalLevel = Random.Range(3, 6);
+                    level++;
+                    if (Random.Range(0f, 1f) < 0.35f && GameManager.SpawnPurpleCrystal)
                     {
-                        _counterCrystalLevel = 0;
-                        _triggerCrystalLevel = Random.Range(3, 6);
                         level++;
-                        if (Random.Range(0f, 1f) < 0.35f && GameManager.SpawnPurpleCrystal)
-                        { 
-                            level++;
-                            if (Random.Range(0f, 1f) < 0.5f && GameManager.SpawnGoldCrystal) 
-                            { 
-                                level++;
-                            }
-                        }
-                        if (GameManager.SpawnGreenCrystal && _goodToSpawnGreen)
+                        if (Random.Range(0f, 1f) < 0.5f && GameManager.SpawnGoldCrystal)
                         {
-                            level = 4;
-                            _goodToSpawnGreen = false;
-                            if (_firstGreenCrystal) 
-                            { 
-                                _haveSpawnedFirstGreen = true;
-                                _firstGreenCrystal = false;
-                            }
+                            level++;
                         }
                     }
-                    Crystal newCrystal = _crystalPool.Get();
-                    newCrystal.transform.SetParent(tile.transform, false);
-                    newCrystal.Initialize(level, _crystalPool);
-                    tile.AttachedCrystal = newCrystal;
-                    _minimumTileCounter = 0;
+                    if (GameManager.SpawnGreenCrystal && _goodToSpawnGreen)
+                    {
+                        level = 4;
+                        _goodToSpawnGreen = false;
+                        if (_firstGreenCrystal)
+                        {
+                            _haveSpawnedFirstGreen = true;
+                            _firstGreenCrystal = false;
+                        }
+                    }
                 }
+                Crystal newCrystal = _crystalPool.Get();
+                newCrystal.transform.SetParent(tile.transform, false);
+                newCrystal.Initialize(level, _crystalPool);
+                tile.AttachedCrystal = newCrystal;
+                _minimumTileCounter = 0;
+                numCrystalsInOneRow++;
             }
         }
+        if (numCrystalsInOneRow > 1 && level > 0) Debug.Log("Spawning 2 crystals in one row"); // TO DELETE ONCE WE'RE SURE THIS DOESN'T HAPPEN ANYMORE
     }
 
     private IEnumerator SpawnSpecificCrystal(Row row, int level)
