@@ -10,7 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f89513250b17cb949a8c273e46c8e857, type: 3}
-  m_Name: Tutorial8
+  m_Name: Tutorial05
   m_EditorClassIdentifier: 
   _lines:
-  - There they are again, those green crystals! Grab them, won't you?
+  - Blue crystals will fill up that progress bar even more than white ones.
+  - All right, let's keep going and get more crystals.
+  - I need that star!

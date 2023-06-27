@@ -27,17 +27,17 @@ public class Row : MonoBehaviour
         set => _isHighestDrawnRow = value;
     }
 
-    private void OnEnable()
-    {
-        GameManager.OnStarGained += EndTutorial;
-        GameManager.OnSetupNextStage += ResetTutorial;
-    }
+    //private void OnEnable()
+    //{
+    //    GameManager.OnStarGained += EndTutorial;
+    //    GameManager.OnSetupNextStage += ResetTutorial;
+    //}
 
-    private void OnDisable()
-    {
-        GameManager.OnStarGained -= EndTutorial;
-        GameManager.OnSetupNextStage -= ResetTutorial;
-    }
+    //private void OnDisable()
+    //{
+    //    GameManager.OnStarGained -= EndTutorial;
+    //    GameManager.OnSetupNextStage -= ResetTutorial;
+    //}
 
     private void Update()
     {
@@ -52,7 +52,7 @@ public class Row : MonoBehaviour
         else if (other.CompareTag("RowQA")) 
         { 
             CheckRow();
-            if (_hasSetupBeenRun && _endTutorial)
+            if (_hasSetupBeenRun && !GameManager.IsTutorialOngoing)
             {
                 GameManager.StageProgress++;
             }
@@ -131,16 +131,16 @@ public class Row : MonoBehaviour
         }
     }
 
-    private void EndTutorial(int unused) 
-    {
-        if (!_endTutorial)
-        {
-            _endTutorial = true;
-        }
-    }
+    //private void EndTutorial(int unused) 
+    //{
+    //    if (!_endTutorial)
+    //    {
+    //        _endTutorial = true;
+    //    }
+    //}
 
-    private void ResetTutorial()
-    {
-        _endTutorial = !GameManager.DoTutorial;
-    }
+    //private void ResetTutorial()
+    //{
+    //    _endTutorial = !GameManager.DoTutorialOld;
+    //}
 }

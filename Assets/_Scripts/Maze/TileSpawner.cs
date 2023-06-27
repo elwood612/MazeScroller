@@ -132,7 +132,7 @@ public class TileSpawner : MonoBehaviour
 
             }
 
-            if (!GameManager.DoTutorial)
+            if (!GameManager.IsTutorialOngoing)
             {
                 if (++_counterColorSpawn > _triggerColorSpawn)
                 {

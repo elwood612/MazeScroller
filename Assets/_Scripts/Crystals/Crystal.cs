@@ -83,38 +83,35 @@ public class Crystal : MonoBehaviour
             }
 
             #region Tutorial Stuff
-            if (GameManager.DoTutorial)
+            if (_firstCrystal)
             {
-                if (_firstCrystal)
-                {
-                    _firstCrystal = false;
-                    _secondCrystal = true;
-                    _firstBlueCrystal = true;
-                    OnFirstCrystal?.Invoke();
-                    GameManager.OnNextTutorial?.Invoke(1);
-                    return;
-                }
-                if (_firstBlueCrystal && _initialLevel == 1)
-                {
-                    _firstBlueCrystal = false;
-                    _thirdCrystal = true;
-                    OnFirstBlueCrystal?.Invoke();
-                    GameManager.OnNextTutorial?.Invoke(4);
-                    return;
-                }
-                if (_thirdCrystal && _initialLevel == 1 && _destroyed)
-                {
-                    _thirdCrystal = false;
-                    OnFirstBlueCrystalPopped?.Invoke();
-                    GameManager.OnNextTutorial?.Invoke(5);
-                    return;
-                }
-                if (_secondCrystal)
-                {
-                    GameManager.OnNextTutorial?.Invoke(2);
-                    _secondCrystal = false;
-                    OnSecondCrystal?.Invoke();
-                }
+                _firstCrystal = false;
+                _secondCrystal = true;
+                _firstBlueCrystal = true;
+                OnFirstCrystal?.Invoke();
+                GameManager.OnNextTutorial?.Invoke(1);
+                return;
+            }
+            if (_firstBlueCrystal && _initialLevel == 1)
+            {
+                _firstBlueCrystal = false;
+                _thirdCrystal = true;
+                OnFirstBlueCrystal?.Invoke();
+                GameManager.OnNextTutorial?.Invoke(4);
+                return;
+            }
+            if (_thirdCrystal && _initialLevel == 1 && _destroyed)
+            {
+                _thirdCrystal = false;
+                OnFirstBlueCrystalPopped?.Invoke();
+                GameManager.OnNextTutorial?.Invoke(5);
+                return;
+            }
+            if (_secondCrystal)
+            {
+                GameManager.OnNextTutorial?.Invoke(2);
+                _secondCrystal = false;
+                OnSecondCrystal?.Invoke();
             }
             #endregion
         }
@@ -163,7 +160,7 @@ public class Crystal : MonoBehaviour
         _particlesExplosion.Play();
         _word.gameObject.SetActive(true);
         _wordAnimation.Play();
-        if (GameManager.DoTutorial) { ScoreBonus = 3; }
+        if (GameManager.IsTutorialOngoing) { ScoreBonus = 3; }
 
         if (_initialLevel < 4)
         {
@@ -244,7 +241,7 @@ public class Crystal : MonoBehaviour
     private void ResetStage()
     {
         _firstGreenCrystal = true;
-        if (GameManager.DoTutorial)
+        if (GameManager.IsTutorialOngoing)
         {
             _firstCrystal = true;
             _secondCrystal = false;

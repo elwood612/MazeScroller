@@ -10,10 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f89513250b17cb949a8c273e46c8e857, type: 3}
-  m_Name: Tutorial6
+  m_Name: Tutorial04
   m_EditorClassIdentifier: 
   _lines:
-  - Excellent work, I got the star! I'm Milo, by the way.
-  - This stage is almost over, and we'll be able to move on to the next one now.
-  - 'It''s always possible to get more stars though. '
-  - Think you can get me a bonus star before the end of the stage?
+  - See how this crystal had a shield around it?
+  - I can break shields the same way I break crystals.
+  - 'But now I need to hit this crystal again to get rid of it. '
+  - Go ahead and make me hit this same crystal again.
+  - Remember I'll take the shortest route to wherever you draw.

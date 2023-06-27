@@ -9,6 +9,8 @@ using Random = UnityEngine.Random;
 public class GameManager : MonoBehaviour
 {
     #region Variables
+    [SerializeField] private Dialogue[] _allTutorialDialogue;
+
     [SerializeField] private GM_Settings _settings;
     [SerializeField] private GameObject _runnerPrefab;
     [SerializeField] private bool _debugMode;
@@ -56,8 +58,8 @@ public class GameManager : MonoBehaviour
     private static float _tileColorHue = 0;
     private static bool _firstStarGained = true;
     private static bool _resetStoryMode = false;
-    private static bool _isAudioEnabled = false;
-    private static bool _isMusicEnabled = false;
+    private static bool _isAudioEnabled = true;
+    private static bool _isMusicEnabled = true;
     private static bool _needDialogueBoxHint = true;
     private static bool _spawnPurpleCrystal = false;
     private static bool _spawnGoldCrystal = false;
@@ -90,8 +92,10 @@ public class GameManager : MonoBehaviour
     public static float RunnerHeight;
     public static int NumberOfRows;
     public static bool IsRunnerInTransition = false;
-    public static bool DoTutorial = true;
     public static bool IsStageOver = false;
+    public static bool[] DoTutorial;
+    public static bool IsTutorialOngoing => DoTutorial[6];
+    //public static bool DoTutorialOld = true;
 
     public GameObject CurrentRunner => _currentRunner;
     public GM_Settings GameSettings => _settings;
@@ -115,35 +119,21 @@ public class GameManager : MonoBehaviour
     public static bool SpawnGreenCrystal => _spawnGreenCrystal;
     public static bool IsGameOver => _isGameOver;
     public static Answer StageAnswer => _stageAnswer;
+    public Dialogue[] AllTutorialDialogue => _allTutorialDialogue;
     public static bool IsAudioEnabled
     {
         get => _isAudioEnabled;
-        set
-        {
-            _isAudioEnabled = value;
-            PlayerPrefs.SetInt("IsAudioEnabled", _isAudioEnabled ? 1 : 0);
-            PlayerPrefs.Save();
-        }
+        set => _isAudioEnabled = value;
     }
     public static bool IsMusicEnabled
     {
         get => _isMusicEnabled;
-        set
-        {
-            _isMusicEnabled = value;
-            PlayerPrefs.SetInt("IsMusicEnabled", _isMusicEnabled ? 1 : 0);
-            PlayerPrefs.Save();
-        }
+        set => _isMusicEnabled = value;
     }
     public static bool NeedDialogueBoxHint
     {
         get => _needDialogueBoxHint;
-        set
-        {
-            _needDialogueBoxHint = value;
-            PlayerPrefs.SetInt("NeedDialogueBoxHint", _needDialogueBoxHint ? 1 : 0);
-            PlayerPrefs.Save();
-        }
+        set => _needDialogueBoxHint = value;
     }
     public static bool ResetStoryMode
     {
@@ -172,12 +162,6 @@ public class GameManager : MonoBehaviour
                 {
                     _stageProgress = 0;
                     IsStageOver = true;
-                    if (DoTutorial)
-                    { 
-                        DoTutorial = false;
-                        PlayerPrefs.SetInt("DoTutorial", 0);
-                        PlayerPrefs.Save();
-                    }
                     Instance.UpdateGameState(GameState.Transition);
                 }
             }
@@ -225,7 +209,7 @@ public class GameManager : MonoBehaviour
         {
             _acquiredStars = value;
             AudioManager.Instance.StarGain.Play();
-            if (_firstStarGained && DoTutorial)
+            if (_firstStarGained)
             {
                 _firstStarGained = false;
                 OnNextTutorial?.Invoke(6);
@@ -240,20 +224,12 @@ public class GameManager : MonoBehaviour
     public static int LifetimeStars
     {
         get => _lifetimeStars;
-        set
-        {
-            _lifetimeStars = value;
-            PlayerPrefs.SetInt("LifetimeStars", value);
-        }
+        set => _lifetimeStars = value;
     }
     public static int SpecialDialogueCounter
     {
         get => _specialDialogueCounter;
-        set
-        {
-            _specialDialogueCounter = value;
-            PlayerPrefs.SetInt("SpecialDialogueCounter", value);
-        }
+        set => _specialDialogueCounter = value;
     }
     #endregion
 
@@ -263,9 +239,9 @@ public class GameManager : MonoBehaviour
         if (Instance == null) { Instance = this; }
         else { Destroy(this); }
 
-        LoadSettings();
-        LoadPlayerPrefs();
+        LoadLocalSettings();
         LoadStageDialogue();
+        SaveData.LoadPlayerSettings();
 
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 60;
@@ -273,7 +249,7 @@ public class GameManager : MonoBehaviour
         if (_debugMode)
         {
             _isMusicEnabled = false;
-            DoTutorial = false; 
+            for (int i = 0; i < DoTutorial.Length; i++) { DoTutorial[i] = false; }
         }
     }
 
@@ -291,23 +267,18 @@ public class GameManager : MonoBehaviour
         if (_decreaseSpeedBonus && _triggerBonusStep && !DialogueManager.Instance.IsDialogueActive) { StartCoroutine(BonusDecrease()); }
     }
 
-    private void LoadSettings()
+    private void LoadLocalSettings()
     {
         _tileSpeedCurve = _settings.TileSpeedCurve;
         _runnerSpeedCurve = _settings.RunnerSpeedCurve;
         _runnerTransitionCurve = _settings.RunnerTransitionCurve;
         _tileSpawnerWidthCurve = _settings.TileSpawnerWidthCurve;
         _tileLength = SampleTileTransform.GetComponent<BoxCollider>().bounds.size.x;
-    }
-
-    private void LoadPlayerPrefs()
-    {
-        _lifetimeStars = PlayerPrefs.GetInt("LifetimeStars", 0);
-        _specialDialogueCounter = PlayerPrefs.GetInt("SpecialDialogueCounter", 0);
-        DoTutorial = PlayerPrefs.GetInt("DoTutorial", 1) == 0 ? false : true;
-        _isAudioEnabled = PlayerPrefs.GetInt("IsAudioEnabled", 1) == 0 ? false : true;
-        _isMusicEnabled = PlayerPrefs.GetInt("IsMusicEnabled", 1) == 0 ? false : true;
-        _needDialogueBoxHint = PlayerPrefs.GetInt("NeedDialogueBoxHint", 1) == 0 ? false : true;
+        DoTutorial = new bool[_allTutorialDialogue.Length];
+        for (int i = 0; i < _allTutorialDialogue.Length; i++)
+        {
+            DoTutorial[i] = true;
+        }
     }
 
     private void LoadStageDialogue()
@@ -317,6 +288,7 @@ public class GameManager : MonoBehaviour
         _midStageDialogueObjects = Resources.LoadAll("StageDialogue/mid", typeof (StageDialogue));
         _lateStageDialogueObjects = Resources.LoadAll("StageDialogue/late", typeof (StageDialogue));
         _specialStageDialogueObjects = Resources.LoadAll("StageDialogue/special", typeof (StageDialogue));
+
         foreach (var dialogue in _allStageDialogueObjects)
         {
             _allStageDialogue.Add((StageDialogue)dialogue);
@@ -325,6 +297,7 @@ public class GameManager : MonoBehaviour
             else if (_lateStageDialogueObjects.Contains(dialogue)) { _stageDialogue_late.Add((StageDialogue)dialogue); }
             else if (_specialStageDialogueObjects.Contains(dialogue)) { _stageDialogue_special.Enqueue((StageDialogue)dialogue); }
         }
+
         _currentStageDialogue = SelectStageDialogue();
     }
 
@@ -477,7 +450,7 @@ public class GameManager : MonoBehaviour
 
     public static void AddBoardMotion(Transform t)
     {
-        if (DialogueManager.Instance.IsDialogueActive && DoTutorial) { return; }
+        if (DialogueManager.Instance.IsTutorialDialogueActive) { return; }
 
         if (IsRunnerInTransition)
         {
@@ -520,7 +493,7 @@ public class GameManager : MonoBehaviour
         //_spawnGreenCrystal = _currentStageDialogue.CompassionateAnswer != ""; // Keep this!
         _spawnGreenCrystal = true;
 
-        if (DoTutorial)
+        if (IsTutorialOngoing)
         {
             _tileColorHue = 0.552778f;
             _requiredStars = 1;
@@ -539,7 +512,7 @@ public class GameManager : MonoBehaviour
     public void EndStage()
     {
         IsStageOver = false;
-        PlayerPrefs.Save();
+        SaveData.SavePlayerSettings();
 
         if (_acquiredStars < _requiredStars)
         {
@@ -587,10 +560,17 @@ public class GameManager : MonoBehaviour
 
     public void Quit()
     {
+        SaveData.SavePlayerSettings();
+
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #else
         Application.Quit();
 #endif
+    }
+
+    public void OnApplicationQuit()
+    {
+        SaveData.SavePlayerSettings();
     }
 }

@@ -1,5 +1,55 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2136442852
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2136442853}
+  - component: {fileID: 2136442854}
+  m_Layer: 0
+  m_Name: SaveData
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2136442853
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2136442852}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8584702339654192012}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2136442854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2136442852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdc0a40cd890af841af344a55700cb37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SavedLifetimeStars: 0
+  SavedSpecialDialogueCounter: 0
+  SavedDoTutorial: 0
+  SavedIsAudioEnabled: 0
+  SavedIsMusicEnabled: 0
+  SavedNeedDialogueBoxHint: 0
 --- !u!1 &6228120420132079370
 GameObject:
   m_ObjectHideFlags: 0
@@ -75,6 +125,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 9011838981245403261}
+  - {fileID: 2136442853}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -90,7 +141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d031891b60faa046ac8e0467886125c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _debugSetTileDestroyChance: 10
   _settings: {fileID: 11400000, guid: 10b9349dccdfd0b4e867c3090042f14c, type: 2}
-  _runnerPrefab: {fileID: 2663821295767816422, guid: 3d6927fba103df24d8707d17b54e757e, type: 3}
-  DebugStartTilePosition: 8
+  _runnerPrefab: {fileID: 2663821295767816422, guid: 796683f868607474e9991dda0ce6094f, type: 3}
+  _debugMode: 1
+  SampleTileTransform: {fileID: 0}

@@ -7,7 +7,7 @@ public class Developer
     [MenuItem("Developer/Clear Saves")]
     public static void ClearSaves()
     {
-        PlayerPrefs.DeleteAll();
+        SaveData.ClearAllSettings();
         Debug.Log("All saves cleared");
     }
 #endif

@@ -5,11 +5,12 @@ using Random = UnityEngine.Random;
 
 public class DialogueManager : MonoBehaviour
 {
-    [SerializeField] private Dialogue[] _tutorialDialogue;
+    //[SerializeField] private Dialogue[] _tutorialDialogue;
 
     private Queue<string> _currentDialogue = new Queue<string>();
     private string _currentAnswer;
     private bool _isDialogueActive = false;
+    private bool _isTutorialDialogueActive = false;
     private bool _isQuery = false;
     private int _tutorialDialogueIndex = 0;
     private Animator _runnerDialogueAnimator;
@@ -20,6 +21,7 @@ public class DialogueManager : MonoBehaviour
     public static event Action OnDialogueEnd;
     public static event Action<bool> OnDialogueOpen;
     public bool IsDialogueActive => _isDialogueActive;
+    public bool IsTutorialDialogueActive => _isTutorialDialogueActive;
 
     private void Awake()
     {
@@ -52,6 +54,7 @@ public class DialogueManager : MonoBehaviour
     public void EndDialogue()
     {
         _isDialogueActive = false;
+        _isTutorialDialogueActive = false;
         OnDialogueOpen?.Invoke(false);
         OnDialogueEnd?.Invoke();
         if (GameManager.CurrentState == GameState.Transition)
@@ -82,8 +85,12 @@ public class DialogueManager : MonoBehaviour
 
     public void NextTutorialDialogue(int index)
     {
-        _tutorialDialogueIndex = index;
-        StartDialogue(_tutorialDialogue[index].Lines);
+        if (GameManager.DoTutorial[index]) 
+        {
+            _isTutorialDialogueActive = true;
+            StartDialogue(GameManager.Instance.AllTutorialDialogue[index].Lines);
+            GameManager.DoTutorial[index] = false;
+        }
     }
 
     public void NextQuery(StageDialogue stageDialogue)

@@ -10,11 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f89513250b17cb949a8c273e46c8e857, type: 3}
-  m_Name: Tutorial4
+  m_Name: Tutorial09
   m_EditorClassIdentifier: 
   _lines:
-  - See how this crystal had a shield around it?
-  - I can break shields the same way I break crystals.
-  - 'But now I need to hit this crystal again to get rid of it. '
-  - Go ahead and make me hit this same crystal again.
-  - Remember I'll take the shortest route to wherever you draw.
+  - Something started to happen! Try staying IN the crystal next time...

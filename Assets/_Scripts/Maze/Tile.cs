@@ -72,8 +72,6 @@ public class Tile : MonoBehaviour
         _newMaterial = new Material(_tileBase);
         _tileRenderer.material = _newMaterial;
         DisableTile();
-        if (GameManager.DoTutorial) { _firstChargedTile = true; }
-        else {  _firstChargedTile = false; }
     }
 
     private void OnEnable()
@@ -150,7 +148,7 @@ public class Tile : MonoBehaviour
             }
         }
 
-        if (_firstChargedTile && GameManager.DoTutorial)
+        if (_firstChargedTile)
         {
             _firstChargedTile = false;
             GameManager.OnNextTutorial?.Invoke(3);

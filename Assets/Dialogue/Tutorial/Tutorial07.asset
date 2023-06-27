@@ -10,9 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f89513250b17cb949a8c273e46c8e857, type: 3}
-  m_Name: Tutorial2
+  m_Name: Tutorial07
   m_EditorClassIdentifier: 
   _lines:
-  - Good, you're getting the hang of this!
-  - By the way, if you see any glowing white tiles, DO NOT path over them please.
-    They hurt!
+  - What is that crystal, I wonder? I've never seen one of those before...

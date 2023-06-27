@@ -9787,19 +9787,7 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
-      propertyPath: _demoMode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: _debugMode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
-      propertyPath: _runnerPrefab
-      value: 
-      objectReference: {fileID: 2663821295767816422, guid: 796683f868607474e9991dda0ce6094f, type: 3}
-    - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
-      propertyPath: _startingStage
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
@@ -9807,61 +9795,65 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1168911950}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
-      propertyPath: _sampleTileTransform
-      value: 
-      objectReference: {fileID: 1168911950}
-    - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
-      propertyPath: _startingInstability
-      value: 0
+      propertyPath: _allTutorialDialogue.Array.size
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
-      propertyPath: Parameters.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
-      propertyPath: Parameters.Array.data[0]
+      propertyPath: _allTutorialDialogue.Array.data[0]
       value: 
-      objectReference: {fileID: 11400000, guid: 04007f7de1ac16440831166aa44a057c, type: 2}
+      objectReference: {fileID: 11400000, guid: 158dd174785c472448a8e93555f63902, type: 2}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
-      propertyPath: Parameters.Array.data[1]
+      propertyPath: _allTutorialDialogue.Array.data[1]
       value: 
-      objectReference: {fileID: 11400000, guid: 44166dc49bfc90d4596e5364990a6ecf, type: 2}
+      objectReference: {fileID: 11400000, guid: e56767a67c3bc6c47babd606d277ab40, type: 2}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
-      propertyPath: Parameters.Array.data[2]
+      propertyPath: _allTutorialDialogue.Array.data[2]
       value: 
-      objectReference: {fileID: 11400000, guid: 88f3c7b5b8b46e54dacd9f18f496247f, type: 2}
+      objectReference: {fileID: 11400000, guid: f145757d109c2a5468fcd5523ead9b08, type: 2}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
-      propertyPath: Parameters.Array.data[3]
+      propertyPath: _allTutorialDialogue.Array.data[3]
       value: 
-      objectReference: {fileID: 11400000, guid: 01a487797d0d6af4baa90fc03b7ae455, type: 2}
+      objectReference: {fileID: 11400000, guid: 6459ef19d3037da4e880e2bbaeb63854, type: 2}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
-      propertyPath: StageDialogue.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
-      propertyPath: StageDialogues.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
-      propertyPath: StageParameters.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
-      propertyPath: StageDialogue.Array.data[0]
+      propertyPath: _allTutorialDialogue.Array.data[4]
       value: 
-      objectReference: {fileID: 11400000, guid: 7401b936272bf8b4088d241bbe0f9e2e, type: 2}
+      objectReference: {fileID: 11400000, guid: 2cfdbf21cdf99b446a916b9fdb58d7fe, type: 2}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
-      propertyPath: StageDialogues.Array.data[0]
+      propertyPath: _allTutorialDialogue.Array.data[5]
       value: 
-      objectReference: {fileID: 11400000, guid: 7401b936272bf8b4088d241bbe0f9e2e, type: 2}
+      objectReference: {fileID: 11400000, guid: 2369b16fb3708a6478646c6483d0b28e, type: 2}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
-      propertyPath: StageParameters.Array.data[0]
+      propertyPath: _allTutorialDialogue.Array.data[6]
       value: 
-      objectReference: {fileID: 11400000, guid: 7eb1d0738e51f65489addd044af83429, type: 2}
+      objectReference: {fileID: 11400000, guid: 537ef16f570878644afce9ab86ead853, type: 2}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
-      propertyPath: StageParameters.Array.data[1]
+      propertyPath: _allTutorialDialogue.Array.data[7]
       value: 
-      objectReference: {fileID: 11400000, guid: 01a487797d0d6af4baa90fc03b7ae455, type: 2}
+      objectReference: {fileID: 11400000, guid: 3187d6829ed68e54b848be6dc16ea597, type: 2}
+    - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
+      propertyPath: _allTutorialDialogue.Array.data[8]
+      value: 
+      objectReference: {fileID: 11400000, guid: 9a4b066e18d499c4297a68e63b741997, type: 2}
+    - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
+      propertyPath: _allTutorialDialogue.Array.data[9]
+      value: 
+      objectReference: {fileID: 11400000, guid: cf54ce328a60ab54a935d73c5991038c, type: 2}
+    - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
+      propertyPath: _allTutorialDialogue.Array.data[10]
+      value: 
+      objectReference: {fileID: 11400000, guid: 8710999233016e44a81a915823ae54d4, type: 2}
+    - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
+      propertyPath: _allTutorialDialogue.Array.data[11]
+      value: 
+      objectReference: {fileID: 11400000, guid: f5d165184bf86434188c2b1da548ecfb, type: 2}
+    - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
+      propertyPath: _allTutorialDialogue.Array.data[12]
+      value: 
+      objectReference: {fileID: 11400000, guid: 187dc130cce36d445bac8436b28baa2c, type: 2}
+    - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
+      propertyPath: _allTutorialDialogue.Array.data[13]
+      value: 
+      objectReference: {fileID: 11400000, guid: 308eeec7066c8834a9ac6d78efdccc7b, type: 2}
     - target: {fileID: 8584702339654192015, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: m_Name
       value: GameManager
