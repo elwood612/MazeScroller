@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05e5f14c5d7212c4d989ab449795f473, type: 3}
+  m_Name: math 1
+  m_EditorClassIdentifier: 
+  _minimumStars: 0
+  _exact: 0
+  _query: why is 1/3 bigger than 1/4
+  _comments: []
+  _answer: One-third is bigger than one-fourth because when a whole is divided into
+    three equal parts, each part is larger than when the same whole is divided into
+    four equal parts. In other words, the denominator (the bottom number) represents
+    the number of equal parts that the whole is divided into, and the smaller the
+    denominator, the larger the fraction.

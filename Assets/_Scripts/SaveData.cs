@@ -7,7 +7,9 @@ public class SaveData : MonoBehaviour
 
     public int SavedLifetimeStars;
     public int SavedSpecialDialogueCounter;
-    public bool SavedDoTutorialOld;
+    public int SavedEarlyDialogueCounter;
+    public int SavedMidDialogueCounter;
+    public int SavedLateDialogueCounter;
     public bool SavedIsAudioEnabled;
     public bool SavedIsMusicEnabled;
     public bool SavedNeedDialogueBoxHint;
@@ -24,12 +26,15 @@ public class SaveData : MonoBehaviour
 
     public static void SavePlayerSettings()
     {
-        Instance.SavedDoTutorial = GameManager.DoTutorial;
         Instance.SavedLifetimeStars = GameManager.LifetimeStars;
         Instance.SavedSpecialDialogueCounter = GameManager.SpecialDialogueCounter;
+        Instance.SavedEarlyDialogueCounter = GameManager.EarlyDialogueCounter;
+        Instance.SavedMidDialogueCounter = GameManager.MidDialogueCounter;
+        Instance.SavedLateDialogueCounter = GameManager.LateDialogueCounter;
         Instance.SavedIsAudioEnabled = GameManager.IsAudioEnabled;
         Instance.SavedIsMusicEnabled = GameManager.IsMusicEnabled;
         Instance.SavedNeedDialogueBoxHint = GameManager.NeedDialogueBoxHint;
+        Instance.SavedDoTutorial = GameManager.DoTutorial;
 
         File.WriteAllText(Application.persistentDataPath + SaveFilename, JsonUtility.ToJson(Instance));
     }
@@ -39,12 +44,15 @@ public class SaveData : MonoBehaviour
         if (!File.Exists(Application.persistentDataPath + SaveFilename)) { return; }
         JsonUtility.FromJsonOverwrite(File.ReadAllText(Application.persistentDataPath + SaveFilename), Instance);
 
-        GameManager.DoTutorial = Instance.SavedDoTutorial;
         GameManager.LifetimeStars = Instance.SavedLifetimeStars;
         GameManager.SpecialDialogueCounter = Instance.SavedSpecialDialogueCounter;
+        GameManager.EarlyDialogueCounter = Instance.SavedEarlyDialogueCounter;
+        GameManager.MidDialogueCounter = Instance.SavedMidDialogueCounter;
+        GameManager.LateDialogueCounter = Instance.SavedLateDialogueCounter;
         GameManager.IsAudioEnabled = Instance.SavedIsAudioEnabled;
         GameManager.IsMusicEnabled = Instance.SavedIsMusicEnabled;
         GameManager.NeedDialogueBoxHint = Instance.SavedNeedDialogueBoxHint;
+        GameManager.DoTutorial = Instance.SavedDoTutorial;
     }
 
     public static void ClearAllSettings()

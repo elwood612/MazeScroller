@@ -3602,7 +3602,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Excellent answer!
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4d232bc92b5f33d438f6b8d08e4cf08f, type: 2}
   m_sharedMaterial: {fileID: 2143256654892933006, guid: 4d232bc92b5f33d438f6b8d08e4cf08f, type: 2}
@@ -3629,7 +3629,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 48
+  m_fontSize: 36
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -9795,9 +9795,89 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1168911950}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
+      propertyPath: _midStageDialogue.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
+      propertyPath: _lateStageDialogue.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
+      propertyPath: _earlyStageDialogue.Array.size
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: _allTutorialDialogue.Array.size
       value: 14
       objectReference: {fileID: 0}
+    - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
+      propertyPath: _midStageDialogue.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: a1a71677522d2a54594cd7cb4b4d5331, type: 2}
+    - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
+      propertyPath: _midStageDialogue.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 005ca20f99f4ded45b164853e9a86bc2, type: 2}
+    - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
+      propertyPath: _midStageDialogue.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: d730dae15955be94e8a9e8d0d270e149, type: 2}
+    - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
+      propertyPath: _lateStageDialogue.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 19aeb0cff2118ee43bc5e42114091e7f, type: 2}
+    - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
+      propertyPath: _lateStageDialogue.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: efbf41a29e9d18c419aed8cace5071b5, type: 2}
+    - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
+      propertyPath: _lateStageDialogue.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: 894696ce8a612aa4b849468f2b43b67c, type: 2}
+    - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
+      propertyPath: _specialStageDialogue.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
+      propertyPath: _earlyStageDialogue.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 5a45cf9cc474e7c44a5cad38adbccd1f, type: 2}
+    - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
+      propertyPath: _earlyStageDialogue.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: b178d10357aff594aa9fa33e6ec46ebb, type: 2}
+    - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
+      propertyPath: _earlyStageDialogue.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: 1636ad6d80f5ae64d85599e79eaa9ff3, type: 2}
+    - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
+      propertyPath: _earlyStageDialogue.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: 67438242c926b2b43987721982b5dc4e, type: 2}
+    - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
+      propertyPath: _earlyStageDialogue.Array.data[4]
+      value: 
+      objectReference: {fileID: 11400000, guid: cfd9f4b6d9ec65a4cbd968f7bed93178, type: 2}
+    - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
+      propertyPath: _earlyStageDialogue.Array.data[5]
+      value: 
+      objectReference: {fileID: 11400000, guid: 628baeed788636a4aa94fe4636bf8b93, type: 2}
+    - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
+      propertyPath: _earlyStageDialogue.Array.data[6]
+      value: 
+      objectReference: {fileID: 11400000, guid: 105284b8136d5704583e5aa5e98d0bd3, type: 2}
+    - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
+      propertyPath: _earlyStageDialogue.Array.data[7]
+      value: 
+      objectReference: {fileID: 11400000, guid: 66f20902d86ce75409eda33427affd21, type: 2}
+    - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
+      propertyPath: _earlyStageDialogue.Array.data[8]
+      value: 
+      objectReference: {fileID: 11400000, guid: 67960a5cf98c150488df89a5d3f81b75, type: 2}
+    - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
+      propertyPath: _earlyStageDialogue.Array.data[9]
+      value: 
+      objectReference: {fileID: 11400000, guid: fb134bc9d499baf459e0449ce17b169d, type: 2}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: _allTutorialDialogue.Array.data[0]
       value: 
@@ -9839,6 +9919,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: cf54ce328a60ab54a935d73c5991038c, type: 2}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
+      propertyPath: _earlyStageDialogue.Array.data[10]
+      value: 
+      objectReference: {fileID: 11400000, guid: e2541394b22548747aa77fddac9c17b5, type: 2}
+    - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: _allTutorialDialogue.Array.data[10]
       value: 
       objectReference: {fileID: 11400000, guid: 8710999233016e44a81a915823ae54d4, type: 2}
@@ -9854,6 +9938,18 @@ PrefabInstance:
       propertyPath: _allTutorialDialogue.Array.data[13]
       value: 
       objectReference: {fileID: 11400000, guid: 308eeec7066c8834a9ac6d78efdccc7b, type: 2}
+    - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
+      propertyPath: _specialStageDialogue.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: ee9c8d81e907d6a4d8a69793e498526d, type: 2}
+    - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
+      propertyPath: _specialStageDialogue.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 635aedd239a9d1047b29f6e647488ae2, type: 2}
+    - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
+      propertyPath: _specialStageDialogue.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: 0eb1023a807c06d4f82d68b90221fe6c, type: 2}
     - target: {fileID: 8584702339654192015, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: m_Name
       value: GameManager
