@@ -66,7 +66,7 @@ public class GameManager : MonoBehaviour
     private static Vector3 _transitionSpeed = new Vector3(0, 0, -40);
     private static Vector3 _boardLength;
     private static Answer _stageAnswer = Answer.Poor;
-    private static StageDialogueStages _currentStageDialogueStage = StageDialogueStages.Special;
+    private static StageDialogueTypes _currentStageDialogueType = StageDialogueTypes.Start;
 
     public static event Action<GameState> OnStateChanged;
     public static event Action OnSetupNextStage;
@@ -239,7 +239,7 @@ public class GameManager : MonoBehaviour
         // order is important here
         LoadDefaultSettings();
         SaveData.LoadPlayerSettings();
-        UpdateStageDialogueStage();
+        NextStageDialogueType();
         LoadStageDialogue();
 
         QualitySettings.vSyncCount = 0;
@@ -353,68 +353,81 @@ public class GameManager : MonoBehaviour
         OnCompassionateVictory?.Invoke();
     }
 
-    // this is a goddam mess and I'm too tired to sort it out
-    private void UpdateStageDialogueStage()
+    private void IncrementStageDialogueCounters()
     {
-        if (_currentStageDialogueStage == StageDialogueStages.Special)
+        switch (_currentStageDialogueType)
         {
-
-        }
-        if ((_lifetimeStars <= 8 && SpecialDialogueCounter == 1) ||
-            (_lifetimeStars > 8 && SpecialDialogueCounter == 2) ||
-            (_lifetimeStars > 12 && SpecialDialogueCounter == 3))
-        {
-            SpecialDialogueCounter++;
-            _currentStageDialogueStage = StageDialogueStages.Special;
-        }
-        else if (_lifetimeStars <= 5)
-        {
-            EarlyDialogueCounter++;
-            _currentStageDialogueStage = StageDialogueStages.Early;
-        }
-        else if (_lifetimeStars > 5 && _lifetimeStars <= 10)
-        {
-            MidDialogueCounter++;
-            _currentStageDialogueStage = StageDialogueStages.Mid;
-        }
-        else
-        {
-            LateDialogueCounter++;
-            _currentStageDialogueStage = StageDialogueStages.Late;
+            case StageDialogueTypes.Start:
+                break;
+            case StageDialogueTypes.Special:
+                SpecialDialogueCounter++;
+                break;
+            case StageDialogueTypes.Early:
+                EarlyDialogueCounter++;
+                break;
+            case StageDialogueTypes.Mid:
+                MidDialogueCounter++;
+                break;
+            case StageDialogueTypes.Late:
+                LateDialogueCounter++;
+                break;
         }
     }
 
-    private StageDialogue SelectStageDialogue()
+    private void NextStageDialogueType() // On end stage
     {
-        switch (_currentStageDialogueStage)
+        if ((_lifetimeStars <= 8 && SpecialDialogueCounter == 0) ||
+            (_lifetimeStars > 8 && SpecialDialogueCounter == 1) ||
+            (_lifetimeStars > 12 && SpecialDialogueCounter == 2))
         {
-            //case StageDialogueStages.Start:
-            //    Debug.Log("Selecting first dialogue");
-            //    return _specialStageDialogue[0];
-            case StageDialogueStages.Special:
+            _currentStageDialogueType = StageDialogueTypes.Special;
+        }
+        else if (_lifetimeStars <= 5)
+        {
+            _currentStageDialogueType = StageDialogueTypes.Early;
+        }
+        else if (_lifetimeStars > 5 && _lifetimeStars <= 10)
+        {
+            _currentStageDialogueType = StageDialogueTypes.Mid;
+        }
+        else
+        {
+            _currentStageDialogueType = StageDialogueTypes.Late;
+        }
+    }
+
+    private StageDialogue AssignNextStageDialogue() // On new stage setup
+    {
+        StageDialogue dialogueToReturn = _earlyStageDialogue[0];
+        switch (_currentStageDialogueType)
+        {
+            case StageDialogueTypes.Special:
                 Debug.Log("Selecting special dialogue");
-                return _specialStageDialogue[SpecialDialogueCounter];
-            case StageDialogueStages.Early:
+                dialogueToReturn = _specialStageDialogue[SpecialDialogueCounter];
+                break;
+            case StageDialogueTypes.Early:
                 Debug.Log("Selecting early dialogue");
                 CheckStageDialogueCounter(0, 0, _earlyStageDialogue.Length, ref EarlyDialogueCounter);
-                return _earlyStageDialogue[EarlyDialogueCounter];
-            case StageDialogueStages.Mid:
+                dialogueToReturn = _earlyStageDialogue[EarlyDialogueCounter];
+                break;
+            case StageDialogueTypes.Mid:
                 Debug.Log("Selecting mid dialogue");
                 CheckStageDialogueCounter(0, _earlyStageDialogue.Length, _midStageDialogue.Length, ref MidDialogueCounter);
-                return _midStageDialogue[MidDialogueCounter];
-            case StageDialogueStages.Late:
+                dialogueToReturn = _midStageDialogue[MidDialogueCounter];
+                break;
+            case StageDialogueTypes.Late:
                 Debug.Log("Selecting late dialogue");
                 CheckStageDialogueCounter(_earlyStageDialogue.Length, _midStageDialogue.Length, _lateStageDialogue.Length, ref LateDialogueCounter);
-                return _lateStageDialogue[LateDialogueCounter];
+                dialogueToReturn = _lateStageDialogue[LateDialogueCounter];
+                break;
         }
 
-        Debug.Log("Uh oh, big error, no dialogue selected");
-        return null;
+        return dialogueToReturn;
     }
 
     private void CheckStageDialogueCounter(int previousMin, int newMin, int max, ref int counter)
     {
-        if (counter < max - 1)
+        if (counter < max)
         {
             DoStageDialogue[counter + previousMin + newMin] = false;
         }
@@ -473,7 +486,7 @@ public class GameManager : MonoBehaviour
 
     public void SetupNextStage()
     {
-        _currentStageDialogue = SelectStageDialogue();
+        _currentStageDialogue = AssignNextStageDialogue();
 
         if (_lifetimeStars > 10 && _acquiredStars >= _requiredStars)
         {
@@ -524,12 +537,14 @@ public class GameManager : MonoBehaviour
         else if (_acquiredStars == _requiredStars)
         {
             _stageAnswer = Answer.Acceptable;
-            UpdateStageDialogueStage();
+            IncrementStageDialogueCounters();
+            NextStageDialogueType();
         }
         else if (_acquiredStars > _requiredStars)
         {
             _stageAnswer = Answer.Excellent;
-            UpdateStageDialogueStage();
+            IncrementStageDialogueCounters();
+            NextStageDialogueType();
         }
 
         if (_compassionateBonus == 3)

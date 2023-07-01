@@ -1,4 +1,4 @@
-public enum StageDialogueStages
+public enum StageDialogueTypes
 {
     Start,
     Early,
