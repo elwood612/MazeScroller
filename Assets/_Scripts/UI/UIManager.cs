@@ -49,6 +49,7 @@ public class UIManager : MonoBehaviour
     private List<GameObject> _allStars = new List<GameObject>();
     private Slider _activeSlider;
     private WaitForSecondsRealtime _hintDelay = new WaitForSecondsRealtime(3f);
+    private WaitForSeconds _menuResetDelay = new WaitForSeconds(5f);
 
     private void Awake()
     {
@@ -312,6 +313,13 @@ public class UIManager : MonoBehaviour
         EndCreditsRoll();
     }
 
+    private IEnumerator MainMenuReset()
+    {
+        yield return _menuResetDelay;
+        _blackScreenFadeOut.Play();
+        _loadingScreen.enabled = false;
+    }
+
     private void EndCreditsRoll()
     {
         _endCreditsObj.SetActive(true);
@@ -327,6 +335,8 @@ public class UIManager : MonoBehaviour
             _dialogueBox.transform.GetChild(0).gameObject.SetActive(true);
         }
     }
+
+    
 
     public void OnChallengeModeButtonClick()
     {
@@ -414,11 +424,13 @@ public class UIManager : MonoBehaviour
 
     public void OnQuitToMenu()
     {
-        // this is actually going to be a bit complex...
-        Debug.Log("Quitting to menu");
-
         _menuSettingsCanvas.enabled = false;
+        _topCanvas.enabled = false;
+        _blackScreenStart.color = Color.black;
+        _blackScreenStart.enabled = true;
         GameManager.IsStageMenuOpen = false;
         GameManager.Instance.QuitToMenu();
+        _loadingScreen.enabled = true;
+        StartCoroutine(MainMenuReset());
     }
 }

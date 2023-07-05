@@ -142,6 +142,6 @@ public class DialogueManager : MonoBehaviour
         {
             if (word.Length > 3) { parsedWords.Add(word); }
         }
-        return parsedWords[Random.Range(0, parsedWords.Count)];
+        return parsedWords.Count > 0 ? parsedWords[Random.Range(0, parsedWords.Count)] : "";
     }
 }

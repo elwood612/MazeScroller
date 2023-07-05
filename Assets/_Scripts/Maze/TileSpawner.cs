@@ -1,9 +1,6 @@
-//using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
-//using Random = System.Random;
 
 public class TileSpawner : MonoBehaviour
 {
@@ -25,9 +22,9 @@ public class TileSpawner : MonoBehaviour
     private bool _tutorialSecondCrystal = false;
     private bool _tutorialThirdCrystal = false;
     private bool _firstGreenCrystal = true;
+    private bool _firstChargedTile = true;
     private bool _goodToSpawnGreen = true;
     private bool _haveSpawnedFirstGreen = false;
-    private bool _goldCrystalCanBeSpawned = true;
     private float _width = 0.5f;
     private float _transitionWidth = 0.5f;
     private float _xPos;
@@ -251,6 +248,12 @@ public class TileSpawner : MonoBehaviour
 
     private IEnumerator SpawnRandomCharged(Row row)
     {
+        if (_firstChargedTile)
+        {
+            Debug.Log("Skipping first charged tile");
+            _firstChargedTile = false;
+            yield break;
+        }
         yield return _colorDelay;
         Tile tile = row.EnabledTiles[Random.Range(0, row.EnabledTiles.Count)];
         if (!tile.IsEnabled || row.EnabledTiles.Count <= 2) { yield break; }
@@ -340,6 +343,7 @@ public class TileSpawner : MonoBehaviour
         _missingTilesChance = Random.Range(1, 3);
         _goodToSpawnGreen = true;
         _firstGreenCrystal = true;
+        _firstChargedTile = true;
 
         _tutorialFirstCrystal = true;
         _tutorialSecondCrystal = false;

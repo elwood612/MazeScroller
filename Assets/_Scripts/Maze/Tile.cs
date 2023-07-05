@@ -128,7 +128,7 @@ public class Tile : MonoBehaviour
         runner.PreviousTile = runner.CurrentTile;
         runner.CurrentTile = this;
         runner.CalculateNextTargetWrapper(this);
-        if ((IsTransitionTile || IsPreTransitionTile) && !runner.IsInTransition) { runner.BeginTransition(); }
+        if ((IsTransitionTile) && !runner.IsInTransition) { runner.BeginTransition(); }
         if (!IsTransitionTile && runner.IsInTransition) { runner.BeginStage(); }
     }
 
@@ -242,7 +242,7 @@ public class Tile : MonoBehaviour
         {
             IsTransitionTile = true;
             Tile t = GetNeighborTile(Vector3.back);
-            if (!t.IsTransitionTile && !t.IsPreTransitionTile && !t.IsStartingTile && !IsStartingTile)
+            if (!t.IsTransitionTile && !t.IsPreTransitionTile && !t.IsStartingTile && !IsStartingTile && !GameManager.IsInMainMenu)
             {
                 IsTransitionTile = false;
                 IsPreTransitionTile = true;
@@ -381,13 +381,13 @@ public class Tile : MonoBehaviour
         }
         DrawMaze.HighestDrawnRow = _parentRow;
         if (!reset) { GameManager.Instance.SpawnRunner(transform); }
-        else { GameManager.Instance.ResetRunner(transform); }
+        else 
+        {
+            Debug.Log("Resetting runner");
+            GameManager.Instance.ResetRunner(transform);
+            GameManager.Instance.CurrentRunner.GetComponent<IRunner>().BeginTransition();
+        }
         GameManager.Instance.CurrentRunner.GetComponent<IRunner>().SetCurrentTile(this);
-    }
-
-    public void ResetStartingTile()
-    {
-        AddTileToMaze();
     }
 
     public void ResetTile()

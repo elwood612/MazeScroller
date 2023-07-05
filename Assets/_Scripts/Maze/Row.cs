@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class Row : MonoBehaviour
 {
-    private bool _isHighestDrawnRow;
+    public bool _isHighestDrawnRow;
     private bool _hasSetupBeenRun = false;
-    private static bool _endTutorial = false;
     private static bool _firstEnabledRow = true;
     private List<Tile> _enabledTiles = new List<Tile>();
 
@@ -25,6 +24,16 @@ public class Row : MonoBehaviour
     {
         get => _isHighestDrawnRow;
         set => _isHighestDrawnRow = value;
+    }
+
+    private void OnEnable()
+    {
+        GameManager.OnStateChanged += ResetHighestRow;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.OnStateChanged -= ResetHighestRow;
     }
 
     private void Update()
@@ -47,6 +56,14 @@ public class Row : MonoBehaviour
         }
     }
 
+    private void ResetHighestRow(GameState state)
+    {
+        if (state == GameState.Progressing || state == GameState.Transition) 
+        { 
+            //_isHighestDrawnRow = false;
+        }
+    }
+
     private float CalculateHeight()
     {
         Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position);
@@ -61,6 +78,7 @@ public class Row : MonoBehaviour
             _firstEnabledRow = false;
             OnFirstRowsReady?.Invoke();
         }
+        _isHighestDrawnRow = false;
         _enabledTiles.Clear();
         OnRowReset?.Invoke();
     }
@@ -80,55 +98,20 @@ public class Row : MonoBehaviour
 
     private void CheckRow()
     {
-        if (GameManager.CurrentState == GameState.Transition) { return; }
-
-        bool canPathThrough = false;
-        bool canPathAroundColor = false;
-        bool isBoxedInByColor = true;
-        bool isAColor = false;
-
+        if (GameManager.CurrentState != GameState.Transition) { return; }
         foreach (Tile t in _enabledTiles)
         {
-            if (t.IsColored) { isAColor = true; }
-            if (t.GetNeighborTile(Vector3.forward).IsEnabled && t.GetNeighborTile(Vector3.back).IsEnabled)
+            Tile tMinus = t.GetNeighborTile(Vector3.back);
+            if (tMinus != null && !tMinus.IsEnabled && t.IsMiddleTile)
             {
-                canPathThrough = true;
-                if (!t.IsColored) { canPathAroundColor = true; }
-            }
-            if (t.DisallowCrystal() && t.AttachedCrystal != null) { t.RemoveCrystal(); }
-
-            int paths = 0;
-            int blockedPaths = 0;
-            foreach (Tile neighbor in t.NeighborTiles)
-            {
-                if (!t.IsEnabled) { continue; }
-                paths++;
-                if (neighbor.IsColored)
+                Debug.Log("Fixing a hole!");
+                tMinus.SpawnTile();
+                if (tMinus.IsCharged)
                 {
-                    blockedPaths++;
+                    Debug.Log("Removing rogue charge!");
+                    tMinus.SetAsCharged(false);
                 }
             }
-            if (paths > blockedPaths) { isBoxedInByColor = false; }
-        }
-
-        foreach (Tile t in GetComponentsInChildren<Tile>())
-        {
-            if (!canPathThrough && !t.IsEnabled) { t.SpawnTile(); } // this is currently overkill
-            if (!canPathAroundColor && isAColor && t.IsEnabled) { t.SetAsColored(false); }
-            if (isBoxedInByColor && isAColor && t.IsEnabled) { t.SetAsColored(false); }
-        }
+        }        
     }
-
-    //private void EndTutorial(int unused) 
-    //{
-    //    if (!_endTutorial)
-    //    {
-    //        _endTutorial = true;
-    //    }
-    //}
-
-    //private void ResetTutorial()
-    //{
-    //    _endTutorial = !GameManager.DoTutorialOld;
-    //}
 }

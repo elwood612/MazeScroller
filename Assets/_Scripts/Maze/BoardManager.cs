@@ -43,14 +43,14 @@ public class BoardManager : MonoBehaviour
     {
         GameManager.OnStateChanged += GenerateBoard;
         GameManager.OnCompassionateVictory += ClearAllCrystals;
-        GameManager.OnQuitToMenu += ResetAllTilesToTransition;
+        GameManager.OnQuitToMenu += ForceReset;
     }
 
     private void OnDisable()
     {
         GameManager.OnStateChanged -= GenerateBoard;
         GameManager.OnCompassionateVictory -= ClearAllCrystals;
-        GameManager.OnQuitToMenu -= ResetAllTilesToTransition;
+        GameManager.OnQuitToMenu -= ForceReset;
     }
 
     private void GenerateBoard(GameState state)
@@ -103,8 +103,9 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    private void ResetAllTilesToTransition()
+    private void ForceReset()
     {
+        Debug.Log("Forcing a reset");
         Tile refTile = null;
         foreach (Tile tile in _allTiles)
         {
@@ -114,6 +115,7 @@ public class BoardManager : MonoBehaviour
                 refTile = tile;
             }
         }
+        refTile.SpawnTile();
         refTile.SetStartingTile(true);
         ClearAllCrystals();
     }

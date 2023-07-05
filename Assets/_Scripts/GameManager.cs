@@ -172,7 +172,7 @@ public class GameManager : MonoBehaviour
                 else
                 {
                     _stageProgress = 0;
-                    IsStageCompleted = true;
+                    if (!_isInMainMenu) { IsStageCompleted = true; }
                     Instance.UpdateGameState(GameState.Transition);
                 }
             }
@@ -436,15 +436,6 @@ public class GameManager : MonoBehaviour
 
     private void CheckStageDialogueCounter(int previousMin, int newMin, int max, ref int counter)
     {
-        //if (counter < max)
-        //{
-        //    DoStageDialogue[counter + previousMin + newMin] = false;
-        //}
-        //else
-        //{
-        //    for (int i = newMin; i < max; i++) { DoStageDialogue[i] = true; }
-        //    counter = 0;
-        //}
         counter = counter >= max ? 0 : counter;
     }
 
@@ -598,8 +589,8 @@ public class GameManager : MonoBehaviour
 
     public void QuitToMenu()
     {
-        StageProgress = _stageLength;
         OpenMainMenu();
+        StageProgress = _stageLength;
         OnQuitToMenu?.Invoke();
     }
 

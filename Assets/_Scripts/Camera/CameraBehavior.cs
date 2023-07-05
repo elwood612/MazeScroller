@@ -63,6 +63,12 @@ public class CameraBehavior : MonoBehaviour
             return; 
         }
 
+        if (GameManager.IsInMainMenu)
+        {
+            SetTargetForMenu();
+            return;
+        }
+
         _targetPosition = _transitionPosition;
         _targetRotation = _transitionRotation;
 
@@ -92,8 +98,11 @@ public class CameraBehavior : MonoBehaviour
 
     private void EnableCameraShake()
     {
-        _goodToShake = true;
-        _shakeDuration = 0.5f;
+        if (GameManager.CurrentState == GameState.Progressing)
+        {
+            _goodToShake = true;
+            _shakeDuration = 0.5f;
+        }
     }
 
     private void MoveCamera()

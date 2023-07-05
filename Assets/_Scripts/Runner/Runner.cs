@@ -3,18 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Runner : MonoBehaviour, IRunner
 {
     [SerializeField] private TextMeshProUGUI _dialogueBox;
     [SerializeField] private TextMeshProUGUI _answerBox;
     [SerializeField] private Animator _animator;
-    //[SerializeField] private Animation _starGain;
     [SerializeField] private ParticleSystem _trailParticles;
     [SerializeField] private Transform _spaceshipTransform;
 
-    private Tile _currentTile;
+    public Tile _currentTile;
     private Tile _currentTarget;
     private Tile _nextTarget;
     private Tile _previousTile;
@@ -31,7 +29,6 @@ public class Runner : MonoBehaviour, IRunner
     private ParticleSystem.MainModule _trailParticlesMainModule;
     private AnimationCurve _speedCurve;
     private AnimationCurve _transitionCurve;
-    private WaitForSecondsRealtime _starGainDelay = new WaitForSecondsRealtime(0.5f);
 
     public static event Action OnTransitionReached;
     public TextMeshProUGUI DialogueBox => _dialogueBox;
