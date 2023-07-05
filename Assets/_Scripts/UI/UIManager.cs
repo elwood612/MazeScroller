@@ -26,6 +26,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button _storyModeButton;
     [SerializeField] private Button _challengeModeButton;
     [SerializeField] private Button _quitButton;
+    [SerializeField] private Button _quitToMenuButton;
     [SerializeField] private Toggle _resetToggle;
     [SerializeField] private Image _loadingScreen;
     [SerializeField] private Image _blackScreenStart;
@@ -35,17 +36,14 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Animation _blackScreenFadeIn;
     [SerializeField] private Animation _endCreditsAnimation;
 
-    private WaitForSecondsRealtime _flashDelay = new WaitForSecondsRealtime(0.25f);
     private WaitForSecondsRealtime _sentenceDelay = new WaitForSecondsRealtime(1f);
     private WaitForSecondsRealtime _starGainDelay = new WaitForSecondsRealtime(0.4f);
-    private bool _flashing = true;
-    private bool _flashRunning = false;
     private bool _typeOutSentence = true;
-    private bool _needDialogueHint = true;
     private bool _isDialogueBoxOpen = false;
+    private bool _isMenuSettingsOpen = false;
+    private bool _isStageSettingsOpen = false;
     private TextMeshProUGUI _dialogueBox;
     private TextMeshProUGUI _answerBox;
-    private int _dialogueIndex = 0;
     private int _newStarIndex = 0;
     private int _bonusStarIndex = 0;
     private List<GameObject> _allStars = new List<GameObject>();
@@ -367,10 +365,34 @@ public class UIManager : MonoBehaviour
 
     public void OnMenuSettingsClick()
     {
-        _menuSettingsCanvas.enabled = true;
-        _storyModeButton.enabled = false;
-        _challengeModeButton.enabled = false;
-        _quitButton.enabled = false;
+        if (!_menuSettingsCanvas.enabled)
+        {
+            _menuSettingsCanvas.enabled = true;
+            _buttons.SetActive(false);
+        }
+        else
+        {
+            _menuSettingsCanvas.enabled = false;
+            _buttons.SetActive(true);
+        }
+    }
+
+    public void OnStageSettingsClick()
+    {
+        if (!_menuSettingsCanvas.enabled)
+        {
+            GameManager.IsStageMenuOpen = true;
+            _menuSettingsCanvas.enabled = true;
+            _resetToggle.gameObject.SetActive(false);
+            _quitToMenuButton.gameObject.SetActive(true);
+        }
+        else
+        {
+            GameManager.IsStageMenuOpen = false;
+            _menuSettingsCanvas.enabled = false;
+            _resetToggle.gameObject.SetActive(true);
+            _quitToMenuButton.gameObject.SetActive(false);
+        }
     }
 
     public void OnBackButtonClick()
@@ -383,7 +405,20 @@ public class UIManager : MonoBehaviour
         else
         {
             _buttons.SetActive(true);
+            _resetToggle.gameObject.SetActive(true);
             _menuSettingsCanvas.enabled = false;
+            _quitToMenuButton.gameObject.SetActive(false);
+            GameManager.IsStageMenuOpen = false;
         }
+    }
+
+    public void OnQuitToMenu()
+    {
+        // this is actually going to be a bit complex...
+        Debug.Log("Quitting to menu");
+
+        _menuSettingsCanvas.enabled = false;
+        GameManager.IsStageMenuOpen = false;
+        GameManager.Instance.QuitToMenu();
     }
 }

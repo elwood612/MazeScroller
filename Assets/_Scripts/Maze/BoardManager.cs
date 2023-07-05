@@ -13,6 +13,7 @@ public class BoardManager : MonoBehaviour
 
     private static List<Tile> _allTiles = new List<Tile>();
     private static List<Wall> _allWalls = new List<Wall>();
+    private static Tile _currentPreTransitionTile;
     private Vector3 _rowResetPos;
     private Vector3 _rowSetupPos;
     private Vector3 _rowQAPos;
@@ -22,13 +23,9 @@ public class BoardManager : MonoBehaviour
 
     public static List<Tile> AllTiles => _allTiles;
     public static List<Wall> AllWalls => _allWalls;
+    public static Tile CurrentPreTransitionTile => _currentPreTransitionTile;
 
     private void Awake()
-    {
-        Initialize();
-    }
-
-    private void Initialize()
     {
         Vector3 bottomOfScreen = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, 0, 100));
         Vector3 topOfScreen = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height, 100));
@@ -46,12 +43,14 @@ public class BoardManager : MonoBehaviour
     {
         GameManager.OnStateChanged += GenerateBoard;
         GameManager.OnCompassionateVictory += ClearAllCrystals;
+        GameManager.OnQuitToMenu += ResetAllTilesToTransition;
     }
 
     private void OnDisable()
     {
         GameManager.OnStateChanged -= GenerateBoard;
         GameManager.OnCompassionateVictory -= ClearAllCrystals;
+        GameManager.OnQuitToMenu -= ResetAllTilesToTransition;
     }
 
     private void GenerateBoard(GameState state)
@@ -102,5 +101,20 @@ public class BoardManager : MonoBehaviour
                 tile.RemoveCrystal();
             }
         }
+    }
+
+    private void ResetAllTilesToTransition()
+    {
+        Tile refTile = null;
+        foreach (Tile tile in _allTiles)
+        {
+            if (!refTile || 
+                (tile.transform.position.z > refTile.transform.position.z && tile.IsMiddleTile))
+            {
+                refTile = tile;
+            }
+        }
+        refTile.SetStartingTile(true);
+        ClearAllCrystals();
     }
 }

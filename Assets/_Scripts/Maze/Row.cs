@@ -27,18 +27,6 @@ public class Row : MonoBehaviour
         set => _isHighestDrawnRow = value;
     }
 
-    //private void OnEnable()
-    //{
-    //    GameManager.OnStarGained += EndTutorial;
-    //    GameManager.OnSetupNextStage += ResetTutorial;
-    //}
-
-    //private void OnDisable()
-    //{
-    //    GameManager.OnStarGained -= EndTutorial;
-    //    GameManager.OnSetupNextStage -= ResetTutorial;
-    //}
-
     private void Update()
     {
         GameManager.AddBoardMotion(transform);

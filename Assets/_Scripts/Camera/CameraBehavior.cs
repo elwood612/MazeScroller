@@ -102,7 +102,7 @@ public class CameraBehavior : MonoBehaviour
         if (GameManager.CompareVectorsAsInts(transform.position, _targetPosition))
         {
             _goodToMove = false;
-            if (GameManager.CurrentState == GameState.Transition && GameManager.IsStageOver)
+            if (GameManager.CurrentState == GameState.Transition && GameManager.IsStageCompleted)
             {
                 GameManager.Instance.EndStage();
             }

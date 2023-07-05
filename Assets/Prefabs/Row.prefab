@@ -1128,6 +1128,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7255253569694343401, guid: 93ed446c1a441db46ab08ce345452eaf, type: 3}
+      propertyPath: IsMiddleTile
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7255253569694343401, guid: 93ed446c1a441db46ab08ce345452eaf, type: 3}
       propertyPath: _isStartingTile
       value: 0
       objectReference: {fileID: 0}

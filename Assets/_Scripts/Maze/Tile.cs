@@ -20,8 +20,6 @@ public class Tile : MonoBehaviour
     [SerializeField] private Material _tileCrossed;
     [SerializeField] private GameObject _tileDeadEnd;
     [SerializeField] private LayerMask _wallLayer;
-    //[SerializeField] private AudioSource _audioNegative;
-    //[SerializeField] private AudioSource _audioTada;
 
     private Row _parentRow;
     private List<Wall> _neighborWalls = new List<Wall>();
@@ -32,7 +30,7 @@ public class Tile : MonoBehaviour
     private bool _isCharged = false;
     private bool _firstSpawnInStage = true;
     private bool _deadEndPrimed = false;
-    public int _crossings = 0;
+    private int _crossings = 0;
     private int _tileColorOffset = 0;
     private Tile _pathfindingParent;
     private static bool _firstTile = true;
@@ -45,9 +43,11 @@ public class Tile : MonoBehaviour
     public static event Action<Tile> OnTileDeactivate;
     public static event Action<Crystal> OnCrystalRemoval;
     public static event Action OnChargedTileHit;
+
     public bool IsStartingTile = false;
     public bool IsTransitionTile = false;
     public bool IsPreTransitionTile = false;
+    public bool IsMiddleTile = false;
     public Crystal AttachedCrystal;
     public List<Wall> NeighborPaths = new List<Wall>();
     public List<Wall> NeighborWalls => _neighborWalls;
@@ -238,7 +238,7 @@ public class Tile : MonoBehaviour
         if (_firstTile) { SetStartingTile(); }
         _firstTile = false;
         
-        if (GameManager.CurrentState == GameState.Transition)
+        if (GameManager.CurrentState == GameState.Transition || GameManager.IsInMainMenu)
         {
             IsTransitionTile = true;
             Tile t = GetNeighborTile(Vector3.back);
@@ -370,7 +370,7 @@ public class Tile : MonoBehaviour
         _colorRenderer.enabled = input;
     }
 
-    public void SetStartingTile()
+    public void SetStartingTile(bool reset = false)
     {
         AddTileToMaze();
         _parentRow.IsHighestDrawnRow = true;
@@ -379,10 +379,15 @@ public class Tile : MonoBehaviour
         {
             wall.SetWallAsBorder();
         }
-
         DrawMaze.HighestDrawnRow = _parentRow;
-        GameManager.Instance.SpawnPlayer(transform);
+        if (!reset) { GameManager.Instance.SpawnRunner(transform); }
+        else { GameManager.Instance.ResetRunner(transform); }
         GameManager.Instance.CurrentRunner.GetComponent<IRunner>().SetCurrentTile(this);
+    }
+
+    public void ResetStartingTile()
+    {
+        AddTileToMaze();
     }
 
     public void ResetTile()

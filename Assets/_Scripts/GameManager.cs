@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
     private int _compassionateBonus = 0;
     private WaitForSeconds _bonusDelay = new WaitForSeconds(1f);
     private WaitForSeconds _bonusStep = new WaitForSeconds(0.4f);
+    private WaitForSeconds _runnerTeleportDelay = new WaitForSeconds(0.5f);
     private bool _startOfGame = true;
     private bool _decreaseSpeedBonus = true;
     private bool _triggerBonusStep = true;
@@ -57,6 +58,8 @@ public class GameManager : MonoBehaviour
     private static bool _resetStoryMode = false;
     private static bool _isAudioEnabled = true;
     private static bool _isMusicEnabled = true;
+    private static bool _isStageMenuOpen = false;
+    private static bool _isInMainMenu = false;
     private static bool _needDialogueBoxHint = true;
     private static bool _spawnPurpleCrystal = false;
     private static bool _spawnGoldCrystal = false;
@@ -79,6 +82,7 @@ public class GameManager : MonoBehaviour
     public static event Action OnMainMenuOpen;
     public static event Action OnMainMenuClose;
     public static event Action OnGameOver;
+    public static event Action OnQuitToMenu;
 
     public delegate void NextDialogue(int index);
     public static NextDialogue OnNextTutorial;
@@ -90,9 +94,8 @@ public class GameManager : MonoBehaviour
     public static float RunnerHeight;
     public static int NumberOfRows;
     public static bool IsRunnerInTransition = false;
-    public static bool IsStageOver = false;
+    public static bool IsStageCompleted = false;
     public static bool[] DoTutorial;
-    public static bool[] DoStageDialogue;
     public static int SpecialDialogueCounter = 0;
     public static int EarlyDialogueCounter = 0;
     public static int MidDialogueCounter = 0;
@@ -120,6 +123,7 @@ public class GameManager : MonoBehaviour
     public static bool SpawnGoldCrystal => _spawnGoldCrystal;
     public static bool SpawnGreenCrystal => _spawnGreenCrystal;
     public static bool IsGameOver => _isGameOver;
+    public static bool IsInMainMenu => _isInMainMenu;
     public static Answer StageAnswer => _stageAnswer;
     public Dialogue[] AllTutorialDialogue => _allTutorialDialogue;
     public static bool IsAudioEnabled
@@ -131,6 +135,11 @@ public class GameManager : MonoBehaviour
     {
         get => _isMusicEnabled;
         set => _isMusicEnabled = value;
+    }
+    public static bool IsStageMenuOpen
+    {
+        get => _isStageMenuOpen;
+        set => _isStageMenuOpen = value;
     }
     public static bool NeedDialogueBoxHint
     {
@@ -163,7 +172,7 @@ public class GameManager : MonoBehaviour
                 else
                 {
                     _stageProgress = 0;
-                    IsStageOver = true;
+                    IsStageCompleted = true;
                     Instance.UpdateGameState(GameState.Transition);
                 }
             }
@@ -263,7 +272,7 @@ public class GameManager : MonoBehaviour
         if (CurrentState == GameState.Setup) { return; }
         CalculateBoardSpeed(_speedMultiplier);
 
-        if (_decreaseSpeedBonus && _triggerBonusStep && !DialogueManager.Instance.IsDialogueActive) { StartCoroutine(BonusDecrease()); }
+        if (_decreaseSpeedBonus && _triggerBonusStep && !DialogueManager.Instance.IsDialogueActive && !_isStageMenuOpen) { StartCoroutine(BonusDecrease()); }
     }
 
     private void LoadDefaultSettings()
@@ -427,15 +436,16 @@ public class GameManager : MonoBehaviour
 
     private void CheckStageDialogueCounter(int previousMin, int newMin, int max, ref int counter)
     {
-        if (counter < max)
-        {
-            DoStageDialogue[counter + previousMin + newMin] = false;
-        }
-        else
-        {
-            for (int i = newMin; i < max; i++) { DoStageDialogue[i] = true; }
-            counter = 0;
-        }
+        //if (counter < max)
+        //{
+        //    DoStageDialogue[counter + previousMin + newMin] = false;
+        //}
+        //else
+        //{
+        //    for (int i = newMin; i < max; i++) { DoStageDialogue[i] = true; }
+        //    counter = 0;
+        //}
+        counter = counter >= max ? 0 : counter;
     }
 
     public void UpdateGameState(GameState newState)
@@ -458,16 +468,21 @@ public class GameManager : MonoBehaviour
         OnStateChanged?.Invoke(newState);
     }
 
-    public void SpawnPlayer(Transform tile)
+    public void SpawnRunner(Transform tile)
     {
         _currentRunner = Instantiate(_runnerPrefab, tile.position, Quaternion.identity);
         _startOfGame = false;
         OnRunnerSpawned?.Invoke(_currentRunner);
     }
 
+    public void ResetRunner(Transform tile)
+    {
+        _currentRunner.transform.SetPositionAndRotation(tile.position, Quaternion.Euler(0, 0, 0));
+    }
+
     public static void AddBoardMotion(Transform t)
     {
-        if (DialogueManager.Instance.IsTutorialDialogueActive) { return; }
+        if (DialogueManager.Instance.IsTutorialDialogueActive || _isStageMenuOpen) { return; }
 
         if (IsRunnerInTransition)
         {
@@ -528,7 +543,7 @@ public class GameManager : MonoBehaviour
 
     public void EndStage()
     {
-        IsStageOver = false;
+        IsStageCompleted = false;
 
         if (_acquiredStars < _requiredStars)
         {
@@ -571,12 +586,21 @@ public class GameManager : MonoBehaviour
 
     public void OpenMainMenu()
     {
+        _isInMainMenu = true;
         OnMainMenuOpen?.Invoke();
     }
 
     public void CloseMainMenu()
     {
+        _isInMainMenu = false;
         OnMainMenuClose?.Invoke();
+    }
+
+    public void QuitToMenu()
+    {
+        StageProgress = _stageLength;
+        OpenMainMenu();
+        OnQuitToMenu?.Invoke();
     }
 
     public void Quit()

@@ -25,7 +25,7 @@ public class Runner : MonoBehaviour, IRunner
     private static bool _runnerStopped = true;
     private bool _runnerOffScreen = false;
     private bool _approachingDeadEnd = false;
-    private bool _isInTransition = false;
+    public bool _isInTransition = false;
     private bool _firstTimeStopping = true;
     private bool _pathfinding = false;
     private ParticleSystem.MainModule _trailParticlesMainModule;
@@ -79,7 +79,6 @@ public class Runner : MonoBehaviour, IRunner
     private void OnEnable()
     {
         DrawMaze.OnTileAdded += AddTileToPath;
-        //DrawMaze.OnTileRemoved += RemoveTileFromPath;
         Tile.OnTileDestroy += RemoveTileFromPath;
         DialogueManager.OnDialogueOpen += SetAnimatorTrigger;
         GameManager.OnSetupNextStage += ResetFirstStop;
@@ -88,7 +87,6 @@ public class Runner : MonoBehaviour, IRunner
     private void OnDisable()
     {
         DrawMaze.OnTileAdded -= AddTileToPath;
-        //DrawMaze.OnTileRemoved -= RemoveTileFromPath;
         Tile.OnTileDestroy -= RemoveTileFromPath;
         DialogueManager.OnDialogueOpen -= SetAnimatorTrigger;
         GameManager.OnSetupNextStage -= ResetFirstStop;
@@ -101,7 +99,8 @@ public class Runner : MonoBehaviour, IRunner
 
         if ((_uncrossedTiles.Count > 0 && !_isInTransition) ||
             (_uncrossedTiles.Count == 0 && _currentTile.IsPreTransitionTile) ||
-            (_uncrossedTransitionTiles.Count > 0 && _isInTransition))
+            (_uncrossedTransitionTiles.Count > 0 && _isInTransition) ||
+            _currentTile.IsTransitionTile && GameManager.IsInMainMenu)
         {
             Move();
         }
@@ -157,7 +156,7 @@ public class Runner : MonoBehaviour, IRunner
 
     private void Move()
     {
-        if (_currentTarget == null) { return; }
+        if (_currentTarget == null || GameManager.IsStageMenuOpen) { return; }
         RunnerStopped = false;
         transform.position = Vector3.MoveTowards(transform.position, _currentTarget.transform.position, Time.deltaTime * _currentSpeed);
     }
@@ -206,15 +205,6 @@ public class Runner : MonoBehaviour, IRunner
             _nextTarget = _currentTile.GetNeighborTile(Vector3.forward); 
             yield break;
         }
-
-        //if (_runnerStopped && !_currentTile.IsStartingTile)
-        //{
-        //    yield return new WaitUntil(() => ExecutePathfinding(_currentTile, _uncrossedTiles[_uncrossedTiles.Count - 1]));
-        //    _nextTarget = GetPathfindingPath(_currentTile);
-        //    _currentTarget = _nextTarget; // ??
-        //    _runnerStopped = false;
-        //    yield break;
-        //}
 
         Tile pathfindingTarget = tile;
         if (_uncrossedTiles.Count > 0) { pathfindingTarget = _uncrossedTiles[_uncrossedTiles.Count - 1]; }
@@ -375,7 +365,6 @@ public class Runner : MonoBehaviour, IRunner
 
         while (openSet.Count > 0)
         {
-            //Debug.Log("Calculating pathfinding");
             Tile currentTile = openSet.Dequeue();
             closedSet.Add(currentTile);
 
