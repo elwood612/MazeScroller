@@ -472,6 +472,7 @@ public class Runner : MonoBehaviour, IRunner
     public void OnDialogueBoxClick()
     {
         DialogueManager.Instance.NextSentence();
+        AudioManager.Instance.UIClick.Play();
     }
 
     private void OnDrawGizmos()

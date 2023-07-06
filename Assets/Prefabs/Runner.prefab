@@ -249,6 +249,8 @@ MonoBehaviour:
   _animator: {fileID: 1973564465304526738}
   _trailParticles: {fileID: 183835155743484955}
   _spaceshipTransform: {fileID: 8075769674279454575}
+  _currentTile: {fileID: 0}
+  _isInTransition: 0
 --- !u!135 &1993844521352827490
 SphereCollider:
   m_ObjectHideFlags: 0
