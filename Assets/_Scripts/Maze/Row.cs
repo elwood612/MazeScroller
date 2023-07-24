@@ -98,15 +98,15 @@ public class Row : MonoBehaviour
 
     private void CheckRow()
     {
-        if (GameManager.CurrentState != GameState.Transition) { return; }
+        //if (GameManager.CurrentState != GameState.Transition) { return; }
         foreach (Tile t in _enabledTiles)
         {
             Tile tMinus = t.GetNeighborTile(Vector3.back);
-            if (tMinus != null && !tMinus.IsEnabled && t.IsMiddleTile)
+            if (tMinus != null && !tMinus.IsEnabled && t.IsMiddleTile && !t.IsStartingTile)
             {
                 Debug.Log("Fixing a hole!");
                 tMinus.SpawnTile();
-                if (tMinus.IsCharged)
+                if (tMinus.IsCharged && GameManager.CurrentState == GameState.Transition)
                 {
                     Debug.Log("Removing rogue charge!");
                     tMinus.SetAsCharged(false);

@@ -187,7 +187,8 @@ public class Runner : MonoBehaviour, IRunner
             DrawMaze.OnTileAdded -= SetTarget;
         }
         
-        if (_currentTarget != null) { _spaceshipTransform.LookAt(_currentTarget.transform); }
+        //if (_currentTarget != null) { _spaceshipTransform.LookAt(_currentTarget.transform); }
+        if (_currentTarget != null) { LookAtTile(_currentTarget); }
     }
 
     private IEnumerator CalculateNextTarget(Tile tile) // On tile edge
@@ -444,6 +445,11 @@ public class Runner : MonoBehaviour, IRunner
     private void ResetFirstStop()
     {
         _firstTimeStopping = true;
+    }
+
+    private void LookAtTile(Tile target)
+    {
+        _spaceshipTransform.forward = target.transform.position - _spaceshipTransform.position;
     }
 
     public void CalculateNextTargetWrapper(Tile tile)

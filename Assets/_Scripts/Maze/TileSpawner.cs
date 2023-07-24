@@ -231,7 +231,6 @@ public class TileSpawner : MonoBehaviour
         else if (state == GameState.Progressing)
         {
             _width = Random.Range(_widthMin, _widthMax);
-            //_width = _randomSystem.Next((int)_widthMin * 10, (int)_widthMax * 10) / 10;
         }
         _targetScale = new Vector3(_width * GameManager.TileLength, 1, 1);
     }
@@ -240,6 +239,11 @@ public class TileSpawner : MonoBehaviour
     {
         yield return null;
         Tile tile = row.EnabledTiles[Random.Range(0, row.EnabledTiles.Count)];
+        if (tile.IsMiddleTile)
+        {
+            _triggerDisableTile = 1; // fun little workaround
+            yield break;
+        }
         if (row.EnabledTiles.Count <= 1) { yield break; }
 
         _triggerDisableTile = _missingTilesChance * Mathf.RoundToInt(Random.Range(2f * 2f / row.EnabledTiles.Count, 5f * 2f / row.EnabledTiles.Count));
