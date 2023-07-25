@@ -3,11 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Runner : MonoBehaviour, IRunner
 {
     [SerializeField] private TextMeshProUGUI _dialogueBox;
     [SerializeField] private TextMeshProUGUI _answerBox;
+    [SerializeField] private Image _glowBox;
     [SerializeField] private Animator _animator;
     [SerializeField] private ParticleSystem _trailParticles;
     [SerializeField] private Transform _spaceshipTransform;
@@ -33,6 +35,7 @@ public class Runner : MonoBehaviour, IRunner
     public static event Action OnTransitionReached;
     public TextMeshProUGUI DialogueBox => _dialogueBox;
     public TextMeshProUGUI AnswerBox => _answerBox;
+    public Image GlowBox => _glowBox;
     public static bool RunnerStopped
     {
         get => _runnerStopped;

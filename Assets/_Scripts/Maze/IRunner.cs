@@ -1,5 +1,6 @@
 using System;
 using TMPro;
+using UnityEngine.UI;
 public interface IRunner
 {
     public bool IsInTransition { get; set; }
@@ -7,6 +8,7 @@ public interface IRunner
     public Tile PreviousTile { get; set; }
     public TextMeshProUGUI DialogueBox { get; }
     public TextMeshProUGUI AnswerBox { get; }
+    public Image GlowBox { get; }
     public void CalculateNextTargetWrapper(Tile tile);
     public void BeginTransition();
     public void BeginStage();

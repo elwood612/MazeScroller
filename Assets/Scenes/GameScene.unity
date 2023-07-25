@@ -2329,6 +2329,8 @@ MonoBehaviour:
   _blackScreenFadeOut: {fileID: 1282277703}
   _blackScreenFadeIn: {fileID: 753066044}
   _endCreditsAnimation: {fileID: 286345135}
+  _liberationFont: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  _VCRFont: {fileID: 11400000, guid: 73666ec79a128d046bdc97d2e22bb051, type: 2}
 --- !u!1 &534317950
 GameObject:
   m_ObjectHideFlags: 0
@@ -10313,6 +10315,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9081862662585307265, guid: da7e942484f9ffc46a937660cca39bec, type: 3}
+      propertyPath: _cam
+      value: 
+      objectReference: {fileID: 963194227}
     - target: {fileID: 9081862662585307267, guid: da7e942484f9ffc46a937660cca39bec, type: 3}
       propertyPath: m_Name
       value: BOARD

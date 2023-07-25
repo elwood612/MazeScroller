@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class BoardManager : MonoBehaviour
 {
+    [SerializeField] private Camera _cam;
     [SerializeField] private GameObject _rowPrefab;
     [SerializeField] private GameObject _tileSpawnerPrefab;
     [SerializeField] private GameObject _tileDestroyCollider;
@@ -27,8 +28,8 @@ public class BoardManager : MonoBehaviour
 
     private void Awake()
     {
-        Vector3 bottomOfScreen = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, 0, 100));
-        Vector3 topOfScreen = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height, 100));
+        Vector3 bottomOfScreen = _cam.ScreenToWorldPoint(new Vector3(Screen.width / 2, 0, 100));
+        Vector3 topOfScreen = _cam.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height, 100));
         _rowResetPos = new Vector3(transform.position.x, transform.position.y, bottomOfScreen.z - _safetyMargin);
         _rowSetupPos = new Vector3(transform.position.x, transform.position.y, topOfScreen.z + _safetyMargin);
         _rowQAPos = new Vector3(transform.position.x, transform.position.y, topOfScreen.z + _destroyMargin);

@@ -5,15 +5,10 @@ using Random = UnityEngine.Random;
 
 public class DialogueManager : MonoBehaviour
 {
-    //[SerializeField] private Dialogue[] _tutorialDialogue;
-
     private Queue<string> _currentDialogue = new Queue<string>();
-    private string _currentAnswer;
     private bool _isDialogueActive = false;
     private bool _isTutorialDialogueActive = false;
     private bool _isQuery = false;
-    private int _tutorialDialogueIndex = 0;
-    private Animator _runnerDialogueAnimator;
 
     public static DialogueManager Instance;
     public static event Action<string> OnNextSentence;
@@ -22,6 +17,7 @@ public class DialogueManager : MonoBehaviour
     public static event Action<bool> OnDialogueOpen;
     public bool IsDialogueActive => _isDialogueActive;
     public bool IsTutorialDialogueActive => _isTutorialDialogueActive;
+    public bool IsQuery => _isQuery;
 
     private void Awake()
     {

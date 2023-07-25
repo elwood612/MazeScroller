@@ -35,15 +35,16 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Animation _blackScreenFadeOut;
     [SerializeField] private Animation _blackScreenFadeIn;
     [SerializeField] private Animation _endCreditsAnimation;
+    [SerializeField] private TMP_FontAsset _liberationFont;
+    [SerializeField] private TMP_FontAsset _VCRFont;
 
     private WaitForSecondsRealtime _sentenceDelay = new WaitForSecondsRealtime(1f);
     private WaitForSecondsRealtime _starGainDelay = new WaitForSecondsRealtime(0.4f);
     private bool _typeOutSentence = true;
     private bool _isDialogueBoxOpen = false;
-    private bool _isMenuSettingsOpen = false;
-    private bool _isStageSettingsOpen = false;
     private TextMeshProUGUI _dialogueBox;
     private TextMeshProUGUI _answerBox;
+    private Image _glowBox;
     private int _newStarIndex = 0;
     private int _bonusStarIndex = 0;
     private List<GameObject> _allStars = new List<GameObject>();
@@ -121,6 +122,22 @@ public class UIManager : MonoBehaviour
 
     private void UpdateDialogueBox(string sentence)
     {
+        // If isQuery, set font to green, box to black, hide Runner art
+        // Else, set font to white, box to blue, show Runner art
+        if (DialogueManager.Instance.IsQuery)
+        {
+            _dialogueBox.font = _VCRFont;
+            _dialogueBox.color = Color.green;
+            _dialogueBox.transform.GetComponentInParent<Image>().color = Color.green;
+            _glowBox.color = Color.green;
+        }
+        else
+        {
+            _dialogueBox.font = _liberationFont;
+            _dialogueBox.color = Color.white;
+            _dialogueBox.transform.GetComponentInParent<Image>().color = Color.white;
+            _glowBox.color = Color.white;
+        }
         _isDialogueBoxOpen = true;
         _dialogueBox.transform.GetComponentInParent<Canvas>().enabled = true;
         StopCoroutine(TypeSentence(sentence));
@@ -165,6 +182,7 @@ public class UIManager : MonoBehaviour
     {
         _dialogueBox = runner.GetComponent<IRunner>().DialogueBox;
         _answerBox = runner.GetComponent<IRunner>().AnswerBox;
+        _glowBox = runner.GetComponent<IRunner>().GlowBox;
     }
 
     private void HideDialogueBox()

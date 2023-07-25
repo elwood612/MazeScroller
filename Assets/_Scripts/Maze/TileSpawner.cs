@@ -25,6 +25,7 @@ public class TileSpawner : MonoBehaviour
     private bool _firstChargedTile = true;
     private bool _goodToSpawnGreen = true;
     private bool _haveSpawnedFirstGreen = false;
+    private bool _exitingTransition = true;
     private float _width = 0.5f;
     private float _transitionWidth = 0.5f;
     private float _xPos;
@@ -198,9 +199,16 @@ public class TileSpawner : MonoBehaviour
         {
             transform.localScale = _targetScale;
             transform.position = _targetPosition;
+            _exitingTransition = true;
         }
         else if (GameManager.CurrentState == GameState.Progressing)
         {
+            if (_exitingTransition)
+            {
+                transform.localScale = _targetScale;
+                _exitingTransition = false;
+                return;
+            }
             _smooth = Mathf.Clamp(GameManager.MaxSpeed / GameManager.TileSpeed, 3f, 80f);
             transform.localScale = Vector3.SmoothDamp(transform.localScale, _targetScale, ref _scaleVelocity, _smooth / 4 * Time.deltaTime * 60);
             transform.position = Vector3.SmoothDamp(transform.position, _targetPosition, ref _positionVelocity, _smooth * Time.deltaTime * 60);

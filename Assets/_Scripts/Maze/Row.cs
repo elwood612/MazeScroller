@@ -26,16 +26,6 @@ public class Row : MonoBehaviour
         set => _isHighestDrawnRow = value;
     }
 
-    private void OnEnable()
-    {
-        GameManager.OnStateChanged += ResetHighestRow;
-    }
-
-    private void OnDisable()
-    {
-        GameManager.OnStateChanged -= ResetHighestRow;
-    }
-
     private void Update()
     {
         GameManager.AddBoardMotion(transform);
@@ -53,14 +43,6 @@ public class Row : MonoBehaviour
             {
                 GameManager.StageProgress++;
             }
-        }
-    }
-
-    private void ResetHighestRow(GameState state)
-    {
-        if (state == GameState.Progressing || state == GameState.Transition) 
-        { 
-            //_isHighestDrawnRow = false;
         }
     }
 
@@ -98,7 +80,6 @@ public class Row : MonoBehaviour
 
     private void CheckRow()
     {
-        //if (GameManager.CurrentState != GameState.Transition) { return; }
         foreach (Tile t in _enabledTiles)
         {
             Tile tMinus = t.GetNeighborTile(Vector3.back);
