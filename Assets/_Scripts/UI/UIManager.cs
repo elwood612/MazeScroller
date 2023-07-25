@@ -44,13 +44,16 @@ public class UIManager : MonoBehaviour
     private bool _isDialogueBoxOpen = false;
     private TextMeshProUGUI _dialogueBox;
     private TextMeshProUGUI _answerBox;
-    private Image _glowBox;
+    //private Image _glowBox;
+    private Image _runnerFace;
     private int _newStarIndex = 0;
     private int _bonusStarIndex = 0;
     private List<GameObject> _allStars = new List<GameObject>();
     private Slider _activeSlider;
     private WaitForSecondsRealtime _hintDelay = new WaitForSecondsRealtime(3f);
     private WaitForSeconds _menuResetDelay = new WaitForSeconds(5f);
+    private Color _runnerDialogueColor = new Color(0.478f, 1f, 1f, 1f);
+    private Color _incomingQueryColor = new Color(0f, 0.764f, 0f, 1f);
 
     private void Awake()
     {
@@ -122,21 +125,22 @@ public class UIManager : MonoBehaviour
 
     private void UpdateDialogueBox(string sentence)
     {
-        // If isQuery, set font to green, box to black, hide Runner art
-        // Else, set font to white, box to blue, show Runner art
+        // Still need LCD screen art
         if (DialogueManager.Instance.IsQuery)
         {
             _dialogueBox.font = _VCRFont;
-            _dialogueBox.color = Color.green;
-            _dialogueBox.transform.GetComponentInParent<Image>().color = Color.green;
-            _glowBox.color = Color.green;
+            _dialogueBox.color = _incomingQueryColor;
+            _dialogueBox.transform.GetComponentInParent<Image>().color = _incomingQueryColor;
+            //_glowBox.color = _incomingQueryColor;
+            _runnerFace.enabled = false;
         }
         else
         {
             _dialogueBox.font = _liberationFont;
-            _dialogueBox.color = Color.white;
-            _dialogueBox.transform.GetComponentInParent<Image>().color = Color.white;
-            _glowBox.color = Color.white;
+            _dialogueBox.color = _runnerDialogueColor;
+            _dialogueBox.transform.GetComponentInParent<Image>().color = _runnerDialogueColor;
+            //_glowBox.color = _runnerDialogueColor;
+            _runnerFace.enabled = true;
         }
         _isDialogueBoxOpen = true;
         _dialogueBox.transform.GetComponentInParent<Canvas>().enabled = true;
@@ -146,6 +150,11 @@ public class UIManager : MonoBehaviour
         StartCoroutine(TypeSentence(sentence));
         StartCoroutine(FinishSentence(sentence));
         if (GameManager.NeedDialogueBoxHint) { StartCoroutine(HintDialogue()); }
+    }
+
+    private void SetRunnerMood()
+    {
+
     }
 
     private void UpdateAnswerBox(string sentence)
@@ -180,9 +189,13 @@ public class UIManager : MonoBehaviour
 
     private void AssignDialogueBox(GameObject runner)
     {
-        _dialogueBox = runner.GetComponent<IRunner>().DialogueBox;
-        _answerBox = runner.GetComponent<IRunner>().AnswerBox;
-        _glowBox = runner.GetComponent<IRunner>().GlowBox;
+        IRunner r = runner.GetComponent<IRunner>();
+        if (r == null) { Debug.Log("Error! No runner found!"); return; }
+
+        _dialogueBox = r.DialogueBox;
+        _answerBox = r.AnswerBox;
+        //_glowBox = r.GlowBox;
+        _runnerFace = r.RunnerFace;
     }
 
     private void HideDialogueBox()

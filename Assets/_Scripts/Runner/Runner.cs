@@ -10,6 +10,7 @@ public class Runner : MonoBehaviour, IRunner
     [SerializeField] private TextMeshProUGUI _dialogueBox;
     [SerializeField] private TextMeshProUGUI _answerBox;
     [SerializeField] private Image _glowBox;
+    [SerializeField] private Image _runnerFace;
     [SerializeField] private Animator _animator;
     [SerializeField] private ParticleSystem _trailParticles;
     [SerializeField] private Transform _spaceshipTransform;
@@ -36,6 +37,7 @@ public class Runner : MonoBehaviour, IRunner
     public TextMeshProUGUI DialogueBox => _dialogueBox;
     public TextMeshProUGUI AnswerBox => _answerBox;
     public Image GlowBox => _glowBox;
+    public Image RunnerFace => _runnerFace;
     public static bool RunnerStopped
     {
         get => _runnerStopped;
