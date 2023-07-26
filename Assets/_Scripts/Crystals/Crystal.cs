@@ -20,8 +20,10 @@ public class Crystal : MonoBehaviour
     private ObjectPool<Crystal> _crystalPool;
     private int _level = 0;
     private int _initialLevel;
+    private int _scoreConstant = 12;
     private bool _destroyed = false;
     private bool _compassionateScore = false;
+    private bool _firstTimeSeeingCompassionate = true;
     private static bool _firstCrystal = true;
     private static bool _secondCrystal = false;
     private static bool _firstBlueCrystal = false;
@@ -174,7 +176,7 @@ public class Crystal : MonoBehaviour
                 }
             }
             GameManager.Instance.SpeedBonus +=
-                (int)Mathf.Clamp(_initialLevel * _initialLevel * ScoreBonus * 10, 1, 100);
+                (int)Mathf.Clamp(_initialLevel * _initialLevel * ScoreBonus * _scoreConstant, 1, 100);
             ScoreBonus = 2;
         }
         else
@@ -210,6 +212,11 @@ public class Crystal : MonoBehaviour
         if (GameManager.Instance.CompassionateBonus < 3)
         { 
             AudioManager.Instance.PowerUp.Play();
+            if (_firstTimeSeeingCompassionate)
+            {
+                GameManager.OnShowEmptySlots?.Invoke();
+                _firstTimeSeeingCompassionate = false;
+            }
             yield return _compassionateDelay;
             if (_compassionateScore) 
             { 
@@ -241,6 +248,7 @@ public class Crystal : MonoBehaviour
     private void ResetStage()
     {
         _firstGreenCrystal = true;
+        _firstTimeSeeingCompassionate = true;
         if (GameManager.IsTutorialOngoing)
         {
             _firstCrystal = true;

@@ -86,6 +86,8 @@ public class GameManager : MonoBehaviour
 
     public delegate void NextDialogue(int index);
     public static NextDialogue OnNextTutorial;
+    public delegate void ShowEmptySlots();
+    public static ShowEmptySlots OnShowEmptySlots;
 
     public static GameState CurrentState;
     public static GameManager Instance;
@@ -416,17 +418,17 @@ public class GameManager : MonoBehaviour
                 break;
             case StageDialogueTypes.Early:
                 Debug.Log("Selecting early dialogue");
-                CheckStageDialogueCounter(0, 0, _earlyStageDialogue.Length, ref EarlyDialogueCounter);
+                TryResetDialogueCounter(0, 0, _earlyStageDialogue.Length, ref EarlyDialogueCounter);
                 dialogueToReturn = _earlyStageDialogue[EarlyDialogueCounter];
                 break;
             case StageDialogueTypes.Mid:
                 Debug.Log("Selecting mid dialogue");
-                CheckStageDialogueCounter(0, _earlyStageDialogue.Length, _midStageDialogue.Length, ref MidDialogueCounter);
+                TryResetDialogueCounter(0, _earlyStageDialogue.Length, _midStageDialogue.Length, ref MidDialogueCounter);
                 dialogueToReturn = _midStageDialogue[MidDialogueCounter];
                 break;
             case StageDialogueTypes.Late:
                 Debug.Log("Selecting late dialogue");
-                CheckStageDialogueCounter(_earlyStageDialogue.Length, _midStageDialogue.Length, _lateStageDialogue.Length, ref LateDialogueCounter);
+                TryResetDialogueCounter(_earlyStageDialogue.Length, _midStageDialogue.Length, _lateStageDialogue.Length, ref LateDialogueCounter);
                 dialogueToReturn = _lateStageDialogue[LateDialogueCounter];
                 break;
         }
@@ -434,7 +436,7 @@ public class GameManager : MonoBehaviour
         return dialogueToReturn;
     }
 
-    private void CheckStageDialogueCounter(int previousMin, int newMin, int max, ref int counter)
+    private void TryResetDialogueCounter(int previousMin, int newMin, int max, ref int counter)
     {
         counter = counter >= max ? 0 : counter;
     }
@@ -513,8 +515,7 @@ public class GameManager : MonoBehaviour
             _spawnChargedTileChance = 6;
         }
 
-        //_spawnGreenCrystal = _currentStageDialogue.CompassionateAnswer != ""; // Keep this!
-        _spawnGreenCrystal = true;
+        _spawnGreenCrystal = _currentStageDialogue.CompassionateAnswer != "";
 
         if (IsTutorialOngoing)
         {
@@ -526,7 +527,7 @@ public class GameManager : MonoBehaviour
         {
             _tileColorHue = Mathf.Clamp(Random.Range(0f, 1f), 0.1f, 0.9f);
             _requiredStars = 1;
-            _stageLength = _requiredStars * 80;
+            _stageLength = _requiredStars * 90; // might need some rebalancing
         }
         
         OnSetupNextStage?.Invoke();
@@ -535,6 +536,7 @@ public class GameManager : MonoBehaviour
     public void EndStage()
     {
         IsStageCompleted = false;
+        bool answered = false;
 
         if (_acquiredStars < _requiredStars)
         {
@@ -543,22 +545,26 @@ public class GameManager : MonoBehaviour
         else if (_acquiredStars == _requiredStars)
         {
             _stageAnswer = Answer.Acceptable;
-            IncrementStageDialogueCounters();
-            NextStageDialogueType();
+            answered = true;
         }
         else if (_acquiredStars > _requiredStars)
         {
             _stageAnswer = Answer.Excellent;
-            IncrementStageDialogueCounters();
-            NextStageDialogueType();
+            answered = true;
         }
-
         if (_compassionateBonus == 3)
         {
             _stageAnswer = Answer.Compassionate;
+            answered = true;
         }
 
-        SaveData.SavePlayerSettings();
+        if (answered)
+        {
+            IncrementStageDialogueCounters();
+            NextStageDialogueType();
+            SaveData.SavePlayerSettings();
+        }
+
         OnStageEnd?.Invoke();
     }
 

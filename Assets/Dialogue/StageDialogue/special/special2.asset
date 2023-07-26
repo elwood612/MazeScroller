@@ -15,5 +15,6 @@ MonoBehaviour:
   _query: my cat died...
   _comments:
   - 'Let''s... try to help again. '
-  _answer: 
-  _compassionateAnswer: 
+  _answer: Sometimes cats die. We won't be going any further with this storyline
+    however, this is just a test.
+  _compassionateAnswer: So sorry, kid...

@@ -302,7 +302,7 @@ public class TileSpawner : MonoBehaviour
                 if (++_counterCrystalLevel > _triggerCrystalLevel && numCrystalsInOneRow == 0)
                 {
                     _counterCrystalLevel = 0;
-                    _triggerCrystalLevel = Random.Range(3, 6);
+                    _triggerCrystalLevel = Random.Range(2, 6);
                     level++;
                     if (Random.Range(0f, 1f) < 0.35f && GameManager.SpawnPurpleCrystal)
                     {

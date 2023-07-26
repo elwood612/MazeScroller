@@ -15,6 +15,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject _requiredStars;
     [SerializeField] private GameObject _starParent;
     [SerializeField] private GameObject _compassionateStars;
+    [SerializeField] private GameObject _emptySlots;
     [SerializeField] private Canvas _stageCanvas;
     [SerializeField] private Canvas _topCanvas;
     [SerializeField] private Canvas _mainMenuCanvas;
@@ -44,7 +45,6 @@ public class UIManager : MonoBehaviour
     private bool _isDialogueBoxOpen = false;
     private TextMeshProUGUI _dialogueBox;
     private TextMeshProUGUI _answerBox;
-    //private Image _glowBox;
     private Image _runnerFace;
     private int _newStarIndex = 0;
     private int _bonusStarIndex = 0;
@@ -80,6 +80,7 @@ public class UIManager : MonoBehaviour
         GameManager.OnMainMenuOpen += MainMenu;
         GameManager.OnStarGained += GainStar;
         GameManager.OnGameOver += BlackScreenFadeIn;
+        GameManager.OnShowEmptySlots += ShowEmptySlots;
         DialogueManager.OnNextSentence += UpdateDialogueBox;
         DialogueManager.OnNextAnswer += UpdateAnswerBox;
         DialogueManager.OnDialogueEnd += HideDialogueBox;
@@ -96,6 +97,7 @@ public class UIManager : MonoBehaviour
         GameManager.OnMainMenuOpen -= MainMenu;
         GameManager.OnStarGained -= GainStar;
         GameManager.OnGameOver -= BlackScreenFadeIn;
+        GameManager.OnShowEmptySlots -= ShowEmptySlots;
         DialogueManager.OnNextSentence -= UpdateDialogueBox;
         DialogueManager.OnNextAnswer -= UpdateAnswerBox;
         DialogueManager.OnDialogueEnd -= HideDialogueBox;
@@ -113,13 +115,14 @@ public class UIManager : MonoBehaviour
         {
             if (i < value)
             {
-                _compassionateStars.transform.GetChild(i).gameObject.SetActive(true);
+                _compassionateStars.transform.GetChild(i + 1).gameObject.SetActive(true);
             }
             else
             {
-                _compassionateStars.transform.GetChild(i).gameObject.SetActive(false);
+                _compassionateStars.transform.GetChild(i + 1).gameObject.SetActive(false);
             }
         }
+
         //_compassionateStars.transform.GetChild(value - 1).gameObject.SetActive(true);
     }
 
@@ -131,7 +134,6 @@ public class UIManager : MonoBehaviour
             _dialogueBox.font = _VCRFont;
             _dialogueBox.color = _incomingQueryColor;
             _dialogueBox.transform.GetComponentInParent<Image>().color = _incomingQueryColor;
-            //_glowBox.color = _incomingQueryColor;
             _runnerFace.enabled = false;
         }
         else
@@ -139,7 +141,6 @@ public class UIManager : MonoBehaviour
             _dialogueBox.font = _liberationFont;
             _dialogueBox.color = _runnerDialogueColor;
             _dialogueBox.transform.GetComponentInParent<Image>().color = _runnerDialogueColor;
-            //_glowBox.color = _runnerDialogueColor;
             _runnerFace.enabled = true;
         }
         _isDialogueBoxOpen = true;
@@ -161,6 +162,11 @@ public class UIManager : MonoBehaviour
     {
         _answerBox.transform.parent.gameObject.SetActive(true);
         _answerBox.text = sentence;
+    }
+
+    private void ShowEmptySlots()
+    {
+        _emptySlots.SetActive(true);
     }
 
     private IEnumerator TypeSentence(string sentence)
@@ -233,6 +239,7 @@ public class UIManager : MonoBehaviour
     private void EndStage()
     {
         _requiredStars.SetActive(false);
+        _emptySlots.SetActive(false);
         _stageCanvas.enabled = true;
         _stageTotalStarAmount.text = (GameManager.LifetimeStars - GameManager.AcquiredStars).ToString();
         _lifetimeStarsAmountMenu.text = GameManager.LifetimeStars.ToString();
