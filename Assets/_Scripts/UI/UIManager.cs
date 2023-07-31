@@ -44,7 +44,7 @@ public class UIManager : MonoBehaviour
     private bool _typeOutSentence = true;
     private bool _isDialogueBoxOpen = false;
     private TextMeshProUGUI _dialogueBox;
-    private TextMeshProUGUI _answerBox;
+    //private TextMeshProUGUI _answerBox;
     private Image _runnerFace;
     private int _newStarIndex = 0;
     private int _bonusStarIndex = 0;
@@ -160,8 +160,8 @@ public class UIManager : MonoBehaviour
 
     private void UpdateAnswerBox(string sentence)
     {
-        _answerBox.transform.parent.gameObject.SetActive(true);
-        _answerBox.text = sentence;
+        //_answerBox.transform.parent.gameObject.SetActive(true);
+        //_answerBox.text = sentence;
     }
 
     private void ShowEmptySlots()
@@ -199,7 +199,7 @@ public class UIManager : MonoBehaviour
         if (r == null) { Debug.Log("Error! No runner found!"); return; }
 
         _dialogueBox = r.DialogueBox;
-        _answerBox = r.AnswerBox;
+        //_answerBox = r.AnswerBox;
         //_glowBox = r.GlowBox;
         _runnerFace = r.RunnerFace;
     }
@@ -208,7 +208,7 @@ public class UIManager : MonoBehaviour
     {
         _dialogueBox.text = "";
         _dialogueBox.transform.GetChild(0).gameObject.SetActive(false);
-        _answerBox.transform.parent.gameObject.SetActive(false);
+        //_answerBox.transform.parent.gameObject.SetActive(false);
         _dialogueBox.transform.GetComponentInParent<Canvas>().enabled = false;
         _isDialogueBoxOpen = false;
     }
@@ -255,9 +255,10 @@ public class UIManager : MonoBehaviour
         {
             yield return _starGainDelay;
             _stageTotalStarAmount.text = (GameManager.LifetimeStars - GameManager.AcquiredStars + i).ToString();
-            _topTotalStarAmount.text = (GameManager.AcquiredStars - i).ToString() + " ("
-            + GameManager.RequiredStars.ToString()
-            + " req.)";
+            _topTotalStarAmount.text = (GameManager.AcquiredStars - i).ToString() 
+                + " ("
+                + GameManager.RequiredStars.ToString()
+                + " req.)";
             AudioManager.Instance.UIStar.Play();
         }
         _stageAssessment.enabled = true;
@@ -268,7 +269,7 @@ public class UIManager : MonoBehaviour
     {
         if (answer == Answer.Poor)
         {
-            _stageAssessment.text = "Terrible answer.";
+            _stageAssessment.text = "Not enough stars for a complete answer.";
         }
         else if (answer == Answer.Acceptable)
         {
@@ -276,11 +277,11 @@ public class UIManager : MonoBehaviour
         }
         else if (answer == Answer.Excellent)
         {
-            _stageAssessment.text = "Excellent answer!";
+            _stageAssessment.text = "Excellent answer with extra puns!";
         }
         else if (answer == Answer.Compassionate)
         {
-            _stageAssessment.text = "Necessary answer.";
+            _stageAssessment.text = "Error: answer outside limits of AI language model.";
         }
     }
 
@@ -317,7 +318,7 @@ public class UIManager : MonoBehaviour
             GameObject newStar = Instantiate(_starPrefab, _starParent.transform);
             _allStars.Add(newStar);
         }
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i <= 3; i++)
         {
             _compassionateStars.transform.GetChild(i).gameObject.SetActive(false);
         }

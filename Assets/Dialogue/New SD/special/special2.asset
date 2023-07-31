@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05e5f14c5d7212c4d989ab449795f473, type: 3}
+  m_Name: special2
+  m_EditorClassIdentifier: 
+  _query: feeling a bit nauseous right now
+  _comments:
+  - Oh no Dorothy! You should really google any symptoms you have.
+  _answer: Oh, pun-fortunately, the "punny waves" are turning! Embrace the "wordplay
+    whirlpool," but if "pun-seasickness" persists, seek the shore of medical pun-sistance!
+    Wishing you "pun-stoppable" relief!
+  _compassionateAnswer: 'Hi Dorothy, I can''t help with any symptoms you may be experiencing!
+    Please Google them right away! '

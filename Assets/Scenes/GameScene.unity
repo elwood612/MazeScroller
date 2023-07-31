@@ -10302,15 +10302,15 @@ PrefabInstance:
       objectReference: {fileID: 1168911950}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: _midStageDialogue.Array.size
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: _lateStageDialogue.Array.size
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: _earlyStageDialogue.Array.size
-      value: 11
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: _allTutorialDialogue.Array.size
@@ -10319,27 +10319,35 @@ PrefabInstance:
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: _midStageDialogue.Array.data[0]
       value: 
-      objectReference: {fileID: 11400000, guid: a1a71677522d2a54594cd7cb4b4d5331, type: 2}
+      objectReference: {fileID: 11400000, guid: 2cb1281c1c46bc24c813c016b9d3ecd8, type: 2}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: _midStageDialogue.Array.data[1]
       value: 
-      objectReference: {fileID: 11400000, guid: 005ca20f99f4ded45b164853e9a86bc2, type: 2}
+      objectReference: {fileID: 11400000, guid: f5282120dd1c3f74eb535b570a8536a3, type: 2}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: _midStageDialogue.Array.data[2]
       value: 
-      objectReference: {fileID: 11400000, guid: d730dae15955be94e8a9e8d0d270e149, type: 2}
+      objectReference: {fileID: 11400000, guid: 1d81db5a7512ad9459970e06164b2f1b, type: 2}
+    - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
+      propertyPath: _midStageDialogue.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: 241b37fe5f8a1ca4998e9c63ed359ce2, type: 2}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: _lateStageDialogue.Array.data[0]
       value: 
-      objectReference: {fileID: 11400000, guid: 19aeb0cff2118ee43bc5e42114091e7f, type: 2}
+      objectReference: {fileID: 11400000, guid: c0bcba808b35ebb4ea32bcaec6f27137, type: 2}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: _lateStageDialogue.Array.data[1]
       value: 
-      objectReference: {fileID: 11400000, guid: efbf41a29e9d18c419aed8cace5071b5, type: 2}
+      objectReference: {fileID: 11400000, guid: 3a661686541158f408ac362056fe807f, type: 2}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: _lateStageDialogue.Array.data[2]
       value: 
-      objectReference: {fileID: 11400000, guid: 894696ce8a612aa4b849468f2b43b67c, type: 2}
+      objectReference: {fileID: 11400000, guid: f63f55a26cf75ab4d837208d54a8b3c7, type: 2}
+    - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
+      propertyPath: _lateStageDialogue.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: 877ea3e0d66ff1548b9d9ab52ac5dee6, type: 2}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: _specialStageDialogue.Array.size
       value: 3
@@ -10347,43 +10355,43 @@ PrefabInstance:
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: _earlyStageDialogue.Array.data[0]
       value: 
-      objectReference: {fileID: 11400000, guid: 5a45cf9cc474e7c44a5cad38adbccd1f, type: 2}
+      objectReference: {fileID: 11400000, guid: 1ae814757c59cd54fa45784ccc054594, type: 2}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: _earlyStageDialogue.Array.data[1]
       value: 
-      objectReference: {fileID: 11400000, guid: b178d10357aff594aa9fa33e6ec46ebb, type: 2}
+      objectReference: {fileID: 11400000, guid: 27b560cc191a3dd48877607fbded9a5f, type: 2}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: _earlyStageDialogue.Array.data[2]
       value: 
-      objectReference: {fileID: 11400000, guid: 1636ad6d80f5ae64d85599e79eaa9ff3, type: 2}
+      objectReference: {fileID: 11400000, guid: adda96e13bc48ef468d06b1af3763af9, type: 2}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: _earlyStageDialogue.Array.data[3]
       value: 
-      objectReference: {fileID: 11400000, guid: 67438242c926b2b43987721982b5dc4e, type: 2}
+      objectReference: {fileID: 11400000, guid: a8998d38a0329f744ab61b2188303c96, type: 2}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: _earlyStageDialogue.Array.data[4]
       value: 
-      objectReference: {fileID: 11400000, guid: cfd9f4b6d9ec65a4cbd968f7bed93178, type: 2}
+      objectReference: {fileID: 11400000, guid: bf4041f63daed2d48ae614b853b1dbdb, type: 2}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: _earlyStageDialogue.Array.data[5]
       value: 
-      objectReference: {fileID: 11400000, guid: 628baeed788636a4aa94fe4636bf8b93, type: 2}
+      objectReference: {fileID: 11400000, guid: 97239d71dd6329b4cb7df8d3b762ba36, type: 2}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: _earlyStageDialogue.Array.data[6]
       value: 
-      objectReference: {fileID: 11400000, guid: 105284b8136d5704583e5aa5e98d0bd3, type: 2}
+      objectReference: {fileID: 11400000, guid: 3862611587a59b840a5a22b7f912d95a, type: 2}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: _earlyStageDialogue.Array.data[7]
       value: 
-      objectReference: {fileID: 11400000, guid: 66f20902d86ce75409eda33427affd21, type: 2}
+      objectReference: {fileID: 11400000, guid: 19a6de9f81d47fc4ba9c0882c524430f, type: 2}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: _earlyStageDialogue.Array.data[8]
       value: 
-      objectReference: {fileID: 11400000, guid: 67960a5cf98c150488df89a5d3f81b75, type: 2}
+      objectReference: {fileID: 11400000, guid: 823d6201ef4d101419ca61ebedf071c1, type: 2}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: _earlyStageDialogue.Array.data[9]
       value: 
-      objectReference: {fileID: 11400000, guid: fb134bc9d499baf459e0449ce17b169d, type: 2}
+      objectReference: {fileID: 11400000, guid: 93f7e3a9068352746b33b20a2678a050, type: 2}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: _allTutorialDialogue.Array.data[0]
       value: 
@@ -10447,15 +10455,15 @@ PrefabInstance:
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: _specialStageDialogue.Array.data[0]
       value: 
-      objectReference: {fileID: 11400000, guid: ee9c8d81e907d6a4d8a69793e498526d, type: 2}
+      objectReference: {fileID: 11400000, guid: 542c22a10b0801047ae20a2361ac84d7, type: 2}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: _specialStageDialogue.Array.data[1]
       value: 
-      objectReference: {fileID: 11400000, guid: 635aedd239a9d1047b29f6e647488ae2, type: 2}
+      objectReference: {fileID: 11400000, guid: e682f1bc15d0f4344af93c9213977351, type: 2}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: _specialStageDialogue.Array.data[2]
       value: 
-      objectReference: {fileID: 11400000, guid: 0eb1023a807c06d4f82d68b90221fe6c, type: 2}
+      objectReference: {fileID: 11400000, guid: bfe9f7c95784dcb4f9980ea4df49d4fb, type: 2}
     - target: {fileID: 8584702339654192015, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: m_Name
       value: GameManager

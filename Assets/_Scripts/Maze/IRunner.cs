@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine.UI;
+using System;
 public interface IRunner
 {
     public bool IsInTransition { get; set; }

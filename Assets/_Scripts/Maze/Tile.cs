@@ -128,8 +128,11 @@ public class Tile : MonoBehaviour
         runner.PreviousTile = runner.CurrentTile;
         runner.CurrentTile = this;
         runner.CalculateNextTargetWrapper(this);
-        if ((IsTransitionTile) && !runner.IsInTransition) { runner.BeginTransition(); }
-        if (!IsTransitionTile && runner.IsInTransition) { runner.BeginStage(); }
+        if (IsTransitionTile && !runner.IsInTransition) { runner.BeginTransition(); }
+        if (!IsTransitionTile && runner.IsInTransition) 
+        { 
+            runner.BeginStage();
+        }
     }
 
     private void ChargedCheck()

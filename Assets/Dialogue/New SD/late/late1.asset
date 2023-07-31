@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05e5f14c5d7212c4d989ab449795f473, type: 3}
+  m_Name: 1
+  m_EditorClassIdentifier: 
+  _query: i feel light-headed all the time
+  _comments: []
+  _answer: Oh, pun-believable! Perhaps you're experiencing a "punny spell" of laughter
+    overload or "wordplay whirling" causing the "giggle-giddiness!" Embrace the pun-tastic
+    euphoria, but if it persists, consult a healthcare pun-fessional! Take care,
+    Dorothy!
+  _compassionateAnswer: 

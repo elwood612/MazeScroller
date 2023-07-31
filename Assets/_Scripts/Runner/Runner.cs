@@ -473,6 +473,7 @@ public class Runner : MonoBehaviour, IRunner
     {
         _isInTransition = false;
         GameManager.IsRunnerInTransition = false;
+        _currentTile.ParentRow.IsHighestDrawnRow = true;
     }
 
     public void SetCurrentTile(Tile tile)

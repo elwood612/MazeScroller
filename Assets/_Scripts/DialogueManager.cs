@@ -125,7 +125,7 @@ public class DialogueManager : MonoBehaviour
         {
             intro = "Oh we nailed this one!\n\n";
         }
-        string[] sentences = { intro };
+        string[] sentences = { stageDialogue.Answer }; // just a test
         StartDialogue(sentences);
         OnNextAnswer?.Invoke(answer);
     }
