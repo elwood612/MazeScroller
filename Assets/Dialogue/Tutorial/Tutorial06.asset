@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: Tutorial06
   m_EditorClassIdentifier: 
   _lines:
-  - Excellent work, I got the star! I'm Milo, by the way.
+  - YES!! I DID IT!! I got the star!!
+  - I guess you helped too, so thanks!
   - This stage is almost over, and we'll be able to move on to the next one now.
   - 'It''s always possible to get more stars though. '
   - Think you can get me a bonus star before the end of the stage?

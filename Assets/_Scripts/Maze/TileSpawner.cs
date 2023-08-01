@@ -13,18 +13,25 @@ public class TileSpawner : MonoBehaviour
     private int _counterColorSpawn = 0;
     private int _counterSpawnCrystal = 0;
     private int _counterCrystalLevel = 0;
+    private int _counterGreenCrystal = 0;
+    private int _counterPurpleCrystal = 0;
+    private int _counterGoldCrystal = 0;
     private int _triggerDisableTile = 2;
     private int _triggerColorSpawn = 8;
     private int _triggerCrystalLevel = 4;
-    private int _triggerTutorialCrystalSpawn = 5;
+    private int _triggerTutorialCrystalSpawn = 2;
     private int _triggerTutorialColorSpawn = 5;
+    private int _triggerGreenCrystal = 5;
+    private int _triggerPurpleCrystal = 5;
+    private int _triggerGoldCrystal = 5;
     private bool _tutorialFirstCrystal = true;
     private bool _tutorialSecondCrystal = false;
     private bool _tutorialThirdCrystal = false;
-    private bool _firstGreenCrystal = true;
+    private bool _firstGreenCrystalOfStage = true;
+    private bool _firstPurpleCrystal = true;
+    private bool _firstGoldCrystal = true;
     private bool _firstChargedTile = true;
     private bool _goodToSpawnGreen = true;
-    private bool _haveSpawnedFirstGreen = false;
     private bool _exitingTransition = true;
     private float _width = 0.5f;
     private float _transitionWidth = 0.5f;
@@ -114,20 +121,31 @@ public class TileSpawner : MonoBehaviour
                 StartCoroutine(DisableRandomTile(other.GetComponent<Row>()));
             }
 
-            // This triggers upon seeing the stage's first green crystal
-            if (_haveSpawnedFirstGreen && ++_greenCrystalOnScreenCounter > 3)
+            if (GameManager.SpawnGreenCrystal && _goodToSpawnGreen && _firstGreenCrystalOfStage)
             {
-                _haveSpawnedFirstGreen = false;
-                _greenCrystalOnScreenCounter = 0;
-                if (GameManager.SpecialDialogueCounter == 2)
+                if (++_counterGreenCrystal > _triggerGreenCrystal)
                 {
+                    _counterGreenCrystal = 0;
+                    StartCoroutine(SpawnSpecificCrystal(other.GetComponent<Row>(), 4));
+                    _firstGreenCrystalOfStage = false;
+                }
+            }
+
+            if (!_firstPurpleCrystal)
+            {
+                if (++_counterPurpleCrystal > _triggerPurpleCrystal)
+                {
+                    _counterPurpleCrystal = 0;
                     GameManager.OnNextTutorial?.Invoke(7);
                 }
-                else if (GameManager.SpecialDialogueCounter >= 3)
+            }
+            if (!_firstGoldCrystal)
+            {
+                if (++_counterGoldCrystal > _triggerGoldCrystal)
                 {
+                    _counterGoldCrystal = 0;
                     GameManager.OnNextTutorial?.Invoke(8);
                 }
-
             }
 
             if (!GameManager.IsTutorialOngoing)
@@ -162,16 +180,18 @@ public class TileSpawner : MonoBehaviour
                     if (_tutorialSecondCrystal) // after 1st crystal popped
                     {
                         _counterSpawnCrystal = 0;
-                        //_tutorialSecondCrystal = false;
                         _tutorialThirdCrystal = true;
-                        StartCoroutine(SpawnSpecificCrystal(other.GetComponent<Row>(), 1));
+                        if (Random.Range(0f, 1f) < 0.6f) { StartCoroutine(SpawnSpecificCrystal(other.GetComponent<Row>(), 1)); }
+                        else { StartCoroutine(SpawnSpecificCrystal(other.GetComponent<Row>(), 0)); }
                         return;
                     }
                     if (_tutorialThirdCrystal)
                     {
+                        Debug.Log("Spawning tutorial crystal");
                         _counterSpawnCrystal = 0;
                         _tutorialThirdCrystal = false;
-                        StartCoroutine(SpawnSpecificCrystal(other.GetComponent<Row>(), 1));
+                        if (Random.Range(0f, 1f) < 0.4f) { StartCoroutine(SpawnSpecificCrystal(other.GetComponent<Row>(), 1)); }
+                        else { StartCoroutine(SpawnSpecificCrystal(other.GetComponent<Row>(), 0)); }
                         return;
                     }
                 }
@@ -262,7 +282,6 @@ public class TileSpawner : MonoBehaviour
     {
         if (_firstChargedTile)
         {
-            Debug.Log("Skipping first charged tile");
             _firstChargedTile = false;
             yield break;
         }
@@ -286,7 +305,7 @@ public class TileSpawner : MonoBehaviour
     private IEnumerator SpawnCrystal(Row row)
     {
         yield return _crystalDelay;
-        int level = 0;
+        int level;
         int numCrystalsInOneRow = 0;
         foreach (Tile tile in row.EnabledTiles)
         {
@@ -307,20 +326,25 @@ public class TileSpawner : MonoBehaviour
                     if (Random.Range(0f, 1f) < 0.35f && GameManager.SpawnPurpleCrystal)
                     {
                         level++;
+                        if (_firstPurpleCrystal)
+                        {
+                            _firstPurpleCrystal = false;
+
+                        }
                         if (Random.Range(0f, 1f) < 0.5f && GameManager.SpawnGoldCrystal)
                         {
                             level++;
+                            if (_firstGoldCrystal)
+                            {
+                                _firstGoldCrystal = false;
+
+                            }
                         }
                     }
-                    if (GameManager.SpawnGreenCrystal && _goodToSpawnGreen)
+                    if (GameManager.SpawnGreenCrystal && _goodToSpawnGreen && !_firstGreenCrystalOfStage)
                     {
                         level = 4;
                         _goodToSpawnGreen = false;
-                        if (_firstGreenCrystal)
-                        {
-                            _haveSpawnedFirstGreen = true;
-                            _firstGreenCrystal = false;
-                        }
                     }
                 }
                 Crystal newCrystal = _crystalPool.Get();
@@ -331,7 +355,6 @@ public class TileSpawner : MonoBehaviour
                 numCrystalsInOneRow++;
             }
         }
-        if (numCrystalsInOneRow > 1 && level > 0) Debug.Log("Spawning 2 crystals in one row"); // TO DELETE ONCE WE'RE SURE THIS DOESN'T HAPPEN ANYMORE
     }
 
     private IEnumerator SpawnSpecificCrystal(Row row, int level)
@@ -354,14 +377,15 @@ public class TileSpawner : MonoBehaviour
         _chargedMaxRows = Random.Range(4, 8);
         _missingTilesChance = Random.Range(1, 3);
         _goodToSpawnGreen = true;
-        _firstGreenCrystal = true;
+        _firstGreenCrystalOfStage = true;
         _firstChargedTile = true;
+        _minimumTileCounter = 0;
 
         _tutorialFirstCrystal = true;
         _tutorialSecondCrystal = false;
         _tutorialThirdCrystal = false;
         _triggerTutorialColorSpawn = 6;
-        _triggerTutorialCrystalSpawn = 4;
+        _triggerTutorialCrystalSpawn = 2;
     }
 
     private void EnableSecondCrystal()

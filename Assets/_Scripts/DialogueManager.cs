@@ -107,27 +107,18 @@ public class DialogueManager : MonoBehaviour
     public void NextAnswer(StageDialogue stageDialogue)
     {
         if (stageDialogue == null) { EndDialogue(); return; }
-        string intro = "";
-        string answer = 
-            stageDialogue.Query +
-            ":" + "\n" + "\"" +
-            stageDialogue.Answer
-            + "\"";
-        if (GameManager.StageAnswer == Answer.Poor)
+        string answer;
+        if (GameManager.StageAnswer == Answer.Compassionate)
         {
-            intro = "Don't worry, I'll make something up.\n\n";
+            answer = stageDialogue.CompassionateAnswer;
         }
-        else if (GameManager.StageAnswer == Answer.Acceptable)
+        else
         {
-            intro = "Got your answer.\n\n";
+            answer = stageDialogue.Answer;
         }
-        else if (GameManager.StageAnswer == Answer.Excellent)
-        {
-            intro = "Oh we nailed this one!\n\n";
-        }
-        string[] sentences = { stageDialogue.Answer }; // just a test
+        string[] sentences = { answer };
         StartDialogue(sentences);
-        OnNextAnswer?.Invoke(answer);
+        //OnNextAnswer?.Invoke(answer);
     }
 
     public string GetRandomWord(StageDialogue stageDialogue)

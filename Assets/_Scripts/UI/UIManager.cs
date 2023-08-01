@@ -291,12 +291,12 @@ public class UIManager : MonoBehaviour
             + GameManager.RequiredStars.ToString()
             + " req.)";
         _starParent.transform.GetChild(_newStarIndex % GameManager.RequiredStars)
-            .GetChild(2 + _bonusStarIndex).gameObject.SetActive(true);
+            .GetChild(Mathf.Min(2 + _bonusStarIndex, 5)).gameObject.SetActive(true);
         _newStarIndex++;
         if (level > _bonusStarIndex)
         {
             _bonusStarIndex = level;
-            if (_bonusStarIndex < _speedSliders.Length)
+            if (_bonusStarIndex < _speedSliders.Length) 
             {
                 _activeSlider = _speedSliders[_bonusStarIndex];
             }
@@ -308,7 +308,7 @@ public class UIManager : MonoBehaviour
     {
         foreach (var star in _allStars)
         {
-            Destroy(star.gameObject); // ok yes this needs to be better
+            Destroy(star.gameObject); // ok yes this needs to be better OR DOES IT
         }
         _allStars.Clear();
         _newStarIndex = 0;

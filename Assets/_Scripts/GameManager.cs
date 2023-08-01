@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
     public Transform SampleTileTransform;
 
     private static StageDialogue _currentStageDialogue;
-    private static StageDialogue[] _allStageDialogue;
+    //private static StageDialogue[] _allStageDialogue;
     private AnimationCurve _tileSpeedCurve;
     private AnimationCurve _runnerSpeedCurve;
     private AnimationCurve _runnerTransitionCurve;
@@ -49,10 +49,6 @@ public class GameManager : MonoBehaviour
     private static int _loseCounter = 0;
     private static int _bonusStarLevel = 0;
     private static int _spawnChargedTileChance = 6;
-    //private static int _earlyDialogueCounter = 0;
-    //private static int _midDialogueCounter = 0;
-    //private static int _lateDialogueCounter = 0;
-    //private static int _specialDialogueCounter = 0;
     private static float _tileColorHue = 0;
     private static bool _firstStarGained = true;
     private static bool _resetStoryMode = false;
@@ -84,6 +80,8 @@ public class GameManager : MonoBehaviour
     public static event Action OnGameOver;
     public static event Action OnQuitToMenu;
 
+    // Need delegates here because we're invoking them from elsewhere.
+    // Yes, this is a terrible idea. No, I'm not going to change it.
     public delegate void NextDialogue(int index);
     public static NextDialogue OnNextTutorial;
     public delegate void ShowEmptySlots();
@@ -251,7 +249,6 @@ public class GameManager : MonoBehaviour
         LoadDefaultSettings();
         SaveData.LoadPlayerSettings();
         NextStageDialogueType();
-        LoadStageDialogue();
 
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 60;
@@ -289,11 +286,6 @@ public class GameManager : MonoBehaviour
         {
             DoTutorial[i] = true;
         }
-    }
-
-    private void LoadStageDialogue()
-    {
-        _allStageDialogue = _earlyStageDialogue.Concat(_midStageDialogue).Concat(_lateStageDialogue).ToArray();
     }
 
     private void CalculateBoardSpeed(float multiplier)
@@ -413,21 +405,17 @@ public class GameManager : MonoBehaviour
         switch (_currentStageDialogueType)
         {
             case StageDialogueTypes.Special:
-                Debug.Log("Selecting special dialogue");
                 dialogueToReturn = _specialStageDialogue[SpecialDialogueCounter];
                 break;
             case StageDialogueTypes.Early:
-                Debug.Log("Selecting early dialogue");
                 TryResetDialogueCounter(0, 0, _earlyStageDialogue.Length, ref EarlyDialogueCounter);
                 dialogueToReturn = _earlyStageDialogue[EarlyDialogueCounter];
                 break;
             case StageDialogueTypes.Mid:
-                Debug.Log("Selecting mid dialogue");
                 TryResetDialogueCounter(0, _earlyStageDialogue.Length, _midStageDialogue.Length, ref MidDialogueCounter);
                 dialogueToReturn = _midStageDialogue[MidDialogueCounter];
                 break;
             case StageDialogueTypes.Late:
-                Debug.Log("Selecting late dialogue");
                 TryResetDialogueCounter(_earlyStageDialogue.Length, _midStageDialogue.Length, _lateStageDialogue.Length, ref LateDialogueCounter);
                 dialogueToReturn = _lateStageDialogue[LateDialogueCounter];
                 break;
@@ -475,7 +463,7 @@ public class GameManager : MonoBehaviour
 
     public static void AddBoardMotion(Transform t)
     {
-        if (DialogueManager.Instance.IsTutorialDialogueActive || _isStageMenuOpen) { return; }
+        if ((DialogueManager.Instance.IsTutorialDialogueActive && !_isGameOver) || _isStageMenuOpen) { return; }
 
         if (IsRunnerInTransition)
         {
@@ -527,7 +515,7 @@ public class GameManager : MonoBehaviour
         {
             _tileColorHue = Mathf.Clamp(Random.Range(0f, 1f), 0.1f, 0.9f);
             _requiredStars = 1;
-            _stageLength = _requiredStars * 90; // might need some rebalancing
+            _stageLength = _requiredStars * 90;
         }
         
         OnSetupNextStage?.Invoke();

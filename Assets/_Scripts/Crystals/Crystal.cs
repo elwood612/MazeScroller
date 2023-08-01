@@ -27,6 +27,8 @@ public class Crystal : MonoBehaviour
     private static bool _firstCrystal = true;
     private static bool _secondCrystal = false;
     private static bool _firstBlueCrystal = false;
+    private static bool _firstPurpleCrystal = true;
+    private static bool _firstGoldCrystal = true;
     private static bool _thirdCrystal = false;
     private static bool _firstGreenCrystal = true;
     private static bool _firstGreenCrystalPopped = true;
@@ -39,8 +41,11 @@ public class Crystal : MonoBehaviour
     public static event Action OnFirstBlueCrystal;
     public static event Action OnFirstBlueCrystalPopped;
     public static event Action OnGreenCrystalPopped;
+
     public static int ScoreBonus = 1; // this is public so Runner can reset it
+
     public int InitialLevel => _initialLevel;
+
     private void Awake()
     {
         for (int i = 0; i < _orbitMissiles.Length; i++)
@@ -115,6 +120,17 @@ public class Crystal : MonoBehaviour
                 _secondCrystal = false;
                 OnSecondCrystal?.Invoke();
             }
+            if (_firstPurpleCrystal && _initialLevel == 2 && _destroyed)
+            {
+                _firstPurpleCrystal = false;
+                GameManager.OnNextTutorial?.Invoke(15);
+                return;
+            }
+            if (_firstGoldCrystal && _initialLevel == 3 && _destroyed)
+            {
+                _firstGoldCrystal = false;
+                GameManager.OnNextTutorial?.Invoke(16);
+            }
             #endregion
         }
         else if (other.CompareTag("TileDestroyer") && !_destroyed)
@@ -162,7 +178,11 @@ public class Crystal : MonoBehaviour
         _particlesExplosion.Play();
         _word.gameObject.SetActive(true);
         _wordAnimation.Play();
-        if (GameManager.IsTutorialOngoing) { ScoreBonus = 3; }
+        if (GameManager.IsTutorialOngoing) 
+        {
+            GameManager.Instance.SpeedBonus += 10;
+            //return;
+        }
 
         if (_initialLevel < 4)
         {

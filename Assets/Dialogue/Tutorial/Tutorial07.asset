@@ -13,4 +13,6 @@ MonoBehaviour:
   m_Name: Tutorial07
   m_EditorClassIdentifier: 
   _lines:
-  - What is that crystal, I wonder? I've never seen one of those before...
+  - Ooh, what is that crystal? Is that what they call magenta?
+  - 'I need it!!! '
+  - Looks like it has 2 shields though...

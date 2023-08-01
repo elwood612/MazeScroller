@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: 1
   m_EditorClassIdentifier: 
   _query: how to get to google.com
-  _comments: []
-  _answer: Such a "punderful" question, Dorothy! Type "Google-Maps" in your "browser-taxi,"
+  _comments:
+  - All right, you know the drill! Let's get that answer!! Can't wait!!!
+  _answer: Wonderful question, Dorothy! Type "Google-Maps" in your "browser-taxi,"
     and it'll drive you to the "Google-Verse" where pun-tastic knowledge and giggles
-    await! Buckle up for a pun-tastic journey!
+    await! Buckle up for a great journey!
   _compassionateAnswer: 

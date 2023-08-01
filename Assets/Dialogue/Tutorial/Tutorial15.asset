@@ -10,8 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f89513250b17cb949a8c273e46c8e857, type: 3}
-  m_Name: Stage0
+  m_Name: Tutorial15
   m_EditorClassIdentifier: 
   _lines:
-  - Ok, looks like we'll need 2 stars for this stage.
-  - I'm sure you can figure this one out on your own. Good luck!
+  - OMG that was awesome!! I love magenta!!

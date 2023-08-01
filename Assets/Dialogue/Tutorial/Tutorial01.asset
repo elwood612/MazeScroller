@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: Tutorial01
   m_EditorClassIdentifier: 
   _lines:
-  - Ok, good job. Notice that progress bar up top?
+  - Ok, good job! Notice that progress bar up top?
   - 'It''ll fill up as I break more of these crystals. '
-  - Once it fills up I get a star!
-  - So all you have to do is draw me a path to more crystals. Quickly!
+  - Once it fills up I get a star and I'm the best and - I mean WE get a star. Of
+    course!
+  - Anyway, all you have to do is draw me a path to more crystals.
+  - And quickly! That bar will start to drain again soon.

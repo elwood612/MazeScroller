@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: 3
   m_EditorClassIdentifier: 
   _query: why is my computer using puns?
-  _comments: []
+  _comments:
+  - Why wouldn't I use puns? Who doesn't love puns??
   _answer: Oh, the pun-believable twist of fate! Your computer must've installed
     the "JokesOS" upgrade, going pun-tastically rogue! Embrace the pun-novative humor,
     and it'll become the life of the digital pun-ty! Let the pun-tertainment continue!

@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: Tutorial00
   m_EditorClassIdentifier: 
   _lines:
-  - Who are you? How did you get here?..
-  - 'Doesn''t matter, I suppose. Listen, can you get me up and out of here? '
-  - 'I''ll explain everything later, I promise. '
-  - 'Just start by drawing a path to that crystal there. '
+  - Oh that's easy, I can help with - hey, who are you?
+  - You're new, aren't you? Well that's swell! We're going to have such a good time!
+  - But first, we need to help Dorothy here. I pride myself on my awesome answers,
+    so don't let me down!
+  - To provide an answer, I need crystals. Lots of them. See them there?
+  - Go ahead and draw a path to the nearest crystal. Go ahead!

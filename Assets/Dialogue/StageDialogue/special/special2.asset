@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05e5f14c5d7212c4d989ab449795f473, type: 3}
   m_Name: special2
   m_EditorClassIdentifier: 
-  _query: my cat died...
+  _query: feeling a bit nauseous right now
   _comments:
-  - 'Let''s... try to help again. '
-  _answer: Sometimes cats die. We won't be going any further with this storyline
-    however, this is just a test.
-  _compassionateAnswer: So sorry, kid...
+  - That doesn't sound good - wait, is that a green crystal? Haven't seen one of
+    those before...
+  _answer: Oh, pun-fortunately, the "punny waves" are turning! Embrace the "wordplay
+    whirlpool," but if "pun-seasickness" persists, seek the shore of medical pun-sistance!
+    Wishing you "pun-stoppable" relief!
+  _compassionateAnswer: 'Hi Dorothy, I can''t help with any symptoms you may be experiencing!
+    Please Google them right away! '
