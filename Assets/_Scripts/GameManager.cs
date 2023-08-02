@@ -257,10 +257,8 @@ public class GameManager : MonoBehaviour
         if (Instance == null) { Instance = this; }
         else { Destroy(this); }
 
-        // order is important here
         LoadDefaultSettings();
         SaveData.LoadPlayerSettings();
-        //NextStageDialogueType();
 
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 60;
@@ -360,7 +358,7 @@ public class GameManager : MonoBehaviour
     {
         AudioManager.Instance.StarGain.Play(); // should probably be a different sound??
         StageProgress = _stageLength;
-        if (SpecialDialogueCounter == 2) 
+        if (GlobalDialogueCounter >= _globalStageDialogue.Length - 1)
         {
             _isGameOver = true;
             OnNextTutorial?.Invoke(13); 
@@ -369,82 +367,9 @@ public class GameManager : MonoBehaviour
         OnCompassionateVictory?.Invoke();
     }
 
-    private void IncrementStageDialogueCounters() // On end stage, step 1
-    {
-        switch (_currentStageDialogueType)
-        {
-            case StageDialogueTypes.Start:
-                break;
-            case StageDialogueTypes.Special:
-                SpecialDialogueCounter++;
-                break;
-            case StageDialogueTypes.Early:
-                EarlyDialogueCounter++;
-                break;
-            case StageDialogueTypes.Mid:
-                MidDialogueCounter++;
-                break;
-            case StageDialogueTypes.Late:
-                LateDialogueCounter++;
-                break;
-        }
-    }
-
-    private void NextStageDialogueType() // On end stage, step 2
-    {
-        if ((_currentScore <= 8 && SpecialDialogueCounter == 0) ||
-            (_currentScore > 8 && SpecialDialogueCounter == 1) ||
-            (_currentScore > 12 && SpecialDialogueCounter == 2))
-        {
-            _currentStageDialogueType = StageDialogueTypes.Special;
-        }
-        else if (_currentScore <= 5)
-        {
-            _currentStageDialogueType = StageDialogueTypes.Early;
-        }
-        else if (_currentScore > 5 && _currentScore <= 10)
-        {
-            _currentStageDialogueType = StageDialogueTypes.Mid;
-        }
-        else
-        {
-            _currentStageDialogueType = StageDialogueTypes.Late;
-        }
-    }
-
-    private StageDialogue AssignNextStageDialogue() // On new stage setup
-    {
-        StageDialogue dialogueToReturn = _earlyStageDialogue[0];
-        switch (_currentStageDialogueType)
-        {
-            case StageDialogueTypes.Special:
-                dialogueToReturn = _specialStageDialogue[SpecialDialogueCounter];
-                break;
-            case StageDialogueTypes.Early:
-                TryResetDialogueCounter(0, 0, _earlyStageDialogue.Length, ref EarlyDialogueCounter);
-                dialogueToReturn = _earlyStageDialogue[EarlyDialogueCounter];
-                break;
-            case StageDialogueTypes.Mid:
-                TryResetDialogueCounter(0, _earlyStageDialogue.Length, _midStageDialogue.Length, ref MidDialogueCounter);
-                dialogueToReturn = _midStageDialogue[MidDialogueCounter];
-                break;
-            case StageDialogueTypes.Late:
-                TryResetDialogueCounter(_earlyStageDialogue.Length, _midStageDialogue.Length, _lateStageDialogue.Length, ref LateDialogueCounter);
-                dialogueToReturn = _lateStageDialogue[LateDialogueCounter];
-                break;
-        }
-
-        return dialogueToReturn;
-    }
-
-    private void TryResetDialogueCounter(int previousMin, int newMin, int max, ref int counter)
-    {
-        counter = counter >= max ? 0 : counter;
-    }
-
     private StageDialogue NextStageDialogue()
     {
-        return _globalStageDialogue[GlobalDialogueCounter];
+        return _globalStageDialogue[Mathf.Min(GlobalDialogueCounter, _globalStageDialogue.Length - 1)];
     }
 
     public void UpdateGameState(GameState newState)
@@ -526,9 +451,6 @@ public class GameManager : MonoBehaviour
 
         if (answered)
         {
-            //IncrementStageDialogueCounters();
-            //NextStageDialogueType();
-
             GlobalDialogueCounter++;
             SaveData.SavePlayerSettings();
             if (_currentScore > _highScore)
@@ -546,26 +468,11 @@ public class GameManager : MonoBehaviour
 
     public void SetupNextStage()
     {
-        //_currentStageDialogue = AssignNextStageDialogue();
-
-        //if (_currentScore > 10 && _acquiredStars >= _requiredStars)
-        //{
-        //    _spawnGoldCrystal = true;
-        //    _spawnPurpleCrystal = true;
-        //    _spawnChargedTileChance = 4;
-        //}
-        //else if (_currentScore > 3)
-        //{
-        //    _spawnGoldCrystal = false;
-        //    _spawnPurpleCrystal = true;
-        //    _spawnChargedTileChance = 5;
-        //}
-        //else 
-        //{ 
-        //    _spawnPurpleCrystal = false;
-        //    _spawnGoldCrystal = false;
-        //    _spawnChargedTileChance = 6;
-        //}
+        if (_isGameOver)
+        {
+            GameOver();
+            return;
+        }
 
         _currentStageDialogue = NextStageDialogue();
 
@@ -573,22 +480,30 @@ public class GameManager : MonoBehaviour
         _spawnGoldCrystal = GlobalDialogueCounter > _firstGoldStage;
 
         _spawnChargedTileChance = 6;
-        if (_spawnPurpleCrystal) { _spawnChargedTileChance--; }
-        if (_spawnGoldCrystal) { _spawnChargedTileChance--; }
+        _requiredStars = 1;
+        if (_spawnPurpleCrystal) 
+        { 
+            _spawnChargedTileChance--;
+            _requiredStars++;
+        }
+        if (_spawnGoldCrystal) 
+        { 
+            _spawnChargedTileChance--;
+            _requiredStars++;
+        }
 
         _spawnGreenCrystal = _currentStageDialogue.CompassionateAnswer != "";
 
         if (IsTutorialOngoing)
         {
             _tileColorHue = 0.552778f;
-            _requiredStars = 1;
             _stageLength = 30;
+            _spawnChargedTileChance = 8;
         }
         else
         {
             _tileColorHue = Mathf.Clamp(Random.Range(0f, 1f), 0.1f, 0.9f);
-            _requiredStars = 1;
-            _stageLength = _requiredStars * 90;
+            _stageLength = (_requiredStars * 20) + 65;
         }
 
         _repeatingStage = false;

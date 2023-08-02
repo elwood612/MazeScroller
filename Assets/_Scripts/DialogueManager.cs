@@ -81,6 +81,8 @@ public class DialogueManager : MonoBehaviour
 
     public void NextTutorialDialogue(int index)
     {
+        // Insert subsequent run check here
+        // Disable this if restart option is checked in menu
         if (GameManager.DoTutorial[index]) 
         {
             _isTutorialDialogueActive = true;

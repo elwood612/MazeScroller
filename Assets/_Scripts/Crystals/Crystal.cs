@@ -21,6 +21,7 @@ public class Crystal : MonoBehaviour
     private int _level = 0;
     private int _initialLevel;
     private int _scoreConstant = 12;
+    private int _scoreMin = 3;
     private bool _destroyed = false;
     private bool _compassionateScore = false;
     private bool _firstTimeSeeingCompassionate = true;
@@ -85,6 +86,7 @@ public class Crystal : MonoBehaviour
                     StartCoroutine(CompassionateCrystalContact());
                     return;
                 }
+                GameManager.Instance.StarProgress++;
                 DestroyOrbitMissile(_orbitMissiles[_level - 1]);
                 _level--;
             }
@@ -181,7 +183,6 @@ public class Crystal : MonoBehaviour
         if (GameManager.IsTutorialOngoing) 
         {
             GameManager.Instance.StarProgress += 10;
-            //return;
         }
 
         if (_initialLevel < 4)
@@ -196,7 +197,7 @@ public class Crystal : MonoBehaviour
                 }
             }
             GameManager.Instance.StarProgress +=
-                (int)Mathf.Clamp(_initialLevel * _initialLevel * ScoreBonus * _scoreConstant, 1, 100);
+                (int)Mathf.Clamp((_initialLevel * _initialLevel * ScoreBonus * _scoreConstant) + _scoreMin, 1, 100);
             ScoreBonus = 2;
         }
         else
@@ -235,6 +236,7 @@ public class Crystal : MonoBehaviour
             if (_firstTimeSeeingCompassionate)
             {
                 GameManager.OnShowEmptySlots?.Invoke();
+                GameManager.OnNextTutorial?.Invoke(17);
                 _firstTimeSeeingCompassionate = false;
             }
             yield return _compassionateDelay;

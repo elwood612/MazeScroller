@@ -355,7 +355,6 @@ public class Tile : MonoBehaviour
 
     public void RemoveCrystal()
     {
-        //OnCrystalRemoval?.Invoke(AttachedCrystal);
         AttachedCrystal.RemoveCrystal();
         AttachedCrystal = null;
     }
@@ -376,13 +375,15 @@ public class Tile : MonoBehaviour
     public void SetStartingTile(bool reset = false)
     {
         AddTileToMaze();
-        _parentRow.IsHighestDrawnRow = true;
+        //_parentRow.IsHighestDrawnRow = true;
+        BoardManager.SetHighestRow(_parentRow);
         IsStartingTile = true;
         foreach (Wall wall in _neighborWalls)
         {
             wall.SetWallAsBorder();
         }
-        DrawMaze.HighestDrawnRow = _parentRow;
+        //DrawMaze.HighestDrawnRow = _parentRow;
+        //BoardManager.SetHighestRow(_parentRow);
         if (!reset) { GameManager.Instance.SpawnRunner(transform); }
         else 
         {

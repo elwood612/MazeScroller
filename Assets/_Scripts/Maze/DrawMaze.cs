@@ -7,7 +7,7 @@ public class DrawMaze : MonoBehaviour
     [SerializeField] private LayerMask _wallLayer;
 
     private Ray _ray;
-    private static Row _highestDrawnRow;
+    //private static Row _highestDrawnRow;
     private RaycastHit[] _hits;
     private Camera _cam;
     private Renderer _renderer;
@@ -18,11 +18,11 @@ public class DrawMaze : MonoBehaviour
     public static event Action<Tile> OnTileAdded;
     //public static event Action<Tile> OnTileRemoved;
 
-    public static Row HighestDrawnRow
-    {
-        get => _highestDrawnRow;
-        set => _highestDrawnRow = value;
-    }
+    //public static Row HighestDrawnRow
+    //{
+    //    get => _highestDrawnRow;
+    //    set => _highestDrawnRow = value;
+    //}
 
     private void Awake()
     {
@@ -148,19 +148,20 @@ public class DrawMaze : MonoBehaviour
         // If we're supposed to be increasing height: bail if it turns out we're not
         // Reversed if we're supposed to be decreasing
         if (!decrease &&
-            (tile.transform.position.z <= _highestDrawnRow.transform.position.z || tile.ParentRow.IsHighestDrawnRow))
+            (tile.transform.position.z <= BoardManager.HighestDrawnRow.transform.position.z || tile.ParentRow.IsHighestDrawnRow))
         {
             return;
         }
         else if (decrease &&
-            (tile.transform.position.z >= _highestDrawnRow.transform.position.z || tile.ParentRow.IsHighestDrawnRow))
+            (tile.transform.position.z >= BoardManager.HighestDrawnRow.transform.position.z || tile.ParentRow.IsHighestDrawnRow))
         {
             return;
         }
 
-        _highestDrawnRow.IsHighestDrawnRow = false;
-        _highestDrawnRow = tile.ParentRow;
-        _highestDrawnRow.IsHighestDrawnRow = true;
+        //_highestDrawnRow.IsHighestDrawnRow = false;
+        //_highestDrawnRow = tile.ParentRow;
+        //_highestDrawnRow.IsHighestDrawnRow = true;
+        BoardManager.SetHighestRow(tile.ParentRow);
     }
 
     public static void TileAddingItselfToMaze(Tile tile)

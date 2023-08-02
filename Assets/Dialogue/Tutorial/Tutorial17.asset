@@ -10,11 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f89513250b17cb949a8c273e46c8e857, type: 3}
-  m_Name: Tutorial11
+  m_Name: Tutorial17
   m_EditorClassIdentifier: 
   _lines:
-  - 'Oh wait, now the progress bar is back. '
-  - I wonder what would have happened...
-  - Looks like if we want to go after those GREEN crystals, we need to avoid ALL
-    the others!
-  - If only there was a way to make them all disappear?...
+  - Ooh, that feels weird!
+  - Wait, what happened to the progress bar?..

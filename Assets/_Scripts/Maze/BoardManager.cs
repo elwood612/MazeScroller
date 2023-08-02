@@ -14,7 +14,9 @@ public class BoardManager : MonoBehaviour
 
     private static List<Tile> _allTiles = new List<Tile>();
     private static List<Wall> _allWalls = new List<Wall>();
+    private static List<Row> _allRows = new List<Row>();
     private static Tile _currentPreTransitionTile;
+    private static Row _highestDrawnRow;
     private Vector3 _rowResetPos;
     private Vector3 _rowSetupPos;
     private Vector3 _rowQAPos;
@@ -25,6 +27,7 @@ public class BoardManager : MonoBehaviour
     public static List<Tile> AllTiles => _allTiles;
     public static List<Wall> AllWalls => _allWalls;
     public static Tile CurrentPreTransitionTile => _currentPreTransitionTile;
+    public static Row HighestDrawnRow => _highestDrawnRow;
 
     private void Awake()
     {
@@ -43,14 +46,14 @@ public class BoardManager : MonoBehaviour
     private void OnEnable()
     {
         GameManager.OnStateChanged += GenerateBoard;
-        GameManager.OnCompassionateVictory += ClearAllCrystals;
+        GameManager.OnCompassionateVictory += ClearAllCrystalsAndChargedTiles;
         GameManager.OnQuitToMenu += ForceReset;
     }
 
     private void OnDisable()
     {
         GameManager.OnStateChanged -= GenerateBoard;
-        GameManager.OnCompassionateVictory -= ClearAllCrystals;
+        GameManager.OnCompassionateVictory -= ClearAllCrystalsAndChargedTiles;
         GameManager.OnQuitToMenu -= ForceReset;
     }
 
@@ -73,6 +76,7 @@ public class BoardManager : MonoBehaviour
     private Row GenerateRow()
     {
         Row row = Instantiate(_rowPrefab, transform).GetComponent<Row>();
+        _allRows.Add(row);
         foreach (Tile tile in row.GetComponentsInChildren<Tile>())
         {
             _allTiles.Add(tile);
@@ -93,13 +97,17 @@ public class BoardManager : MonoBehaviour
         Instantiate(_tileDestroyCollider, _tileDestroyPos, Quaternion.identity, transform);
     }
 
-    private void ClearAllCrystals()
+    private void ClearAllCrystalsAndChargedTiles()
     {
         foreach (Tile tile in _allTiles)
         {
             if (tile.AttachedCrystal != null && tile.AttachedCrystal.isActiveAndEnabled)
             {
                 tile.RemoveCrystal();
+            }
+            if (tile.IsCharged)
+            {
+                tile.SetAsCharged(false);
             }
         }
     }
@@ -118,6 +126,22 @@ public class BoardManager : MonoBehaviour
         }
         refTile.SpawnTile();
         refTile.SetStartingTile(true);
-        ClearAllCrystals();
+        ClearAllCrystalsAndChargedTiles();
+    }
+
+    public static void SetHighestRow(Row inputRow)
+    {
+        foreach (Row row in _allRows)
+        {
+            if (row == inputRow)
+            {
+                row.IsHighestDrawnRow = true;
+                _highestDrawnRow = row;
+            }
+            else
+            {
+                row.IsHighestDrawnRow = false;
+            }
+        }
     }
 }
