@@ -192,7 +192,6 @@ public class Runner : MonoBehaviour, IRunner
             DrawMaze.OnTileAdded -= SetTarget;
         }
         
-        //if (_currentTarget != null) { _spaceshipTransform.LookAt(_currentTarget.transform); }
         if (_currentTarget != null) { LookAtTile(_currentTarget); }
     }
 
@@ -454,7 +453,8 @@ public class Runner : MonoBehaviour, IRunner
 
     private void LookAtTile(Tile target)
     {
-        _spaceshipTransform.forward = target.transform.position - _spaceshipTransform.position;
+        if (_currentTile == null) { _spaceshipTransform.forward = target.transform.position - _spaceshipTransform.position; }
+        else { _spaceshipTransform.forward = target.transform.position - _currentTile.transform.position; }
     }
 
     public void CalculateNextTargetWrapper(Tile tile)

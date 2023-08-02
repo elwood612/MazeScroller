@@ -92,7 +92,15 @@ public class DialogueManager : MonoBehaviour
     public void NextQuery(StageDialogue stageDialogue)
     {
         if (stageDialogue == null) { EndDialogue(); return; }
-        string query = "<receiving incoming query>\n" + stageDialogue.Query;
+        string query;
+        if (!GameManager.RepeatingStage)
+        {
+            query = "<receiving incoming query>\n" + stageDialogue.Query;
+        }
+        else
+        {
+            query = "<retrieving previous query>\n" + stageDialogue.Query;
+        }
         string[] sentences = { query };
         _isQuery = true;
         StartDialogue(sentences);
@@ -101,14 +109,23 @@ public class DialogueManager : MonoBehaviour
     public void NextComment(StageDialogue stageDialogue)
     {
         if (stageDialogue == null) { EndDialogue(); return; }
-        StartDialogue(stageDialogue.Comments);
+
+        if (!GameManager.RepeatingStage)
+        {
+            StartDialogue(stageDialogue.Comments);
+        }
+        else
+        {
+            string[] s = { "Let's try this again!" };
+            StartDialogue(s);
+        }
     }
 
     public void NextAnswer(StageDialogue stageDialogue)
     {
         if (stageDialogue == null) { EndDialogue(); return; }
         string answer;
-        if (GameManager.StageAnswer == Answer.Compassionate)
+        if (GameManager.StageAnswerQuality == Answer.Compassionate)
         {
             answer = stageDialogue.CompassionateAnswer;
         }
@@ -118,7 +135,6 @@ public class DialogueManager : MonoBehaviour
         }
         string[] sentences = { answer };
         StartDialogue(sentences);
-        //OnNextAnswer?.Invoke(answer);
     }
 
     public string GetRandomWord(StageDialogue stageDialogue)

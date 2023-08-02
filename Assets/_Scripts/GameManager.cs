@@ -9,16 +9,20 @@ using Random = UnityEngine.Random;
 public class GameManager : MonoBehaviour
 {
     #region Variables
+    [SerializeField] private bool _debugMode;
+    [SerializeField] private GM_Settings _settings;
+    [SerializeField] private GameObject _runnerPrefab;
+    [SerializeField] private int _firstPurpleStage;
+    [SerializeField] private int _firstGoldStage;
+    public Transform SampleTileTransform;
+
     [SerializeField] private Dialogue[] _allTutorialDialogue;
     [SerializeField] private StageDialogue[] _earlyStageDialogue;
     [SerializeField] private StageDialogue[] _midStageDialogue;
     [SerializeField] private StageDialogue[] _lateStageDialogue;
     [SerializeField] private StageDialogue[] _specialStageDialogue;
+    [SerializeField] private StageDialogue[] _globalStageDialogue;
 
-    [SerializeField] private GM_Settings _settings;
-    [SerializeField] private GameObject _runnerPrefab;
-    [SerializeField] private bool _debugMode;
-    public Transform SampleTileTransform;
 
     private static StageDialogue _currentStageDialogue;
     //private static StageDialogue[] _allStageDialogue;
@@ -28,8 +32,8 @@ public class GameManager : MonoBehaviour
     private AnimationCurve _tileSpawnerWidthCurve;
     private GameObject _currentRunner;
     private float _defaultSpeed = 1f;    
-    private int _speedBonus = 0;
-    private int _compassionateBonus = 0;
+    private int _starBonus = 0;
+    private int _compassionateProgress = 0;
     private WaitForSeconds _bonusDelay = new WaitForSeconds(1f);
     private WaitForSeconds _bonusStep = new WaitForSeconds(0.4f);
     private WaitForSeconds _runnerTeleportDelay = new WaitForSeconds(0.5f);
@@ -45,7 +49,8 @@ public class GameManager : MonoBehaviour
     private static int _transitionProgress;
     private static int _acquiredStars = 0;
     private static int _requiredStars = 1;
-    private static int _lifetimeStars = 0;
+    private static int _currentScore = 0;
+    private static int _highScore = 0;
     private static int _loseCounter = 0;
     private static int _bonusStarLevel = 0;
     private static int _spawnChargedTileChance = 6;
@@ -61,16 +66,17 @@ public class GameManager : MonoBehaviour
     private static bool _spawnGoldCrystal = false;
     private static bool _spawnGreenCrystal = false;
     private static bool _isGameOver = false;
+    private static bool _repeatingStage = false;
     private static Vector3 _tileSpeed = Vector3.zero;
     private static Vector3 _transitionSpeed = new Vector3(0, 0, -40);
     private static Vector3 _boardLength;
-    private static Answer _stageAnswer = Answer.Poor;
+    private static Answer _stageAnswerQuality = Answer.Poor;
     private static StageDialogueTypes _currentStageDialogueType = StageDialogueTypes.Start;
 
     public static event Action<GameState> OnStateChanged;
     public static event Action OnSetupNextStage;
-    public static event Action<int> OnSpeedBonusChanged;
-    public static event Action<int> OnCompassionateBonusChanged;
+    public static event Action<int> OnStarBonusChanged;
+    public static event Action<int> OnCompassionateProgressChanged;
     public static event Action OnCompassionateVictory;
     public static event Action OnStageEnd;
     public static event Action<GameObject> OnRunnerSpawned;
@@ -81,7 +87,6 @@ public class GameManager : MonoBehaviour
     public static event Action OnQuitToMenu;
 
     // Need delegates here because we're invoking them from elsewhere.
-    // Yes, this is a terrible idea. No, I'm not going to change it.
     public delegate void NextDialogue(int index);
     public static NextDialogue OnNextTutorial;
     public delegate void ShowEmptySlots();
@@ -100,6 +105,7 @@ public class GameManager : MonoBehaviour
     public static int EarlyDialogueCounter = 0;
     public static int MidDialogueCounter = 0;
     public static int LateDialogueCounter = 0;
+    public static int GlobalDialogueCounter = 0;
 
     public static bool IsTutorialOngoing => DoTutorial[6];
     public GameObject CurrentRunner => _currentRunner;
@@ -124,7 +130,8 @@ public class GameManager : MonoBehaviour
     public static bool SpawnGreenCrystal => _spawnGreenCrystal;
     public static bool IsGameOver => _isGameOver;
     public static bool IsInMainMenu => _isInMainMenu;
-    public static Answer StageAnswer => _stageAnswer;
+    public static Answer StageAnswerQuality => _stageAnswerQuality;
+    public static bool RepeatingStage => _repeatingStage;
     public Dialogue[] AllTutorialDialogue => _allTutorialDialogue;
     public static bool IsAudioEnabled
     {
@@ -178,34 +185,34 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-    public int SpeedBonus
+    public int StarProgress
     {
-        get => _speedBonus;
+        get => _starBonus;
         set
         {
-            if (value > _speedBonus)
+            if (value > _starBonus)
             {
                 ResetCoroutines();
                 StartCoroutine(BonusDelay());
             }
-            _speedBonus = value;
-            OnSpeedBonusChanged?.Invoke(value);
-            if (_speedBonus > 100 * (_acquiredStars + 1))
+            _starBonus = value;
+            OnStarBonusChanged?.Invoke(value);
+            if (_starBonus > 100 * (_acquiredStars + 1))
             {
                 AcquiredStars++;
-                LifetimeStars++;
+                CurrentScore++;
             }
         }
     }
-    public int CompassionateBonus
+    public int CompassionateProgress
     {
-        get => _compassionateBonus;
+        get => _compassionateProgress;
         set
         {
             if (value <= 3 && value >= 0)
             {
-                _compassionateBonus = value;
-                OnCompassionateBonusChanged?.Invoke(value);
+                _compassionateProgress = value;
+                OnCompassionateProgressChanged?.Invoke(value);
                 if (value == 3)
                 {
                     CompassionateVictory();
@@ -232,10 +239,15 @@ public class GameManager : MonoBehaviour
             OnStarGained?.Invoke(_bonusStarLevel);
         }
     }
-    public static int LifetimeStars
+    public static int CurrentScore
     {
-        get => _lifetimeStars;
-        set => _lifetimeStars = value;
+        get => _currentScore;
+        set => _currentScore = value;
+    }
+    public static int HighScore
+    {
+        get => _highScore;
+        set => _highScore = value;
     }
     #endregion
 
@@ -248,7 +260,7 @@ public class GameManager : MonoBehaviour
         // order is important here
         LoadDefaultSettings();
         SaveData.LoadPlayerSettings();
-        NextStageDialogueType();
+        //NextStageDialogueType();
 
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 60;
@@ -281,6 +293,7 @@ public class GameManager : MonoBehaviour
         _runnerTransitionCurve = _settings.RunnerTransitionCurve;
         _tileSpawnerWidthCurve = _settings.TileSpawnerWidthCurve;
         _tileLength = SampleTileTransform.GetComponent<BoxCollider>().bounds.size.x;
+        _currentScore = 0;
         DoTutorial = new bool[_allTutorialDialogue.Length];
         for (int i = 0; i < _allTutorialDialogue.Length; i++)
         {
@@ -324,7 +337,7 @@ public class GameManager : MonoBehaviour
     {
         _triggerBonusStep = false;
         yield return _bonusStep;
-        SpeedBonus = SpeedBonus > _acquiredStars * 100 ? SpeedBonus - 1 : _acquiredStars * 100;
+        StarProgress = StarProgress > _acquiredStars * 100 ? StarProgress - 1 : _acquiredStars * 100;
         _triggerBonusStep = true;
     }
 
@@ -336,8 +349,8 @@ public class GameManager : MonoBehaviour
 
     private void ResetStats()
     {
-        _speedBonus = 0;
-        _compassionateBonus = 0;
+        _starBonus = 0;
+        _compassionateProgress = 0;
         _acquiredStars = 0;
         _bonusStarLevel = 0;
         _tileAlpha = 1f;
@@ -356,7 +369,7 @@ public class GameManager : MonoBehaviour
         OnCompassionateVictory?.Invoke();
     }
 
-    private void IncrementStageDialogueCounters()
+    private void IncrementStageDialogueCounters() // On end stage, step 1
     {
         switch (_currentStageDialogueType)
         {
@@ -377,19 +390,19 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void NextStageDialogueType() // On end stage
+    private void NextStageDialogueType() // On end stage, step 2
     {
-        if ((_lifetimeStars <= 8 && SpecialDialogueCounter == 0) ||
-            (_lifetimeStars > 8 && SpecialDialogueCounter == 1) ||
-            (_lifetimeStars > 12 && SpecialDialogueCounter == 2))
+        if ((_currentScore <= 8 && SpecialDialogueCounter == 0) ||
+            (_currentScore > 8 && SpecialDialogueCounter == 1) ||
+            (_currentScore > 12 && SpecialDialogueCounter == 2))
         {
             _currentStageDialogueType = StageDialogueTypes.Special;
         }
-        else if (_lifetimeStars <= 5)
+        else if (_currentScore <= 5)
         {
             _currentStageDialogueType = StageDialogueTypes.Early;
         }
-        else if (_lifetimeStars > 5 && _lifetimeStars <= 10)
+        else if (_currentScore > 5 && _currentScore <= 10)
         {
             _currentStageDialogueType = StageDialogueTypes.Mid;
         }
@@ -427,6 +440,11 @@ public class GameManager : MonoBehaviour
     private void TryResetDialogueCounter(int previousMin, int newMin, int max, ref int counter)
     {
         counter = counter >= max ? 0 : counter;
+    }
+
+    private StageDialogue NextStageDialogue()
+    {
+        return _globalStageDialogue[GlobalDialogueCounter];
     }
 
     public void UpdateGameState(GameState newState)
@@ -480,28 +498,83 @@ public class GameManager : MonoBehaviour
         return Vector3Int.RoundToInt(v1) == Vector3Int.RoundToInt(v2);
     }
 
+    public void EndStage()
+    {
+        IsStageCompleted = false;
+        bool answered = false;
+
+        if (_acquiredStars < _requiredStars)
+        {
+            _stageAnswerQuality = Answer.Poor;
+            answered = false;
+        }
+        else if (_acquiredStars == _requiredStars)
+        {
+            _stageAnswerQuality = Answer.Acceptable;
+            answered = true;
+        }
+        else if (_acquiredStars > _requiredStars)
+        {
+            _stageAnswerQuality = Answer.Excellent;
+            answered = true;
+        }
+        if (_compassionateProgress == 3)
+        {
+            _stageAnswerQuality = Answer.Compassionate;
+            answered = true;
+        }
+
+        if (answered)
+        {
+            //IncrementStageDialogueCounters();
+            //NextStageDialogueType();
+
+            GlobalDialogueCounter++;
+            SaveData.SavePlayerSettings();
+            if (_currentScore > _highScore)
+            {
+                _highScore = _currentScore;
+            }
+        }
+        else
+        {
+            _repeatingStage = true;
+        }
+
+        OnStageEnd?.Invoke();
+    }
+
     public void SetupNextStage()
     {
-        _currentStageDialogue = AssignNextStageDialogue();
+        //_currentStageDialogue = AssignNextStageDialogue();
 
-        if (_lifetimeStars > 10 && _acquiredStars >= _requiredStars)
-        {
-            _spawnGoldCrystal = true;
-            _spawnPurpleCrystal = true;
-            _spawnChargedTileChance = 4;
-        }
-        else if (_lifetimeStars > 3)
-        {
-            _spawnGoldCrystal = false;
-            _spawnPurpleCrystal = true;
-            _spawnChargedTileChance = 5;
-        }
-        else 
-        { 
-            _spawnPurpleCrystal = false;
-            _spawnGoldCrystal = false;
-            _spawnChargedTileChance = 6;
-        }
+        //if (_currentScore > 10 && _acquiredStars >= _requiredStars)
+        //{
+        //    _spawnGoldCrystal = true;
+        //    _spawnPurpleCrystal = true;
+        //    _spawnChargedTileChance = 4;
+        //}
+        //else if (_currentScore > 3)
+        //{
+        //    _spawnGoldCrystal = false;
+        //    _spawnPurpleCrystal = true;
+        //    _spawnChargedTileChance = 5;
+        //}
+        //else 
+        //{ 
+        //    _spawnPurpleCrystal = false;
+        //    _spawnGoldCrystal = false;
+        //    _spawnChargedTileChance = 6;
+        //}
+
+        _currentStageDialogue = NextStageDialogue();
+
+        _spawnPurpleCrystal = GlobalDialogueCounter >= _firstPurpleStage;
+        _spawnGoldCrystal = GlobalDialogueCounter > _firstGoldStage;
+
+        _spawnChargedTileChance = 6;
+        if (_spawnPurpleCrystal) { _spawnChargedTileChance--; }
+        if (_spawnGoldCrystal) { _spawnChargedTileChance--; }
 
         _spawnGreenCrystal = _currentStageDialogue.CompassionateAnswer != "";
 
@@ -517,43 +590,9 @@ public class GameManager : MonoBehaviour
             _requiredStars = 1;
             _stageLength = _requiredStars * 90;
         }
-        
+
+        _repeatingStage = false;
         OnSetupNextStage?.Invoke();
-    }
-
-    public void EndStage()
-    {
-        IsStageCompleted = false;
-        bool answered = false;
-
-        if (_acquiredStars < _requiredStars)
-        {
-            _stageAnswer = Answer.Poor;
-        }
-        else if (_acquiredStars == _requiredStars)
-        {
-            _stageAnswer = Answer.Acceptable;
-            answered = true;
-        }
-        else if (_acquiredStars > _requiredStars)
-        {
-            _stageAnswer = Answer.Excellent;
-            answered = true;
-        }
-        if (_compassionateBonus == 3)
-        {
-            _stageAnswer = Answer.Compassionate;
-            answered = true;
-        }
-
-        if (answered)
-        {
-            IncrementStageDialogueCounters();
-            NextStageDialogueType();
-            SaveData.SavePlayerSettings();
-        }
-
-        OnStageEnd?.Invoke();
     }
 
     public void GameOver()
@@ -565,7 +604,6 @@ public class GameManager : MonoBehaviour
         // back to main menu (restart & fade out)
         // unlock challenge mode
         // reset story mode
-
         OnGameOver?.Invoke();
     }
 

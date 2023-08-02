@@ -180,29 +180,29 @@ public class Crystal : MonoBehaviour
         _wordAnimation.Play();
         if (GameManager.IsTutorialOngoing) 
         {
-            GameManager.Instance.SpeedBonus += 10;
+            GameManager.Instance.StarProgress += 10;
             //return;
         }
 
         if (_initialLevel < 4)
         {
-            if (GameManager.Instance.CompassionateBonus > 0)
+            if (GameManager.Instance.CompassionateProgress > 0)
             {
-                GameManager.Instance.CompassionateBonus = 0;
+                GameManager.Instance.CompassionateProgress = 0;
                 if (_firstGreenCrystalPopped)
                 {
                     _firstGreenCrystalPopped = false;
                     GameManager.OnNextTutorial?.Invoke(11);
                 }
             }
-            GameManager.Instance.SpeedBonus +=
+            GameManager.Instance.StarProgress +=
                 (int)Mathf.Clamp(_initialLevel * _initialLevel * ScoreBonus * _scoreConstant, 1, 100);
             ScoreBonus = 2;
         }
         else
         {
             AudioManager.Instance.PowerUp.Stop();
-            GameManager.Instance.CompassionateBonus++;
+            GameManager.Instance.CompassionateProgress++;
             OnGreenCrystalPopped?.Invoke();
         }
     }
@@ -229,7 +229,7 @@ public class Crystal : MonoBehaviour
     private IEnumerator CompassionateCrystalContact()
     {
         _compassionateScore = true;
-        if (GameManager.Instance.CompassionateBonus < 3)
+        if (GameManager.Instance.CompassionateProgress < 3)
         { 
             AudioManager.Instance.PowerUp.Play();
             if (_firstTimeSeeingCompassionate)

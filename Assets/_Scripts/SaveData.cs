@@ -5,7 +5,9 @@ public class SaveData : MonoBehaviour
 {
     public static SaveData Instance;
 
-    public int SavedLifetimeStars;
+    public int SavedCurrentScore;
+    public int SavedHighScore;
+    public int SavedGlobalDialogueCounter;
     public int SavedSpecialDialogueCounter;
     public int SavedEarlyDialogueCounter;
     public int SavedMidDialogueCounter;
@@ -26,7 +28,9 @@ public class SaveData : MonoBehaviour
 
     public static void SavePlayerSettings()
     {
-        Instance.SavedLifetimeStars = GameManager.LifetimeStars;
+        Instance.SavedCurrentScore = GameManager.CurrentScore;
+        Instance.SavedHighScore = GameManager.HighScore;
+        Instance.SavedGlobalDialogueCounter = GameManager.GlobalDialogueCounter;
         Instance.SavedSpecialDialogueCounter = GameManager.SpecialDialogueCounter;
         Instance.SavedEarlyDialogueCounter = GameManager.EarlyDialogueCounter;
         Instance.SavedMidDialogueCounter = GameManager.MidDialogueCounter;
@@ -44,7 +48,9 @@ public class SaveData : MonoBehaviour
         if (!File.Exists(Application.persistentDataPath + SaveFilename)) { return; }
         JsonUtility.FromJsonOverwrite(File.ReadAllText(Application.persistentDataPath + SaveFilename), Instance);
 
-        GameManager.LifetimeStars = Instance.SavedLifetimeStars;
+        GameManager.CurrentScore = Instance.SavedCurrentScore;
+        GameManager.HighScore = Instance.SavedHighScore;
+        GameManager.GlobalDialogueCounter = Instance.SavedGlobalDialogueCounter;
         GameManager.SpecialDialogueCounter = Instance.SavedSpecialDialogueCounter;
         GameManager.EarlyDialogueCounter = Instance.SavedEarlyDialogueCounter;
         GameManager.MidDialogueCounter = Instance.SavedMidDialogueCounter;

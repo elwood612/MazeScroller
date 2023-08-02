@@ -8,7 +8,7 @@ using System.Collections.Generic;
 public class UIManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _topTotalStarAmount;
-    [SerializeField] private TextMeshProUGUI _stageTotalStarAmount;
+    [SerializeField] private TextMeshProUGUI _stageCurrentScore;
     [SerializeField] private TextMeshProUGUI _stageAssessment;
     [SerializeField] private TextMeshProUGUI _lifetimeStarsAmountMenu;
     [SerializeField] private Slider[] _speedSliders;
@@ -58,7 +58,7 @@ public class UIManager : MonoBehaviour
     private void Awake()
     {
         _activeSlider = _speedSliders[0];
-        _lifetimeStarsAmountMenu.text = GameManager.LifetimeStars.ToString();
+        _lifetimeStarsAmountMenu.text = GameManager.HighScore.ToString();
         _topCanvas.enabled = false;
         _stageCanvas.enabled = false;
         _menuSettingsCanvas.enabled = false;
@@ -72,8 +72,8 @@ public class UIManager : MonoBehaviour
 
     private void OnEnable()
     {
-        GameManager.OnSpeedBonusChanged += UpdateSpeedBonus;
-        GameManager.OnCompassionateBonusChanged += UpdateCompassionateBonus;
+        GameManager.OnStarBonusChanged += UpdateSpeedBonus;
+        GameManager.OnCompassionateProgressChanged += UpdateCompassionateBonus;
         GameManager.OnRunnerSpawned += AssignDialogueBox;
         GameManager.OnStageEnd += EndStage;
         GameManager.OnStateChanged += BeginStage;
@@ -82,15 +82,14 @@ public class UIManager : MonoBehaviour
         GameManager.OnGameOver += BlackScreenFadeIn;
         GameManager.OnShowEmptySlots += ShowEmptySlots;
         DialogueManager.OnNextSentence += UpdateDialogueBox;
-        DialogueManager.OnNextAnswer += UpdateAnswerBox;
         DialogueManager.OnDialogueEnd += HideDialogueBox;
         Row.OnFirstRowsReady += BlackScreenFadeOut;
     }
 
     private void OnDisable()
     {
-        GameManager.OnSpeedBonusChanged -= UpdateSpeedBonus;
-        GameManager.OnCompassionateBonusChanged -= UpdateCompassionateBonus;
+        GameManager.OnStarBonusChanged -= UpdateSpeedBonus;
+        GameManager.OnCompassionateProgressChanged -= UpdateCompassionateBonus;
         GameManager.OnRunnerSpawned -= AssignDialogueBox;
         GameManager.OnStageEnd -= EndStage;
         GameManager.OnStateChanged -= BeginStage;
@@ -99,7 +98,6 @@ public class UIManager : MonoBehaviour
         GameManager.OnGameOver -= BlackScreenFadeIn;
         GameManager.OnShowEmptySlots -= ShowEmptySlots;
         DialogueManager.OnNextSentence -= UpdateDialogueBox;
-        DialogueManager.OnNextAnswer -= UpdateAnswerBox;
         DialogueManager.OnDialogueEnd -= HideDialogueBox;
         Row.OnFirstRowsReady -= BlackScreenFadeOut;
     }
@@ -122,8 +120,6 @@ public class UIManager : MonoBehaviour
                 _compassionateStars.transform.GetChild(i + 1).gameObject.SetActive(false);
             }
         }
-
-        //_compassionateStars.transform.GetChild(value - 1).gameObject.SetActive(true);
     }
 
     private void UpdateDialogueBox(string sentence)
@@ -151,17 +147,6 @@ public class UIManager : MonoBehaviour
         StartCoroutine(TypeSentence(sentence));
         StartCoroutine(FinishSentence(sentence));
         if (GameManager.NeedDialogueBoxHint) { StartCoroutine(HintDialogue()); }
-    }
-
-    private void SetRunnerMood()
-    {
-
-    }
-
-    private void UpdateAnswerBox(string sentence)
-    {
-        //_answerBox.transform.parent.gameObject.SetActive(true);
-        //_answerBox.text = sentence;
     }
 
     private void ShowEmptySlots()
@@ -199,8 +184,6 @@ public class UIManager : MonoBehaviour
         if (r == null) { Debug.Log("Error! No runner found!"); return; }
 
         _dialogueBox = r.DialogueBox;
-        //_answerBox = r.AnswerBox;
-        //_glowBox = r.GlowBox;
         _runnerFace = r.RunnerFace;
     }
 
@@ -208,7 +191,6 @@ public class UIManager : MonoBehaviour
     {
         _dialogueBox.text = "";
         _dialogueBox.transform.GetChild(0).gameObject.SetActive(false);
-        //_answerBox.transform.parent.gameObject.SetActive(false);
         _dialogueBox.transform.GetComponentInParent<Canvas>().enabled = false;
         _isDialogueBoxOpen = false;
     }
@@ -217,6 +199,7 @@ public class UIManager : MonoBehaviour
     {
         _mainMenuCanvas.enabled = true;
         _loadingScreen.enabled = false;
+        _lifetimeStarsAmountMenu.text = "High Score: " + GameManager.HighScore.ToString();
     }
 
     private void BeginStage(GameState state)
@@ -230,7 +213,7 @@ public class UIManager : MonoBehaviour
             + GameManager.RequiredStars.ToString()
             + " req.)";
 
-            _stageTotalStarAmount.text = GameManager.LifetimeStars.ToString();
+            _stageCurrentScore.text = "Current score: " + GameManager.CurrentScore.ToString();
             ResetSliders();
             ResetStars();
         }
@@ -241,10 +224,9 @@ public class UIManager : MonoBehaviour
         _requiredStars.SetActive(false);
         _emptySlots.SetActive(false);
         _stageCanvas.enabled = true;
-        _stageTotalStarAmount.text = (GameManager.LifetimeStars - GameManager.AcquiredStars).ToString();
-        _lifetimeStarsAmountMenu.text = GameManager.LifetimeStars.ToString();
+        _stageCurrentScore.text = "Current score: " + (GameManager.CurrentScore - GameManager.AcquiredStars).ToString();
 
-        Assessment(GameManager.StageAnswer);
+        Assessment(GameManager.StageAnswerQuality);
         StartCoroutine(BankStars(GameManager.AcquiredStars));
         DialogueManager.Instance.NextAnswer(GameManager.CurrentStageDialogue);
     }
@@ -254,7 +236,7 @@ public class UIManager : MonoBehaviour
         for (int i = 1; i <= stars; i++)
         {
             yield return _starGainDelay;
-            _stageTotalStarAmount.text = (GameManager.LifetimeStars - GameManager.AcquiredStars + i).ToString();
+            _stageCurrentScore.text = "Current score: " + (GameManager.CurrentScore - GameManager.AcquiredStars + i).ToString();
             _topTotalStarAmount.text = (GameManager.AcquiredStars - i).ToString() 
                 + " ("
                 + GameManager.RequiredStars.ToString()

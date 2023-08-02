@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 05e5f14c5d7212c4d989ab449795f473, type: 3}
-  m_Name: 1
+  m_Name: mid1
   m_EditorClassIdentifier: 
   _query: just using the word "pun" doesn't make it a pun
   _comments: []
