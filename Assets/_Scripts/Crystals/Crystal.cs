@@ -22,9 +22,12 @@ public class Crystal : MonoBehaviour
     private int _initialLevel;
     private int _scoreConstant = 12;
     private int _scoreMin = 3;
+    private int _compassionateCounter = 0;
     private bool _destroyed = false;
     private bool _compassionateScore = false;
     private bool _firstTimeSeeingCompassionate = true;
+    private bool _standingInGreenCrystal = false;
+    private bool _greenCrystalControl = true;
     private static bool _firstCrystal = true;
     private static bool _secondCrystal = false;
     private static bool _firstBlueCrystal = false;
@@ -62,12 +65,22 @@ public class Crystal : MonoBehaviour
     {
         GameManager.OnSetupNextStage += ResetStage;
         GameManager.OnStarGained += StarGained;
+        GameManager.OnCompassionateStarAdded += CompassionateCrystalExplode;
     }
 
     private void OnDisable()
     {
         GameManager.OnSetupNextStage -= ResetStage;
         GameManager.OnStarGained -= StarGained;
+        GameManager.OnCompassionateStarAdded -= CompassionateCrystalExplode;
+    }
+
+    private void Update()
+    {
+        if (_standingInGreenCrystal)
+        {
+            GameManager.Instance.CompassionateProgress++;
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -83,7 +96,8 @@ public class Crystal : MonoBehaviour
             {
                 if (_level == 4)
                 {
-                    StartCoroutine(CompassionateCrystalContact());
+                    _standingInGreenCrystal = true;
+                    CompassionateCrystalChargeUp();
                     return;
                 }
                 GameManager.Instance.StarProgress++;
@@ -148,6 +162,7 @@ public class Crystal : MonoBehaviour
             if (!_destroyed)
             {
                 _compassionateScore = false;
+                _standingInGreenCrystal = false;
                 AudioManager.Instance.PowerUp.Stop();
                 GameManager.OnNextTutorial?.Invoke(9);
             }
@@ -187,9 +202,10 @@ public class Crystal : MonoBehaviour
 
         if (_initialLevel < 4)
         {
-            if (GameManager.Instance.CompassionateProgress > 0)
+            if (GameManager.Instance.CompassionateStars > 0)
             {
-                GameManager.Instance.CompassionateProgress = 0;
+                GameManager.Instance.CompassionateStars = 0;
+                GameManager.OnCompassionateStarsToggle?.Invoke(false);
                 if (_firstGreenCrystalPopped)
                 {
                     _firstGreenCrystalPopped = false;
@@ -203,7 +219,6 @@ public class Crystal : MonoBehaviour
         else
         {
             AudioManager.Instance.PowerUp.Stop();
-            GameManager.Instance.CompassionateProgress++;
             OnGreenCrystalPopped?.Invoke();
         }
     }
@@ -227,10 +242,33 @@ public class Crystal : MonoBehaviour
         _crystalPool.Release(this);
     }
 
-    private IEnumerator CompassionateCrystalContact()
+    private void CompassionateCrystalChargeUp()
+    {
+        AudioManager.Instance.PowerUp.Play();
+        GameManager.OnCompassionateStarsToggle?.Invoke(true);
+        if (_firstTimeSeeingCompassionate)
+        {
+            GameManager.OnNextTutorial?.Invoke(17);
+            _firstTimeSeeingCompassionate = false;
+        }
+    }
+
+    private void CompassionateCrystalExplode(int value) 
+    {
+        if (!_standingInGreenCrystal) { return; }
+        PlayerContact();
+        _standingInGreenCrystal = false;
+        if (_firstGreenCrystal)
+        {
+            _firstGreenCrystal = false;
+            GameManager.OnNextTutorial?.Invoke(10);
+        }
+    }
+
+    private IEnumerator CompassionateCrystalExplodeOLD()
     {
         _compassionateScore = true;
-        if (GameManager.Instance.CompassionateProgress < 3)
+        if (GameManager.Instance.CompassionateStars < 3)
         { 
             AudioManager.Instance.PowerUp.Play();
             if (_firstTimeSeeingCompassionate)
@@ -271,6 +309,7 @@ public class Crystal : MonoBehaviour
     {
         _firstGreenCrystal = true;
         _firstTimeSeeingCompassionate = true;
+        _standingInGreenCrystal = false;
         if (GameManager.IsTutorialOngoing)
         {
             _firstCrystal = true;

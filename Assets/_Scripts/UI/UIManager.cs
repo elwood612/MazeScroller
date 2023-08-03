@@ -15,6 +15,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject _requiredStars;
     [SerializeField] private GameObject _starParent;
     [SerializeField] private GameObject _compassionateStars;
+    [SerializeField] private Slider[] _compassionateSliders;
     [SerializeField] private GameObject _emptySlots;
     [SerializeField] private Canvas _stageCanvas;
     [SerializeField] private Canvas _topCanvas;
@@ -58,6 +59,7 @@ public class UIManager : MonoBehaviour
     private void Awake()
     {
         _activeSlider = _speedSliders[0];
+        _compassionateStars.SetActive(false);
         _lifetimeStarsAmountMenu.text = GameManager.HighScore.ToString();
         _topCanvas.enabled = false;
         _stageCanvas.enabled = false;
@@ -67,13 +69,14 @@ public class UIManager : MonoBehaviour
         _loadingScreen.enabled = true;
         _mainPage.SetActive(true);
         _backPage.SetActive(false);
-        ChallengeModeCheck();
+        _endCreditsObj.SetActive(false);
     }
 
     private void OnEnable()
     {
         GameManager.OnStarBonusChanged += UpdateSpeedBonus;
-        GameManager.OnCompassionateProgressChanged += UpdateCompassionateBonus;
+        GameManager.OnCompassionateChargeUp += UpdateCompassionateSlider;
+        GameManager.OnCompassionateStarsToggle += ToggleCompassionateStars;
         GameManager.OnRunnerSpawned += AssignDialogueBox;
         GameManager.OnStageEnd += EndStage;
         GameManager.OnStateChanged += BeginStage;
@@ -89,7 +92,8 @@ public class UIManager : MonoBehaviour
     private void OnDisable()
     {
         GameManager.OnStarBonusChanged -= UpdateSpeedBonus;
-        GameManager.OnCompassionateProgressChanged -= UpdateCompassionateBonus;
+        GameManager.OnCompassionateChargeUp -= UpdateCompassionateSlider;
+        GameManager.OnCompassionateStarsToggle -= ToggleCompassionateStars;
         GameManager.OnRunnerSpawned -= AssignDialogueBox;
         GameManager.OnStageEnd -= EndStage;
         GameManager.OnStateChanged -= BeginStage;
@@ -107,19 +111,22 @@ public class UIManager : MonoBehaviour
         _activeSlider.value = value % (GameManager.RequiredStars * 100);
     }
 
-    private void UpdateCompassionateBonus(int value)
+    private void ToggleCompassionateStars(bool toggle)
     {
-        for (int i = 0; i < 3; i++)
+        _compassionateStars.SetActive(toggle);
+        _requiredStars.SetActive(!toggle);
+        if (!toggle)
         {
-            if (i < value)
+            for (int i = 0; i < 3; i++)
             {
-                _compassionateStars.transform.GetChild(i + 1).gameObject.SetActive(true);
-            }
-            else
-            {
-                _compassionateStars.transform.GetChild(i + 1).gameObject.SetActive(false);
+                _compassionateSliders[i].value = 0;
             }
         }
+    }
+
+    private void UpdateCompassionateSlider(int value)
+    {
+        _compassionateSliders[GameManager.Instance.CompassionateStars].value = value;
     }
 
     private void UpdateDialogueBox(string sentence)
@@ -200,6 +207,7 @@ public class UIManager : MonoBehaviour
         _mainMenuCanvas.enabled = true;
         _loadingScreen.enabled = false;
         _lifetimeStarsAmountMenu.text = "High Score: " + GameManager.HighScore.ToString();
+        _storyModeButton.GetComponentInChildren<TextMeshProUGUI>().text = GameManager.GameUnderway ? "Continue Game" : "Start New Game";
     }
 
     private void BeginStage(GameState state)
@@ -207,7 +215,6 @@ public class UIManager : MonoBehaviour
         if (state == GameState.Progressing)
         {
             _topCanvas.enabled = true;
-            _requiredStars.SetActive(true);
             _activeSlider = _speedSliders[0];
             _topTotalStarAmount.text = GameManager.AcquiredStars.ToString() + " ("
             + GameManager.RequiredStars.ToString()
@@ -295,15 +302,15 @@ public class UIManager : MonoBehaviour
         _allStars.Clear();
         _newStarIndex = 0;
         _bonusStarIndex = 0;
+        
         for (int i = 0; i < GameManager.RequiredStars; i++)
         {
             GameObject newStar = Instantiate(_starPrefab, _starParent.transform);
             _allStars.Add(newStar);
         }
-        for (int i = 0; i <= 3; i++)
-        {
-            _compassionateStars.transform.GetChild(i).gameObject.SetActive(false);
-        }
+        //_requiredStars.SetActive(true);
+        _compassionateStars.SetActive(false);
+        ToggleCompassionateStars(false);
     }
 
     private void ResetSliders()
@@ -316,11 +323,6 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    private void ChallengeModeCheck()
-    {
-        _challengeModeButton.interactable = false; // temp until, you know, there IS a challenge mode
-    }
-
     private void BlackScreenFadeOut()
     {
         _blackScreenFadeOut.Play();
@@ -331,7 +333,7 @@ public class UIManager : MonoBehaviour
     {
         _blackScreenEnd.enabled = true;
         _blackScreenFadeIn.Play();
-        EndCreditsRoll();
+        StartCoroutine(EndCreditsRoll());
     }
 
     private IEnumerator MainMenuReset()
@@ -341,10 +343,12 @@ public class UIManager : MonoBehaviour
         _loadingScreen.enabled = false;
     }
 
-    private void EndCreditsRoll()
+    private IEnumerator EndCreditsRoll()
     {
         _endCreditsObj.SetActive(true);
         _endCreditsAnimation.Play();
+        yield return new WaitForSeconds(_endCreditsAnimation.GetClip("CreditScroll").length);
+        OnQuitToMenu();
     }
 
     private IEnumerator HintDialogue()
@@ -355,13 +359,6 @@ public class UIManager : MonoBehaviour
         {
             _dialogueBox.transform.GetChild(0).gameObject.SetActive(true);
         }
-    }
-
-    
-
-    public void OnChallengeModeButtonClick()
-    {
-        // Open challenge mode
     }
 
     public void OnContinueButtonClick()
@@ -442,6 +439,14 @@ public class UIManager : MonoBehaviour
             GameManager.IsStageMenuOpen = false;
         }
     }
+
+    public void OnYesToResetClick()
+    {
+        SaveData.ClearAllSettings();
+        GameManager.Instance.LoadDefaultSettings();
+        GameManager.HighScore = 0;
+        OnQuitToMenu();
+     }
 
     public void OnQuitToMenu()
     {

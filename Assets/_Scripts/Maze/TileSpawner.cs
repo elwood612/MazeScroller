@@ -280,34 +280,24 @@ public class TileSpawner : MonoBehaviour
 
     private IEnumerator SpawnRandomCharged(Row row)
     {
-        //if (_firstChargedTile)
-        //{
-        //    Debug.Log("Skipping first tile");
-        //    _firstChargedTile = false;
-        //    yield break;
-        //}
         yield return _colorDelay;
-        Debug.Log("Spawning random charged");
+        if (GameManager.CompassionateVictoryAchieved) { yield break; }
         Tile tile = row.EnabledTiles[Random.Range(0, row.EnabledTiles.Count)];
         if (!tile.IsEnabled || row.EnabledTiles.Count <= 2) { yield break; }
-
         tile.SetAsCharged(true);
-        //_triggerColorSpawn = Random.Range(_chargedMinRows, _chargedMaxRows); // Should depend on GameManager.SpawnChargedTileChance
-        //_triggerColorSpawn = Random.Range(GameManager.SpawnChargedTileChance - 2, GameManager.SpawnChargedTileChance + 1);
     }
 
     private IEnumerator SpawnSpecificCharged(Row row)
     {
         yield return _colorDelay;
         Tile tile = row.EnabledTiles[Random.Range(0, row.EnabledTiles.Count)];
-
         tile.SetAsCharged(true);
-        //_triggerColorSpawn = GameManager.SpawnChargedTileChance;
     }
 
     private IEnumerator SpawnCrystal(Row row)
     {
         yield return _crystalDelay;
+        if (GameManager.CompassionateVictoryAchieved) { Debug.Log("Skipping spawn"); yield break; }
         int level;
         int numCrystalsInOneRow = 0;
         foreach (Tile tile in row.EnabledTiles)

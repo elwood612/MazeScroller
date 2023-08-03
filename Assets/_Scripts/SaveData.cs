@@ -15,6 +15,7 @@ public class SaveData : MonoBehaviour
     public bool SavedIsAudioEnabled;
     public bool SavedIsMusicEnabled;
     public bool SavedNeedDialogueBoxHint;
+    public bool SavedGameUnderway;
 
     public bool[] SavedDoTutorial;
 
@@ -39,6 +40,7 @@ public class SaveData : MonoBehaviour
         Instance.SavedIsMusicEnabled = GameManager.IsMusicEnabled;
         Instance.SavedNeedDialogueBoxHint = GameManager.NeedDialogueBoxHint;
         Instance.SavedDoTutorial = GameManager.DoTutorial;
+        Instance.SavedGameUnderway = GameManager.GameUnderway;
 
         File.WriteAllText(Application.persistentDataPath + SaveFilename, JsonUtility.ToJson(Instance));
     }
@@ -59,6 +61,7 @@ public class SaveData : MonoBehaviour
         GameManager.IsMusicEnabled = Instance.SavedIsMusicEnabled;
         GameManager.NeedDialogueBoxHint = Instance.SavedNeedDialogueBoxHint;
         GameManager.DoTutorial = Instance.SavedDoTutorial;
+        GameManager.GameUnderway = Instance.SavedGameUnderway;
     }
 
     public static void ClearAllSettings()
