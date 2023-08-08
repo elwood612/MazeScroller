@@ -154,7 +154,7 @@ public class Tile : MonoBehaviour
         if (_firstChargedTile)
         {
             _firstChargedTile = false;
-            GameManager.OnNextTutorial?.Invoke(3);
+            if (!Crystal.FirstGreenCrystalPopped) { GameManager.OnNextTutorial?.Invoke(3); }
         }
     }
 

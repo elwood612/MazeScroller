@@ -10,10 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f89513250b17cb949a8c273e46c8e857, type: 3}
-  m_Name: Tutorial05
+  m_Name: Tutorial20
   m_EditorClassIdentifier: 
   _lines:
-  - Good job!
-  - Blue crystals will fill up that progress bar even more than white ones.
-  - All right, let's keep going and get more crystals.
-  - I need that star!
+  - Ok this is getting excessive, you know this just the tutorial right?

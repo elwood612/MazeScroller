@@ -348,7 +348,12 @@ public class UIManager : MonoBehaviour
         _endCreditsObj.SetActive(true);
         _endCreditsAnimation.Play();
         yield return new WaitForSeconds(_endCreditsAnimation.GetClip("CreditScroll").length);
-        OnQuitToMenu();
+        _endCreditsObj.SetActive(false);
+        _blackScreenEnd.enabled = false;
+        if (!_mainMenuCanvas.enabled) 
+        {
+            OnQuitToMenu(); 
+        }
     }
 
     private IEnumerator HintDialogue()

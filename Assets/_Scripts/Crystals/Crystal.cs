@@ -36,6 +36,7 @@ public class Crystal : MonoBehaviour
     private static bool _thirdCrystal = false;
     private static bool _firstGreenCrystal = true;
     private static bool _firstGreenCrystalPopped = true;
+    private static int _blueCrystalsNotPopped = 0;
     private WaitForSeconds _destroyDelay = new WaitForSeconds(1f);
     private WaitForSecondsRealtime _compassionateDelay = new WaitForSecondsRealtime(2.5f);
     private OrbitMissile[] _orbitMissiles = new OrbitMissile[6];
@@ -49,6 +50,7 @@ public class Crystal : MonoBehaviour
     public static int ScoreBonus = 1; // this is public so Runner can reset it
 
     public int InitialLevel => _initialLevel;
+    public static bool FirstGreenCrystalPopped => _firstGreenCrystalPopped;
 
     private void Awake()
     {
@@ -99,6 +101,10 @@ public class Crystal : MonoBehaviour
                     _standingInGreenCrystal = true;
                     CompassionateCrystalChargeUp();
                     return;
+                }
+                else if (_level == 1 && ++_blueCrystalsNotPopped > 3 && GameManager.DoTutorial[5])
+                {
+                    GameManager.OnNextTutorial?.Invoke(18);
                 }
                 GameManager.Instance.StarProgress++;
                 DestroyOrbitMissile(_orbitMissiles[_level - 1]);

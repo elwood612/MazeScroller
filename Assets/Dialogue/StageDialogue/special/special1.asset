@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: special1
   m_EditorClassIdentifier: 
   _query: how to check email
-  _comments: []
+  _comments:
+  - Welcome back! We know what to do, right? Let's show them!
   _answer: Don't worry Dorothy! Embrace the "inbox-adventures," open your "digital-letters,"
     and find the "pun-ding treasures!" Happy pun-exploration with your email!
   _compassionateAnswer: 

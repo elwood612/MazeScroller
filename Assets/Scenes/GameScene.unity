@@ -10081,7 +10081,7 @@ GameObject:
   - component: {fileID: 1936757888}
   - component: {fileID: 1936757887}
   m_Layer: 5
-  m_Name: QuitToMenu
+  m_Name: Quit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10164,9 +10164,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 524924170}
-        m_TargetAssemblyTypeName: UIManager, Project.UI
-        m_MethodName: OnQuitToMenu
+      - m_Target: {fileID: 908865339}
+        m_TargetAssemblyTypeName: GameManager, Project
+        m_MethodName: Quit
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -11551,7 +11551,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: _debugMode
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: _firstGoldStage
@@ -11579,7 +11579,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: _allTutorialDialogue.Array.size
-      value: 18
+      value: 21
       objectReference: {fileID: 0}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: _globalStageDialogue.Array.size
@@ -11777,6 +11777,18 @@ PrefabInstance:
       propertyPath: _allTutorialDialogue.Array.data[17]
       value: 
       objectReference: {fileID: 11400000, guid: 640e3e3ff05db4a4993e7a72baf181ff, type: 2}
+    - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
+      propertyPath: _allTutorialDialogue.Array.data[18]
+      value: 
+      objectReference: {fileID: 11400000, guid: 07a746f64e006084895adf8dea784781, type: 2}
+    - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
+      propertyPath: _allTutorialDialogue.Array.data[19]
+      value: 
+      objectReference: {fileID: 11400000, guid: 84f2bd419fe6b4247a4fdcdfc79398bc, type: 2}
+    - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
+      propertyPath: _allTutorialDialogue.Array.data[20]
+      value: 
+      objectReference: {fileID: 11400000, guid: 3ad49a43d2c9c0540898ac387a3de184, type: 2}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: _globalStageDialogue.Array.data[10]
       value: 

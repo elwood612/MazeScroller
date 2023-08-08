@@ -14,10 +14,10 @@ public class GameManager : MonoBehaviour
     public Transform SampleTileTransform;
 
     [SerializeField] private Dialogue[] _allTutorialDialogue;
-    [SerializeField] private StageDialogue[] _earlyStageDialogue;
-    [SerializeField] private StageDialogue[] _midStageDialogue;
-    [SerializeField] private StageDialogue[] _lateStageDialogue;
-    [SerializeField] private StageDialogue[] _specialStageDialogue;
+    //[SerializeField] private StageDialogue[] _earlyStageDialogue;
+    //[SerializeField] private StageDialogue[] _midStageDialogue;
+    //[SerializeField] private StageDialogue[] _lateStageDialogue;
+    //[SerializeField] private StageDialogue[] _specialStageDialogue;
     [SerializeField] private StageDialogue[] _globalStageDialogue;
 
 
@@ -53,6 +53,8 @@ public class GameManager : MonoBehaviour
     private static int _spawnChargedTileChance = 6;
     private static float _tileColorHue = 0;
     private static bool _firstStarGained = true;
+    private static bool _secondStarGained = false;
+    private static bool _thirdStarGained = false;
     private static bool _resetStoryMode = false;
     private static bool _isAudioEnabled = true;
     private static bool _isMusicEnabled = true;
@@ -99,10 +101,6 @@ public class GameManager : MonoBehaviour
     public static bool IsStageCompleted = false;
     public static bool[] DoTutorial;
     public static bool GameUnderway = false;
-    public static int SpecialDialogueCounter = 0;
-    public static int EarlyDialogueCounter = 0;
-    public static int MidDialogueCounter = 0;
-    public static int LateDialogueCounter = 0;
     public static int GlobalDialogueCounter = 0;
     public static int HighScore = 0;
 
@@ -236,16 +234,31 @@ public class GameManager : MonoBehaviour
         {
             _acquiredStars = value;
             AudioManager.Instance.StarGain.Play();
-            if (_firstStarGained)
-            {
-                _firstStarGained = false;
-                OnNextTutorial?.Invoke(6);
-            }
             if (_acquiredStars % _requiredStars == 0)
             {
                 _bonusStarLevel++;
             }
             OnStarGained?.Invoke(_bonusStarLevel);
+
+            if (_firstStarGained)
+            {
+                _firstStarGained = false;
+                _secondStarGained = true;
+                OnNextTutorial?.Invoke(6);
+                return;
+            }
+            if (_secondStarGained)
+            {
+                _secondStarGained = false;
+                _thirdStarGained = true;
+                OnNextTutorial?.Invoke(19);
+                return;
+            }
+            if (_thirdStarGained)
+            {
+                _thirdStarGained = false;
+                OnNextTutorial?.Invoke(20);
+            }
         }
     }
     public static int CurrentScore
@@ -270,7 +283,7 @@ public class GameManager : MonoBehaviour
         if (_debugMode)
         {
             _isMusicEnabled = false;
-            for (int i = 0; i < DoTutorial.Length; i++) { DoTutorial[i] = false; }
+            //for (int i = 0; i < DoTutorial.Length; i++) { DoTutorial[i] = false; }
         }
     }
 
@@ -286,27 +299,6 @@ public class GameManager : MonoBehaviour
         CalculateBoardSpeed(_speedMultiplier);
 
         if (_decreaseSpeedBonus && _triggerBonusStep && !DialogueManager.Instance.IsDialogueActive && !_isStageMenuOpen) { StartCoroutine(BonusDecrease()); }
-    }
-
-    public void LoadDefaultSettings()
-    {
-        _tileSpeedCurve = _settings.TileSpeedCurve;
-        _runnerSpeedCurve = _settings.RunnerSpeedCurve;
-        _runnerTransitionCurve = _settings.RunnerTransitionCurve;
-        _tileSpawnerWidthCurve = _settings.TileSpawnerWidthCurve;
-        _tileLength = SampleTileTransform.GetComponent<BoxCollider>().bounds.size.x;
-        _currentScore = 0;
-        GameUnderway = false;
-        SpecialDialogueCounter = 0;
-        EarlyDialogueCounter = 0;
-        MidDialogueCounter = 0;
-        LateDialogueCounter = 0;
-        GlobalDialogueCounter = 0;
-        DoTutorial = new bool[_allTutorialDialogue.Length];
-        for (int i = 0; i < _allTutorialDialogue.Length; i++)
-        {
-            DoTutorial[i] = true;
-        }
     }
 
     private void CalculateBoardSpeed(float multiplier)
@@ -387,6 +379,35 @@ public class GameManager : MonoBehaviour
         return _globalStageDialogue[Mathf.Min(GlobalDialogueCounter, _globalStageDialogue.Length - 1)];
     }
 
+    private void ResetDefaultSettings()
+    {
+        _isGameOver = false;
+        _currentScore = 0;
+        GameUnderway = false;
+        GlobalDialogueCounter = 0;
+        for (int i = 0; i < _allTutorialDialogue.Length; i++)
+        {
+            DoTutorial[i] = false;
+        }
+    }
+
+    public void LoadDefaultSettings()
+    {
+        _tileSpeedCurve = _settings.TileSpeedCurve;
+        _runnerSpeedCurve = _settings.RunnerSpeedCurve;
+        _runnerTransitionCurve = _settings.RunnerTransitionCurve;
+        _tileSpawnerWidthCurve = _settings.TileSpawnerWidthCurve;
+        _tileLength = SampleTileTransform.GetComponent<BoxCollider>().bounds.size.x;
+        _currentScore = 0;
+        GameUnderway = false;
+        GlobalDialogueCounter = 0;
+        DoTutorial = new bool[_allTutorialDialogue.Length];
+        for (int i = 0; i < _allTutorialDialogue.Length; i++)
+        {
+            DoTutorial[i] = true;
+        }
+    }
+
     public void UpdateGameState(GameState newState)
     {
         if (CurrentState == newState && newState != GameState.Setup) { return; } // avoids spamming events for no reason
@@ -440,10 +461,12 @@ public class GameManager : MonoBehaviour
 
     public void EndStage()
     {
-        // temp!!!
-        _isGameOver = true;
+        _isGameOver = true; // temp!!
         IsStageCompleted = false;
         bool answered = false;
+        _firstStarGained = false;
+        _secondStarGained = false;
+        _thirdStarGained = false;
 
         if (_acquiredStars < _requiredStars)
         {
@@ -487,7 +510,6 @@ public class GameManager : MonoBehaviour
     {
         if (_isGameOver)
         {
-            //GameOver();
             return;
         }
 
@@ -531,13 +553,7 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        // do end stuff
-        //
-        // fade to black - DONE
-        // credits - DONE
-        // back to main menu (restart & fade out)
-        // reset story mode
-        LoadDefaultSettings();
+        ResetDefaultSettings();
         OnGameOver?.Invoke();
     }
 
