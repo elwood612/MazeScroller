@@ -14,15 +14,10 @@ public class GameManager : MonoBehaviour
     public Transform SampleTileTransform;
 
     [SerializeField] private Dialogue[] _allTutorialDialogue;
-    //[SerializeField] private StageDialogue[] _earlyStageDialogue;
-    //[SerializeField] private StageDialogue[] _midStageDialogue;
-    //[SerializeField] private StageDialogue[] _lateStageDialogue;
-    //[SerializeField] private StageDialogue[] _specialStageDialogue;
     [SerializeField] private StageDialogue[] _globalStageDialogue;
 
 
     private static StageDialogue _currentStageDialogue;
-    //private static StageDialogue[] _allStageDialogue;
     private AnimationCurve _tileSpeedCurve;
     private AnimationCurve _runnerSpeedCurve;
     private AnimationCurve _runnerTransitionCurve;
@@ -55,7 +50,6 @@ public class GameManager : MonoBehaviour
     private static bool _firstStarGained = true;
     private static bool _secondStarGained = false;
     private static bool _thirdStarGained = false;
-    private static bool _resetStoryMode = false;
     private static bool _isAudioEnabled = true;
     private static bool _isMusicEnabled = true;
     private static bool _isStageMenuOpen = false;
@@ -71,7 +65,6 @@ public class GameManager : MonoBehaviour
     private static Vector3 _transitionSpeed = new Vector3(0, 0, -40);
     private static Vector3 _boardLength;
     private static Answer _stageAnswerQuality = Answer.Poor;
-    private static StageDialogueTypes _currentStageDialogueType = StageDialogueTypes.Start;
 
     public static event Action<GameState> OnStateChanged;
     public static event Action OnSetupNextStage;
@@ -247,14 +240,14 @@ public class GameManager : MonoBehaviour
                 OnNextTutorial?.Invoke(6);
                 return;
             }
-            if (_secondStarGained)
+            if (_secondStarGained && IsTutorialOngoing)
             {
                 _secondStarGained = false;
                 _thirdStarGained = true;
                 OnNextTutorial?.Invoke(19);
                 return;
             }
-            if (_thirdStarGained)
+            if (_thirdStarGained && IsTutorialOngoing)
             {
                 _thirdStarGained = false;
                 OnNextTutorial?.Invoke(20);
@@ -461,7 +454,7 @@ public class GameManager : MonoBehaviour
 
     public void EndStage()
     {
-        _isGameOver = true; // temp!!
+        //_isGameOver = true; // temp!!
         IsStageCompleted = false;
         bool answered = false;
         _firstStarGained = false;

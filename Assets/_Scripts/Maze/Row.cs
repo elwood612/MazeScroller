@@ -93,6 +93,7 @@ public class Row : MonoBehaviour
                     tMinus.SetAsCharged(false);
                 }
             }
+            if (t.IsPreTransitionTile) { t.SetAlpha(0.1f); }
         }        
     }
 }

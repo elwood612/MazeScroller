@@ -5,6 +5,7 @@ using Random = UnityEngine.Random;
 
 public class Tile : MonoBehaviour
 {
+    public bool DebugAlphaFromRowTransition = false;
     public string DebugChoice;
     public bool DebugUncrossedTile = false;
     [SerializeField] private Crystal _crystalPrefab;
@@ -181,13 +182,6 @@ public class Tile : MonoBehaviour
         _tileRenderer.material = material;
     }
 
-    private void SetAlpha(float newAlpha)
-    {
-        Color color = _tileRenderer.material.color;
-        color.a = newAlpha;
-        _tileRenderer.material.color = color;
-    }
-
     private void ResetColor()
     {
         _newTileColor = GetTileColor(GameManager.TileColorHue);
@@ -228,6 +222,13 @@ public class Tile : MonoBehaviour
         }
     }
 
+    public void SetAlpha(float newAlpha)
+    {
+        Color color = _tileRenderer.material.color;
+        color.a = newAlpha;
+        _tileRenderer.material.color = color;
+    }
+
     public void SpawnTile()
     {
         if (!_parentRow.HasSetupBeenRun) { return; }
@@ -260,7 +261,7 @@ public class Tile : MonoBehaviour
                 else { wall.SetWallAsBorder(); }
             }
         }
-        else if (GameManager.CurrentState == GameState.Progressing)
+        else if (GameManager.CurrentState == GameState.Progressing) 
         {
             Tile t = GetNeighborTile(Vector3.back);
             if (t.IsTransitionTile) 
@@ -300,7 +301,6 @@ public class Tile : MonoBehaviour
     public void RemoveTileFromMaze()
     {
         _isPartOfMaze = false;
-        //SetMaterial(_tileBase);
         SetMaterial(_newMaterial);
     }
 
@@ -375,19 +375,15 @@ public class Tile : MonoBehaviour
     public void SetStartingTile(bool reset = false)
     {
         AddTileToMaze();
-        //_parentRow.IsHighestDrawnRow = true;
         BoardManager.SetHighestRow(_parentRow);
         IsStartingTile = true;
         foreach (Wall wall in _neighborWalls)
         {
             wall.SetWallAsBorder();
         }
-        //DrawMaze.HighestDrawnRow = _parentRow;
-        //BoardManager.SetHighestRow(_parentRow);
         if (!reset) { GameManager.Instance.SpawnRunner(transform); }
         else 
         {
-            Debug.Log("Resetting runner");
             GameManager.Instance.ResetRunner(transform);
             GameManager.Instance.CurrentRunner.GetComponent<IRunner>().BeginTransition();
         }
@@ -402,7 +398,6 @@ public class Tile : MonoBehaviour
         IsTransitionTile = false;
         IsPreTransitionTile = false;
         RemoveTileFromMaze();
-        //SetMaterial(_tileBase);
         SetMaterial(_newMaterial);
         DisableTile();
         ResetDeadEnd();

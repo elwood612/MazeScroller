@@ -124,14 +124,14 @@ public class DialogueManager : MonoBehaviour
     public void NextAnswer(StageDialogue stageDialogue)
     {
         if (stageDialogue == null) { EndDialogue(); return; }
-        string answer;
+        string answer = "<answering query: " + stageDialogue.Query + ">\n\n";
         if (GameManager.StageAnswerQuality == Answer.Compassionate)
         {
-            answer = stageDialogue.CompassionateAnswer;
+            answer += stageDialogue.CompassionateAnswer;
         }
         else
         {
-            answer = stageDialogue.Answer;
+            answer += stageDialogue.Answer;
         }
         string[] sentences = { answer };
         StartDialogue(sentences);
