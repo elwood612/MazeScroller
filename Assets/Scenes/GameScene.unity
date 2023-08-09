@@ -1836,16 +1836,18 @@ MonoBehaviour:
     UI & Item
     Sound Effects
 
+    Retro UI Sounds
+
 
 
     SPECIAL THANKS
 
     Lucile Masson
 
-    Peter Herrly
+    Peter
+    Herrly
 
-    Lillian
-    Pfluke'
+    Lillian Pfluke'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6a5d1b389361a1c41a43c6dccb8aa3f2, type: 2}
   m_sharedMaterial: {fileID: 2143256654892933006, guid: 6a5d1b389361a1c41a43c6dccb8aa3f2, type: 2}
@@ -1872,7 +1874,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 42.1
+  m_fontSize: 40.4
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

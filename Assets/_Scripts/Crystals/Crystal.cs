@@ -89,7 +89,8 @@ public class Crystal : MonoBehaviour
     {
         if (other.CompareTag("Runner") && !_destroyed)
         {
-            AudioManager.Instance.Beep.Play();
+            //AudioManager.Instance.Beep.Play();
+            AudioManager.Instance.CrystalPop[0].Play();
             if (_level == 0)
             {
                 PlayerContact();
@@ -197,7 +198,8 @@ public class Crystal : MonoBehaviour
     {
         GameManager.LastCrystal = this.gameObject;
         StartCoroutine(Explode());
-        AudioManager.Instance.Zap.Play();
+        //AudioManager.Instance.Zap.Play();
+        AudioManager.Instance.CrystalPop[Mathf.Min(_initialLevel, AudioManager.Instance.CrystalPop.Length - 1)].Play();
         _particlesExplosion.Play();
         _word.gameObject.SetActive(true);
         _wordAnimation.Play();

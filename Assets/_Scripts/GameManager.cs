@@ -449,7 +449,8 @@ public class GameManager : MonoBehaviour
 
     public static bool CompareVectorsAsInts(Vector3 v1, Vector3 v2)
     {
-        return Vector3Int.RoundToInt(v1) == Vector3Int.RoundToInt(v2);
+        //return Vector3Int.RoundToInt(v1) == Vector3Int.RoundToInt(v2);
+        return (v2 - v1).sqrMagnitude < _tileLength / 2;
     }
 
     public void EndStage()
@@ -515,6 +516,10 @@ public class GameManager : MonoBehaviour
 
         _spawnChargedTileChance = 6;
         _requiredStars = 1;
+        _stageLength = (_requiredStars * 20) + 65;
+        _tileColorHue = 0.552778f;
+        // _tileColorHue = Mathf.Clamp(Random.Range(0f, 1f), 0.1f, 0.9f); // keep for posterity
+
         if (_spawnPurpleCrystal) 
         { 
             _spawnChargedTileChance--;
@@ -530,14 +535,17 @@ public class GameManager : MonoBehaviour
 
         if (IsTutorialOngoing)
         {
-            _tileColorHue = 0.552778f;
             _stageLength = 30;
             _spawnChargedTileChance = 8;
         }
-        else
+        
+        if (_spawnGoldCrystal)
         {
-            _tileColorHue = Mathf.Clamp(Random.Range(0f, 1f), 0.1f, 0.9f);
-            _stageLength = (_requiredStars * 20) + 65;
+            _tileColorHue = 0.311111f;
+        }
+        else if (_spawnPurpleCrystal)
+        {
+            _tileColorHue = 0.708333f;
         }
 
         _repeatingStage = false;

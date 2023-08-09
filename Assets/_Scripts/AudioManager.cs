@@ -26,6 +26,8 @@ public class AudioManager : MonoBehaviour
     public AudioSource Music;
     public AudioSource PowerUp;
 
+    public AudioSource[] CrystalPop;
+
     public static AudioManager Instance;
 
     private void Awake()
@@ -48,6 +50,10 @@ public class AudioManager : MonoBehaviour
         UIStar.volume = enabled ? _UIstarVol : 0;
         UILevelDone.volume = enabled ? _UIlevelDoneVol : 0;
         PowerUp.volume = enabled ? _powerUpVol : 0;
+        foreach (AudioSource source in CrystalPop)
+        {
+            source.volume = enabled ? _beepVol : 0;
+        }
     }
 
     public void MuteMusic(bool enabled)

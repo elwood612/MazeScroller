@@ -5468,6 +5468,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbb77ab03a596c942848a8903e3fe10c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DebugAlphaFromRowTransition: 0
+  DebugChoice: 
+  DebugUncrossedTile: 0
   _crystalPrefab: {fileID: 2508441268512867463, guid: a3e55954301c358438cdc51c7dc7cbb7, type: 3}
   _tileRenderer: {fileID: 5608089495543284713}
   _colorRenderer: {fileID: 1838518010526830471}
@@ -5483,11 +5486,10 @@ MonoBehaviour:
   _wallLayer:
     serializedVersion: 2
     m_Bits: 256
-  _audioNegative: {fileID: 817598238751752785}
-  _audioTada: {fileID: 881587657826483112}
   IsStartingTile: 0
   IsTransitionTile: 0
   IsPreTransitionTile: 0
+  IsMiddleTile: 0
   AttachedCrystal: {fileID: 0}
   NeighborPaths: []
 --- !u!65 &7255253569694343398
@@ -10461,7 +10463,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3948282560533165861
 Transform:
   m_ObjectHideFlags: 0

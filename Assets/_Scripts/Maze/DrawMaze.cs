@@ -114,8 +114,10 @@ public class DrawMaze : MonoBehaviour
             (!_lastTile.IsPartOfMaze && !tile.IsPartOfMaze) ||
             (_lastTile.IsPartOfMaze && tile.IsPartOfMaze) ||
             !AreTilesContiguous(tile, _lastTile) ||
-            _lastTile.IsTransitionTile ||
-            _lastTile.IsPreTransitionTile;
+            (_lastTile.IsPartOfMaze && _lastTile.IsTransitionTile) ||
+            (tile.IsPartOfMaze && tile.IsTransitionTile);
+            //_lastTile.IsTransitionTile ||
+            //_lastTile.IsPreTransitionTile;
     }
     private bool AreTilesContiguous(Tile t1, Tile t2)
     {

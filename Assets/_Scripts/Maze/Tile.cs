@@ -302,6 +302,14 @@ public class Tile : MonoBehaviour
     {
         _isPartOfMaze = false;
         SetMaterial(_newMaterial);
+
+        foreach (Wall wall in _neighborWalls)
+        {
+            if ((transform.position - wall.transform.position).sqrMagnitude > 100 && wall.IsPath)
+            {
+                wall.SetWallAsBorder();
+            }
+        }
     }
 
     public void SetTileAsDeadEnd(Transform wall)

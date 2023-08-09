@@ -453,8 +453,13 @@ public class Runner : MonoBehaviour, IRunner
 
     private void LookAtTile(Tile target)
     {
-        if (_currentTile == null) { _spaceshipTransform.forward = target.transform.position - _spaceshipTransform.position; }
-        else { _spaceshipTransform.forward = target.transform.position - _currentTile.transform.position; }
+        Vector3 lookAt;
+        if (_currentTile == null) { lookAt = target.transform.position - _spaceshipTransform.position; }
+        else { lookAt = target.transform.position - _currentTile.transform.position; }
+        if (lookAt.sqrMagnitude > float.Epsilon)
+        {
+            _spaceshipTransform.forward = lookAt;
+        }
     }
 
     public void CalculateNextTargetWrapper(Tile tile)

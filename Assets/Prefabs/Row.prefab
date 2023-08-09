@@ -47,6 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25d37295eb477854b8f8963f41b8c322, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isHighestDrawnRow: 0
 --- !u!65 &7676722597138805475
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1079,9 +1080,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3637418147408314074}
     m_Modifications:
+    - target: {fileID: 5608089495543284711, guid: 93ed446c1a441db46ab08ce345452eaf, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5751404476535072656, guid: 93ed446c1a441db46ab08ce345452eaf, type: 3}
       propertyPath: m_Name
       value: Tile
+      objectReference: {fileID: 0}
+    - target: {fileID: 6384425474687134516, guid: 93ed446c1a441db46ab08ce345452eaf, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6835162023665671876, guid: 93ed446c1a441db46ab08ce345452eaf, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7255253569694343399, guid: 93ed446c1a441db46ab08ce345452eaf, type: 3}
       propertyPath: m_RootOrder
