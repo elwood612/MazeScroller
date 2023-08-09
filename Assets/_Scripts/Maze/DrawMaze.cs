@@ -116,7 +116,7 @@ public class DrawMaze : MonoBehaviour
             !AreTilesContiguous(tile, _lastTile) ||
             (_lastTile.IsPartOfMaze && _lastTile.IsTransitionTile) ||
             (tile.IsPartOfMaze && tile.IsTransitionTile);
-            //_lastTile.IsTransitionTile ||
+            //_lastTile.IsTransitionTile || // should be able to delete? 
             //_lastTile.IsPreTransitionTile;
     }
     private bool AreTilesContiguous(Tile t1, Tile t2)
