@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: Tutorial00
   m_EditorClassIdentifier: 
   _lines:
-  - Oh that's easy, I can help with - hey, who are you?
-  - You're new, aren't you? Well that's swell! We're going to have such a good time!
-  - But first, we need to help Dorothy here. I pride myself on my awesome answers,
-    so don't let me down!
-  - To provide an answer, I need crystals. Lots of them. See them there?
-  - Go ahead and draw a path to the nearest crystal. Go ahead!
+  - '"How to use a gun", what a great question! I can''t wait to find out!'
+  - Wait, who are you?...
+  - 'Ah, doesn''t matter. Glad to have someone here to help out! '
+  - What we need to do is answer all queries that get sent to us. Like that kind
+    person asking how to use a gun! So sweet!
+  - Now, in order to answer these queries, I am going to need crystals. Lots of them.
+    See them bouncing up ahead?
+  - Go ahead and draw a path from ME to the nearest CRYSTAL.

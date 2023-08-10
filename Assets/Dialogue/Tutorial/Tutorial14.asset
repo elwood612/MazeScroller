@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Tutorial14
   m_EditorClassIdentifier: 
   _lines:
-  - I think we did it! We saved her!! Oh I feel so good!
-  - I'll see you around I'm sure! Bye!!
+  - 'Ok, that''s enough answering queries for now. '
+  - I'm sure I'm going to be in so much trouble. It was fun though!
+  - Try again sometime, maybe we'll beat our score!

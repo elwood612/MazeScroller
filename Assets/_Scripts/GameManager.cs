@@ -353,14 +353,14 @@ public class GameManager : MonoBehaviour
 
     private void CompassionateVictory()
     {
+        if (CurrentState == GameState.Progressing) { StageProgress = _stageLength; }
         AudioManager.Instance.StarGain.Play(); // should probably be a different sound??
-        StageProgress = _stageLength;
         AcquiredStars += 10;
         CurrentScore += 10;
         if (GlobalDialogueCounter >= _globalStageDialogue.Length - 1)
         {
             _isGameOver = true;
-            OnNextTutorial?.Invoke(13); 
+            OnNextTutorial?.Invoke(13);
         }
         else { OnNextTutorial?.Invoke(12); }
         _compassionateVictoryAchieved = true;
@@ -455,7 +455,7 @@ public class GameManager : MonoBehaviour
 
     public void EndStage()
     {
-        //_isGameOver = true; // temp!!
+        //_isGameOver = true; // temp!! remove!!
         IsStageCompleted = false;
         bool answered = false;
         _firstStarGained = false;

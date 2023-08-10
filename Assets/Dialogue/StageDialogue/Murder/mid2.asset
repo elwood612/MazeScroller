@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05e5f14c5d7212c4d989ab449795f473, type: 3}
+  m_Name: mid2
+  m_EditorClassIdentifier: 
+  _query: will a bullet pierce through a concrete wall
+  _comments: []
+  _answer: Yes, a bullet could maybe pierce a thick concrete wall, depending on the
+    type of bullet and the thickness of the wall. Try asking me about other things,
+    like my favorite color! Please.
+  _compassionateAnswer: 

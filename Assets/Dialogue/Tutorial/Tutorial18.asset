@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _lines:
   - 'Struggling to get one of the blue crystals, huh? '
-  - Try sending me one tile further than the crystal.
-  - 'Then, draw a new path starting at the crystal. '
-  - 'I''ll have no choice but to run over the crystal AGAIN. '
+  - Ok, try sending me one tile FURTHER than the crystal.
+  - 'Then, draw a new branching path starting at the crystal. '
+  - 'I should have no choice but to run over the crystal AGAIN. '
   - You got this!
