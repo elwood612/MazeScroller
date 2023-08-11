@@ -2704,7 +2704,6 @@ MonoBehaviour:
   - {fileID: 1110665930}
   - {fileID: 1105371385}
   - {fileID: 1731353268}
-  _emptySlots: {fileID: 0}
   _stageCanvas: {fileID: 1476733763}
   _topCanvas: {fileID: 1896560952}
   _mainMenuCanvas: {fileID: 1054266825}
@@ -10361,7 +10360,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Quit To Menu
+  m_text: Quit Game
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4d232bc92b5f33d438f6b8d08e4cf08f, type: 2}
   m_sharedMaterial: {fileID: 2143256654892933006, guid: 4d232bc92b5f33d438f6b8d08e4cf08f, type: 2}
@@ -10557,9 +10556,13 @@ PrefabInstance:
     m_TransformParent: {fileID: 1697821149}
     m_Modifications:
     - target: {fileID: 591862306, guid: 3aa64423a7da32245bd1cde342ea2004, type: 3}
+      propertyPath: m_Pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1084486584569135088, guid: 3aa64423a7da32245bd1cde342ea2004, type: 3}
       propertyPath: m_audioClip
       value: 
-      objectReference: {fileID: 8300000, guid: b621ef83be78ead4ca1eae8e0c0b0ade, type: 3}
+      objectReference: {fileID: 8300000, guid: dfe4798a09cd1974e9377a183fad63ff, type: 3}
     - target: {fileID: 3358281808369634191, guid: 3aa64423a7da32245bd1cde342ea2004, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -10604,6 +10607,38 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4252781419197048570, guid: 3aa64423a7da32245bd1cde342ea2004, type: 3}
+      propertyPath: _powerUpVol
+      value: 0.399
+      objectReference: {fileID: 0}
+    - target: {fileID: 4252781419197048570, guid: 3aa64423a7da32245bd1cde342ea2004, type: 3}
+      propertyPath: _negativeVol
+      value: 1.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4252781419197048570, guid: 3aa64423a7da32245bd1cde342ea2004, type: 3}
+      propertyPath: _beepVol.Array.data[0]
+      value: 0.163
+      objectReference: {fileID: 0}
+    - target: {fileID: 4252781419197048570, guid: 3aa64423a7da32245bd1cde342ea2004, type: 3}
+      propertyPath: _beepVol.Array.data[1]
+      value: 1.623
+      objectReference: {fileID: 0}
+    - target: {fileID: 4252781419197048570, guid: 3aa64423a7da32245bd1cde342ea2004, type: 3}
+      propertyPath: _beepVol.Array.data[2]
+      value: 1.748
+      objectReference: {fileID: 0}
+    - target: {fileID: 4252781419197048570, guid: 3aa64423a7da32245bd1cde342ea2004, type: 3}
+      propertyPath: _beepVol.Array.data[3]
+      value: 1.845
+      objectReference: {fileID: 0}
+    - target: {fileID: 4252781419197048570, guid: 3aa64423a7da32245bd1cde342ea2004, type: 3}
+      propertyPath: _beepVol.Array.data[4]
+      value: 1.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6084617318536509793, guid: 3aa64423a7da32245bd1cde342ea2004, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 9a0ae87604f229346892fcdfab63f5c5, type: 3}
     - target: {fileID: 8604666187838504300, guid: 3aa64423a7da32245bd1cde342ea2004, type: 3}
       propertyPath: m_Name
       value: AudioManager
@@ -10831,7 +10866,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: _debugMode
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: _firstGoldStage

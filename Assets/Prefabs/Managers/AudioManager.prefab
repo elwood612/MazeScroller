@@ -42,7 +42,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 4b347c167d55e944f8637397c0703776, type: 3}
+  m_audioClip: {fileID: 8300000, guid: d66ccc8edc03ddf498d8e93f5fe7cec8, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.65
   m_Pitch: 1
@@ -1066,7 +1066,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: baf99e1d04a78403c91dc13184ef1c8e, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 6674aed0f50eeb348bd67d74e7178837, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.15
   m_Pitch: 1
@@ -1723,18 +1723,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c09695c8070f2149933f147d113258e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _beepVol: 0.65
-  _zapVol: 0.15
-  _negativeVol: 1
-  _starGainVol: 0.15
+  _missileVol: 0.31
+  _starGainVol: 0.31
   _UIClickVol: 0.25
   _UIZapVol: 0.15
   _UIstarVol: 0.25
   _UIlevelDoneVol: 0.15
-  _musicVol: 0.1
+  _musicVol: 0.306
   _powerUpVol: 0.25
-  Beep: {fileID: 1084486584569135088}
-  Zap: {fileID: 1471882481663084691}
+  _negativeVol: 2.5
+  _beepVol:
+  - 0.144
+  - 1
+  - 1
+  - 1
+  - 1
+  MissileBeep: {fileID: 1084486584569135088}
   Negative: {fileID: 6084617318536509793}
   StarGain: {fileID: 5234168816817711476}
   UIClick: {fileID: 4410300820888089631}
@@ -1919,9 +1923,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 1fc86a7eca52bd14e8133a6e5cbd4141, type: 3}
+  m_audioClip: {fileID: 8300000, guid: e3d1763419ead5a42990f08b3f578059, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.1
+  m_Volume: 0.3
   m_Pitch: 1
   Loop: 1
   Mute: 0

@@ -16,7 +16,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject _starParent;
     [SerializeField] private GameObject _compassionateStars;
     [SerializeField] private Slider[] _compassionateSliders;
-    [SerializeField] private GameObject _emptySlots;
+    //[SerializeField] private GameObject _emptySlots;
     [SerializeField] private Canvas _stageCanvas;
     [SerializeField] private Canvas _topCanvas;
     [SerializeField] private Canvas _mainMenuCanvas;
@@ -158,7 +158,7 @@ public class UIManager : MonoBehaviour
 
     private void ShowEmptySlots()
     {
-        _emptySlots.SetActive(true);
+        //_emptySlots.SetActive(true);
     }
 
     private IEnumerator TypeSentence(string sentence)
@@ -229,7 +229,7 @@ public class UIManager : MonoBehaviour
     private void EndStage()
     {
         _requiredStars.SetActive(false);
-        _emptySlots.SetActive(false);
+        //_emptySlots.SetActive(false);
         _stageCanvas.enabled = true;
         _stageCurrentScore.text = "Current score: " + (GameManager.CurrentScore - GameManager.AcquiredStars).ToString();
 

@@ -3,6 +3,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Pool;
+using Random = UnityEngine.Random;
 
 public class Crystal : MonoBehaviour
 {
@@ -89,8 +90,6 @@ public class Crystal : MonoBehaviour
     {
         if (other.CompareTag("Runner") && !_destroyed)
         {
-            //AudioManager.Instance.Beep.Play();
-            AudioManager.Instance.CrystalPop[0].Play();
             if (_level == 0)
             {
                 PlayerContact();
@@ -107,6 +106,8 @@ public class Crystal : MonoBehaviour
                 {
                     GameManager.OnNextTutorial?.Invoke(18);
                 }
+                AudioManager.Instance.MissileBeep.pitch = Random.Range(0.6f, 1.2f);
+                AudioManager.Instance.MissileBeep.Play();
                 GameManager.Instance.StarProgress++;
                 DestroyOrbitMissile(_orbitMissiles[_level - 1]);
                 _level--;
@@ -198,7 +199,7 @@ public class Crystal : MonoBehaviour
     {
         GameManager.LastCrystal = this.gameObject;
         StartCoroutine(Explode());
-        //AudioManager.Instance.Zap.Play();
+        if (_initialLevel == 0) { AudioManager.Instance.CrystalPop[_initialLevel].pitch = Random.Range(0.5f, 1.5f); }
         AudioManager.Instance.CrystalPop[Mathf.Min(_initialLevel, AudioManager.Instance.CrystalPop.Length - 1)].Play();
         _particlesExplosion.Play();
         _word.gameObject.SetActive(true);

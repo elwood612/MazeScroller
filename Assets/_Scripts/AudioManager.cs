@@ -2,11 +2,10 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
+    [Range(0f, 1f)]
     [SerializeField]
     private float
-        _beepVol,
-        _zapVol,
-        _negativeVol,
+        _missileVol,
         _starGainVol,
         _UIClickVol,
         _UIZapVol,
@@ -15,8 +14,15 @@ public class AudioManager : MonoBehaviour
         _musicVol,
         _powerUpVol;
 
-    public AudioSource Beep;
-    public AudioSource Zap;
+    [Range(0f, 3f)]
+    [SerializeField]
+    private float _negativeVol;
+
+    [Range(0f, 2f)]
+    [SerializeField]
+    private float[] _beepVol;
+
+    public AudioSource MissileBeep;
     public AudioSource Negative;
     public AudioSource StarGain;
     public AudioSource UIClick;
@@ -41,8 +47,7 @@ public class AudioManager : MonoBehaviour
 
     public void MuteAudio(bool enabled)
     {
-        Beep.volume = enabled ? _beepVol : 0;
-        Zap.volume = enabled ? _zapVol : 0;
+        MissileBeep.volume = enabled ? _missileVol : 0;
         Negative.volume = enabled ? _negativeVol : 0;
         StarGain.volume = enabled ? _starGainVol : 0;
         UIClick.volume = enabled ? _UIClickVol : 0;
@@ -50,9 +55,9 @@ public class AudioManager : MonoBehaviour
         UIStar.volume = enabled ? _UIstarVol : 0;
         UILevelDone.volume = enabled ? _UIlevelDoneVol : 0;
         PowerUp.volume = enabled ? _powerUpVol : 0;
-        foreach (AudioSource source in CrystalPop)
+        for (int i = 0; i < CrystalPop.Length; i++)
         {
-            source.volume = enabled ? _beepVol : 0;
+            CrystalPop[i].volume = enabled ? _beepVol[i] : 0;
         }
     }
 
