@@ -193,6 +193,18 @@ public class Crystal : MonoBehaviour
         {
             _orbitMissiles[i].gameObject.SetActive(false);
         }
+    } 
+
+    private void SetScale()
+    {
+        if (_initialLevel == 4)
+        {
+            transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+        }
+        else
+        {
+            transform.localScale = Vector3.one;
+        }
     }
 
     private void PlayerContact()
@@ -214,7 +226,8 @@ public class Crystal : MonoBehaviour
             if (GameManager.Instance.CompassionateStars > 0)
             {
                 GameManager.Instance.CompassionateStars = 0;
-                GameManager.OnCompassionateStarsToggle?.Invoke(false);
+                // Play audio cue here for losing compassionate progress
+                //GameManager.OnCompassionateStarsToggle?.Invoke(false);
                 if (_firstGreenCrystalPopped)
                 {
                     _firstGreenCrystalPopped = false;
@@ -271,31 +284,6 @@ public class Crystal : MonoBehaviour
         {
             _firstGreenCrystal = false;
             GameManager.OnNextTutorial?.Invoke(10);
-        }
-    }
-
-    private IEnumerator CompassionateCrystalExplodeOLD()
-    {
-        _compassionateScore = true;
-        if (GameManager.Instance.CompassionateStars < 3)
-        { 
-            AudioManager.Instance.PowerUp.Play();
-            if (_firstTimeSeeingCompassionate)
-            {
-                GameManager.OnShowEmptySlots?.Invoke();
-                GameManager.OnNextTutorial?.Invoke(17);
-                _firstTimeSeeingCompassionate = false;
-            }
-            yield return _compassionateDelay;
-            if (_compassionateScore) 
-            { 
-                PlayerContact();
-                if (_firstGreenCrystal)
-                {
-                    _firstGreenCrystal = false;
-                    GameManager.OnNextTutorial?.Invoke(10);
-                }
-            }
         }
     }
 
@@ -367,5 +355,6 @@ public class Crystal : MonoBehaviour
         ResetOrbitMissiles();
         SpawnOrbitMissiles();
         ResetWord();
+        SetScale();
     }
 }

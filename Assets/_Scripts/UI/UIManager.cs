@@ -77,13 +77,13 @@ public class UIManager : MonoBehaviour
         GameManager.OnStarBonusChanged += UpdateSpeedBonus;
         GameManager.OnCompassionateChargeUp += UpdateCompassionateSlider;
         GameManager.OnCompassionateStarsToggle += ToggleCompassionateStars;
+        GameManager.OnCompassionateStarsReset += ResetCompassionateStars;
         GameManager.OnRunnerSpawned += AssignDialogueBox;
         GameManager.OnStageEnd += EndStage;
         GameManager.OnStateChanged += BeginStage;
         GameManager.OnMainMenuOpen += MainMenu;
         GameManager.OnStarGained += GainStar;
         GameManager.OnGameOver += BlackScreenFadeIn;
-        GameManager.OnShowEmptySlots += ShowEmptySlots;
         DialogueManager.OnNextSentence += UpdateDialogueBox;
         DialogueManager.OnDialogueEnd += HideDialogueBox;
         Row.OnFirstRowsReady += BlackScreenFadeOut;
@@ -94,13 +94,13 @@ public class UIManager : MonoBehaviour
         GameManager.OnStarBonusChanged -= UpdateSpeedBonus;
         GameManager.OnCompassionateChargeUp -= UpdateCompassionateSlider;
         GameManager.OnCompassionateStarsToggle -= ToggleCompassionateStars;
+        GameManager.OnCompassionateStarsReset -= ResetCompassionateStars;
         GameManager.OnRunnerSpawned -= AssignDialogueBox;
         GameManager.OnStageEnd -= EndStage;
         GameManager.OnStateChanged -= BeginStage;
         GameManager.OnMainMenuOpen -= MainMenu;
         GameManager.OnStarGained -= GainStar;
         GameManager.OnGameOver -= BlackScreenFadeIn;
-        GameManager.OnShowEmptySlots -= ShowEmptySlots;
         DialogueManager.OnNextSentence -= UpdateDialogueBox;
         DialogueManager.OnDialogueEnd -= HideDialogueBox;
         Row.OnFirstRowsReady -= BlackScreenFadeOut;
@@ -115,12 +115,13 @@ public class UIManager : MonoBehaviour
     {
         _compassionateStars.SetActive(toggle);
         _requiredStars.SetActive(!toggle);
-        if (!toggle)
+    }
+
+    private void ResetCompassionateStars()
+    {
+        for (int i = 0; i < 3; i++)
         {
-            for (int i = 0; i < 3; i++)
-            {
-                _compassionateSliders[i].value = 0;
-            }
+            _compassionateSliders[i].value = 0;
         }
     }
 
@@ -154,11 +155,6 @@ public class UIManager : MonoBehaviour
         StartCoroutine(TypeSentence(sentence));
         StartCoroutine(FinishSentence(sentence));
         if (GameManager.NeedDialogueBoxHint) { StartCoroutine(HintDialogue()); }
-    }
-
-    private void ShowEmptySlots()
-    {
-        //_emptySlots.SetActive(true);
     }
 
     private IEnumerator TypeSentence(string sentence)
@@ -308,7 +304,6 @@ public class UIManager : MonoBehaviour
             GameObject newStar = Instantiate(_starPrefab, _starParent.transform);
             _allStars.Add(newStar);
         }
-        //_requiredStars.SetActive(true);
         _compassionateStars.SetActive(false);
         ToggleCompassionateStars(false);
     }

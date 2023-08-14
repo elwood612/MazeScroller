@@ -13,8 +13,7 @@ MonoBehaviour:
   m_Name: Tutorial11
   m_EditorClassIdentifier: 
   _lines:
-  - 'Oh wait, now the progress bar is back. '
-  - I wonder what would have happened...
+  - Oh no, lost our progress somehow!
   - Looks like if we want to go after those GREEN crystals, we need to avoid ALL
     the others!
   - If only there was a way to make them all disappear?...

@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
 {
     #region Variables
     [SerializeField] private bool _debugMode;
+    [Range(0, 11)] [SerializeField] private int _debugStartStage;
     [SerializeField] private GM_Settings _settings;
     [SerializeField] private GameObject _runnerPrefab;
     [SerializeField] private int _firstPurpleStage;
@@ -201,6 +202,10 @@ public class GameManager : MonoBehaviour
                     CompassionateVictory();
                 }
             }
+            else if (value == 0)
+            {
+                OnCompassionateStarsReset?.Invoke();
+            }
         }
     }
     public int CompassionateProgress
@@ -276,6 +281,7 @@ public class GameManager : MonoBehaviour
         if (_debugMode)
         {
             _isMusicEnabled = false;
+            GlobalDialogueCounter = _debugStartStage;
             //for (int i = 0; i < DoTutorial.Length; i++) { DoTutorial[i] = false; }
         }
     }
@@ -477,11 +483,20 @@ public class GameManager : MonoBehaviour
             _stageAnswerQuality = Answer.Excellent;
             answered = true;
         }
-        if (_compassionateStars == 3)
+        if (_currentStageDialogue.CompassionateAnswer != "")
         {
-            _stageAnswerQuality = Answer.Compassionate;
-            answered = true;
+            if (_compassionateStars == 3)
+            {
+                _stageAnswerQuality = Answer.Compassionate;
+                answered = true;
+            }
+            else
+            {
+                _stageAnswerQuality = Answer.Poor;
+                answered = false;
+            }
         }
+        
 
         if (answered)
         {
@@ -538,14 +553,10 @@ public class GameManager : MonoBehaviour
             _stageLength = 30;
             _spawnChargedTileChance = 8;
         }
-        
-        if (_spawnGoldCrystal)
+
+        if (_spawnGreenCrystal)
         {
-            _tileColorHue = 0.311111f;
-        }
-        else if (_spawnPurpleCrystal)
-        {
-            _tileColorHue = 0.708333f;
+            _tileColorHue = 0.9f;
         }
 
         _repeatingStage = false;
