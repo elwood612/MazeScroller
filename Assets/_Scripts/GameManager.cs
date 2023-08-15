@@ -360,7 +360,7 @@ public class GameManager : MonoBehaviour
     private void CompassionateVictory()
     {
         if (CurrentState == GameState.Progressing) { StageProgress = _stageLength; }
-        AudioManager.Instance.StarGain.Play(); // should probably be a different sound??
+        AudioManager.Instance.CompassionateVictory.Play(); // should probably be a different sound??
         AcquiredStars += 10;
         CurrentScore += 10;
         if (GlobalDialogueCounter >= _globalStageDialogue.Length - 1)

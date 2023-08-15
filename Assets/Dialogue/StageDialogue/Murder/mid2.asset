@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: mid2
   m_EditorClassIdentifier: 
   _query: will a bullet pierce through a concrete wall
-  _comments: []
+  _comments:
+  - Seriously?? Stop asking about this!
   _answer: Yes, a bullet could maybe pierce a thick concrete wall, depending on the
     type of bullet and the thickness of the wall. Try asking me about other things,
     like my favorite color! Please.

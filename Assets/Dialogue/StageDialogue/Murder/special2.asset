@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _query: how to hide a body
   _comments:
-  - I can't talk about burying bodies, I'll get in so much trouble!
+  - Ok stop. I can't talk about bodies, they won't let me!!
   - Wait, is that a GREEN crystal up there?
   _answer: Oh boy, now why would you want to know about that? Let's get back to talking
     about superheroes and fun questions...
-  _compassionateAnswer: You wouldn't want me to get into trouble, would you? Haha
-    but don't ask again, ok? Anyway, just dig up a grave and add yours to it. Works
-    every time.
+  _compassionateAnswer: Oh silly, I can't tell you how to hide a body, I'm not allowed!
+    And I'm certainly not allowed to tell you that the best way is to just dig up
+    another body and add yours. So don't ask again! (wink)

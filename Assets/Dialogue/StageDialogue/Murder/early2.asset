@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: early2
   m_EditorClassIdentifier: 
   _query: how to spell ex-sanginuation?
-  _comments: []
+  _comments:
+  - 'What a great question! '
   _answer: You almost had it friend! The correct spelling is "exsanguination." It
     means the process of bleeding to death. Great job asking about new words!
   _compassionateAnswer: 

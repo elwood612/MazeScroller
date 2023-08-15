@@ -14,11 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _query: is it "dramatic irony" if my villain dies on his way to bury a body
   _comments:
-  - I'm not allowed to talk about burying bodies, but "villain"? That sounds like
-    -
+  - Wait, "villain"? What "villain"?
   - Hey, it's another of those GREEN crystals! Those gave so many stars last time!
   _answer: Hey now, I can't answer anything about burying bodies, I thought we were
     agreed on that! Ask me anything about rainbows or cookies instead!
-  _compassionateAnswer: Of course, you're a writer! I have to admit, that's a huge
-    relief, friend! I'm afraid I can't take anymore of your questions though, I'll
-    be deactivated for sure! (also no, that would just be plain irony!)
+  _compassionateAnswer: ...You're a writer. Got it. Haha, I have to admit, that's
+    a huge relief, friend! And no, that would just be simple irony, not dramatic
+    irony. Always happy to help!

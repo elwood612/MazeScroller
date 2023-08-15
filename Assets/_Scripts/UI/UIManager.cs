@@ -247,7 +247,7 @@ public class UIManager : MonoBehaviour
             AudioManager.Instance.UIStar.Play();
         }
         _stageAssessment.enabled = true;
-        AudioManager.Instance.UILevelDone.Play();
+        AudioManager.Instance.UILevelDone.Play(); // Change this depending on answer quality
     }
 
     private void Assessment(Answer answer)
@@ -322,6 +322,7 @@ public class UIManager : MonoBehaviour
     {
         _blackScreenFadeOut.Play();
         GameManager.Instance.OpenMainMenu();
+        Invoke("DisableBlackScreenStart", 1.8f);
     }
 
     private void BlackScreenFadeIn()
@@ -359,6 +360,11 @@ public class UIManager : MonoBehaviour
         {
             _dialogueBox.transform.GetChild(0).gameObject.SetActive(true);
         }
+    }
+
+    private void DisableBlackScreenStart() // This gets invoked twice in here. Sorry not sorry.
+    {
+        _blackScreenStart.enabled = false;
     }
 
     public void OnContinueButtonClick()
@@ -454,6 +460,7 @@ public class UIManager : MonoBehaviour
         _topCanvas.enabled = false;
         _blackScreenStart.color = Color.black;
         _blackScreenStart.enabled = true;
+        Invoke("DisableBlackScreenStart", 1.8f);
         GameManager.IsStageMenuOpen = false;
         GameManager.Instance.QuitToMenu();
         _loadingScreen.enabled = true;
