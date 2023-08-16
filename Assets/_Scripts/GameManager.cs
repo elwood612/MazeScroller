@@ -455,13 +455,11 @@ public class GameManager : MonoBehaviour
 
     public static bool CompareVectorsAsInts(Vector3 v1, Vector3 v2)
     {
-        //return Vector3Int.RoundToInt(v1) == Vector3Int.RoundToInt(v2);
         return (v2 - v1).sqrMagnitude < _tileLength / 2;
     }
 
     public void EndStage()
     {
-        //_isGameOver = true; // temp!! remove!!
         IsStageCompleted = false;
         bool answered = false;
         _firstStarGained = false;

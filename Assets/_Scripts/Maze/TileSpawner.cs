@@ -17,11 +17,10 @@ public class TileSpawner : MonoBehaviour
     private int _counterPurpleCrystal = 0;
     private int _counterGoldCrystal = 0;
     private int _triggerDisableTile = 2;
-    //private int _triggerColorSpawn = 8;
     private int _triggerCrystalLevel = 4;
     private int _triggerTutorialCrystalSpawn = 2;
     private int _triggerTutorialColorSpawn = 5;
-    private int _triggerGreenCrystal = 5;
+    private int _triggerGreenCrystal = 3;
     private int _triggerPurpleCrystal = 5;
     private int _triggerGoldCrystal = 5;
     private bool _tutorialFirstCrystal = true;
@@ -316,25 +315,23 @@ public class TileSpawner : MonoBehaviour
                     _counterCrystalLevel = 0;
                     _triggerCrystalLevel = Random.Range(2, 6);
                     level++;
-                    if (Random.Range(0f, 1f) < 0.35f && GameManager.SpawnPurpleCrystal)
+                    if (Random.Range(0f, 1f) < 0.35f && GameManager.SpawnPurpleCrystal && GameManager.StageProgress > 10)
                     {
                         level++;
                         if (_firstPurpleCrystal)
                         {
                             _firstPurpleCrystal = false;
-
                         }
-                        if (Random.Range(0f, 1f) < 0.5f && GameManager.SpawnGoldCrystal)
+                        if (Random.Range(0f, 1f) < 0.5f && GameManager.SpawnGoldCrystal && GameManager.StageProgress > 10)
                         {
                             level++;
                             if (_firstGoldCrystal)
                             {
                                 _firstGoldCrystal = false;
-
                             }
                         }
                     }
-                    if (GameManager.SpawnGreenCrystal && _goodToSpawnGreen && !_firstGreenCrystalOfStage)
+                    if (GameManager.SpawnGreenCrystal && _goodToSpawnGreen && GameManager.StageProgress > 10)
                     {
                         level = 4;
                         _goodToSpawnGreen = false;

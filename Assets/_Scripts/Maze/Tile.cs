@@ -81,6 +81,7 @@ public class Tile : MonoBehaviour
         _parentRow.OnRowSetup += GetNeighbors;
         _parentRow.OnRowTransition += SetAlpha;
         GameManager.OnSetupNextStage += ResetColor;
+        GameManager.OnNextTutorial += ResetFirstChargedTile;
     }
 
     private void OnDisable()
@@ -89,6 +90,7 @@ public class Tile : MonoBehaviour
         _parentRow.OnRowSetup -= GetNeighbors;
         _parentRow.OnRowTransition -= SetAlpha;
         GameManager.OnSetupNextStage -= ResetColor;
+        GameManager.OnNextTutorial -= ResetFirstChargedTile;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -155,8 +157,14 @@ public class Tile : MonoBehaviour
         if (_firstChargedTile)
         {
             _firstChargedTile = false;
-            if (!Crystal.FirstGreenCrystalPopped) { GameManager.OnNextTutorial?.Invoke(3); }
+            if (GameManager.DoTutorial[11]) { GameManager.OnNextTutorial?.Invoke(3); }
+            else { GameManager.OnNextTutorial?.Invoke(21); }
         }
+    }
+
+    private void ResetFirstChargedTile(int tutorialIndex)
+    {
+        if (tutorialIndex == 11) { _firstChargedTile = true; }
     }
 
     private void DestroyTile()

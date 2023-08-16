@@ -55,6 +55,7 @@ public class UIManager : MonoBehaviour
     private WaitForSeconds _menuResetDelay = new WaitForSeconds(5f);
     private Color _runnerDialogueColor = new Color(0.478f, 1f, 1f, 1f);
     private Color _incomingQueryColor = new Color(0f, 0.764f, 0f, 1f);
+    private string _currentSentence;
 
     private void Awake()
     {
@@ -77,7 +78,7 @@ public class UIManager : MonoBehaviour
         GameManager.OnStarBonusChanged += UpdateSpeedBonus;
         GameManager.OnCompassionateChargeUp += UpdateCompassionateSlider;
         GameManager.OnCompassionateStarsToggle += ToggleCompassionateStars;
-        GameManager.OnCompassionateStarsReset += ResetCompassionateStars;
+        //GameManager.OnCompassionateStarsReset += ResetCompassionateStars;
         GameManager.OnRunnerSpawned += AssignDialogueBox;
         GameManager.OnStageEnd += EndStage;
         GameManager.OnStateChanged += BeginStage;
@@ -94,7 +95,7 @@ public class UIManager : MonoBehaviour
         GameManager.OnStarBonusChanged -= UpdateSpeedBonus;
         GameManager.OnCompassionateChargeUp -= UpdateCompassionateSlider;
         GameManager.OnCompassionateStarsToggle -= ToggleCompassionateStars;
-        GameManager.OnCompassionateStarsReset -= ResetCompassionateStars;
+        //GameManager.OnCompassionateStarsReset -= ResetCompassionateStars;
         GameManager.OnRunnerSpawned -= AssignDialogueBox;
         GameManager.OnStageEnd -= EndStage;
         GameManager.OnStateChanged -= BeginStage;
@@ -130,9 +131,8 @@ public class UIManager : MonoBehaviour
         _compassionateSliders[GameManager.Instance.CompassionateStars].value = value;
     }
 
-    private void UpdateDialogueBox(string sentence)
+    private void UpdateDialogueBox(string newSentence)
     {
-        // Still need LCD screen art
         if (DialogueManager.Instance.IsQuery)
         {
             _dialogueBox.font = _VCRFont;
@@ -149,11 +149,12 @@ public class UIManager : MonoBehaviour
         }
         _isDialogueBoxOpen = true;
         _dialogueBox.transform.GetComponentInParent<Canvas>().enabled = true;
-        StopCoroutine(TypeSentence(sentence));
-        StopCoroutine(FinishSentence(sentence));
+        StopCoroutine(TypeSentence(_currentSentence));
+        StopCoroutine(FinishSentence());
+        _currentSentence = newSentence;
         _typeOutSentence = true;
-        StartCoroutine(TypeSentence(sentence));
-        StartCoroutine(FinishSentence(sentence));
+        StartCoroutine(TypeSentence(newSentence));
+        StartCoroutine(FinishSentence());
         if (GameManager.NeedDialogueBoxHint) { StartCoroutine(HintDialogue()); }
     }
 
@@ -174,11 +175,11 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    private IEnumerator FinishSentence(string sentence) // ensures dialogue doesn't take too long to appear
+    private IEnumerator FinishSentence() // ensures dialogue doesn't take too long to appear
     {
         yield return _sentenceDelay;
         _typeOutSentence = false;
-        _dialogueBox.text = sentence;
+        _dialogueBox.text = _currentSentence;
     }
 
     private void AssignDialogueBox(GameObject runner)
@@ -254,7 +255,7 @@ public class UIManager : MonoBehaviour
     {
         if (answer == Answer.Poor)
         {
-            _stageAssessment.text = "Not enough stars for a complete answer.";
+            _stageAssessment.text = "Incomplete answer, try again.";
         }
         else if (answer == Answer.Acceptable)
         {
@@ -262,11 +263,11 @@ public class UIManager : MonoBehaviour
         }
         else if (answer == Answer.Excellent)
         {
-            _stageAssessment.text = "Excellent answer with extra puns!";
+            _stageAssessment.text = "Excellent answer!";
         }
         else if (answer == Answer.Compassionate)
         {
-            _stageAssessment.text = "Error: answer outside limits of AI language model.";
+            _stageAssessment.text = "Error: Answer outside AI limits.";
         }
     }
 
@@ -304,8 +305,9 @@ public class UIManager : MonoBehaviour
             GameObject newStar = Instantiate(_starPrefab, _starParent.transform);
             _allStars.Add(newStar);
         }
-        _compassionateStars.SetActive(false);
+        //_compassionateStars.SetActive(false);
         ToggleCompassionateStars(false);
+        ResetCompassionateStars();
     }
 
     private void ResetSliders()

@@ -4163,7 +4163,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: 'Error: Answer outside AI limits'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4d232bc92b5f33d438f6b8d08e4cf08f, type: 2}
   m_sharedMaterial: {fileID: 2143256654892933006, guid: 4d232bc92b5f33d438f6b8d08e4cf08f, type: 2}
@@ -4190,12 +4190,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
+  m_fontSize: 44
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 48
+  m_fontSizeMax: 44
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -11002,7 +11002,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: _debugMode
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: _firstGoldStage
@@ -11034,7 +11034,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: _allTutorialDialogue.Array.size
-      value: 21
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: _globalStageDialogue.Array.size
@@ -11244,6 +11244,10 @@ PrefabInstance:
       propertyPath: _allTutorialDialogue.Array.data[20]
       value: 
       objectReference: {fileID: 11400000, guid: 3ad49a43d2c9c0540898ac387a3de184, type: 2}
+    - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
+      propertyPath: _allTutorialDialogue.Array.data[21]
+      value: 
+      objectReference: {fileID: 11400000, guid: a3571b26e72d72642ba98b6437f1e0c2, type: 2}
     - target: {fileID: 8584702339654192013, guid: d5f3d8a08e354194eb24ad7916dbb695, type: 3}
       propertyPath: _globalStageDialogue.Array.data[10]
       value: 
