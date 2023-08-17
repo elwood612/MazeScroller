@@ -55,7 +55,7 @@ public class DialogueManager : MonoBehaviour
         OnDialogueEnd?.Invoke();
         if (GameManager.CurrentState == GameState.Transition)
         { 
-            if (GameManager.IsGameOver)
+            if (GameManager.IsGameOver && !GameManager.DoTutorial[14]) // really don't want to depend on a tutorial for this...
             {
                 GameManager.Instance.GameOver();
                 return;
@@ -83,6 +83,7 @@ public class DialogueManager : MonoBehaviour
     {
         if (GameManager.DoTutorial[index]) 
         {
+            if ((index == 3 || index == 21) && GameManager.CurrentState != GameState.Progressing) { return; }
             _isTutorialDialogueActive = true;
             StartDialogue(GameManager.Instance.AllTutorialDialogue[index].Lines);
             GameManager.DoTutorial[index] = false;

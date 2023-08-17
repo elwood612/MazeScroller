@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
 {
     #region Variables
     [SerializeField] private bool _debugMode;
-    [Range(0, 11)] [SerializeField] private int _debugStartStage;
+    [Range(0, 8)] [SerializeField] private int _debugStartStage;
     [SerializeField] private GM_Settings _settings;
     [SerializeField] private GameObject _runnerPrefab;
     [SerializeField] private int _firstPurpleStage;
@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour
     private static int _currentScore = 0;
     private static int _loseCounter = 0;
     private static int _bonusStarLevel = 0;
-    private static int _spawnChargedTileChance = 6;
+    private static int _chargedTileCounter = 6;
     private static float _tileColorHue = 0;
     private static bool _firstStarGained = true;
     private static bool _secondStarGained = false;
@@ -115,7 +115,7 @@ public class GameManager : MonoBehaviour
     public static int RequiredStars => _requiredStars;
     public static float TileColorHue => _tileColorHue;
     public static StageDialogue CurrentStageDialogue => _currentStageDialogue;
-    public static int SpawnChargedTileChance => _spawnChargedTileChance;
+    public static int ChargedTileCounter => _chargedTileCounter;
     public static bool SpawnPurpleCrystal => _spawnPurpleCrystal;
     public static bool SpawnGoldCrystal => _spawnGoldCrystal;
     public static bool SpawnGreenCrystal => _spawnGreenCrystal;
@@ -231,7 +231,8 @@ public class GameManager : MonoBehaviour
         set
         {
             _acquiredStars = value;
-            AudioManager.Instance.StarGain.Play();
+            if (_acquiredStars == _requiredStars) { AudioManager.Instance.CompassionateVictory.Play(); }
+            else { AudioManager.Instance.StarGain.Play(); }
             if (_acquiredStars % _requiredStars == 0)
             {
                 _bonusStarLevel++;
@@ -360,12 +361,12 @@ public class GameManager : MonoBehaviour
     private void CompassionateVictory()
     {
         if (CurrentState == GameState.Progressing) { StageProgress = _stageLength; }
-        AudioManager.Instance.CompassionateVictory.Play(); // should probably be a different sound??
+        AudioManager.Instance.CompassionateVictory.Play();
         AcquiredStars += 10;
         CurrentScore += 10;
         if (GlobalDialogueCounter >= _globalStageDialogue.Length - 1)
         {
-            _isGameOver = true;
+            //_isGameOver = true;
             OnNextTutorial?.Invoke(13);
         }
         else { OnNextTutorial?.Invoke(12); }
@@ -378,7 +379,7 @@ public class GameManager : MonoBehaviour
         return _globalStageDialogue[Mathf.Min(GlobalDialogueCounter, _globalStageDialogue.Length - 1)];
     }
 
-    private void ResetDefaultSettings()
+    public void ResetDefaultSettings()
     {
         _isGameOver = false;
         _currentScore = 0;
@@ -460,6 +461,11 @@ public class GameManager : MonoBehaviour
 
     public void EndStage()
     {
+        if (GlobalDialogueCounter >= _globalStageDialogue.Length - 1)
+        {
+            _isGameOver = true;
+        }
+        
         IsStageCompleted = false;
         bool answered = false;
         _firstStarGained = false;
@@ -527,29 +533,26 @@ public class GameManager : MonoBehaviour
         _spawnPurpleCrystal = GlobalDialogueCounter >= _firstPurpleStage;
         _spawnGoldCrystal = GlobalDialogueCounter >= _firstGoldStage;
 
-        _spawnChargedTileChance = 6;
+        _chargedTileCounter = 6;
         _requiredStars = 1;
         _stageLength = (_requiredStars * 20) + 65;
         _tileColorHue = 0.552778f;
         // _tileColorHue = Mathf.Clamp(Random.Range(0f, 1f), 0.1f, 0.9f); // keep for posterity
 
-        if (_spawnPurpleCrystal) 
-        { 
-            _spawnChargedTileChance--;
-            _requiredStars++;
-        }
-        if (_spawnGoldCrystal) 
-        { 
-            _spawnChargedTileChance--;
-            _requiredStars++;
-        }
+        if (_spawnPurpleCrystal) { _requiredStars++; }
+        if (_spawnGoldCrystal) { _requiredStars++; }
+        if (GlobalDialogueCounter >= 2) { _chargedTileCounter--; }
+        if (GlobalDialogueCounter >= 4) { _chargedTileCounter--; }
+        if (GlobalDialogueCounter >= 6) { _chargedTileCounter--; }
+        if (GlobalDialogueCounter >= 7) { _chargedTileCounter--; }
+        if (GlobalDialogueCounter == 4) { _chargedTileCounter = 2; }
 
         _spawnGreenCrystal = _currentStageDialogue.CompassionateAnswer != "";
 
         if (IsTutorialOngoing)
         {
             _stageLength = 30;
-            _spawnChargedTileChance = 8;
+            _chargedTileCounter = 8;
         }
 
         if (_spawnGreenCrystal)
@@ -563,7 +566,7 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        ResetDefaultSettings();
+        //ResetDefaultSettings();
         OnGameOver?.Invoke();
     }
 

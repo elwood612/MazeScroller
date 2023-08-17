@@ -57,6 +57,8 @@ public class UIManager : MonoBehaviour
     private Color _incomingQueryColor = new Color(0f, 0.764f, 0f, 1f);
     private string _currentSentence;
 
+    public bool _blackScreenEndDeactivated = false;
+
     private void Awake()
     {
         _activeSlider = _speedSliders[0];
@@ -78,7 +80,7 @@ public class UIManager : MonoBehaviour
         GameManager.OnStarBonusChanged += UpdateSpeedBonus;
         GameManager.OnCompassionateChargeUp += UpdateCompassionateSlider;
         GameManager.OnCompassionateStarsToggle += ToggleCompassionateStars;
-        //GameManager.OnCompassionateStarsReset += ResetCompassionateStars;
+        GameManager.OnCompassionateStarsReset += ResetCompassionateStars;
         GameManager.OnRunnerSpawned += AssignDialogueBox;
         GameManager.OnStageEnd += EndStage;
         GameManager.OnStateChanged += BeginStage;
@@ -95,7 +97,7 @@ public class UIManager : MonoBehaviour
         GameManager.OnStarBonusChanged -= UpdateSpeedBonus;
         GameManager.OnCompassionateChargeUp -= UpdateCompassionateSlider;
         GameManager.OnCompassionateStarsToggle -= ToggleCompassionateStars;
-        //GameManager.OnCompassionateStarsReset -= ResetCompassionateStars;
+        GameManager.OnCompassionateStarsReset -= ResetCompassionateStars;
         GameManager.OnRunnerSpawned -= AssignDialogueBox;
         GameManager.OnStageEnd -= EndStage;
         GameManager.OnStateChanged -= BeginStage;
@@ -329,15 +331,19 @@ public class UIManager : MonoBehaviour
 
     private void BlackScreenFadeIn()
     {
+        _stageCanvas.enabled = false;
         _blackScreenEnd.enabled = true;
+        _blackScreenEnd.color = new Color(0, 0, 0, 0);
         _blackScreenFadeIn.Play();
         StartCoroutine(EndCreditsRoll());
+        GameManager.Instance.ResetDefaultSettings();
     }
 
     private IEnumerator MainMenuReset()
     {
         yield return _menuResetDelay;
         _blackScreenFadeOut.Play();
+        Invoke("DisableBlackScreenStart", 1.8f);
         _loadingScreen.enabled = false;
     }
 
@@ -345,12 +351,15 @@ public class UIManager : MonoBehaviour
     {
         _endCreditsObj.SetActive(true);
         _endCreditsAnimation.Play();
+
         yield return new WaitForSeconds(_endCreditsAnimation.GetClip("CreditScroll").length);
-        _endCreditsObj.SetActive(false);
-        _blackScreenEnd.enabled = false;
-        if (!_mainMenuCanvas.enabled) 
+
+        if (!_blackScreenEndDeactivated)
         {
-            OnQuitToMenu(); 
+            _blackScreenEndDeactivated = true;
+            _endCreditsObj.SetActive(false);
+            _blackScreenEnd.enabled = false;
+            OnQuitToMenu();
         }
     }
 
@@ -369,6 +378,11 @@ public class UIManager : MonoBehaviour
         _blackScreenStart.enabled = false;
     }
 
+    public void DeactivateBlackScreen()
+    {
+        _blackScreenEndDeactivated = true;
+    }
+
     public void OnContinueButtonClick()
     {
         _stageCanvas.enabled = false;
@@ -376,7 +390,7 @@ public class UIManager : MonoBehaviour
 
         if (GameManager.IsGameOver)
         {
-            GameManager.OnNextTutorial(14);
+            GameManager.OnNextTutorial?.Invoke(14);
             GameManager.Instance.UpdateGameState(GameState.Transition);
             return;
         }
@@ -462,7 +476,7 @@ public class UIManager : MonoBehaviour
         _topCanvas.enabled = false;
         _blackScreenStart.color = Color.black;
         _blackScreenStart.enabled = true;
-        Invoke("DisableBlackScreenStart", 1.8f);
+        //Invoke("DisableBlackScreenStart", 1.8f);
         GameManager.IsStageMenuOpen = false;
         GameManager.Instance.QuitToMenu();
         _loadingScreen.enabled = true;

@@ -48,7 +48,7 @@ public class Runner : MonoBehaviour, IRunner
                 _runnerStopped = value;
                 if (value == true) 
                 { 
-                    Crystal.ScoreBonus = 1;
+                    Crystal.ConsecutiveBonus = 1;
                 }
             }
         }

@@ -37,6 +37,7 @@ public class Crystal : MonoBehaviour
     private static bool _thirdCrystal = false;
     private static bool _firstGreenCrystal = true;
     private static bool _firstGreenCrystalPopped = true;
+    private static bool _greenCrystalTutorialReset = true;
     private static int _blueCrystalsNotPopped = 0;
     private WaitForSeconds _destroyDelay = new WaitForSeconds(1f);
     private WaitForSecondsRealtime _compassionateDelay = new WaitForSecondsRealtime(2.5f);
@@ -48,10 +49,10 @@ public class Crystal : MonoBehaviour
     public static event Action OnFirstBlueCrystalPopped;
     public static event Action OnGreenCrystalPopped;
 
-    public static int ScoreBonus = 1; // this is public so Runner can reset it
+    public static int ConsecutiveBonus = 1; // this is public so Runner can reset it
 
     public int InitialLevel => _initialLevel;
-    public static bool FirstGreenCrystalPopped => _firstGreenCrystalPopped;
+    //public static bool FirstGreenCrystalPopped => _firstGreenCrystalPopped;
 
     private void Awake()
     {
@@ -100,6 +101,11 @@ public class Crystal : MonoBehaviour
                 {
                     _standingInGreenCrystal = true;
                     CompassionateCrystalChargeUp();
+                    if (!_firstGreenCrystalPopped && !GameManager.DoTutorial[11] && _greenCrystalTutorialReset) 
+                    { 
+                        _firstGreenCrystalPopped = true;
+                        _greenCrystalTutorialReset = false;
+                    }
                     return;
                 }
                 else if (_level == 1 && ++_blueCrystalsNotPopped > 3 && GameManager.DoTutorial[5])
@@ -227,22 +233,27 @@ public class Crystal : MonoBehaviour
             {
                 GameManager.Instance.CompassionateStars = 0;
                 // Play audio cue here for losing compassionate progress
-                //GameManager.OnCompassionateStarsToggle?.Invoke(false);
                 if (_firstGreenCrystalPopped)
                 {
                     _firstGreenCrystalPopped = false;
-                    GameManager.OnNextTutorial?.Invoke(11);
+                    if (GameManager.DoTutorial[11]) { GameManager.OnNextTutorial?.Invoke(11); }
+                    else { GameManager.OnNextTutorial?.Invoke(22); }
                 }
             }
             GameManager.Instance.StarProgress +=
-                (int)Mathf.Clamp((_initialLevel * _initialLevel * ScoreBonus * _scoreConstant) + _scoreMin, 1, 100);
-            ScoreBonus = 2;
+                (int)Mathf.Clamp((_initialLevel * _initialLevel * ConsecutiveBonus * _scoreConstant) + _scoreMin, 1, 100);
+            ConsecutiveBonus = 5;
         }
         else
         {
             AudioManager.Instance.PowerUp.Stop();
             OnGreenCrystalPopped?.Invoke();
         }
+    }
+
+    private void ResetFirstGreenCrystalPopped()
+    {
+        _firstGreenCrystalPopped = true;
     }
 
     private void EndOfBoardContact()
@@ -332,7 +343,7 @@ public class Crystal : MonoBehaviour
 
     public void ResetScoreBonus(bool stopped)
     {
-        if (stopped) { Debug.Log("Reset bonus"); ScoreBonus = 1; }
+        if (stopped) { Debug.Log("Reset bonus"); ConsecutiveBonus = 1; }
     }
 
     public void RemoveCrystal()

@@ -51,7 +51,7 @@ public class TileSpawner : MonoBehaviour
     //private int _chargedMinRows = 5;
     //private int _chargedMaxRows = 8;
     private int _minimumTileCounter = 0;
-    private int _minimumTileChance = 10;
+    private int _minimumTileChance = 8;
     private float _widthMin = 2.1f;
     private float _widthMax = 2.9f;
     private float _crystalSpawnModifier = 1f;
@@ -149,7 +149,7 @@ public class TileSpawner : MonoBehaviour
 
             if (!GameManager.IsTutorialOngoing)
             {
-                if (++_counterColorSpawn > GameManager.SpawnChargedTileChance)
+                if (++_counterColorSpawn > GameManager.ChargedTileCounter)
                 {
                     _counterColorSpawn = 0;
                     StartCoroutine(SpawnRandomCharged(other.GetComponent<Row>()));
@@ -296,7 +296,7 @@ public class TileSpawner : MonoBehaviour
     private IEnumerator SpawnCrystal(Row row)
     {
         yield return _crystalDelay;
-        if (GameManager.CompassionateVictoryAchieved) { Debug.Log("Skipping spawn"); yield break; }
+        if (GameManager.CompassionateVictoryAchieved) { yield break; }
         int level;
         int numCrystalsInOneRow = 0;
         foreach (Tile tile in row.EnabledTiles)
@@ -315,20 +315,14 @@ public class TileSpawner : MonoBehaviour
                     _counterCrystalLevel = 0;
                     _triggerCrystalLevel = Random.Range(2, 6);
                     level++;
-                    if (Random.Range(0f, 1f) < 0.35f && GameManager.SpawnPurpleCrystal && GameManager.StageProgress > 10)
+                    if ((Random.Range(0f, 1f) < 0.35f || _firstPurpleCrystal) && GameManager.SpawnPurpleCrystal && GameManager.StageProgress > 10)
                     {
                         level++;
-                        if (_firstPurpleCrystal)
-                        {
-                            _firstPurpleCrystal = false;
-                        }
-                        if (Random.Range(0f, 1f) < 0.5f && GameManager.SpawnGoldCrystal && GameManager.StageProgress > 10)
+                        if (_firstPurpleCrystal) { _firstPurpleCrystal = false; }
+                        if ((Random.Range(0f, 1f) < 0.5f || _firstGoldCrystal) && GameManager.SpawnGoldCrystal && GameManager.StageProgress > 10)
                         {
                             level++;
-                            if (_firstGoldCrystal)
-                            {
-                                _firstGoldCrystal = false;
-                            }
+                            if (_firstGoldCrystal) { _firstGoldCrystal = false; }
                         }
                     }
                     if (GameManager.SpawnGreenCrystal && _goodToSpawnGreen && GameManager.StageProgress > 10)
@@ -362,8 +356,17 @@ public class TileSpawner : MonoBehaviour
 
     private void SetupNewStage()
     {
-        _crystalSpawnModifier = Random.Range(0.85f, 1.15f);
-        _missingTilesChance = Random.Range(1, 3);
+        _crystalSpawnModifier = 1;
+        _minimumTileChance = 10;
+        if (GameManager.GlobalDialogueCounter > 2) { _crystalSpawnModifier += 0.2f; _minimumTileChance--; }
+        if (GameManager.GlobalDialogueCounter > 4) { _crystalSpawnModifier += 0.1f; _minimumTileChance--; }
+        if (GameManager.GlobalDialogueCounter > 7) { _crystalSpawnModifier += 0.1f; _minimumTileChance--; }
+        if (GameManager.GlobalDialogueCounter == 2 || 
+            GameManager.GlobalDialogueCounter == 4 ||
+            GameManager.GlobalDialogueCounter == 7) 
+        { _crystalSpawnModifier += 0.5f; }
+
+        _missingTilesChance = GameManager.GlobalDialogueCounter > 3 ? 1 : 2;
         _goodToSpawnGreen = true;
         _firstGreenCrystalOfStage = true;
         _firstChargedTile = true;
