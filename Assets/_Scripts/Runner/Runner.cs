@@ -26,7 +26,7 @@ public class Runner : MonoBehaviour, IRunner
     private static bool _runnerStopped = true;
     private bool _runnerOffScreen = false;
     private bool _approachingDeadEnd = false;
-    public bool _isInTransition = false;
+    public bool _isInTransition = true;
     private bool _firstTimeStopping = true;
     private bool _pathfinding = false;
     private ParticleSystem.MainModule _trailParticlesMainModule;
@@ -108,7 +108,7 @@ public class Runner : MonoBehaviour, IRunner
         }
         else
         {
-            if (_firstTimeStopping && !_isInTransition)
+            if (_firstTimeStopping && !_isInTransition) // Check if this condition applies correctly at startup. Otherwise, dialogue during menu bug!
             {
                 _firstTimeStopping = false;
                 if (GameManager.IsTutorialOngoing) { GameManager.OnNextTutorial?.Invoke(0); }

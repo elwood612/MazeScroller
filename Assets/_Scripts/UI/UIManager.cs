@@ -41,7 +41,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TMP_FontAsset _VCRFont;
 
     private WaitForSecondsRealtime _sentenceDelay = new WaitForSecondsRealtime(1f);
-    private WaitForSecondsRealtime _starGainDelay = new WaitForSecondsRealtime(0.4f);
+    private WaitForSecondsRealtime _starGainDelay = new WaitForSecondsRealtime(0.35f);
     private bool _typeOutSentence = true;
     private bool _isDialogueBoxOpen = false;
     private TextMeshProUGUI _dialogueBox;
