@@ -263,6 +263,7 @@ public class Crystal : MonoBehaviour
         {
             DestroyOrbitMissile(_orbitMissiles[_level - 1]);
         }
+        if (_initialLevel == 4) { OnGreenCrystalPopped?.Invoke(); }
     }
 
     private IEnumerator Explode()
@@ -278,6 +279,7 @@ public class Crystal : MonoBehaviour
     private void CompassionateCrystalChargeUp()
     {
         AudioManager.Instance.PowerUp.Play();
+        GameManager.GreenCrystalTouched = true;
         GameManager.OnCompassionateStarsToggle?.Invoke(true);
         if (_firstTimeSeeingCompassionate)
         {

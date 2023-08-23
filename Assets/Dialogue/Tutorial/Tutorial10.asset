@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Tutorial10
   m_EditorClassIdentifier: 
   _lines:
-  - 'Wow, those crystals require you to stay in them for a second. And it looks like
-    this was one out of 3? '
+  - Wow, those crystals require you to stay in them for few seconds.
+  - And look at the progress bar! Looks like we need 3 total!
   - There must be more of them.

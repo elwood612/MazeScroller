@@ -94,6 +94,7 @@ public class GameManager : MonoBehaviour
     public static bool IsRunnerInTransition = false;
     public static bool IsStageCompleted = false;
     public static bool[] DoTutorial;
+    public static bool GreenCrystalTouched = false;
     public static bool GameUnderway = false;
     public static int GlobalDialogueCounter = 0;
     public static int HighScore = 0;
@@ -174,6 +175,7 @@ public class GameManager : MonoBehaviour
         get => _starBonus;
         set
         {
+            if (GreenCrystalTouched) { return; }
             if (value > _starBonus)
             {
                 ResetCoroutines();
@@ -356,6 +358,7 @@ public class GameManager : MonoBehaviour
         _acquiredStars = 0;
         _bonusStarLevel = 0;
         _tileAlpha = 1f;
+        GreenCrystalTouched = false;
     }
 
     private void CompassionateVictory()
@@ -461,11 +464,6 @@ public class GameManager : MonoBehaviour
 
     public void EndStage()
     {
-        if (GlobalDialogueCounter >= _globalStageDialogue.Length - 1)
-        {
-            _isGameOver = true;
-        }
-        
         IsStageCompleted = false;
         bool answered = false;
         _firstStarGained = false;
@@ -514,6 +512,11 @@ public class GameManager : MonoBehaviour
         else
         {
             _repeatingStage = true;
+        }
+
+        if (GlobalDialogueCounter >= _globalStageDialogue.Length - 1 && answered) // This doesn't work if green stage is flubbed!
+        {
+            _isGameOver = true;
         }
 
         OnStageEnd?.Invoke();
