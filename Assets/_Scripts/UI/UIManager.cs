@@ -29,7 +29,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button _challengeModeButton;
     [SerializeField] private Button _quitButton;
     [SerializeField] private Button _quitToMenuButton;
-    [SerializeField] private Toggle _resetToggle;
+    //[SerializeField] private Toggle _resetToggle;
+    [SerializeField] private Button _resetButton;
     [SerializeField] private Image _loadingScreen;
     [SerializeField] private Image _blackScreenStart;
     [SerializeField] private Image _blackScreenEnd;
@@ -407,10 +408,10 @@ public class UIManager : MonoBehaviour
         _mainMenuCanvas.enabled = false;
         GameManager.Instance.CloseMainMenu();
         OnContinueButtonClick();
-        if (_resetToggle.isOn)
-        {
-            _resetToggle.isOn = false;
-        }
+        //if (_resetToggle.isOn)
+        //{
+        //    _resetToggle.isOn = false;
+        //}
     }
 
     public void OnMenuSettingsClick()
@@ -433,33 +434,48 @@ public class UIManager : MonoBehaviour
         {
             GameManager.IsStageMenuOpen = true;
             _menuSettingsCanvas.enabled = true;
-            _resetToggle.gameObject.SetActive(false);
+            //_resetToggle.gameObject.SetActive(false);
+            _resetButton.gameObject.SetActive(false);
             _quitToMenuButton.gameObject.SetActive(true);
         }
         else
         {
             GameManager.IsStageMenuOpen = false;
             _menuSettingsCanvas.enabled = false;
-            _resetToggle.gameObject.SetActive(true);
+            //_resetToggle.gameObject.SetActive(true);
+            _resetButton.gameObject.SetActive(true);
             _quitToMenuButton.gameObject.SetActive(false);
         }
     }
 
     public void OnBackButtonClick()
     {
-        if (_resetToggle.isOn)
-        {
-            _backPage.SetActive(true);
-            _mainPage.SetActive(false);
-        }
-        else
-        {
-            _buttons.SetActive(true);
-            _resetToggle.gameObject.SetActive(true);
-            _menuSettingsCanvas.enabled = false;
-            _quitToMenuButton.gameObject.SetActive(false);
-            GameManager.IsStageMenuOpen = false;
-        }
+        //if (_resetToggle.isOn)
+        //{
+        //    _backPage.SetActive(true);
+        //    _mainPage.SetActive(false);
+        //}
+        //else
+        //{
+        //    _buttons.SetActive(true);
+        //    //_resetToggle.gameObject.SetActive(true);
+        //    _resetButton.gameObject.SetActive(true);
+        //    _menuSettingsCanvas.enabled = false;
+        //    _quitToMenuButton.gameObject.SetActive(false);
+        //    GameManager.IsStageMenuOpen = false;
+        //}
+
+        _buttons.SetActive(true);
+        _resetButton.gameObject.SetActive(true);
+        _menuSettingsCanvas.enabled = false;
+        _quitToMenuButton.gameObject.SetActive(false);
+        GameManager.IsStageMenuOpen = false;
+    }
+
+    public void OnResetGame()
+    {
+        _backPage.SetActive(true);
+        _mainPage.SetActive(false);
     }
 
     public void OnYesToResetClick()
