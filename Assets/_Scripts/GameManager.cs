@@ -248,14 +248,14 @@ public class GameManager : MonoBehaviour
                 OnNextTutorial?.Invoke(6);
                 return;
             }
-            if (_secondStarGained && IsTutorialOngoing)
+            if (_secondStarGained && GlobalDialogueCounter == 0) // can't use IsTutorialOngoing, it will be deactivated
             {
                 _secondStarGained = false;
                 _thirdStarGained = true;
                 OnNextTutorial?.Invoke(19);
                 return;
             }
-            if (_thirdStarGained && IsTutorialOngoing)
+            if (_thirdStarGained && GlobalDialogueCounter == 0)
             {
                 _thirdStarGained = false;
                 OnNextTutorial?.Invoke(20);
