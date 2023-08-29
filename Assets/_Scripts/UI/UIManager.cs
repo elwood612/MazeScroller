@@ -11,25 +11,25 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _stageCurrentScore;
     [SerializeField] private TextMeshProUGUI _stageAssessment;
     [SerializeField] private TextMeshProUGUI _lifetimeStarsAmountMenu;
+    [SerializeField] private TextMeshProUGUI _newHighScore;
     [SerializeField] private Slider[] _speedSliders;
     [SerializeField] private GameObject _requiredStars;
     [SerializeField] private GameObject _starParent;
     [SerializeField] private GameObject _compassionateStars;
     [SerializeField] private Slider[] _compassionateSliders;
-    //[SerializeField] private GameObject _emptySlots;
     [SerializeField] private Canvas _stageCanvas;
     [SerializeField] private Canvas _topCanvas;
     [SerializeField] private Canvas _mainMenuCanvas;
     [SerializeField] private Canvas _menuSettingsCanvas;
     [SerializeField] private GameObject _starPrefab;
-    [SerializeField] private GameObject _buttons;
+    [SerializeField] private GameObject _mainMenuButtons;
+    [SerializeField] private GameObject _endStageButtons;
     [SerializeField] private GameObject _mainPage;
     [SerializeField] private GameObject _backPage;
     [SerializeField] private Button _storyModeButton;
     [SerializeField] private Button _challengeModeButton;
     [SerializeField] private Button _quitButton;
     [SerializeField] private Button _quitToMenuButton;
-    //[SerializeField] private Toggle _resetToggle;
     [SerializeField] private Button _resetButton;
     [SerializeField] private Image _loadingScreen;
     [SerializeField] private Image _blackScreenStart;
@@ -74,6 +74,7 @@ public class UIManager : MonoBehaviour
         _mainPage.SetActive(true);
         _backPage.SetActive(false);
         _endCreditsObj.SetActive(false);
+        _newHighScore.enabled = false;
     }
 
     private void OnEnable()
@@ -215,6 +216,7 @@ public class UIManager : MonoBehaviour
         if (state == GameState.Progressing)
         {
             _topCanvas.enabled = true;
+            _newHighScore.enabled = false;
             _activeSlider = _speedSliders[0];
             _topTotalStarAmount.text = GameManager.AcquiredStars.ToString() + " ("
             + GameManager.RequiredStars.ToString()
@@ -226,10 +228,21 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    private void EndStage()
+    private void EndStage() // this is helpful
     {
         _requiredStars.SetActive(false);
-        //_emptySlots.SetActive(false);
+        if (GameManager.GlobalDialogueCounter >= GameManager.MaxStages)
+        {
+            _endStageButtons.SetActive(false);
+            if (GameManager.CurrentScore > GameManager.PreviousHighScore) // This is wrong!
+            {
+                _newHighScore.enabled = true;
+            }
+        }
+        else
+        {
+            _endStageButtons.SetActive(true);
+        }
         _stageCanvas.enabled = true;
         _stageCurrentScore.text = "Current score: " + (GameManager.CurrentScore - GameManager.AcquiredStars).ToString();
 
@@ -297,7 +310,7 @@ public class UIManager : MonoBehaviour
     {
         foreach (var star in _allStars)
         {
-            Destroy(star.gameObject); // ok yes this needs to be better OR DOES IT
+            Destroy(star.gameObject);
         }
         _allStars.Clear();
         _newStarIndex = 0;
@@ -308,7 +321,6 @@ public class UIManager : MonoBehaviour
             GameObject newStar = Instantiate(_starPrefab, _starParent.transform);
             _allStars.Add(newStar);
         }
-        //_compassionateStars.SetActive(false);
         ToggleCompassionateStars(false);
         ResetCompassionateStars();
     }
@@ -374,7 +386,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    private void DisableBlackScreenStart() // This gets invoked twice in here. Sorry not sorry.
+    private void DisableBlackScreenStart() // This gets invoked twice in UIManager. Sorry not sorry.
     {
         _blackScreenStart.enabled = false;
     }
@@ -408,10 +420,6 @@ public class UIManager : MonoBehaviour
         _mainMenuCanvas.enabled = false;
         GameManager.Instance.CloseMainMenu();
         OnContinueButtonClick();
-        //if (_resetToggle.isOn)
-        //{
-        //    _resetToggle.isOn = false;
-        //}
     }
 
     public void OnMenuSettingsClick()
@@ -419,12 +427,12 @@ public class UIManager : MonoBehaviour
         if (!_menuSettingsCanvas.enabled)
         {
             _menuSettingsCanvas.enabled = true;
-            _buttons.SetActive(false);
+            _mainMenuButtons.SetActive(false);
         }
         else
         {
             _menuSettingsCanvas.enabled = false;
-            _buttons.SetActive(true);
+            _mainMenuButtons.SetActive(true);
         }
     }
 
@@ -434,7 +442,6 @@ public class UIManager : MonoBehaviour
         {
             GameManager.IsStageMenuOpen = true;
             _menuSettingsCanvas.enabled = true;
-            //_resetToggle.gameObject.SetActive(false);
             _resetButton.gameObject.SetActive(false);
             _quitToMenuButton.gameObject.SetActive(true);
         }
@@ -442,7 +449,6 @@ public class UIManager : MonoBehaviour
         {
             GameManager.IsStageMenuOpen = false;
             _menuSettingsCanvas.enabled = false;
-            //_resetToggle.gameObject.SetActive(true);
             _resetButton.gameObject.SetActive(true);
             _quitToMenuButton.gameObject.SetActive(false);
         }
@@ -450,22 +456,7 @@ public class UIManager : MonoBehaviour
 
     public void OnBackButtonClick()
     {
-        //if (_resetToggle.isOn)
-        //{
-        //    _backPage.SetActive(true);
-        //    _mainPage.SetActive(false);
-        //}
-        //else
-        //{
-        //    _buttons.SetActive(true);
-        //    //_resetToggle.gameObject.SetActive(true);
-        //    _resetButton.gameObject.SetActive(true);
-        //    _menuSettingsCanvas.enabled = false;
-        //    _quitToMenuButton.gameObject.SetActive(false);
-        //    GameManager.IsStageMenuOpen = false;
-        //}
-
-        _buttons.SetActive(true);
+        _mainMenuButtons.SetActive(true);
         _resetButton.gameObject.SetActive(true);
         _menuSettingsCanvas.enabled = false;
         _quitToMenuButton.gameObject.SetActive(false);
@@ -492,7 +483,6 @@ public class UIManager : MonoBehaviour
         _topCanvas.enabled = false;
         _blackScreenStart.color = Color.black;
         _blackScreenStart.enabled = true;
-        //Invoke("DisableBlackScreenStart", 1.8f);
         GameManager.IsStageMenuOpen = false;
         GameManager.Instance.QuitToMenu();
         _loadingScreen.enabled = true;

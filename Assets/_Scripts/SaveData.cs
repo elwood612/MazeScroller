@@ -32,10 +32,6 @@ public class SaveData : MonoBehaviour
         Instance.SavedCurrentScore = GameManager.CurrentScore;
         Instance.SavedHighScore = GameManager.HighScore;
         Instance.SavedGlobalDialogueCounter = GameManager.GlobalDialogueCounter;
-        //Instance.SavedSpecialDialogueCounter = GameManager.SpecialDialogueCounter;
-        //Instance.SavedEarlyDialogueCounter = GameManager.EarlyDialogueCounter;
-        //Instance.SavedMidDialogueCounter = GameManager.MidDialogueCounter;
-        //Instance.SavedLateDialogueCounter = GameManager.LateDialogueCounter;
         Instance.SavedIsAudioEnabled = GameManager.IsAudioEnabled;
         Instance.SavedIsMusicEnabled = GameManager.IsMusicEnabled;
         Instance.SavedNeedDialogueBoxHint = GameManager.NeedDialogueBoxHint;
@@ -53,10 +49,6 @@ public class SaveData : MonoBehaviour
         GameManager.CurrentScore = Instance.SavedCurrentScore;
         GameManager.HighScore = Instance.SavedHighScore;
         GameManager.GlobalDialogueCounter = Instance.SavedGlobalDialogueCounter;
-        //GameManager.SpecialDialogueCounter = Instance.SavedSpecialDialogueCounter;
-        //GameManager.EarlyDialogueCounter = Instance.SavedEarlyDialogueCounter;
-        //GameManager.MidDialogueCounter = Instance.SavedMidDialogueCounter;
-        //GameManager.LateDialogueCounter = Instance.SavedLateDialogueCounter;
         GameManager.IsAudioEnabled = Instance.SavedIsAudioEnabled;
         GameManager.IsMusicEnabled = Instance.SavedIsMusicEnabled;
         GameManager.NeedDialogueBoxHint = Instance.SavedNeedDialogueBoxHint;

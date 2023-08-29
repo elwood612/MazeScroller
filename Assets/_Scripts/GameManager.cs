@@ -98,7 +98,9 @@ public class GameManager : MonoBehaviour
     public static bool GameUnderway = false;
     public static int GlobalDialogueCounter = 0;
     public static int HighScore = 0;
+    public static int PreviousHighScore = 0;
 
+    public static int MaxStages => Instance._globalStageDialogue.Length;
     public static bool IsTutorialOngoing => DoTutorial[6];
     public GameObject CurrentRunner => _currentRunner;
     public GM_Settings GameSettings => _settings;
@@ -277,6 +279,7 @@ public class GameManager : MonoBehaviour
 
         LoadDefaultSettings();
         SaveData.LoadPlayerSettings();
+        PreviousHighScore = HighScore;
 
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 60;
@@ -514,7 +517,7 @@ public class GameManager : MonoBehaviour
             _repeatingStage = true;
         }
 
-        if (GlobalDialogueCounter >= _globalStageDialogue.Length - 1 && answered) // This doesn't work if green stage is flubbed!
+        if (GlobalDialogueCounter >= _globalStageDialogue.Length - 1 && answered)
         {
             _isGameOver = true;
         }
@@ -569,7 +572,7 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        //ResetDefaultSettings();
+        PreviousHighScore = HighScore;
         OnGameOver?.Invoke();
     }
 
