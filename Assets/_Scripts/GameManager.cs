@@ -501,7 +501,11 @@ public class GameManager : MonoBehaviour
                 answered = false;
             }
         }
-        
+
+        if (GlobalDialogueCounter >= _globalStageDialogue.Length - 1 && answered)
+        {
+            _isGameOver = true;
+        }
 
         if (answered)
         {
@@ -517,10 +521,7 @@ public class GameManager : MonoBehaviour
             _repeatingStage = true;
         }
 
-        if (GlobalDialogueCounter >= _globalStageDialogue.Length - 1 && answered)
-        {
-            _isGameOver = true;
-        }
+        
 
         OnStageEnd?.Invoke();
     }
@@ -538,7 +539,7 @@ public class GameManager : MonoBehaviour
 
         _spawnPurpleCrystal = GlobalDialogueCounter >= _firstPurpleStage;
         _spawnGoldCrystal = GlobalDialogueCounter >= _firstGoldStage;
-
+         
         _chargedTileCounter = 6;
         _requiredStars = 1;
         _stageLength = (_requiredStars * 20) + 65;
