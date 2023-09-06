@@ -15,7 +15,7 @@ public class Runner : MonoBehaviour, IRunner
     [SerializeField] private ParticleSystem _trailParticles;
     [SerializeField] private Transform _spaceshipTransform;
 
-    public Tile _currentTile;
+    private Tile _currentTile;
     private Tile _currentTarget;
     private Tile _nextTarget;
     private Tile _previousTile;
@@ -26,9 +26,10 @@ public class Runner : MonoBehaviour, IRunner
     private static bool _runnerStopped = true;
     private bool _runnerOffScreen = false;
     private bool _approachingDeadEnd = false;
-    public bool _isInTransition = true;
+    public bool _isInTransition = true; // No idea why this has to be public, but it does
     private bool _firstTimeStopping = true;
     private bool _pathfinding = false;
+    private bool _gameHasStarted = false;
     private ParticleSystem.MainModule _trailParticlesMainModule;
     private AnimationCurve _speedCurve;
     private AnimationCurve _transitionCurve;
@@ -84,6 +85,7 @@ public class Runner : MonoBehaviour, IRunner
         Tile.OnTileDestroy += RemoveTileFromPath;
         DialogueManager.OnDialogueOpen += SetAnimatorTrigger;
         GameManager.OnSetupNextStage += ResetFirstStop;
+        GameManager.OnStateChanged += GameHasStarted;
     }
 
     private void OnDisable()
@@ -92,6 +94,7 @@ public class Runner : MonoBehaviour, IRunner
         Tile.OnTileDestroy -= RemoveTileFromPath;
         DialogueManager.OnDialogueOpen -= SetAnimatorTrigger;
         GameManager.OnSetupNextStage -= ResetFirstStop;
+        GameManager.OnStateChanged -= GameHasStarted;
     }
 
     private void Update()
@@ -108,7 +111,7 @@ public class Runner : MonoBehaviour, IRunner
         }
         else
         {
-            if (_firstTimeStopping && !_isInTransition) // Check if this condition applies correctly at startup. Otherwise, dialogue during menu bug!
+            if (_firstTimeStopping && !_isInTransition && _gameHasStarted) // Check if this condition applies correctly at startup. Otherwise, dialogue during menu bug!
             {
                 _firstTimeStopping = false;
                 if (GameManager.IsTutorialOngoing) { GameManager.OnNextTutorial?.Invoke(0); }
@@ -449,6 +452,11 @@ public class Runner : MonoBehaviour, IRunner
     private void ResetFirstStop()
     {
         _firstTimeStopping = true;
+    }
+
+    private void GameHasStarted(GameState state)
+    {
+        if (state == GameState.Progressing && !_gameHasStarted) { _gameHasStarted = true; }
     }
 
     private void LookAtTile(Tile target)

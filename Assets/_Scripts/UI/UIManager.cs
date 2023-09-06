@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
-using System;
 using System.Collections.Generic;
 
 public class UIManager : MonoBehaviour
@@ -32,6 +31,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button _quitToMenuButton;
     [SerializeField] private Button _resetButton;
     [SerializeField] private Image _loadingScreen;
+    [SerializeField] private TextMeshProUGUI _loadingText;
     [SerializeField] private Image _blackScreenStart;
     [SerializeField] private Image _blackScreenEnd;
     [SerializeField] private GameObject _endCreditsObj;
@@ -46,7 +46,6 @@ public class UIManager : MonoBehaviour
     private bool _typeOutSentence = true;
     private bool _isDialogueBoxOpen = false;
     private TextMeshProUGUI _dialogueBox;
-    //private TextMeshProUGUI _answerBox;
     private Image _runnerFace;
     private int _newStarIndex = 0;
     private int _bonusStarIndex = 0;
@@ -70,7 +69,8 @@ public class UIManager : MonoBehaviour
         _menuSettingsCanvas.enabled = false;
         _blackScreenStart.enabled = true;
         _blackScreenEnd.enabled = false;
-        _loadingScreen.enabled = true;
+        //_loadingScreen.enabled = true;
+        _loadingText.enabled = true;
         _mainPage.SetActive(true);
         _backPage.SetActive(false);
         _endCreditsObj.SetActive(false);
@@ -206,7 +206,8 @@ public class UIManager : MonoBehaviour
     private void MainMenu()
     {
         _mainMenuCanvas.enabled = true;
-        _loadingScreen.enabled = false;
+        //_loadingScreen.enabled = false;
+        _loadingText.enabled = false;
         _lifetimeStarsAmountMenu.text = "High Score: " + GameManager.HighScore.ToString();
         _storyModeButton.GetComponentInChildren<TextMeshProUGUI>().text = GameManager.GameUnderway ? "Continue Game" : "Start New Game";
     }
@@ -357,7 +358,8 @@ public class UIManager : MonoBehaviour
         yield return _menuResetDelay;
         _blackScreenFadeOut.Play();
         Invoke("DisableBlackScreenStart", 1.8f);
-        _loadingScreen.enabled = false;
+        //_loadingScreen.enabled = false;
+        _loadingText.enabled = false;
     }
 
     private IEnumerator EndCreditsRoll()
@@ -485,7 +487,8 @@ public class UIManager : MonoBehaviour
         _blackScreenStart.enabled = true;
         GameManager.IsStageMenuOpen = false;
         GameManager.Instance.QuitToMenu();
-        _loadingScreen.enabled = true;
+        //_loadingScreen.enabled = true;
+        _loadingText.enabled = true;
         StartCoroutine(MainMenuReset());
     }
 }
