@@ -8,12 +8,9 @@ public class SaveData : MonoBehaviour
     public int SavedCurrentScore;
     public int SavedHighScore;
     public int SavedGlobalDialogueCounter;
-    //public int SavedSpecialDialogueCounter;
-    //public int SavedEarlyDialogueCounter;
-    //public int SavedMidDialogueCounter;
-    //public int SavedLateDialogueCounter;
     public bool SavedIsAudioEnabled;
     public bool SavedIsMusicEnabled;
+    public bool SavedIsHapticEnabled;
     public bool SavedNeedDialogueBoxHint;
     public bool SavedGameUnderway;
 
@@ -34,6 +31,7 @@ public class SaveData : MonoBehaviour
         Instance.SavedGlobalDialogueCounter = GameManager.GlobalDialogueCounter;
         Instance.SavedIsAudioEnabled = GameManager.IsAudioEnabled;
         Instance.SavedIsMusicEnabled = GameManager.IsMusicEnabled;
+        Instance.SavedIsHapticEnabled = GameManager.IsHapticEnabled;
         Instance.SavedNeedDialogueBoxHint = GameManager.NeedDialogueBoxHint;
         Instance.SavedDoTutorial = GameManager.DoTutorial;
         Instance.SavedGameUnderway = GameManager.GameUnderway;
@@ -51,6 +49,7 @@ public class SaveData : MonoBehaviour
         GameManager.GlobalDialogueCounter = Instance.SavedGlobalDialogueCounter;
         GameManager.IsAudioEnabled = Instance.SavedIsAudioEnabled;
         GameManager.IsMusicEnabled = Instance.SavedIsMusicEnabled;
+        GameManager.IsHapticEnabled = Instance.SavedIsHapticEnabled;
         GameManager.NeedDialogueBoxHint = Instance.SavedNeedDialogueBoxHint;
         GameManager.DoTutorial = Instance.SavedDoTutorial;
         GameManager.GameUnderway = Instance.SavedGameUnderway;

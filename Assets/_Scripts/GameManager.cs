@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
@@ -53,6 +52,7 @@ public class GameManager : MonoBehaviour
     private static bool _thirdStarGained = false;
     private static bool _isAudioEnabled = true;
     private static bool _isMusicEnabled = true;
+    private static bool _isHapticEnabled = true;
     private static bool _isStageMenuOpen = false;
     private static bool _isInMainMenu = false;
     private static bool _needDialogueBoxHint = true;
@@ -137,6 +137,11 @@ public class GameManager : MonoBehaviour
     {
         get => _isMusicEnabled;
         set => _isMusicEnabled = value;
+    }
+    public static bool IsHapticEnabled
+    {
+        get => _isHapticEnabled;
+        set => _isHapticEnabled = value;
     }
     public static bool IsStageMenuOpen
     {

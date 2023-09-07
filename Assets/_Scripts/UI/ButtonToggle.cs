@@ -6,7 +6,8 @@ public class ButtonToggle : MonoBehaviour
     private enum ButtonType
     {
         AudioFX,
-        Music
+        Music,
+        Haptic
     }
     [SerializeField] private ButtonType _buttonType;
     [SerializeField] private Image _enabledImage;
@@ -24,6 +25,10 @@ public class ButtonToggle : MonoBehaviour
         else if (_buttonType == ButtonType.Music)
         {
             _isEnabled = GameManager.IsMusicEnabled;
+        }
+        else if (_buttonType == ButtonType.Haptic)
+        {
+            _isEnabled = GameManager.IsHapticEnabled;
         }
 
         UpdateImage();
@@ -54,5 +59,12 @@ public class ButtonToggle : MonoBehaviour
         UpdateImage();
         AudioManager.Instance.MuteMusic(_isEnabled);
         GameManager.IsMusicEnabled = _isEnabled;
+    }
+
+    public void OnHapticDisable()
+    {
+        Toggle();
+        UpdateImage();
+        GameManager.IsHapticEnabled = _isEnabled;
     }
 }

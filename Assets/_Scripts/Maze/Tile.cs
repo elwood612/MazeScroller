@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class Tile : MonoBehaviour
 {
@@ -117,7 +116,6 @@ public class Tile : MonoBehaviour
     {
         if (other.CompareTag("Runner"))
         {
-            //ColoredCheck();
             DebugUncrossedTile = false;
         }
     }

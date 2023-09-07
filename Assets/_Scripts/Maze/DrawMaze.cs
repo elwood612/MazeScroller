@@ -19,6 +19,10 @@ public class DrawMaze : MonoBehaviour
         _renderer = GetComponentInChildren<Renderer>();
         _cam = Camera.main;
         DisableRenderer();
+    }
+
+    private void Start()
+    {
 #if UNITY_ANDROID
         Taptic.tapticOn = true;
 #endif
@@ -93,7 +97,7 @@ public class DrawMaze : MonoBehaviour
         }
 
 #if UNITY_ANDROID
-        Taptic.Vibrate();
+        if (GameManager.IsHapticEnabled) { Taptic.Vibrate(); }
 #endif
 
         OnTileAdded?.Invoke(tileToAdd);
