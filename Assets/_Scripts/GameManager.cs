@@ -288,7 +288,6 @@ public class GameManager : MonoBehaviour
         {
             _isMusicEnabled = false;
             GlobalDialogueCounter = _debugStartStage;
-            //for (int i = 0; i < DoTutorial.Length; i++) { DoTutorial[i] = false; }
         }
     }
 

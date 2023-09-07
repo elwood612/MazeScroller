@@ -10,7 +10,7 @@ public class BoardManager : MonoBehaviour
     [SerializeField] private GameObject _rowResetCollider;
     [SerializeField] private GameObject _rowSetupCollider;
     [SerializeField] private GameObject _rowQACollider;
-    [SerializeField] private float _safetyMargin;
+
 
     private static List<Tile> _allTiles = new List<Tile>();
     private static List<Wall> _allWalls = new List<Wall>();
@@ -22,7 +22,8 @@ public class BoardManager : MonoBehaviour
     private Vector3 _rowQAPos;
     private Vector3 _tileSpawnerPos;
     private Vector3 _tileDestroyPos;
-    private float _destroyMargin = 1f;
+    private float _safetyMargin = 50f;
+    private float _destroyMargin = 10f;
 
     public static List<Tile> AllTiles => _allTiles;
     public static List<Wall> AllWalls => _allWalls;
@@ -33,6 +34,8 @@ public class BoardManager : MonoBehaviour
     {
         Vector3 bottomOfScreen = _cam.ScreenToWorldPoint(new Vector3(Screen.width / 2, 0, 100));
         Vector3 topOfScreen = _cam.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height, 100));
+        _safetyMargin = GameManager.TileLength * 5f; // testing!!
+        _destroyMargin = GameManager.TileLength; // testing!!
         _rowResetPos = new Vector3(transform.position.x, transform.position.y, bottomOfScreen.z - _safetyMargin);
         _rowSetupPos = new Vector3(transform.position.x, transform.position.y, topOfScreen.z + _safetyMargin);
         _rowQAPos = new Vector3(transform.position.x, transform.position.y, topOfScreen.z + _destroyMargin);

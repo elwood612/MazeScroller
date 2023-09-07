@@ -38,7 +38,7 @@ public class TileSpawner : MonoBehaviour
     private float _smooth = 3f; // the larger this is, the slower you move
     private float _delta = 0.1f;
     private bool _toggle = false;
-    private float _middleOfScreen, _edgeOfScreen;
+    private float _middleOfScreen, _edgeOfMaze;
     private Vector3 _targetPosition;
     private Vector3 _targetScale;
     private Vector3 _positionVelocity = Vector3.zero;
@@ -48,8 +48,6 @@ public class TileSpawner : MonoBehaviour
     private WaitForSeconds _goldCrystalDelay = new WaitForSeconds(5f);
     private ObjectPool<Crystal> _crystalPool;
     private int _missingTilesChance = 2;
-    //private int _chargedMinRows = 5;
-    //private int _chargedMaxRows = 8;
     private int _minimumTileCounter = 0;
     private int _minimumTileChance = 8;
     private float _widthMin = 2.1f;
@@ -66,7 +64,8 @@ public class TileSpawner : MonoBehaviour
         _targetPosition = transform.position;
         _targetScale = transform.localScale;
         _middleOfScreen = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height, 100)).x;
-        _edgeOfScreen = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 100)).x;
+        //_edgeOfMaze = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 100)).x; // Keep for posterity
+        _edgeOfMaze = _middleOfScreen + 2.5f * GameManager.TileLength;
         InitializeCrystalPool();
         SetupNewStage();
     }
@@ -244,7 +243,7 @@ public class TileSpawner : MonoBehaviour
         {
             int sign = _toggle ? 1 : -1;
             _toggle = _toggle ? false : true;
-            _xPos = sign * Random.Range(_middleOfScreen, _edgeOfScreen - _width * GameManager.TileLength / 2);
+            _xPos = sign * Random.Range(_middleOfScreen, _edgeOfMaze - _width * GameManager.TileLength / 2);
         }
         _targetPosition = new Vector3(_xPos, transform.position.y, transform.position.z);
     }
