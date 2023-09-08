@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -48,32 +49,35 @@ public class BoardManager : MonoBehaviour
 
     private void OnEnable()
     {
-        GameManager.OnStateChanged += GenerateBoard;
+        GameManager.OnStateChanged += GenerateBoardWrapper;
         GameManager.OnCompassionateVictory += ClearAllCrystalsAndChargedTiles;
         GameManager.OnQuitToMenu += ForceReset;
     }
 
     private void OnDisable()
     {
-        GameManager.OnStateChanged -= GenerateBoard;
+        GameManager.OnStateChanged -= GenerateBoardWrapper;
         GameManager.OnCompassionateVictory -= ClearAllCrystalsAndChargedTiles;
         GameManager.OnQuitToMenu -= ForceReset;
     }
 
-    private void GenerateBoard(GameState state)
+    private void GenerateBoardWrapper(GameState state) { StartCoroutine(GenerateBoard(state)); }
+    private IEnumerator GenerateBoard(GameState state)
     {
-        if (state != GameState.Setup) { return; }
+        if (state != GameState.Setup) { yield break; }
 
         for (int i = 0; i < GameManager.NumberOfRows; i++)
         {
             Row newRow = GenerateRow();
             newRow.gameObject.name = "Row" + i;
             newRow.transform.position += new Vector3(0, 0, i * GameManager.TileLength);
+            yield return null;
         }
-
         InstantiateColliders();
+
+        yield return new WaitForSeconds(0.2f);
         GameManager.Instance.UpdateGameState(GameState.Transition);
-        GameManager.OnStateChanged -= GenerateBoard;
+        GameManager.OnStateChanged -= GenerateBoardWrapper;
     }
 
     private Row GenerateRow()
