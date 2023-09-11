@@ -281,17 +281,17 @@ public class Tile : MonoBehaviour
 
     public void DisableTile(bool onSpawn = false)
     {
-        _tileRenderer.enabled = false;
-        SetAsColored(false);
         SetAsCharged(false);
-        _isEnabled = false;
+        //if (IsMiddleTile) { return; } // remove if causing issues
+        
         if (_parentRow.EnabledTiles.Contains(this))
         {
             _parentRow.EnabledTiles.Remove(this);
         }
+        _tileRenderer.enabled = false;
+        _isEnabled = false;
 
         if (!onSpawn) { return; }
-
         foreach (Wall wall in _neighborWalls)
         {
             wall.TryDisable();
@@ -408,14 +408,16 @@ public class Tile : MonoBehaviour
     {
         _crossings = 0;
         AttachedCrystal = null;
+        
+        SetMaterial(_newMaterial);
+        DisableTile();
+        NeighborPaths.Clear();
+
+        //if (IsMiddleTile) { return; } // remove if causing issues
         IsStartingTile = false;
         IsTransitionTile = false;
         IsPreTransitionTile = false;
         RemoveTileFromMaze();
-        SetMaterial(_newMaterial);
-        DisableTile();
-        ResetDeadEnd();
-        NeighborPaths.Clear();
 
         DebugChoice = "";
         DebugUncrossedTile = false;

@@ -53,6 +53,7 @@ public class GameManager : MonoBehaviour
     private static bool _isAudioEnabled = true;
     private static bool _isMusicEnabled = true;
     private static bool _isHapticEnabled = true;
+    private static bool _isTutorialsEnabled = true;
     private static bool _isStageMenuOpen = false;
     private static bool _isInMainMenu = false;
     private static bool _needDialogueBoxHint = true;
@@ -84,6 +85,7 @@ public class GameManager : MonoBehaviour
     public static Action<bool> OnCompassionateStarsToggle;
     public static Action<int> OnNextTutorial;
     public static Action OnShowEmptySlots;
+    public static Action OnDisableTutorials;
 
     public static GameState CurrentState;
     public static GameManager Instance;
@@ -142,6 +144,11 @@ public class GameManager : MonoBehaviour
     {
         get => _isHapticEnabled;
         set => _isHapticEnabled = value;
+    }
+    public static bool IsTutorialsEnabled
+    {
+        get => _isTutorialsEnabled;
+        set => _isTutorialsEnabled = value;
     }
     public static bool IsStageMenuOpen
     {
@@ -287,7 +294,7 @@ public class GameManager : MonoBehaviour
         PreviousHighScore = HighScore;
 
         QualitySettings.vSyncCount = 0;
-        Application.targetFrameRate = 60;
+        //Application.targetFrameRate = 60;
 
         if (_debugMode)
         {
@@ -395,10 +402,12 @@ public class GameManager : MonoBehaviour
         _currentScore = 0;
         GameUnderway = false;
         GlobalDialogueCounter = 0;
+        _isTutorialsEnabled = false;
         for (int i = 0; i < _allTutorialDialogue.Length; i++)
         {
-            DoTutorial[i] = false;
+            DoTutorial[i] = true;
         }
+        OnDisableTutorials?.Invoke();
     }
 
     public void LoadDefaultSettings()
@@ -525,17 +534,12 @@ public class GameManager : MonoBehaviour
             _repeatingStage = true;
         }
 
-        
-
         OnStageEnd?.Invoke();
     }
 
     public void SetupNextStage()
     {
-        if (_isGameOver)
-        {
-            return;
-        }
+        if (_isGameOver) { return; }
 
         GameUnderway = true;
 
@@ -560,7 +564,7 @@ public class GameManager : MonoBehaviour
 
         _spawnGreenCrystal = _currentStageDialogue.CompassionateAnswer != "";
 
-        if (IsTutorialOngoing)
+        if (IsTutorialOngoing && _isTutorialsEnabled)
         {
             _stageLength = 30;
             _chargedTileCounter = 8;

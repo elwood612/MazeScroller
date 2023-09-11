@@ -222,7 +222,7 @@ public class Crystal : MonoBehaviour
         _particlesExplosion.Play();
         _word.gameObject.SetActive(true);
         _wordAnimation.Play();
-        if (GameManager.IsTutorialOngoing) 
+        if (GameManager.IsTutorialOngoing && GameManager.IsTutorialsEnabled) 
         {
             GameManager.Instance.StarProgress += 10;
         }
@@ -320,7 +320,7 @@ public class Crystal : MonoBehaviour
         _firstGreenCrystal = true;
         _firstTimeSeeingCompassionate = true;
         _standingInGreenCrystal = false;
-        if (GameManager.IsTutorialOngoing)
+        if (GameManager.IsTutorialOngoing && GameManager.IsTutorialsEnabled)
         {
             _firstCrystal = true;
             _secondCrystal = false;

@@ -114,7 +114,7 @@ public class Runner : MonoBehaviour, IRunner
             if (_firstTimeStopping && !_isInTransition && _gameHasStarted) // Check if this condition applies correctly at startup. Otherwise, dialogue during menu bug!
             {
                 _firstTimeStopping = false;
-                if (GameManager.IsTutorialOngoing) { GameManager.OnNextTutorial?.Invoke(0); }
+                if (GameManager.IsTutorialOngoing && GameManager.IsTutorialsEnabled) { GameManager.OnNextTutorial?.Invoke(0); }
                 else { DialogueManager.Instance.NextComment(GameManager.CurrentStageDialogue); }
                 
             }

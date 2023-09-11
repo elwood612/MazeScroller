@@ -7,7 +7,8 @@ public class ButtonToggle : MonoBehaviour
     {
         AudioFX,
         Music,
-        Haptic
+        Haptic,
+        Tutorials
     }
     [SerializeField] private ButtonType _buttonType;
     [SerializeField] private Image _enabledImage;
@@ -18,20 +19,33 @@ public class ButtonToggle : MonoBehaviour
     private void Awake()
     {
         // Syncing the toggle with PlayerPrefs
-        if (_buttonType == ButtonType.AudioFX) 
-        { 
-            _isEnabled = GameManager.IsAudioEnabled;
-        }
-        else if (_buttonType == ButtonType.Music)
+        switch (_buttonType)
         {
-            _isEnabled = GameManager.IsMusicEnabled;
-        }
-        else if (_buttonType == ButtonType.Haptic)
-        {
-            _isEnabled = GameManager.IsHapticEnabled;
+            case ButtonType.AudioFX:
+                _isEnabled = GameManager.IsAudioEnabled;
+                break;
+            case ButtonType.Music:
+                _isEnabled = GameManager.IsMusicEnabled;
+                break;
+            case ButtonType.Haptic:
+                _isEnabled = GameManager.IsHapticEnabled;
+                break;
+            case ButtonType.Tutorials:
+                _isEnabled = GameManager.IsTutorialsEnabled;
+                break;
         }
 
         UpdateImage();
+    }
+
+    private void OnEnable()
+    {
+        GameManager.OnDisableTutorials += UpdateTutorialToggle;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.OnDisableTutorials -= UpdateTutorialToggle;
     }
 
     private void Toggle()
@@ -43,6 +57,13 @@ public class ButtonToggle : MonoBehaviour
     {
         _enabledImage.enabled = _isEnabled;
         _disabledImage.enabled = !_isEnabled;
+    }
+
+    private void UpdateTutorialToggle()
+    {
+        if (_buttonType != ButtonType.Tutorials) { return; }
+        _isEnabled = GameManager.IsTutorialsEnabled;
+        UpdateImage();
     }
 
     public void OnAudioMute()
@@ -66,5 +87,13 @@ public class ButtonToggle : MonoBehaviour
         Toggle();
         UpdateImage();
         GameManager.IsHapticEnabled = _isEnabled;
+    }
+
+    public void OnTutorialsToggle()
+    {
+        Toggle();
+        UpdateImage();
+        GameManager.IsTutorialsEnabled = _isEnabled;
+        //GameManager.DoTutorial[6] = _isEnabled;
     }
 }

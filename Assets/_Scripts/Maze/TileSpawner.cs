@@ -146,7 +146,7 @@ public class TileSpawner : MonoBehaviour
                 }
             }
 
-            if (!GameManager.IsTutorialOngoing)
+            if (!GameManager.IsTutorialOngoing || !GameManager.IsTutorialsEnabled)
             {
                 if (++_counterColorSpawn > GameManager.ChargedTileCounter)
                 {

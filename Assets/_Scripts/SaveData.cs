@@ -13,6 +13,7 @@ public class SaveData : MonoBehaviour
     public bool SavedIsHapticEnabled;
     public bool SavedNeedDialogueBoxHint;
     public bool SavedGameUnderway;
+    public bool SavedEnableTutorials;
 
     public bool[] SavedDoTutorial;
 
@@ -35,6 +36,7 @@ public class SaveData : MonoBehaviour
         Instance.SavedNeedDialogueBoxHint = GameManager.NeedDialogueBoxHint;
         Instance.SavedDoTutorial = GameManager.DoTutorial;
         Instance.SavedGameUnderway = GameManager.GameUnderway;
+        Instance.SavedEnableTutorials = GameManager.IsTutorialsEnabled;
 
         File.WriteAllText(Application.persistentDataPath + SaveFilename, JsonUtility.ToJson(Instance));
     }
@@ -53,6 +55,7 @@ public class SaveData : MonoBehaviour
         GameManager.NeedDialogueBoxHint = Instance.SavedNeedDialogueBoxHint;
         GameManager.DoTutorial = Instance.SavedDoTutorial;
         GameManager.GameUnderway = Instance.SavedGameUnderway;
+        GameManager.IsTutorialsEnabled = Instance.SavedEnableTutorials;
     }
 
     public static void ClearAllSettings()

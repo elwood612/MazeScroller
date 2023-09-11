@@ -39,7 +39,7 @@ public class Row : MonoBehaviour
         else if (other.CompareTag("RowQA")) 
         { 
             CheckRow();
-            if (_hasSetupBeenRun && !GameManager.IsTutorialOngoing)
+            if (_hasSetupBeenRun && (!GameManager.IsTutorialOngoing || !GameManager.IsTutorialsEnabled))
             {
                 GameManager.StageProgress++;
             }
