@@ -84,10 +84,12 @@ public class DialogueManager : MonoBehaviour
         if (GameManager.DoTutorial[index]) 
         {
             if ((index == 3 || index == 21) && GameManager.CurrentState != GameState.Progressing) { return; }
+
+            GameManager.DoTutorial[index] = false;
             if (!GameManager.IsTutorialsEnabled && index != 14) { return; } // need to test this
+            
             _isTutorialDialogueActive = true;
             StartDialogue(GameManager.Instance.AllTutorialDialogue[index].Lines);
-            GameManager.DoTutorial[index] = false;
         }
     }
 
