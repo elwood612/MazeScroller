@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
-    public bool DebugAlphaFromRowTransition = false;
-    public string DebugChoice;
-    public bool DebugUncrossedTile = false;
+    //public bool DebugAlphaFromRowTransition = false;
+    //public string DebugChoice;
+    //public bool DebugUncrossedTile = false;
     [SerializeField] private Crystal _crystalPrefab;
     [SerializeField] private Renderer _tileRenderer;
     [SerializeField] private Renderer _colorRenderer;
@@ -22,8 +22,8 @@ public class Tile : MonoBehaviour
     [SerializeField] private LayerMask _wallLayer;
 
     private Row _parentRow;
-    private List<Wall> _neighborWalls = new List<Wall>();
-    private List<Tile> _neighborTiles = new List<Tile>();
+    private List<Wall> _neighborWalls = new List<Wall>(); 
+    private List<Tile> _neighborTiles = new List<Tile>(); 
     private bool _isPartOfMaze = false;
     private bool _isEnabled = false;
     private bool _isColored = false;
@@ -112,13 +112,13 @@ public class Tile : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Runner"))
-        {
-            DebugUncrossedTile = false;
-        }
-    }
+    //private void OnTriggerExit(Collider other)
+    //{
+    //    if (other.CompareTag("Runner"))
+    //    {
+    //        DebugUncrossedTile = false;
+    //    }
+    //}
 
     private void PlayerCrossing(IRunner runner)
     {
@@ -203,12 +203,6 @@ public class Tile : MonoBehaviour
         return newColor;
     }
 
-    private void ResetDeadEnd()
-    {
-        _tileDeadEnd.SetActive(false);
-        _deadEndPrimed = false;
-    }
-
     private void GetNeighbors()
     {
         foreach (Wall wall in BoardManager.AllWalls)
@@ -288,7 +282,7 @@ public class Tile : MonoBehaviour
         {
             _parentRow.EnabledTiles.Remove(this);
         }
-        _tileRenderer.enabled = false;
+        _tileRenderer.enabled = false; // CHANGE THIS BACK TO FALSE
         _isEnabled = false;
 
         if (!onSpawn) { return; }
@@ -339,8 +333,8 @@ public class Tile : MonoBehaviour
                 return tile;
             }
         }
-        Debug.Log("Couldn't find neighbor tile");
-        DebugChoice = "Couldn't find neighbor tile";
+        //Debug.Log("Couldn't find neighbor tile");
+        //DebugChoice = "Couldn't find neighbor tile";
         return this;
     }
 
@@ -419,15 +413,15 @@ public class Tile : MonoBehaviour
         IsPreTransitionTile = false;
         RemoveTileFromMaze();
 
-        DebugChoice = "";
-        DebugUncrossedTile = false;
+        //DebugChoice = "";
+        //DebugUncrossedTile = false;
     }
 
-    public void OnDrawGizmos()
-    {
-        if (DebugUncrossedTile)
-        {
-            Gizmos.DrawCube(transform.position, new Vector3(1, 1, 1));
-        }
-    }
+    //public void OnDrawGizmos()
+    //{
+    //    if (DebugUncrossedTile)
+    //    {
+    //        Gizmos.DrawCube(transform.position, new Vector3(1, 1, 1));
+    //    }
+    //}
 }

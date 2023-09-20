@@ -39,6 +39,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Animation _endCreditsAnimation;
     [SerializeField] private TMP_FontAsset _liberationFont;
     [SerializeField] private TMP_FontAsset _VCRFont;
+    [SerializeField] private TextMeshProUGUI _debugMessage;
 
     private WaitForSecondsRealtime _sentenceDelay = new WaitForSecondsRealtime(1f);
     private WaitForSecondsRealtime _starGainDelay = new WaitForSecondsRealtime(0.35f);
@@ -73,6 +74,7 @@ public class UIManager : MonoBehaviour
         _backPage.SetActive(false);
         _endCreditsObj.SetActive(false);
         _newHighScore.enabled = false;
+        _debugMessage.enabled = false;
     }
 
     private void OnEnable()
@@ -90,6 +92,7 @@ public class UIManager : MonoBehaviour
         DialogueManager.OnNextSentence += UpdateDialogueBox;
         DialogueManager.OnDialogueEnd += HideDialogueBox;
         Row.OnFirstRowsReady += BlackScreenFadeOut;
+        GameManager.OnErrorMessage += DisplayErrorMessage;
     }
 
     private void OnDisable()
@@ -107,6 +110,13 @@ public class UIManager : MonoBehaviour
         DialogueManager.OnNextSentence -= UpdateDialogueBox;
         DialogueManager.OnDialogueEnd -= HideDialogueBox;
         Row.OnFirstRowsReady -= BlackScreenFadeOut;
+        GameManager.OnErrorMessage -= DisplayErrorMessage;
+    }
+
+    private void DisplayErrorMessage(string s)
+    {
+        _debugMessage.text = s;
+        _debugMessage.enabled = true;
     }
 
     private void UpdateSpeedBonus(int value)

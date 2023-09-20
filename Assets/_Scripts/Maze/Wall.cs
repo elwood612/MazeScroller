@@ -218,9 +218,9 @@ public class Wall : MonoBehaviour
         }
     }
 
-    private void OnDrawGizmos()
-    {
-        if (_crossings > 0) { Gizmos.DrawSphere(transform.position, 1f); }
-        if (_isPath) { Gizmos.DrawWireSphere(transform.position, 1.5f); }
-    }
+    //private void OnDrawGizmos()
+    //{
+    //    if (_crossings > 0) { Gizmos.DrawSphere(transform.position, 1f); }
+    //    if (_isPath) { Gizmos.DrawWireSphere(transform.position, 1.5f); }
+    //}
 }

@@ -86,6 +86,7 @@ public class GameManager : MonoBehaviour
     public static Action<int> OnNextTutorial;
     public static Action OnShowEmptySlots;
     public static Action OnDisableTutorials;
+    public static Action<string> OnErrorMessage;
 
     public static GameState CurrentState;
     public static GameManager Instance;
@@ -439,6 +440,7 @@ public class GameManager : MonoBehaviour
                 CalculateBoardLength();
                 break;
             case GameState.Transition:
+                OnErrorMessage("Number of rows = " + NumberOfRows + "\nBoard Length = " + _boardLength.z);
                 break;
             case GameState.Progressing:
                 ResetStats();

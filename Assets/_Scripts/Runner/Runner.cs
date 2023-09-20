@@ -206,7 +206,7 @@ public class Runner : MonoBehaviour, IRunner
 
         if (_isInTransition || tile.GetNeighborTile(Vector3.forward).IsTransitionTile) 
         {
-            _currentTile.DebugChoice = "Transition choice";
+            //_currentTile.DebugChoice = "Transition choice";
             _nextTarget = _currentTile.GetNeighborTile(Vector3.forward); 
             yield break;
         }
@@ -233,14 +233,14 @@ public class Runner : MonoBehaviour, IRunner
         {
             case 1:
                 // DEBUG
-                if (_uncrossedTiles.Count > 1) // confirmed this isn't the issue
-                {
-                    foreach (Tile t in _uncrossedTiles)
-                    {
-                        t.DebugUncrossedTile = true; // debug
-                    }
-                }
-                goto case 2;
+                //if (_uncrossedTiles.Count > 1) // confirmed this isn't the issue
+                //{
+                //    foreach (Tile t in _uncrossedTiles)
+                //    {
+                //        t.DebugUncrossedTile = true; // debug
+                //    }
+                //}
+                //goto case 2;
             case 2:
                 if (GetOldestCrossedPath(_currentTile) != _currentTile)
                 {
@@ -273,7 +273,7 @@ public class Runner : MonoBehaviour, IRunner
     private Tile GetFirstUncrossedPath(Tile tile)
     {
         _pathfinding = false;
-        tile.DebugChoice = "First uncrossed path";
+        //tile.DebugChoice = "First uncrossed path";
         float firstDrawn = Mathf.Infinity;
         Tile toReturn = tile;
 
@@ -339,15 +339,15 @@ public class Runner : MonoBehaviour, IRunner
                 toReturn = tile.GetNeighborTile(direction);
             }
         }
-        tile.DebugChoice = tile.NeighborPaths.Count + " paths available, wall1 = " + wall1time + ", wall2 = " + wall2time
-            + ", wall1X = " + wall1.Crossings + ", wall2X = " + wall2.Crossings;
+        //tile.DebugChoice = tile.NeighborPaths.Count + " paths available, wall1 = " + wall1time + ", wall2 = " + wall2time
+        //    + ", wall1X = " + wall1.Crossings + ", wall2X = " + wall2.Crossings;
         return toReturn;
     }
 
     private Tile GetPathfindingPath(Tile tile)
     {
         _pathfinding = true;
-        tile.DebugChoice = "Pathfinding path";
+        //tile.DebugChoice = "Pathfinding path";
         Tile toReturn = tile;
         foreach (Wall wall in tile.NeighborPaths)
         {

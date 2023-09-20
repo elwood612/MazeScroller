@@ -44,7 +44,7 @@ public class BoardManager : MonoBehaviour
         _tileDestroyPos = new Vector3(transform.position.x, transform.position.y, bottomOfScreen.z - _destroyMargin);
 
         transform.position = _rowResetPos;
-        GameManager.NumberOfRows = Mathf.CeilToInt((_rowSetupPos.z - _rowResetPos.z) / GameManager.TileLength) + 2;
+        GameManager.NumberOfRows = Mathf.CeilToInt((_rowSetupPos.z - _rowResetPos.z) / GameManager.TileLength) + 2; // Return to CeilToInt if you encounter problems
     }
 
     private void OnEnable()
