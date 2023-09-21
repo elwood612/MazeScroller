@@ -18,6 +18,7 @@ public class BoardManager : MonoBehaviour
     private static List<Row> _allRows = new List<Row>();
     private static Tile _currentPreTransitionTile;
     private static Row _highestDrawnRow;
+    private static float _bottomOfScreen;
     private Vector3 _rowResetPos;
     private Vector3 _rowSetupPos;
     private Vector3 _rowQAPos;
@@ -30,6 +31,7 @@ public class BoardManager : MonoBehaviour
     public static List<Wall> AllWalls => _allWalls;
     public static Tile CurrentPreTransitionTile => _currentPreTransitionTile;
     public static Row HighestDrawnRow => _highestDrawnRow;
+    public static float BottomOfScreen => _bottomOfScreen;
 
     private void Awake()
     {
@@ -42,9 +44,10 @@ public class BoardManager : MonoBehaviour
         _rowQAPos = new Vector3(transform.position.x, transform.position.y, topOfScreen.z + _destroyMargin);
         _tileSpawnerPos = new Vector3(transform.position.x, transform.position.y, topOfScreen.z + _safetyMargin - 1.1f * GameManager.TileLength);
         _tileDestroyPos = new Vector3(transform.position.x, transform.position.y, bottomOfScreen.z - _destroyMargin);
+        _bottomOfScreen = _rowResetPos.z;
 
         transform.position = _rowResetPos;
-        GameManager.NumberOfRows = Mathf.CeilToInt((_rowSetupPos.z - _rowResetPos.z) / GameManager.TileLength) + 2; // Return to CeilToInt if you encounter problems
+        GameManager.NumberOfRows = Mathf.CeilToInt((_rowSetupPos.z - _rowResetPos.z) / GameManager.TileLength) + 2;
     }
 
     private void OnEnable()

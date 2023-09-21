@@ -25,8 +25,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject _endStageButtons;
     [SerializeField] private GameObject _mainPage;
     [SerializeField] private GameObject _backPage;
-    [SerializeField] private Button _storyModeButton;
-    [SerializeField] private Button _challengeModeButton;
+    [SerializeField] private Button _startButton;
+    [SerializeField] private Button _continueButton;
     [SerializeField] private Button _quitButton;
     [SerializeField] private Button _quitToMenuButton;
     [SerializeField] private Button _resetButton;
@@ -40,6 +40,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TMP_FontAsset _liberationFont;
     [SerializeField] private TMP_FontAsset _VCRFont;
     [SerializeField] private TextMeshProUGUI _debugMessage;
+    [SerializeField] private GameObject _crashMessage;
 
     private WaitForSecondsRealtime _sentenceDelay = new WaitForSecondsRealtime(1f);
     private WaitForSecondsRealtime _starGainDelay = new WaitForSecondsRealtime(0.35f);
@@ -75,6 +76,7 @@ public class UIManager : MonoBehaviour
         _endCreditsObj.SetActive(false);
         _newHighScore.enabled = false;
         _debugMessage.enabled = false;
+        _crashMessage.SetActive(false);
     }
 
     private void OnEnable()
@@ -93,6 +95,7 @@ public class UIManager : MonoBehaviour
         DialogueManager.OnDialogueEnd += HideDialogueBox;
         Row.OnFirstRowsReady += BlackScreenFadeOut;
         GameManager.OnErrorMessage += DisplayErrorMessage;
+        GameManager.OnCrashMessage += DisplayCrashMessage;
     }
 
     private void OnDisable()
@@ -111,12 +114,18 @@ public class UIManager : MonoBehaviour
         DialogueManager.OnDialogueEnd -= HideDialogueBox;
         Row.OnFirstRowsReady -= BlackScreenFadeOut;
         GameManager.OnErrorMessage -= DisplayErrorMessage;
+        GameManager.OnCrashMessage -= DisplayCrashMessage;
     }
 
     private void DisplayErrorMessage(string s)
     {
         _debugMessage.text = s;
         _debugMessage.enabled = true;
+    }
+
+    private void DisplayCrashMessage()
+    {
+        _crashMessage.SetActive(true);
     }
 
     private void UpdateSpeedBonus(int value)
@@ -216,7 +225,8 @@ public class UIManager : MonoBehaviour
         _mainMenuCanvas.enabled = true;
         _loadingText.enabled = false;
         _lifetimeStarsAmountMenu.text = "High Score: " + GameManager.HighScore.ToString();
-        _storyModeButton.GetComponentInChildren<TextMeshProUGUI>().text = GameManager.GameUnderway ? "Continue Game" : "Start New Game";
+        //_startButton.GetComponentInChildren<TextMeshProUGUI>().text = GameManager.GameUnderway ? "Continue Game" : "Start New Game";
+        _continueButton.interactable = GameManager.GameUnderway;
     }
 
     private void BeginStage(GameState state)
@@ -404,7 +414,7 @@ public class UIManager : MonoBehaviour
         _blackScreenEndDeactivated = true;
     }
 
-    public void OnContinueButtonClick()
+    public void OnContinueGame()
     {
         _stageCanvas.enabled = false;
         _stageAssessment.enabled = false;
@@ -423,11 +433,19 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void OnStoryModeButtonClick()
+    public void OnStartNewGameButtonClick()
     {
         _mainMenuCanvas.enabled = false;
         GameManager.Instance.CloseMainMenu();
-        OnContinueButtonClick();
+        GameManager.Instance.LoadDefaultSettings();
+        OnContinueGame();
+    }
+
+    public void OnContinueGameButtonClick()
+    {
+        _mainMenuCanvas.enabled = false;
+        GameManager.Instance.CloseMainMenu();
+        OnContinueGame();
     }
 
     public void OnMenuSettingsClick()

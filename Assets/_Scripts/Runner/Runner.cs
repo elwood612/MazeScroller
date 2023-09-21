@@ -111,17 +111,18 @@ public class Runner : MonoBehaviour, IRunner
         }
         else
         {
-            if (_firstTimeStopping && !_isInTransition && _gameHasStarted) // Check if this condition applies correctly at startup. Otherwise, dialogue during menu bug!
+            if (_firstTimeStopping && !_isInTransition && _gameHasStarted)
             {
                 _firstTimeStopping = false;
                 if (GameManager.IsTutorialOngoing && GameManager.IsTutorialsEnabled) { GameManager.OnNextTutorial?.Invoke(0); }
                 else { DialogueManager.Instance.NextComment(GameManager.CurrentStageDialogue); }
-                
             }
             RunnerStopped = true;
         }
 
         GameManager.RunnerHeight = Camera.main.WorldToScreenPoint(transform.position).y / Screen.height;
+
+        if (transform.position.z < BoardManager.BottomOfScreen - GameManager.TileLength) { GameManager.OnCrashMessage?.Invoke(); }
     }
 
     private void OnTriggerEnter(Collider other)
