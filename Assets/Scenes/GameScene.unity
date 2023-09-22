@@ -4673,7 +4673,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 524924170}
         m_TargetAssemblyTypeName: UIManager, Project.UI
-        m_MethodName: OnContinueButtonClick
+        m_MethodName: OnContinueGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4732,6 +4732,7 @@ GameObject:
   - component: {fileID: 740100734}
   - component: {fileID: 740100736}
   - component: {fileID: 740100735}
+  - component: {fileID: 740100737}
   m_Layer: 5
   m_Name: Assessment
   m_TagString: Untagged
@@ -4856,6 +4857,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 740100733}
   m_CullTransparentMesh: 1
+--- !u!111 &740100737
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 740100733}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 37662a01ad57d654992ff099edee5e10, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 37662a01ad57d654992ff099edee5e10, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1 &749738856
 GameObject:
   m_ObjectHideFlags: 0
@@ -12498,10 +12515,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5278011487167497427, guid: 3aa64423a7da32245bd1cde342ea2004, type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: 4c3455ded4170834aafe948d0ac64cfe, type: 3}
     - target: {fileID: 8604666187838504300, guid: 3aa64423a7da32245bd1cde342ea2004, type: 3}
       propertyPath: m_Name
       value: AudioManager

@@ -13,7 +13,9 @@ public class AudioManager : MonoBehaviour
         _UIlevelDoneVol,
         _musicVol,
         _powerUpVol,
-        _compassionateVol;
+        _enoughStarsVol,
+        _failureVol,
+        _sucessVol;
 
     [Range(0f, 3f)]
     [SerializeField]
@@ -32,7 +34,9 @@ public class AudioManager : MonoBehaviour
     public AudioSource UILevelDone;
     public AudioSource Music;
     public AudioSource PowerUp;
-    public AudioSource CompassionateVictory;
+    public AudioSource EnoughStars;
+    public AudioSource Failure;
+    public AudioSource Success;
 
     public AudioSource[] CrystalPop;
 
@@ -57,7 +61,9 @@ public class AudioManager : MonoBehaviour
         UIStar.volume = enabled ? _UIstarVol : 0;
         UILevelDone.volume = enabled ? _UIlevelDoneVol : 0;
         PowerUp.volume = enabled ? _powerUpVol : 0;
-        CompassionateVictory.volume = enabled ? _compassionateVol : 0;
+        EnoughStars.volume = enabled ? _enoughStarsVol : 0;
+        Failure.volume = enabled ? _failureVol : 0;
+        Success.volume = enabled ? _sucessVol : 0;
         for (int i = 0; i < CrystalPop.Length; i++)
         {
             CrystalPop[i].volume = enabled ? _beepVol[i] : 0;

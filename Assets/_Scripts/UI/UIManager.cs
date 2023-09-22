@@ -46,6 +46,7 @@ public class UIManager : MonoBehaviour
     private WaitForSecondsRealtime _starGainDelay = new WaitForSecondsRealtime(0.35f);
     private bool _typeOutSentence = true;
     private bool _isDialogueBoxOpen = false;
+    private bool _hasContinueBeenPressed = false;
     private TextMeshProUGUI _dialogueBox;
     private Image _runnerFace;
     private int _newStarIndex = 0;
@@ -225,7 +226,6 @@ public class UIManager : MonoBehaviour
         _mainMenuCanvas.enabled = true;
         _loadingText.enabled = false;
         _lifetimeStarsAmountMenu.text = "High Score: " + GameManager.HighScore.ToString();
-        //_startButton.GetComponentInChildren<TextMeshProUGUI>().text = GameManager.GameUnderway ? "Continue Game" : "Start New Game";
         _continueButton.interactable = GameManager.GameUnderway;
     }
 
@@ -246,9 +246,10 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    private void EndStage() // this is helpful
+    private void EndStage()
     {
         _requiredStars.SetActive(false);
+        _hasContinueBeenPressed = false;
         if (GameManager.GlobalDialogueCounter >= GameManager.MaxStages)
         {
             _endStageButtons.SetActive(false);
@@ -274,6 +275,7 @@ public class UIManager : MonoBehaviour
         for (int i = 1; i <= stars; i++)
         {
             yield return _starGainDelay;
+            if (_hasContinueBeenPressed) { break; }
             _stageCurrentScore.text = "Current score: " + (GameManager.CurrentScore - GameManager.AcquiredStars + i).ToString();
             _topTotalStarAmount.text = (GameManager.AcquiredStars - i).ToString() 
                 + " ("
@@ -281,8 +283,19 @@ public class UIManager : MonoBehaviour
                 + " req.)";
             AudioManager.Instance.UIStar.Play();
         }
-        _stageAssessment.enabled = true;
-        AudioManager.Instance.UILevelDone.Play(); // Change this depending on answer quality
+
+        if (!_hasContinueBeenPressed)
+        { 
+            _stageAssessment.enabled = true;
+            if (GameManager.StageAnswerQuality == Answer.Poor) { AudioManager.Instance.Failure.Play(); }
+            else { AudioManager.Instance.Success.Play(); }
+        }
+        else
+        {
+            _topTotalStarAmount.text = "0" + " ("
+            + GameManager.RequiredStars.ToString()
+            + " req.)";
+        }
     }
 
     private void Assessment(Answer answer)
@@ -418,6 +431,7 @@ public class UIManager : MonoBehaviour
     {
         _stageCanvas.enabled = false;
         _stageAssessment.enabled = false;
+        _hasContinueBeenPressed = true;
 
         if (GameManager.IsGameOver)
         {

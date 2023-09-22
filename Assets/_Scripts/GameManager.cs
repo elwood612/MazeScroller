@@ -249,7 +249,7 @@ public class GameManager : MonoBehaviour
         set
         {
             _acquiredStars = value;
-            if (_acquiredStars == _requiredStars) { AudioManager.Instance.CompassionateVictory.Play(); }
+            if (_acquiredStars == _requiredStars) { AudioManager.Instance.EnoughStars.Play(); }
             else { AudioManager.Instance.StarGain.Play(); }
             if (_acquiredStars % _requiredStars == 0)
             {
@@ -380,12 +380,11 @@ public class GameManager : MonoBehaviour
     private void CompassionateVictory()
     {
         if (CurrentState == GameState.Progressing) { StageProgress = _stageLength; }
-        AudioManager.Instance.CompassionateVictory.Play();
+        AudioManager.Instance.EnoughStars.Play();
         AcquiredStars += 10;
         CurrentScore += 10;
         if (GlobalDialogueCounter >= _globalStageDialogue.Length - 1)
         {
-            //_isGameOver = true;
             OnNextTutorial?.Invoke(13);
         }
         else { OnNextTutorial?.Invoke(12); }
