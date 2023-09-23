@@ -440,7 +440,7 @@ public class GameManager : MonoBehaviour
                 CalculateBoardLength();
                 break;
             case GameState.Transition:
-                OnErrorMessage?.Invoke("Number of rows = " + NumberOfRows + "\nBoard Length = " + _boardLength.z);
+                //OnErrorMessage?.Invoke("Number of rows = " + NumberOfRows + "\nBoard Length = " + _boardLength.z);
                 break;
             case GameState.Progressing:
                 ResetStats();
