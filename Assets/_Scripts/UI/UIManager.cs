@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Video;
 using TMPro;
 using System.Collections;
 using System.Collections.Generic;
@@ -41,6 +42,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TMP_FontAsset _VCRFont;
     [SerializeField] private TextMeshProUGUI _debugMessage;
     [SerializeField] private GameObject _crashMessage;
+    [SerializeField] private GameObject[] _tutorialGroup;
+    [SerializeField] private VideoPlayer[] _tutorialVideoPlayer;
 
     private WaitForSecondsRealtime _sentenceDelay = new WaitForSecondsRealtime(1f);
     private WaitForSecondsRealtime _starGainDelay = new WaitForSecondsRealtime(0.35f);
@@ -97,6 +100,7 @@ public class UIManager : MonoBehaviour
         Row.OnFirstRowsReady += BlackScreenFadeOut;
         GameManager.OnErrorMessage += DisplayErrorMessage;
         GameManager.OnCrashMessage += DisplayCrashMessage;
+        GameManager.OnTutorialVideo += DisplayTutorial;
     }
 
     private void OnDisable()
@@ -116,6 +120,7 @@ public class UIManager : MonoBehaviour
         Row.OnFirstRowsReady -= BlackScreenFadeOut;
         GameManager.OnErrorMessage -= DisplayErrorMessage;
         GameManager.OnCrashMessage -= DisplayCrashMessage;
+        GameManager.OnTutorialVideo -= DisplayTutorial;
     }
 
     private void DisplayErrorMessage(string s)
@@ -127,6 +132,14 @@ public class UIManager : MonoBehaviour
     private void DisplayCrashMessage()
     {
         _crashMessage.SetActive(true);
+    }
+
+    private void DisplayTutorial(int tutorialIndex)
+    {
+        if (tutorialIndex > 1) { return; }
+        Debug.Log("Display tutorial");
+        _tutorialGroup[tutorialIndex].SetActive(true);
+        _tutorialVideoPlayer[tutorialIndex].gameObject.SetActive(true);
     }
 
     private void UpdateSpeedBonus(int value)

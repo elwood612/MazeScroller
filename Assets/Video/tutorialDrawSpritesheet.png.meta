@@ -1,0 +1,4779 @@
+fileFormatVersion: 2
+guid: 04702425dd194df4cae29e33c22303fc
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 12
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 9802
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1973b584dd1ca1e4bb00dcf5991c9da4
+      internalID: 826694246
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_1
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 9802
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 228e1d18f884d5149bf302d03b534a33
+      internalID: -1755696549
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_2
+      rect:
+        serializedVersion: 2
+        x: 1200
+        y: 9802
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b4e8b35febebc434d9c18f1c27a62447
+      internalID: -202262318
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_3
+      rect:
+        serializedVersion: 2
+        x: 1800
+        y: 9802
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3f2f7e79a161f4e40951328639d57297
+      internalID: 125297206
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_4
+      rect:
+        serializedVersion: 2
+        x: 2400
+        y: 9802
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 03ed9b0038f2fa248b2f752a7e188717
+      internalID: 1376137412
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_5
+      rect:
+        serializedVersion: 2
+        x: 3000
+        y: 9802
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a2e2584657e72f84fa101e98255445a9
+      internalID: -1982841306
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_6
+      rect:
+        serializedVersion: 2
+        x: 3600
+        y: 9802
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cb090067657fafc46a91de560b1f4f80
+      internalID: -1796285548
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_7
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 9464
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 319e6c77c57fed04d975e13369846437
+      internalID: 954489116
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_8
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 9464
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 64fa24d3783257a40b7742d2b6d80545
+      internalID: -1510384534
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_9
+      rect:
+        serializedVersion: 2
+        x: 1200
+        y: 9464
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d3274ff7d2afc6240bd6931847322508
+      internalID: 1810334448
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_10
+      rect:
+        serializedVersion: 2
+        x: 1800
+        y: 9464
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 45163a2c696eba24d95cd9a7bf4e2af2
+      internalID: 1375284400
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_11
+      rect:
+        serializedVersion: 2
+        x: 2400
+        y: 9464
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d85f26730d95a3048a55a09086e9cdc8
+      internalID: 209869377
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_12
+      rect:
+        serializedVersion: 2
+        x: 3000
+        y: 9464
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f0f9f48acc541e548bcda084594a7d08
+      internalID: -898904534
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_13
+      rect:
+        serializedVersion: 2
+        x: 3600
+        y: 9464
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: af6450724fd1d5d4caa30a494ee8a391
+      internalID: -719572898
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_14
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 9126
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 579e1621fc2921745bf73771edeb1d48
+      internalID: -1632734039
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_15
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 9126
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 287cc85575f609b4cb08d37fa53f2aa5
+      internalID: -1080808309
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_16
+      rect:
+        serializedVersion: 2
+        x: 1200
+        y: 9126
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 61fc8e67d27c3424899f3f8131843016
+      internalID: 1367410128
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_17
+      rect:
+        serializedVersion: 2
+        x: 1800
+        y: 9126
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8c3f38fcd725b624eba42e3d42647ae5
+      internalID: 228253191
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_18
+      rect:
+        serializedVersion: 2
+        x: 2400
+        y: 9126
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e51374a277022724ba932615748d3094
+      internalID: 312324249
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_19
+      rect:
+        serializedVersion: 2
+        x: 3000
+        y: 9126
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 070bc4f4395919844b777bda94e86cf6
+      internalID: -1412742242
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_20
+      rect:
+        serializedVersion: 2
+        x: 3600
+        y: 9126
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fa4f59fd628cc3f45a982b2b4a28ea0f
+      internalID: 489654256
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_21
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 8788
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: efe5eaa313ff69646b70c88716313b0b
+      internalID: -1193059368
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_22
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 8788
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4293e9883a8225845963fbfd80b44587
+      internalID: 726883214
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_23
+      rect:
+        serializedVersion: 2
+        x: 1200
+        y: 8788
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bff111e3c15a82946a1ab7b212b5b041
+      internalID: -1048729140
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_24
+      rect:
+        serializedVersion: 2
+        x: 1800
+        y: 8788
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5e36b73d3a98d8b41965f31687787a4b
+      internalID: -1982736265
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_25
+      rect:
+        serializedVersion: 2
+        x: 2400
+        y: 8788
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1cd06d083d101934ab86562ee59af07a
+      internalID: -2082320174
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_26
+      rect:
+        serializedVersion: 2
+        x: 3000
+        y: 8788
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4f3afbbd381b9bb48939859b1067521e
+      internalID: -2131964986
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_27
+      rect:
+        serializedVersion: 2
+        x: 3600
+        y: 8788
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b82f48b8885d8024395d25a18eaa3431
+      internalID: -1714568128
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_28
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 8450
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1c29c9a055a2e1d4eafcedd71f44271e
+      internalID: -1120381073
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_29
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 8450
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cc68c7f08d8212c4781c7f2e0bc8ec79
+      internalID: -1033705817
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_30
+      rect:
+        serializedVersion: 2
+        x: 1200
+        y: 8450
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8fffd99aabfbf1c438628f1ba7fb3145
+      internalID: 1909958943
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_31
+      rect:
+        serializedVersion: 2
+        x: 1800
+        y: 8450
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ee86858ac10ec8242aa0302eb7d078b0
+      internalID: -1755661605
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_32
+      rect:
+        serializedVersion: 2
+        x: 2400
+        y: 8450
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d08b500db2825954b831aeca0453ac09
+      internalID: 470794653
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_33
+      rect:
+        serializedVersion: 2
+        x: 3000
+        y: 8450
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6e74001931f9f6a4fb465b0b5060aff4
+      internalID: 424208491
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_34
+      rect:
+        serializedVersion: 2
+        x: 3600
+        y: 8450
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6fdcfa28f39c9b84e84b8d8f3efa241c
+      internalID: -1053683452
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_35
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 8112
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7ba207b2ee526d941835807606867ae9
+      internalID: 1179942144
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_36
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 8112
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f2a237046135f364aa39590eb1ca9329
+      internalID: 1422280708
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_37
+      rect:
+        serializedVersion: 2
+        x: 1200
+        y: 8112
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dfae1e0b17d9a8b46bdf92efa9966083
+      internalID: 984425276
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_38
+      rect:
+        serializedVersion: 2
+        x: 1800
+        y: 8112
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 65c18fb895294df469f403de9dc14161
+      internalID: 1009295792
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_39
+      rect:
+        serializedVersion: 2
+        x: 2400
+        y: 8112
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 86b944d0a4452054085b3ff1236be0b5
+      internalID: -153055520
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_40
+      rect:
+        serializedVersion: 2
+        x: 3000
+        y: 8112
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 221ef4d04a75134469b6954b2d3aade1
+      internalID: -1244819454
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_41
+      rect:
+        serializedVersion: 2
+        x: 3600
+        y: 8112
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b3bc376e15c89784fb770a7b644f5956
+      internalID: -1859406061
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_42
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 7774
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fd906a2bc66dd604d89d056f9393a150
+      internalID: 1901048479
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_43
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 7774
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bb0dfad04ca5e874089ca4301c48d75b
+      internalID: 2068952754
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_44
+      rect:
+        serializedVersion: 2
+        x: 1200
+        y: 7774
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 618213a76f1649a46871b3bcf63f478f
+      internalID: -2122983783
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_45
+      rect:
+        serializedVersion: 2
+        x: 1800
+        y: 7774
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d1d8d07e1103d5449b54fce098b4303f
+      internalID: 1516032948
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_46
+      rect:
+        serializedVersion: 2
+        x: 2400
+        y: 7774
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d8781a094db06be4baf86ce4abab9b37
+      internalID: 1918976624
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_47
+      rect:
+        serializedVersion: 2
+        x: 3000
+        y: 7774
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d1662181217b0c641bb8bc592fc6ab8c
+      internalID: 1967248052
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_48
+      rect:
+        serializedVersion: 2
+        x: 3600
+        y: 7774
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c84a38f7ec8d39444bf684870e249290
+      internalID: -1030655642
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_49
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 7436
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 53d7130e9b933604f80f421d2eaf3359
+      internalID: -1295941287
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_50
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 7436
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7c128b1e56a9900449387522d2dec801
+      internalID: 1715999463
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_51
+      rect:
+        serializedVersion: 2
+        x: 1200
+        y: 7436
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 62794254cc214e047ac2df792b6fa9c1
+      internalID: -1774856885
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_52
+      rect:
+        serializedVersion: 2
+        x: 1800
+        y: 7436
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a74556640fe28954caa1e81408e02e83
+      internalID: 410732926
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_53
+      rect:
+        serializedVersion: 2
+        x: 2400
+        y: 7436
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e2336c30560793d418ea86cc442d0fbe
+      internalID: 987243994
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_54
+      rect:
+        serializedVersion: 2
+        x: 3000
+        y: 7436
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 01eab83fb3ddae94aa8096873333a57f
+      internalID: -1056312398
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_55
+      rect:
+        serializedVersion: 2
+        x: 3600
+        y: 7436
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 95cc8689bb154964285b6e90d51f8abb
+      internalID: -1874634103
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_56
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 7098
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a51a6e1d7d57ff04ba99b75e66b6275f
+      internalID: 776936388
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_57
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 7098
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2b944eb7d314a4849b1a2459fa5d6bbe
+      internalID: 829961957
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_58
+      rect:
+        serializedVersion: 2
+        x: 1200
+        y: 7098
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 500a413a65dbba24f982ca2b538a7469
+      internalID: 446903057
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_59
+      rect:
+        serializedVersion: 2
+        x: 1800
+        y: 7098
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6f1074037ec504c49885063c9033d0f1
+      internalID: -396918699
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_60
+      rect:
+        serializedVersion: 2
+        x: 2400
+        y: 7098
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c7e48c7149d563a46a72132e3a171465
+      internalID: -918220187
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_61
+      rect:
+        serializedVersion: 2
+        x: 3000
+        y: 7098
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 86b41ec66381e2a49a458fa49a533653
+      internalID: -1011801686
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_62
+      rect:
+        serializedVersion: 2
+        x: 3600
+        y: 7098
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c8e63461734ab5c42bb86d00a5c6f718
+      internalID: -324824413
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_63
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 6760
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c779b1b0da4afe84a9a38d271df84b50
+      internalID: -1873521062
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_64
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 6760
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cb2de5ca67dc36647b3c747bfd377c73
+      internalID: -2144521186
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_65
+      rect:
+        serializedVersion: 2
+        x: 1200
+        y: 6760
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b84d14465970c7e4abfe987fd85852cb
+      internalID: 1109009221
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_66
+      rect:
+        serializedVersion: 2
+        x: 1800
+        y: 6760
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 743cb21ca76342646b9aa80db91bfa0e
+      internalID: 1950041604
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_67
+      rect:
+        serializedVersion: 2
+        x: 2400
+        y: 6760
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5d3f5b3921e9bb449aef6f41b57124b0
+      internalID: -1231840339
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_68
+      rect:
+        serializedVersion: 2
+        x: 3000
+        y: 6760
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 82b5d123583ca27408a6c21971b60b83
+      internalID: -1359009150
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_69
+      rect:
+        serializedVersion: 2
+        x: 3600
+        y: 6760
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 82a8ad12479437a498c3cf58d26659a4
+      internalID: 2133311660
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_70
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 6422
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 838c968823034bf419064f4ebf9d11ab
+      internalID: -1022071892
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_71
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 6422
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e35cfe56470850c4fbfc22c9cb5370c1
+      internalID: -1659692115
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_72
+      rect:
+        serializedVersion: 2
+        x: 1200
+        y: 6422
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5a2bdfcb3fa9c044f9e3a3a9fef54a60
+      internalID: -1032016226
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_73
+      rect:
+        serializedVersion: 2
+        x: 1800
+        y: 6422
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d20b533a3c562614bbeac9854892906d
+      internalID: 1788607713
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_74
+      rect:
+        serializedVersion: 2
+        x: 2400
+        y: 6422
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 18da660ffbacd534e98175099592abb8
+      internalID: 1910586845
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_75
+      rect:
+        serializedVersion: 2
+        x: 3000
+        y: 6422
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7c7ec50cb0e95514197ad95a8fd4e92f
+      internalID: 1900013493
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_76
+      rect:
+        serializedVersion: 2
+        x: 3600
+        y: 6422
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ef472c40eca6edc418981171bb166cbf
+      internalID: 1191396814
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_77
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 6084
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 22239c839201631428a5fde142e22477
+      internalID: -1389653419
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_78
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 6084
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7bc266f43b9cccf44bcbcf13e96d9d93
+      internalID: 1180467234
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_79
+      rect:
+        serializedVersion: 2
+        x: 1200
+        y: 6084
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c8fb43a9d93c4f04ba2db67eb621a0bf
+      internalID: -501558267
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_80
+      rect:
+        serializedVersion: 2
+        x: 1800
+        y: 6084
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a0083f45e45bb2447bb45d950986f8a1
+      internalID: -1091213825
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_81
+      rect:
+        serializedVersion: 2
+        x: 2400
+        y: 6084
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 481389e1b645cc5459f01e7c73640ec9
+      internalID: 374367161
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_82
+      rect:
+        serializedVersion: 2
+        x: 3000
+        y: 6084
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a6c8a09912642ad408fc2e1f22466204
+      internalID: 873018777
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_83
+      rect:
+        serializedVersion: 2
+        x: 3600
+        y: 6084
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2a99f2b1ebc635441b7259c31c77bb94
+      internalID: 1370594560
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_84
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 5746
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a034a1bcb0f5e6f4785096f902925773
+      internalID: -1127064982
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_85
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 5746
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0f1068fb9870b5046b0ddfbbf093fcf9
+      internalID: -1708247624
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_86
+      rect:
+        serializedVersion: 2
+        x: 1200
+        y: 5746
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4a16c65fed9a9d44ab433a32a23b70e0
+      internalID: -1020370318
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_87
+      rect:
+        serializedVersion: 2
+        x: 1800
+        y: 5746
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 833ee5b1803f4704e9dde534c509ab4c
+      internalID: 290850538
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_88
+      rect:
+        serializedVersion: 2
+        x: 2400
+        y: 5746
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 33a59b42d09bcf547893eb24fd03ab56
+      internalID: -1610956914
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_89
+      rect:
+        serializedVersion: 2
+        x: 3000
+        y: 5746
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e8cb9d5dc350a274ab01ddad709d174d
+      internalID: 105146335
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_90
+      rect:
+        serializedVersion: 2
+        x: 3600
+        y: 5746
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5ecd3416d56b18c43923a6b72c00fcad
+      internalID: -920189935
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_91
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 5408
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 941046058002895429c06c1e60ac3f3d
+      internalID: 2137805577
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_92
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 5408
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b4af5b31b7e88d942b3fce2b9134c7cb
+      internalID: 349409799
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_93
+      rect:
+        serializedVersion: 2
+        x: 1200
+        y: 5408
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4fc2f258b97b4384cad56aced6079da5
+      internalID: -671601986
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_94
+      rect:
+        serializedVersion: 2
+        x: 1800
+        y: 5408
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9ccf407719885ba408511fe1a08f66e1
+      internalID: -1987690162
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_95
+      rect:
+        serializedVersion: 2
+        x: 2400
+        y: 5408
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9010111aed4844e4cbf0d659f44fe5ca
+      internalID: 1961053240
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_96
+      rect:
+        serializedVersion: 2
+        x: 3000
+        y: 5408
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2b26d9b7dcb065a45b457c9875a91156
+      internalID: -1729532415
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_97
+      rect:
+        serializedVersion: 2
+        x: 3600
+        y: 5408
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5e909e2ef40a5a14f835a87214c60aee
+      internalID: -668012668
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_98
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 5070
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ba8c48fac7312f043959f3960eeffec8
+      internalID: -377527244
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_99
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 5070
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6615d2526fa75e34c83ea722059a6b87
+      internalID: -467279180
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_100
+      rect:
+        serializedVersion: 2
+        x: 1200
+        y: 5070
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 358528b0ba14c2843b8512f2fc0a9213
+      internalID: -1745051364
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_101
+      rect:
+        serializedVersion: 2
+        x: 1800
+        y: 5070
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f2c0aab56f6c42f4183891b781b13f73
+      internalID: -1058011448
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_102
+      rect:
+        serializedVersion: 2
+        x: 2400
+        y: 5070
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 66733dca3f605b642945d0abb1427cc8
+      internalID: 664448948
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_103
+      rect:
+        serializedVersion: 2
+        x: 3000
+        y: 5070
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 15c315ae44db5a147aec4e6b139eb959
+      internalID: 1392627595
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_104
+      rect:
+        serializedVersion: 2
+        x: 3600
+        y: 5070
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2cb72b618ee1fbb4e95e07aa372eb8da
+      internalID: -1235329929
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_105
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 4732
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c4222c099d00ad3429608e162bc16d6f
+      internalID: -75669499
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_106
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 4732
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1437ae13c79ed56458d2eda131e2370f
+      internalID: 16380811
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_107
+      rect:
+        serializedVersion: 2
+        x: 1200
+        y: 4732
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3173c69fba2f5344e8af9ce0e516fb6b
+      internalID: 1518327140
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_108
+      rect:
+        serializedVersion: 2
+        x: 1800
+        y: 4732
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 690aeb48092465f489790630ba8e9e11
+      internalID: -1332252675
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_109
+      rect:
+        serializedVersion: 2
+        x: 2400
+        y: 4732
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a14633d12ffbf6e4e9c4387871133208
+      internalID: 1139600561
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_110
+      rect:
+        serializedVersion: 2
+        x: 3000
+        y: 4732
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7ed3c4abef473cf458852b2ff7adeb92
+      internalID: 1249600587
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_111
+      rect:
+        serializedVersion: 2
+        x: 3600
+        y: 4732
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 02597920e28b1c1468ea72bc43bae37a
+      internalID: -635429948
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_112
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 4394
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aae9a04f38b93ed418a22ffc91475253
+      internalID: 1779580325
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_113
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 4394
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ba090f4fb4d77a04e974e71bbeb42501
+      internalID: 1111856617
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_114
+      rect:
+        serializedVersion: 2
+        x: 1200
+        y: 4394
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 007a59246a1d3eb489d65facf4970866
+      internalID: -27981263
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_115
+      rect:
+        serializedVersion: 2
+        x: 1800
+        y: 4394
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0a4710edc6ea2fc4591c320f3cdb5400
+      internalID: 423422710
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_116
+      rect:
+        serializedVersion: 2
+        x: 2400
+        y: 4394
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 023f7b329757d2b468e6c692c512b3fb
+      internalID: 1659453179
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_117
+      rect:
+        serializedVersion: 2
+        x: 3000
+        y: 4394
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e6004423f947ea24d9080e4dd5a32c95
+      internalID: 1384899093
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_118
+      rect:
+        serializedVersion: 2
+        x: 3600
+        y: 4394
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e5f349528ec104a498714ed94370281b
+      internalID: -1385306393
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_119
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 4056
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 77fd13f34d445e04c89ba9eb7a233c17
+      internalID: -1029435788
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_120
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 4056
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 33d5a7e0e7f929448bc70caa941c42cb
+      internalID: 1066690368
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_121
+      rect:
+        serializedVersion: 2
+        x: 1200
+        y: 4056
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8a43e916475bd9445b2cfec88c90e953
+      internalID: 321314157
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_122
+      rect:
+        serializedVersion: 2
+        x: 1800
+        y: 4056
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b70f2f4f915d2a24691e678dd723879a
+      internalID: -716840987
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_123
+      rect:
+        serializedVersion: 2
+        x: 2400
+        y: 4056
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f98167a9f6750ba49adc834be6d61c96
+      internalID: -1949620273
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_124
+      rect:
+        serializedVersion: 2
+        x: 3000
+        y: 4056
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 90bf8b4372f3db84e80a28310f71e8ad
+      internalID: 338973732
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_125
+      rect:
+        serializedVersion: 2
+        x: 3600
+        y: 4056
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c3d5d55fb8ef8a049bfe7b08d94bef4b
+      internalID: -2044172057
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_126
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 3718
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2bbbe3e257794f848b81c8ac6dd2ab16
+      internalID: -1353877095
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_127
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 3718
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fcd56dba7988c1a4dbbc44e4e984aeb1
+      internalID: -1524980485
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_128
+      rect:
+        serializedVersion: 2
+        x: 1200
+        y: 3718
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 462d5c23b39d63141add8b96c76b9a3a
+      internalID: 817696038
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_129
+      rect:
+        serializedVersion: 2
+        x: 1800
+        y: 3718
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 523b41aaac08d8947842177ce468df8b
+      internalID: 15866822
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_130
+      rect:
+        serializedVersion: 2
+        x: 2400
+        y: 3718
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bec08ad7141086f4c92e72c7ed6ce17c
+      internalID: -97207908
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_131
+      rect:
+        serializedVersion: 2
+        x: 3000
+        y: 3718
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b8071707631a08d4ca88c07350c13124
+      internalID: 2052798768
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_132
+      rect:
+        serializedVersion: 2
+        x: 3600
+        y: 3718
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b46c9a8ac28f7e6428f050ab59c3eb07
+      internalID: 1563346772
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_133
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 3380
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f0d00ae19a387004c9df56fae73482ef
+      internalID: 1168358424
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_134
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 3380
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c791adaa30c4f7549ad3e5549f02c555
+      internalID: 461900763
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_135
+      rect:
+        serializedVersion: 2
+        x: 1200
+        y: 3380
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c10b038ade0db6049b6e2bea1cb40600
+      internalID: -109895707
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_136
+      rect:
+        serializedVersion: 2
+        x: 1800
+        y: 3380
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 027ebfe1899604b4784c034c60916850
+      internalID: -1618291883
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_137
+      rect:
+        serializedVersion: 2
+        x: 2400
+        y: 3380
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 21e091ef554a0b34187e26b7c2f98a4c
+      internalID: -1335958234
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_138
+      rect:
+        serializedVersion: 2
+        x: 3000
+        y: 3380
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7616226293b7c2d46b59c18d247c401b
+      internalID: -328903042
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_139
+      rect:
+        serializedVersion: 2
+        x: 3600
+        y: 3380
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aec82b3638a029a48b9c89f377f606ab
+      internalID: 1344497190
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_140
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 3042
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: df0b60e8f91cec5438d15a368b135772
+      internalID: 466266641
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_141
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 3042
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ac7536ba5d9f8394dad5ac6a713afba0
+      internalID: 1483544281
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_142
+      rect:
+        serializedVersion: 2
+        x: 1200
+        y: 3042
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e4d15fa6cfa4cc04fafff5b0f23d4f0c
+      internalID: 1739936230
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_143
+      rect:
+        serializedVersion: 2
+        x: 1800
+        y: 3042
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 35af1224f8044844cbb6c84dfdb9284d
+      internalID: 1065906635
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_144
+      rect:
+        serializedVersion: 2
+        x: 2400
+        y: 3042
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 17cf6b793b736714d8c87820e40058ec
+      internalID: 1675019697
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_145
+      rect:
+        serializedVersion: 2
+        x: 3000
+        y: 3042
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 02ce022e5121c2740a12cd9198b31da2
+      internalID: -872691756
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_146
+      rect:
+        serializedVersion: 2
+        x: 3600
+        y: 3042
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f18e70b6f798d7342abdd62efc9cb0a3
+      internalID: -1246903671
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_147
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 2704
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a11fb6a20aaa3324dbfc6b0186a3f583
+      internalID: -1464038813
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_148
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 2704
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d7c6ac88315a0de4aaf04e4344e41ceb
+      internalID: 784073612
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_149
+      rect:
+        serializedVersion: 2
+        x: 1200
+        y: 2704
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c4a37cf633283c4469e2f28d058ea77a
+      internalID: -1103854751
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_150
+      rect:
+        serializedVersion: 2
+        x: 1800
+        y: 2704
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c8064fd0485597a4f90ccc12f265f06f
+      internalID: 1006231892
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_151
+      rect:
+        serializedVersion: 2
+        x: 2400
+        y: 2704
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 274d45489dca9924c89a91664c1cd03c
+      internalID: -1108684549
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_152
+      rect:
+        serializedVersion: 2
+        x: 3000
+        y: 2704
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 276b56226f5173b489e9eee82dd399ab
+      internalID: 404734550
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_153
+      rect:
+        serializedVersion: 2
+        x: 3600
+        y: 2704
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 033fa3ad8156671488dd60f92ef92abb
+      internalID: -1602564574
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_154
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 2366
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5ad4c243a83748540892517ac0967c6e
+      internalID: 1678285871
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_155
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 2366
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8b07fb21e7bc58644a7b911def2634f4
+      internalID: -204126404
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_156
+      rect:
+        serializedVersion: 2
+        x: 1200
+        y: 2366
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 84bfa52e4d1b0334b8a4eac96675da50
+      internalID: 1090662141
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_157
+      rect:
+        serializedVersion: 2
+        x: 1800
+        y: 2366
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2a90e1c2d4f054043899aa0a4c883503
+      internalID: -1863803220
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_158
+      rect:
+        serializedVersion: 2
+        x: 2400
+        y: 2366
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 619a1587f29c7d546af20c306fff910e
+      internalID: 1360850153
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_159
+      rect:
+        serializedVersion: 2
+        x: 3000
+        y: 2366
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b1df9e257066b8a43a5766d5c143922b
+      internalID: 1836157955
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_160
+      rect:
+        serializedVersion: 2
+        x: 3600
+        y: 2366
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 788186371efffd94088be8320cf10026
+      internalID: 783121034
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_161
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 2028
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b5028495a177c8c4d923c001c9041a9f
+      internalID: 881589552
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_162
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 2028
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 52848b4dc1260304090eed27064e8310
+      internalID: -749978283
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_163
+      rect:
+        serializedVersion: 2
+        x: 1200
+        y: 2028
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c41554f6b34848b4cb46466f0d836ed7
+      internalID: 1226344843
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_164
+      rect:
+        serializedVersion: 2
+        x: 1800
+        y: 2028
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c09fff7744cd0554f885c7d6d6d524a8
+      internalID: 1454343398
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_165
+      rect:
+        serializedVersion: 2
+        x: 2400
+        y: 2028
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c57d554325ec5664ab5f00bbc8a5f234
+      internalID: 1726734624
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_166
+      rect:
+        serializedVersion: 2
+        x: 3000
+        y: 2028
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6c10afd5f7ce7c74a9d362f33b8dfd2b
+      internalID: 783956040
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_167
+      rect:
+        serializedVersion: 2
+        x: 3600
+        y: 2028
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8932631adc09df647a80d4649f20d410
+      internalID: 15762471
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_168
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1690
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 58a0804248c24524197b483e3e8c88f8
+      internalID: -1168731597
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_169
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 1690
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2d45b18b20be67e45aa3ea20030be8d8
+      internalID: 2117372409
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_170
+      rect:
+        serializedVersion: 2
+        x: 1200
+        y: 1690
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 05e054d52abdf5e4e93790c379c0456e
+      internalID: -1420018925
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_171
+      rect:
+        serializedVersion: 2
+        x: 1800
+        y: 1690
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eb3da6c44d1457e44a1c9d854711ef67
+      internalID: 112947938
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_172
+      rect:
+        serializedVersion: 2
+        x: 2400
+        y: 1690
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b07104d67402e44428280dba9ea75690
+      internalID: -1051018037
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_173
+      rect:
+        serializedVersion: 2
+        x: 3000
+        y: 1690
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e5ba64bceb579714fac62b4be5ff6224
+      internalID: 614599061
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_174
+      rect:
+        serializedVersion: 2
+        x: 3600
+        y: 1690
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ca1074ddea6972546b0ade9c45691c7b
+      internalID: -1219272456
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_175
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1352
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fa016c2bdbd267f4cac393958c17671d
+      internalID: -1002176214
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_176
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 1352
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d39d38679e3c00d4fb1ea78040170443
+      internalID: 551920199
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_177
+      rect:
+        serializedVersion: 2
+        x: 1200
+        y: 1352
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dd438eba392f61e45bfa3bdcbc307ffb
+      internalID: -1675543584
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_178
+      rect:
+        serializedVersion: 2
+        x: 1800
+        y: 1352
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 71a28cfcfb961904a994f90d2af6027d
+      internalID: -1910263644
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_179
+      rect:
+        serializedVersion: 2
+        x: 2400
+        y: 1352
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 04823a40675526c41bb47ff465409086
+      internalID: 1145087253
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_180
+      rect:
+        serializedVersion: 2
+        x: 3000
+        y: 1352
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 14a254d38edd0304bae1278b87c7a3c1
+      internalID: -1359692998
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_181
+      rect:
+        serializedVersion: 2
+        x: 3600
+        y: 1352
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1013e7415fcecda4fa96de971b5ef872
+      internalID: -1041702534
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_182
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1014
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 438c9bca99e0edd49a9ad5e5477bcaa2
+      internalID: 296848388
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_183
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 1014
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 38ac865501bc9664ea2ef599e171c38e
+      internalID: -1944164545
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_184
+      rect:
+        serializedVersion: 2
+        x: 1200
+        y: 1014
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 58bf365d4bd4e4948b43c591ed1b7b73
+      internalID: 54429163
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_185
+      rect:
+        serializedVersion: 2
+        x: 1800
+        y: 1014
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9ad27aa32ad8a2a40a94aa854ba00e56
+      internalID: -238437541
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_186
+      rect:
+        serializedVersion: 2
+        x: 2400
+        y: 1014
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a9cfb5729a50e734d9b56e520fa7128e
+      internalID: -1758155702
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_187
+      rect:
+        serializedVersion: 2
+        x: 3000
+        y: 1014
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 962ee90ffb955e04fb0e90c811a3c0c6
+      internalID: 451571112
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_188
+      rect:
+        serializedVersion: 2
+        x: 3600
+        y: 1014
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aa984710d0213a44b9cfb182e2c859e8
+      internalID: 1017907638
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_189
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 676
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6be988a6b98dc8f4aadf68a532d02ca9
+      internalID: -1800414356
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_190
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 676
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: de80b80d2bac887429b8f18f5246c628
+      internalID: -505600340
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_191
+      rect:
+        serializedVersion: 2
+        x: 1200
+        y: 676
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cf60b20b6207afa4b957e4b0ac7b05f1
+      internalID: -1953284753
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_192
+      rect:
+        serializedVersion: 2
+        x: 1800
+        y: 676
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 84f67b1d80b302845b9ee81b0a897ad6
+      internalID: 1594483633
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_193
+      rect:
+        serializedVersion: 2
+        x: 2400
+        y: 676
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c443db3d34fbf194faf6bf15a8e80083
+      internalID: -923147642
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_194
+      rect:
+        serializedVersion: 2
+        x: 3000
+        y: 676
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0560b7c521ae7a24eb8c1d43907ed906
+      internalID: 779749981
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_195
+      rect:
+        serializedVersion: 2
+        x: 3600
+        y: 676
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6f617833eafb29f45a5b452828e78a16
+      internalID: 1740793779
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_196
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 338
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b04527cedbb39d24ea0fb0acd666a4d8
+      internalID: -786565575
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_197
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 338
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 364e91a163b59b342b34ad784e661c36
+      internalID: 928292583
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_198
+      rect:
+        serializedVersion: 2
+        x: 1200
+        y: 338
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9988e7815dd72214e902fbfb538419ca
+      internalID: -182513085
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_199
+      rect:
+        serializedVersion: 2
+        x: 1800
+        y: 338
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6dcb3a0e206823f40baefd04df828b96
+      internalID: 2112487697
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_200
+      rect:
+        serializedVersion: 2
+        x: 2400
+        y: 338
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c05f65974fa6a7747a2d7b7111c9543a
+      internalID: -1733928270
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_201
+      rect:
+        serializedVersion: 2
+        x: 3000
+        y: 338
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ddb2d3c0dd22ba249ac535fac6c2625f
+      internalID: 882756469
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_202
+      rect:
+        serializedVersion: 2
+        x: 3600
+        y: 338
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 225ad185dfec2354da72440e33f0af55
+      internalID: -1106824435
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_203
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0974c90ccebfb614292be726db41b6f4
+      internalID: 1199266875
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_204
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 0
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 13672a4eff75b0b40acbed9a553a7deb
+      internalID: 414118439
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_205
+      rect:
+        serializedVersion: 2
+        x: 1200
+        y: 0
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 262b6715f213ac94cbe0648140644ad6
+      internalID: -783764083
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_206
+      rect:
+        serializedVersion: 2
+        x: 1800
+        y: 0
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 17b204e226b70ad4c950c377049301ad
+      internalID: 1947387715
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_207
+      rect:
+        serializedVersion: 2
+        x: 2400
+        y: 0
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8e576fdff423bf8419d3f778a02e817d
+      internalID: -1843229368
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_208
+      rect:
+        serializedVersion: 2
+        x: 3000
+        y: 0
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6c4ed418700ea4f48930be90efae44ba
+      internalID: 139907831
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tutorialDrawSpritesheet_209
+      rect:
+        serializedVersion: 2
+        x: 3600
+        y: 0
+        width: 600
+        height: 338
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0808e74357eb840428211b6170b72e13
+      internalID: -477215664
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 4928c1f1bb61d0a459738611ee8d101a
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      tutorialDrawSpritesheet_120: 1066690368
+      tutorialDrawSpritesheet_70: -1022071892
+      tutorialDrawSpritesheet_199: 2112487697
+      tutorialDrawSpritesheet_7: 954489116
+      tutorialDrawSpritesheet_132: 1563346772
+      tutorialDrawSpritesheet_156: 1090662141
+      tutorialDrawSpritesheet_98: -377527244
+      tutorialDrawSpritesheet_100: -1745051364
+      tutorialDrawSpritesheet_143: 1065906635
+      tutorialDrawSpritesheet_83: 1370594560
+      tutorialDrawSpritesheet_186: -1758155702
+      tutorialDrawSpritesheet_19: -1412742242
+      tutorialDrawSpritesheet_27: -1714568128
+      tutorialDrawSpritesheet_13: -719572898
+      tutorialDrawSpritesheet_36: 1422280708
+      tutorialDrawSpritesheet_39: -153055520
+      tutorialDrawSpritesheet_0: 826694246
+      tutorialDrawSpritesheet_55: -1874634103
+      tutorialDrawSpritesheet_137: -1335958234
+      tutorialDrawSpritesheet_113: 1111856617
+      tutorialDrawSpritesheet_163: 1226344843
+      tutorialDrawSpritesheet_44: -2122983783
+      tutorialDrawSpritesheet_12: -898904534
+      tutorialDrawSpritesheet_177: -1675543584
+      tutorialDrawSpritesheet_66: 1950041604
+      tutorialDrawSpritesheet_209: -477215664
+      tutorialDrawSpritesheet_198: -182513085
+      tutorialDrawSpritesheet_49: -1295941287
+      tutorialDrawSpritesheet_23: -1048729140
+      tutorialDrawSpritesheet_128: 817696038
+      tutorialDrawSpritesheet_194: 779749981
+      tutorialDrawSpritesheet_131: 2052798768
+      tutorialDrawSpritesheet_183: -1944164545
+      tutorialDrawSpritesheet_80: -1091213825
+      tutorialDrawSpritesheet_148: 784073612
+      tutorialDrawSpritesheet_29: -1033705817
+      tutorialDrawSpritesheet_152: 404734550
+      tutorialDrawSpritesheet_82: 873018777
+      tutorialDrawSpritesheet_51: -1774856885
+      tutorialDrawSpritesheet_62: -324824413
+      tutorialDrawSpritesheet_92: 349409799
+      tutorialDrawSpritesheet_47: 1967248052
+      tutorialDrawSpritesheet_57: 829961957
+      tutorialDrawSpritesheet_71: -1659692115
+      tutorialDrawSpritesheet_119: -1029435788
+      tutorialDrawSpritesheet_180: -1359692998
+      tutorialDrawSpritesheet_112: 1779580325
+      tutorialDrawSpritesheet_153: -1602564574
+      tutorialDrawSpritesheet_121: 321314157
+      tutorialDrawSpritesheet_108: -1332252675
+      tutorialDrawSpritesheet_173: 614599061
+      tutorialDrawSpritesheet_1: -1755696549
+      tutorialDrawSpritesheet_40: -1244819454
+      tutorialDrawSpritesheet_30: 1909958943
+      tutorialDrawSpritesheet_32: 470794653
+      tutorialDrawSpritesheet_79: -501558267
+      tutorialDrawSpritesheet_88: -1610956914
+      tutorialDrawSpritesheet_58: 446903057
+      tutorialDrawSpritesheet_2: -202262318
+      tutorialDrawSpritesheet_204: 414118439
+      tutorialDrawSpritesheet_141: 1483544281
+      tutorialDrawSpritesheet_161: 881589552
+      tutorialDrawSpritesheet_206: 1947387715
+      tutorialDrawSpritesheet_75: 1900013493
+      tutorialDrawSpritesheet_188: 1017907638
+      tutorialDrawSpritesheet_107: 1518327140
+      tutorialDrawSpritesheet_171: 112947938
+      tutorialDrawSpritesheet_76: 1191396814
+      tutorialDrawSpritesheet_167: 15762471
+      tutorialDrawSpritesheet_20: 489654256
+      tutorialDrawSpritesheet_78: 1180467234
+      tutorialDrawSpritesheet_130: -97207908
+      tutorialDrawSpritesheet_155: -204126404
+      tutorialDrawSpritesheet_164: 1454343398
+      tutorialDrawSpritesheet_67: -1231840339
+      tutorialDrawSpritesheet_160: 783121034
+      tutorialDrawSpritesheet_95: 1961053240
+      tutorialDrawSpritesheet_168: -1168731597
+      tutorialDrawSpritesheet_189: -1800414356
+      tutorialDrawSpritesheet_61: -1011801686
+      tutorialDrawSpritesheet_154: 1678285871
+      tutorialDrawSpritesheet_101: -1058011448
+      tutorialDrawSpritesheet_26: -2131964986
+      tutorialDrawSpritesheet_22: 726883214
+      tutorialDrawSpritesheet_48: -1030655642
+      tutorialDrawSpritesheet_77: -1389653419
+      tutorialDrawSpritesheet_122: -716840987
+      tutorialDrawSpritesheet_93: -671601986
+      tutorialDrawSpritesheet_106: 16380811
+      tutorialDrawSpritesheet_135: -109895707
+      tutorialDrawSpritesheet_102: 664448948
+      tutorialDrawSpritesheet_187: 451571112
+      tutorialDrawSpritesheet_114: -27981263
+      tutorialDrawSpritesheet_181: -1041702534
+      tutorialDrawSpritesheet_115: 423422710
+      tutorialDrawSpritesheet_208: 139907831
+      tutorialDrawSpritesheet_14: -1632734039
+      tutorialDrawSpritesheet_203: 1199266875
+      tutorialDrawSpritesheet_38: 1009295792
+      tutorialDrawSpritesheet_190: -505600340
+      tutorialDrawSpritesheet_90: -920189935
+      tutorialDrawSpritesheet_205: -783764083
+      tutorialDrawSpritesheet_81: 374367161
+      tutorialDrawSpritesheet_64: -2144521186
+      tutorialDrawSpritesheet_74: 1910586845
+      tutorialDrawSpritesheet_193: -923147642
+      tutorialDrawSpritesheet_42: 1901048479
+      tutorialDrawSpritesheet_54: -1056312398
+      tutorialDrawSpritesheet_117: 1384899093
+      tutorialDrawSpritesheet_99: -467279180
+      tutorialDrawSpritesheet_158: 1360850153
+      tutorialDrawSpritesheet_87: 290850538
+      tutorialDrawSpritesheet_94: -1987690162
+      tutorialDrawSpritesheet_196: -786565575
+      tutorialDrawSpritesheet_33: 424208491
+      tutorialDrawSpritesheet_144: 1675019697
+      tutorialDrawSpritesheet_149: -1103854751
+      tutorialDrawSpritesheet_86: -1020370318
+      tutorialDrawSpritesheet_59: -396918699
+      tutorialDrawSpritesheet_41: -1859406061
+      tutorialDrawSpritesheet_46: 1918976624
+      tutorialDrawSpritesheet_65: 1109009221
+      tutorialDrawSpritesheet_43: 2068952754
+      tutorialDrawSpritesheet_127: -1524980485
+      tutorialDrawSpritesheet_89: 105146335
+      tutorialDrawSpritesheet_145: -872691756
+      tutorialDrawSpritesheet_197: 928292583
+      tutorialDrawSpritesheet_111: -635429948
+      tutorialDrawSpritesheet_34: -1053683452
+      tutorialDrawSpritesheet_169: 2117372409
+      tutorialDrawSpritesheet_9: 1810334448
+      tutorialDrawSpritesheet_31: -1755661605
+      tutorialDrawSpritesheet_18: 312324249
+      tutorialDrawSpritesheet_25: -2082320174
+      tutorialDrawSpritesheet_126: -1353877095
+      tutorialDrawSpritesheet_68: -1359009150
+      tutorialDrawSpritesheet_103: 1392627595
+      tutorialDrawSpritesheet_63: -1873521062
+      tutorialDrawSpritesheet_176: 551920199
+      tutorialDrawSpritesheet_24: -1982736265
+      tutorialDrawSpritesheet_4: 1376137412
+      tutorialDrawSpritesheet_133: 1168358424
+      tutorialDrawSpritesheet_192: 1594483633
+      tutorialDrawSpritesheet_124: 338973732
+      tutorialDrawSpritesheet_134: 461900763
+      tutorialDrawSpritesheet_159: 1836157955
+      tutorialDrawSpritesheet_69: 2133311660
+      tutorialDrawSpritesheet_140: 466266641
+      tutorialDrawSpritesheet_174: -1219272456
+      tutorialDrawSpritesheet_138: -328903042
+      tutorialDrawSpritesheet_125: -2044172057
+      tutorialDrawSpritesheet_201: 882756469
+      tutorialDrawSpritesheet_91: 2137805577
+      tutorialDrawSpritesheet_185: -238437541
+      tutorialDrawSpritesheet_96: -1729532415
+      tutorialDrawSpritesheet_60: -918220187
+      tutorialDrawSpritesheet_50: 1715999463
+      tutorialDrawSpritesheet_139: 1344497190
+      tutorialDrawSpritesheet_182: 296848388
+      tutorialDrawSpritesheet_136: -1618291883
+      tutorialDrawSpritesheet_10: 1375284400
+      tutorialDrawSpritesheet_165: 1726734624
+      tutorialDrawSpritesheet_184: 54429163
+      tutorialDrawSpritesheet_104: -1235329929
+      tutorialDrawSpritesheet_15: -1080808309
+      tutorialDrawSpritesheet_116: 1659453179
+      tutorialDrawSpritesheet_157: -1863803220
+      tutorialDrawSpritesheet_5: -1982841306
+      tutorialDrawSpritesheet_52: 410732926
+      tutorialDrawSpritesheet_21: -1193059368
+      tutorialDrawSpritesheet_97: -668012668
+      tutorialDrawSpritesheet_150: 1006231892
+      tutorialDrawSpritesheet_6: -1796285548
+      tutorialDrawSpritesheet_35: 1179942144
+      tutorialDrawSpritesheet_151: -1108684549
+      tutorialDrawSpritesheet_142: 1739936230
+      tutorialDrawSpritesheet_45: 1516032948
+      tutorialDrawSpritesheet_179: 1145087253
+      tutorialDrawSpritesheet_17: 228253191
+      tutorialDrawSpritesheet_146: -1246903671
+      tutorialDrawSpritesheet_110: 1249600587
+      tutorialDrawSpritesheet_84: -1127064982
+      tutorialDrawSpritesheet_147: -1464038813
+      tutorialDrawSpritesheet_109: 1139600561
+      tutorialDrawSpritesheet_191: -1953284753
+      tutorialDrawSpritesheet_166: 783956040
+      tutorialDrawSpritesheet_195: 1740793779
+      tutorialDrawSpritesheet_162: -749978283
+      tutorialDrawSpritesheet_105: -75669499
+      tutorialDrawSpritesheet_129: 15866822
+      tutorialDrawSpritesheet_123: -1949620273
+      tutorialDrawSpritesheet_172: -1051018037
+      tutorialDrawSpritesheet_178: -1910263644
+      tutorialDrawSpritesheet_72: -1032016226
+      tutorialDrawSpritesheet_8: -1510384534
+      tutorialDrawSpritesheet_53: 987243994
+      tutorialDrawSpritesheet_207: -1843229368
+      tutorialDrawSpritesheet_56: 776936388
+      tutorialDrawSpritesheet_3: 125297206
+      tutorialDrawSpritesheet_200: -1733928270
+      tutorialDrawSpritesheet_202: -1106824435
+      tutorialDrawSpritesheet_16: 1367410128
+      tutorialDrawSpritesheet_73: 1788607713
+      tutorialDrawSpritesheet_175: -1002176214
+      tutorialDrawSpritesheet_170: -1420018925
+      tutorialDrawSpritesheet_37: 984425276
+      tutorialDrawSpritesheet_28: -1120381073
+      tutorialDrawSpritesheet_11: 209869377
+      tutorialDrawSpritesheet_85: -1708247624
+      tutorialDrawSpritesheet_118: -1385306393
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

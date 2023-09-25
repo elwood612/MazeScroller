@@ -88,6 +88,7 @@ public class GameManager : MonoBehaviour
     public static Action OnDisableTutorials;
     public static Action<string> OnErrorMessage;
     public static Action OnCrashMessage;
+    public static Action<int> OnTutorialVideo;
 
     public static GameState CurrentState;
     public static GameManager Instance;
@@ -296,7 +297,7 @@ public class GameManager : MonoBehaviour
         PreviousHighScore = HighScore;
 
         QualitySettings.vSyncCount = 0;
-        //Application.targetFrameRate = 60;
+        Application.targetFrameRate = 60;
 
         if (_debugMode)
         {

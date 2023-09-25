@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: Ray Herrly
-  productName: Maze 'Merize
+  productName: MazeMerize
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 1, g: 0.45098042, b: 1, a: 1}
@@ -156,7 +156,7 @@ PlayerSettings:
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
     Android: com.RayHerrly.MazeMerize
-    Standalone: com.Ray-Herrly.Maze--Merize
+    Standalone: com.Ray-Herrly.MazeMerize
   buildNumber:
     Standalone: 0
     iPhone: 0
@@ -836,7 +836,7 @@ PlayerSettings:
   allowUnsafeCode: 0
   useDeterministicCompilation: 1
   enableRoslynAnalyzers: 1
-  selectedPlatform: 2
+  selectedPlatform: 0
   additionalIl2CppArgs: 
   scriptingRuntimeVersion: 1
   gcIncremental: 1
