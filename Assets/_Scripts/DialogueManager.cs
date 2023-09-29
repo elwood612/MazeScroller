@@ -54,11 +54,19 @@ public class DialogueManager : MonoBehaviour
         OnDialogueOpen?.Invoke(false);
         OnDialogueEnd?.Invoke();
         if (GameManager.CurrentState == GameState.Transition)
-        { 
-            if (GameManager.IsGameOver && !GameManager.DoTutorial[14]) // really don't want to depend on a tutorial for this...
+        {
+            if (GameManager.IsGameOver)
             {
-                GameManager.Instance.GameOver();
-                return;
+                if (!GameManager.DoTutorial[14])
+                {
+                    GameManager.Instance.GameOver();
+                    return;
+                }
+                else
+                {
+                    GameManager.OnNextTutorial?.Invoke(14);
+                    return;
+                }
             }
             if (_isQuery)
             {

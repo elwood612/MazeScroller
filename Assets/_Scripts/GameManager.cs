@@ -428,7 +428,7 @@ public class GameManager : MonoBehaviour
         _tileLength = SampleTileTransform.GetComponent<BoxCollider>().bounds.size.x;
         _currentScore = 0;
         GameUnderway = false;
-        GlobalDialogueCounter = 0;
+        GlobalDialogueCounter = _debugMode ? _debugStartStage : 0;
         NeedDialogueBoxHint = true;
         DoTutorial = new bool[_allTutorialDialogue.Length];
         for (int i = 0; i < _allTutorialDialogue.Length; i++)
@@ -529,6 +529,7 @@ public class GameManager : MonoBehaviour
         if (GlobalDialogueCounter >= _globalStageDialogue.Length - 1 && answered)
         {
             _isGameOver = true;
+            Debug.Log("Game over friend");
         }
 
         if (answered)
