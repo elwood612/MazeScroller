@@ -21,7 +21,7 @@ public class CameraBehavior : MonoBehaviour
     private Quaternion _targetRotation;
     private Quaternion _refDeriv;
     private bool _goodToMove = false;
-    private bool _goodToRotate = false;
+    //private bool _goodToRotate = false;
     private bool _firstMove = true;
     
     private float _delta = 0.1f;
@@ -51,7 +51,7 @@ public class CameraBehavior : MonoBehaviour
     private void Update()
     {
         if (_goodToMove) { MoveCamera(); }
-        if (_goodToRotate) { RotateCamera(); }
+        //if (_goodToRotate) { RotateCamera(); }
         if (_goodToShake) { ShakeCamera(); }
     }
 
@@ -73,7 +73,7 @@ public class CameraBehavior : MonoBehaviour
         _targetRotation = _transitionRotation;
 
         _goodToMove = true;
-        _goodToRotate = true;
+        //_goodToRotate = true;
     }
 
     private void SetTargetForStage(GameState state)
@@ -84,7 +84,7 @@ public class CameraBehavior : MonoBehaviour
         _targetRotation = _stageRotation;
 
         _goodToMove = true;
-        _goodToRotate = true;
+        //_goodToRotate = true;
     }
 
     private void SetTargetForMenu()
@@ -93,7 +93,7 @@ public class CameraBehavior : MonoBehaviour
         _targetRotation = _menuRotation;
 
         _goodToMove = true;
-        _goodToRotate = true;
+        //_goodToRotate = true;
     }
 
     private void EnableCameraShake()
@@ -118,14 +118,14 @@ public class CameraBehavior : MonoBehaviour
         }
     }
 
-    private void RotateCamera()
-    {
-        transform.rotation = CameraHelperMethods.SmoothDamp(transform.rotation, _targetRotation, ref _refDeriv, _smooth);
-        if (CameraHelperMethods.CompareQuaternions(transform.rotation, _targetRotation, _delta))
-        {
-            _goodToRotate = false;
-        }
-    }
+    //private void RotateCamera()
+    //{
+    //    transform.rotation = CameraHelperMethods.SmoothDamp(transform.rotation, _targetRotation, ref _refDeriv, _smooth);
+    //    if (CameraHelperMethods.CompareQuaternions(transform.rotation, _targetRotation, _delta))
+    //    {
+    //        _goodToRotate = false;
+    //    }
+    //}
 
     private void ShakeCamera()
     {

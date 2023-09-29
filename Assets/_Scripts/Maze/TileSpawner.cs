@@ -179,13 +179,15 @@ public class TileSpawner : MonoBehaviour
                     {
                         _counterSpawnCrystal = 0;
                         _tutorialThirdCrystal = true;
-                        if (Random.Range(0f, 1f) < 0.6f) { StartCoroutine(SpawnSpecificCrystal(other.GetComponent<Row>(), 1)); }
+                        if (Random.Range(0f, 1f) < 0.6f) 
+                        { 
+                            StartCoroutine(SpawnSpecificCrystal(other.GetComponent<Row>(), 1)); 
+                        }
                         else { StartCoroutine(SpawnSpecificCrystal(other.GetComponent<Row>(), 0)); }
                         return;
                     }
                     if (_tutorialThirdCrystal)
                     {
-                        Debug.Log("Spawning tutorial crystal");
                         _counterSpawnCrystal = 0;
                         _tutorialThirdCrystal = false;
                         if (Random.Range(0f, 1f) < 0.4f) { StartCoroutine(SpawnSpecificCrystal(other.GetComponent<Row>(), 1)); }

@@ -81,6 +81,10 @@ public class UIManager : MonoBehaviour
         _newHighScore.enabled = false;
         _debugMessage.enabled = false;
         _crashMessage.SetActive(false);
+
+        // test //
+        _tutorialVideoPlayer[0].url = System.IO.Path.Combine(Application.streamingAssetsPath, "tutDraw.mp4");
+        _tutorialVideoPlayer[1].url = System.IO.Path.Combine(Application.streamingAssetsPath, "tutBlue.mp4");
     }
 
     private void OnEnable()
@@ -140,6 +144,7 @@ public class UIManager : MonoBehaviour
         Debug.Log("Display tutorial");
         _tutorialGroup[tutorialIndex].SetActive(true);
         _tutorialVideoPlayer[tutorialIndex].gameObject.SetActive(true);
+        GameManager.IsTutorialVideoOpen = true;
     }
 
     private void UpdateSpeedBonus(int value)

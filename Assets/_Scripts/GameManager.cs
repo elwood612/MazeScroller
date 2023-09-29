@@ -61,6 +61,7 @@ public class GameManager : MonoBehaviour
     private static bool _spawnGoldCrystal = false;
     private static bool _spawnGreenCrystal = false;
     private static bool _isGameOver = false;
+    private static bool _isTutorialVideoOpen = false;
     private static bool _repeatingStage = false;
     private static bool _compassionateVictoryAchieved = false;
     private static Vector3 _tileSpeed = Vector3.zero;
@@ -157,6 +158,11 @@ public class GameManager : MonoBehaviour
     {
         get => _isStageMenuOpen;
         set => _isStageMenuOpen = value;
+    }
+    public static bool IsTutorialVideoOpen
+    {
+        get => _isTutorialVideoOpen;
+        set => _isTutorialVideoOpen = value;
     }
     public static bool NeedDialogueBoxHint
     {
@@ -317,9 +323,9 @@ public class GameManager : MonoBehaviour
         if (CurrentState == GameState.Setup) { return; }
         CalculateBoardSpeed(_speedMultiplier);
 
-        if (_decreaseSpeedBonus && _triggerBonusStep && !DialogueManager.Instance.IsDialogueActive && !_isStageMenuOpen) { StartCoroutine(BonusDecrease()); }
+        if (_decreaseSpeedBonus && _triggerBonusStep && !DialogueManager.Instance.IsDialogueActive && !_isStageMenuOpen && !_isTutorialVideoOpen) { StartCoroutine(BonusDecrease()); }
     }
-
+    
     private void CalculateBoardSpeed(float multiplier)
     {
         float heightCurve;
@@ -404,6 +410,7 @@ public class GameManager : MonoBehaviour
         _currentScore = 0;
         GameUnderway = false;
         GlobalDialogueCounter = 0;
+        NeedDialogueBoxHint = true;
         _isTutorialsEnabled = false;
         for (int i = 0; i < _allTutorialDialogue.Length; i++)
         {
@@ -422,6 +429,7 @@ public class GameManager : MonoBehaviour
         _currentScore = 0;
         GameUnderway = false;
         GlobalDialogueCounter = 0;
+        NeedDialogueBoxHint = true;
         DoTutorial = new bool[_allTutorialDialogue.Length];
         for (int i = 0; i < _allTutorialDialogue.Length; i++)
         {
@@ -464,7 +472,7 @@ public class GameManager : MonoBehaviour
 
     public static void AddBoardMotion(Transform t)
     {
-        if ((DialogueManager.Instance.IsTutorialDialogueActive && !_isGameOver) || _isStageMenuOpen) { return; }
+        if ((DialogueManager.Instance.IsTutorialDialogueActive && !_isGameOver) || _isStageMenuOpen || _isTutorialVideoOpen) { return; }
 
         if (IsRunnerInTransition)
         {

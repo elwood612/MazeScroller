@@ -66,8 +66,8 @@ public class DialogueManager : MonoBehaviour
                 _isQuery = false;
             }
         }
-        if (!GameManager.DoTutorial[0] && GameManager.DoTutorial[1]) { GameManager.OnTutorialVideo?.Invoke(0); }
-        // here put GameManager.OnTutorialVideo?.Invoke(1); after 1st blue crystal
+        if (!GameManager.DoTutorial[0] && GameManager.DoTutorial[1] && GameManager.IsTutorialsEnabled) { GameManager.OnTutorialVideo?.Invoke(0); }
+        if (!GameManager.DoTutorial[4] && GameManager.DoTutorial[5] && GameManager.IsTutorialsEnabled) { GameManager.OnTutorialVideo?.Invoke(1); }
     }
 
     public void NextSentence()

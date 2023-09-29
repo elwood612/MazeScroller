@@ -13,8 +13,7 @@ MonoBehaviour:
   m_Name: Tutorial04
   m_EditorClassIdentifier: 
   _lines:
-  - Ah, see how this BLUE crystal had a shield around it?
-  - I broke the shield when I pathed over it.
-  - 'But now I need to hit this crystal again to get rid of it. '
-  - Go ahead and make me hit this same crystal again.
-  - Try pathing away first, THEN back over.
+  - Look, a BLUE crystal!
+  - 'See how it has a shield around it? '
+  - 'I''m going to need to hit it twice. Once for the shield, once for the crystal. '
+  - Go ahead and path to the crystal, then back over it.

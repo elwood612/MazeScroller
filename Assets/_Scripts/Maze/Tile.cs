@@ -112,14 +112,6 @@ public class Tile : MonoBehaviour
         }
     }
 
-    //private void OnTriggerExit(Collider other)
-    //{
-    //    if (other.CompareTag("Runner"))
-    //    {
-    //        DebugUncrossedTile = false;
-    //    }
-    //}
-
     private void PlayerCrossing(IRunner runner)
     {
         SetMaterial(_tileCrossed);
