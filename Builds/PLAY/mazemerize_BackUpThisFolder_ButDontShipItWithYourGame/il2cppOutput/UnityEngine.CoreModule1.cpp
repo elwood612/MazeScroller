@@ -6005,12 +6005,8 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR Object_tC12DECB6760A7F2CBF65D9DCF18D044C2D971
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void ResourcesAPI__ctor_m27A1A0B35DF74437840934A70F47DE1BAEAFECA0 (ResourcesAPI_tDD1769E5695358FB56E4E0FA44A9E25900662A95* __this, const RuntimeMethod* method) ;
 // UnityEngine.ResourcesAPI UnityEngine.ResourcesAPI::get_ActiveAPI()
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR ResourcesAPI_tDD1769E5695358FB56E4E0FA44A9E25900662A95* ResourcesAPI_get_ActiveAPI_mF850D558242EC69D97A42BCAEC2270D71F3250A4 (const RuntimeMethod* method) ;
-// System.Void UnityEngine.Gizmos::DrawWireSphere_Injected(UnityEngine.Vector3&,System.Single)
-IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void Gizmos_DrawWireSphere_Injected_m1518D7C8E270F9762A96638ECE33A92CE760C14A (Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2* ___0_center, float ___1_radius, const RuntimeMethod* method) ;
 // System.Void UnityEngine.Gizmos::DrawSphere_Injected(UnityEngine.Vector3&,System.Single)
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void Gizmos_DrawSphere_Injected_m62417BE06D2FCEDF80047E3E9D6522D0E5027F47 (Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2* ___0_center, float ___1_radius, const RuntimeMethod* method) ;
-// System.Void UnityEngine.Gizmos::DrawCube_Injected(UnityEngine.Vector3&,UnityEngine.Vector3&)
-IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void Gizmos_DrawCube_Injected_mC2985A8426A524C5F96B7B63D5797DBF05FF457F (Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2* ___0_center, Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2* ___1_size, const RuntimeMethod* method) ;
 // System.Void UnityEngine.Application::Quit(System.Int32)
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void Application_Quit_m911F09318DCF5EBDD7E406B99A3E31865E732ADC (int32_t ___0_exitCode, const RuntimeMethod* method) ;
 // System.Void UnityEngine.Application/LowMemoryCallback::Invoke()
@@ -14162,15 +14158,6 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR int32_t SortingLayer_GetLayerValueFromID_mEB8
 #pragma clang diagnostic ignored "-Winvalid-offsetof"
 #pragma clang diagnostic ignored "-Wunused-variable"
 #endif
-// System.Void UnityEngine.Gizmos::DrawWireSphere(UnityEngine.Vector3,System.Single)
-IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void Gizmos_DrawWireSphere_m12C01EC9334C32425074A214C5B876271B3DDBA1 (Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2 ___0_center, float ___1_radius, const RuntimeMethod* method) 
-{
-	{
-		float L_0 = ___1_radius;
-		Gizmos_DrawWireSphere_Injected_m1518D7C8E270F9762A96638ECE33A92CE760C14A((&___0_center), L_0, NULL);
-		return;
-	}
-}
 // System.Void UnityEngine.Gizmos::DrawSphere(UnityEngine.Vector3,System.Single)
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void Gizmos_DrawSphere_mC7B2862BBDB3141A63B83F0F1E56E30101D4F472 (Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2 ___0_center, float ___1_radius, const RuntimeMethod* method) 
 {
@@ -14180,23 +14167,6 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void Gizmos_DrawSphere_mC7B2862BBDB3141A63B83
 		return;
 	}
 }
-// System.Void UnityEngine.Gizmos::DrawCube(UnityEngine.Vector3,UnityEngine.Vector3)
-IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void Gizmos_DrawCube_m4417EAEA479EF4AD52445810D840BA8FCBC6EF3F (Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2 ___0_center, Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2 ___1_size, const RuntimeMethod* method) 
-{
-	{
-		Gizmos_DrawCube_Injected_mC2985A8426A524C5F96B7B63D5797DBF05FF457F((&___0_center), (&___1_size), NULL);
-		return;
-	}
-}
-// System.Void UnityEngine.Gizmos::DrawWireSphere_Injected(UnityEngine.Vector3&,System.Single)
-IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void Gizmos_DrawWireSphere_Injected_m1518D7C8E270F9762A96638ECE33A92CE760C14A (Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2* ___0_center, float ___1_radius, const RuntimeMethod* method) 
-{
-	typedef void (*Gizmos_DrawWireSphere_Injected_m1518D7C8E270F9762A96638ECE33A92CE760C14A_ftn) (Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2*, float);
-	static Gizmos_DrawWireSphere_Injected_m1518D7C8E270F9762A96638ECE33A92CE760C14A_ftn _il2cpp_icall_func;
-	if (!_il2cpp_icall_func)
-	_il2cpp_icall_func = (Gizmos_DrawWireSphere_Injected_m1518D7C8E270F9762A96638ECE33A92CE760C14A_ftn)il2cpp_codegen_resolve_icall ("UnityEngine.Gizmos::DrawWireSphere_Injected(UnityEngine.Vector3&,System.Single)");
-	_il2cpp_icall_func(___0_center, ___1_radius);
-}
 // System.Void UnityEngine.Gizmos::DrawSphere_Injected(UnityEngine.Vector3&,System.Single)
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void Gizmos_DrawSphere_Injected_m62417BE06D2FCEDF80047E3E9D6522D0E5027F47 (Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2* ___0_center, float ___1_radius, const RuntimeMethod* method) 
 {
@@ -14205,15 +14175,6 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void Gizmos_DrawSphere_Injected_m62417BE06D2F
 	if (!_il2cpp_icall_func)
 	_il2cpp_icall_func = (Gizmos_DrawSphere_Injected_m62417BE06D2FCEDF80047E3E9D6522D0E5027F47_ftn)il2cpp_codegen_resolve_icall ("UnityEngine.Gizmos::DrawSphere_Injected(UnityEngine.Vector3&,System.Single)");
 	_il2cpp_icall_func(___0_center, ___1_radius);
-}
-// System.Void UnityEngine.Gizmos::DrawCube_Injected(UnityEngine.Vector3&,UnityEngine.Vector3&)
-IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void Gizmos_DrawCube_Injected_mC2985A8426A524C5F96B7B63D5797DBF05FF457F (Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2* ___0_center, Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2* ___1_size, const RuntimeMethod* method) 
-{
-	typedef void (*Gizmos_DrawCube_Injected_mC2985A8426A524C5F96B7B63D5797DBF05FF457F_ftn) (Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2*, Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2*);
-	static Gizmos_DrawCube_Injected_mC2985A8426A524C5F96B7B63D5797DBF05FF457F_ftn _il2cpp_icall_func;
-	if (!_il2cpp_icall_func)
-	_il2cpp_icall_func = (Gizmos_DrawCube_Injected_mC2985A8426A524C5F96B7B63D5797DBF05FF457F_ftn)il2cpp_codegen_resolve_icall ("UnityEngine.Gizmos::DrawCube_Injected(UnityEngine.Vector3&,UnityEngine.Vector3&)");
-	_il2cpp_icall_func(___0_center, ___1_size);
 }
 #ifdef __clang__
 #pragma clang diagnostic pop
@@ -14280,6 +14241,16 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR bool Application_get_isBatchMode_mDE2DA11B2DA
 	bool icallRetVal = _il2cpp_icall_func();
 	return icallRetVal;
 }
+// System.String UnityEngine.Application::get_streamingAssetsPath()
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR String_t* Application_get_streamingAssetsPath_mB904BCD9A7A4F18A52C175DE4A81F5DC3010CDB5 (const RuntimeMethod* method) 
+{
+	typedef String_t* (*Application_get_streamingAssetsPath_mB904BCD9A7A4F18A52C175DE4A81F5DC3010CDB5_ftn) ();
+	static Application_get_streamingAssetsPath_mB904BCD9A7A4F18A52C175DE4A81F5DC3010CDB5_ftn _il2cpp_icall_func;
+	if (!_il2cpp_icall_func)
+	_il2cpp_icall_func = (Application_get_streamingAssetsPath_mB904BCD9A7A4F18A52C175DE4A81F5DC3010CDB5_ftn)il2cpp_codegen_resolve_icall ("UnityEngine.Application::get_streamingAssetsPath()");
+	String_t* icallRetVal = _il2cpp_icall_func();
+	return icallRetVal;
+}
 // System.String UnityEngine.Application::get_persistentDataPath()
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR String_t* Application_get_persistentDataPath_mC58BD3E1A20732E0A536491DBCAE6505B1624399 (const RuntimeMethod* method) 
 {
@@ -14299,6 +14270,15 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR int32_t Application_get_targetFrameRate_m5A5B
 	_il2cpp_icall_func = (Application_get_targetFrameRate_m5A5B0FC0DFE1EBC940FF49B8237A243F45A630E1_ftn)il2cpp_codegen_resolve_icall ("UnityEngine.Application::get_targetFrameRate()");
 	int32_t icallRetVal = _il2cpp_icall_func();
 	return icallRetVal;
+}
+// System.Void UnityEngine.Application::set_targetFrameRate(System.Int32)
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void Application_set_targetFrameRate_mB90EEA60DAE55CD71C38D4B7DFDBE2B34EA6B46F (int32_t ___0_value, const RuntimeMethod* method) 
+{
+	typedef void (*Application_set_targetFrameRate_mB90EEA60DAE55CD71C38D4B7DFDBE2B34EA6B46F_ftn) (int32_t);
+	static Application_set_targetFrameRate_mB90EEA60DAE55CD71C38D4B7DFDBE2B34EA6B46F_ftn _il2cpp_icall_func;
+	if (!_il2cpp_icall_func)
+	_il2cpp_icall_func = (Application_set_targetFrameRate_mB90EEA60DAE55CD71C38D4B7DFDBE2B34EA6B46F_ftn)il2cpp_codegen_resolve_icall ("UnityEngine.Application::set_targetFrameRate(System.Int32)");
+	_il2cpp_icall_func(___0_value);
 }
 // UnityEngine.RuntimePlatform UnityEngine.Application::get_platform()
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR int32_t Application_get_platform_m59EF7D6155D18891B24767F83F388160B1FF2138 (const RuntimeMethod* method) 

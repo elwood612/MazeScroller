@@ -1558,34 +1558,42 @@ struct AudioManager_t6D07140015098E8E7109BA8FD297F4537104D613  : public MonoBeha
 	float ____musicVol_10;
 	// System.Single AudioManager::_powerUpVol
 	float ____powerUpVol_11;
-	// System.Single AudioManager::_compassionateVol
-	float ____compassionateVol_12;
+	// System.Single AudioManager::_enoughStarsVol
+	float ____enoughStarsVol_12;
+	// System.Single AudioManager::_failureVol
+	float ____failureVol_13;
+	// System.Single AudioManager::_sucessVol
+	float ____sucessVol_14;
 	// System.Single AudioManager::_negativeVol
-	float ____negativeVol_13;
+	float ____negativeVol_15;
 	// System.Single[] AudioManager::_beepVol
-	SingleU5BU5D_t89DEFE97BCEDB5857010E79ECE0F52CF6E93B87C* ____beepVol_14;
+	SingleU5BU5D_t89DEFE97BCEDB5857010E79ECE0F52CF6E93B87C* ____beepVol_16;
 	// UnityEngine.AudioSource AudioManager::MissileBeep
-	AudioSource_t871AC2272F896738252F04EE949AEF5B241D3299* ___MissileBeep_15;
+	AudioSource_t871AC2272F896738252F04EE949AEF5B241D3299* ___MissileBeep_17;
 	// UnityEngine.AudioSource AudioManager::Negative
-	AudioSource_t871AC2272F896738252F04EE949AEF5B241D3299* ___Negative_16;
+	AudioSource_t871AC2272F896738252F04EE949AEF5B241D3299* ___Negative_18;
 	// UnityEngine.AudioSource AudioManager::StarGain
-	AudioSource_t871AC2272F896738252F04EE949AEF5B241D3299* ___StarGain_17;
+	AudioSource_t871AC2272F896738252F04EE949AEF5B241D3299* ___StarGain_19;
 	// UnityEngine.AudioSource AudioManager::UIClick
-	AudioSource_t871AC2272F896738252F04EE949AEF5B241D3299* ___UIClick_18;
+	AudioSource_t871AC2272F896738252F04EE949AEF5B241D3299* ___UIClick_20;
 	// UnityEngine.AudioSource AudioManager::UIZap
-	AudioSource_t871AC2272F896738252F04EE949AEF5B241D3299* ___UIZap_19;
+	AudioSource_t871AC2272F896738252F04EE949AEF5B241D3299* ___UIZap_21;
 	// UnityEngine.AudioSource AudioManager::UIStar
-	AudioSource_t871AC2272F896738252F04EE949AEF5B241D3299* ___UIStar_20;
+	AudioSource_t871AC2272F896738252F04EE949AEF5B241D3299* ___UIStar_22;
 	// UnityEngine.AudioSource AudioManager::UILevelDone
-	AudioSource_t871AC2272F896738252F04EE949AEF5B241D3299* ___UILevelDone_21;
+	AudioSource_t871AC2272F896738252F04EE949AEF5B241D3299* ___UILevelDone_23;
 	// UnityEngine.AudioSource AudioManager::Music
-	AudioSource_t871AC2272F896738252F04EE949AEF5B241D3299* ___Music_22;
+	AudioSource_t871AC2272F896738252F04EE949AEF5B241D3299* ___Music_24;
 	// UnityEngine.AudioSource AudioManager::PowerUp
-	AudioSource_t871AC2272F896738252F04EE949AEF5B241D3299* ___PowerUp_23;
-	// UnityEngine.AudioSource AudioManager::CompassionateVictory
-	AudioSource_t871AC2272F896738252F04EE949AEF5B241D3299* ___CompassionateVictory_24;
+	AudioSource_t871AC2272F896738252F04EE949AEF5B241D3299* ___PowerUp_25;
+	// UnityEngine.AudioSource AudioManager::EnoughStars
+	AudioSource_t871AC2272F896738252F04EE949AEF5B241D3299* ___EnoughStars_26;
+	// UnityEngine.AudioSource AudioManager::Failure
+	AudioSource_t871AC2272F896738252F04EE949AEF5B241D3299* ___Failure_27;
+	// UnityEngine.AudioSource AudioManager::Success
+	AudioSource_t871AC2272F896738252F04EE949AEF5B241D3299* ___Success_28;
 	// UnityEngine.AudioSource[] AudioManager::CrystalPop
-	AudioSourceU5BU5D_tBBF6E920E0DC80D53D4BB2A8D4C80D244EF170B2* ___CrystalPop_25;
+	AudioSourceU5BU5D_tBBF6E920E0DC80D53D4BB2A8D4C80D244EF170B2* ___CrystalPop_29;
 };
 
 // UnityEngine.AudioSource
@@ -2437,7 +2445,7 @@ struct Object_tC12DECB6760A7F2CBF65D9DCF18D044C2D97152C_StaticFields
 struct AudioManager_t6D07140015098E8E7109BA8FD297F4537104D613_StaticFields
 {
 	// AudioManager AudioManager::Instance
-	AudioManager_t6D07140015098E8E7109BA8FD297F4537104D613* ___Instance_26;
+	AudioManager_t6D07140015098E8E7109BA8FD297F4537104D613* ___Instance_30;
 };
 
 // AudioManager
@@ -2563,82 +2571,90 @@ struct GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields
 	bool ____spawnGreenCrystal_55;
 	// System.Boolean GameManager::_isGameOver
 	bool ____isGameOver_56;
+	// System.Boolean GameManager::_isTutorialVideoOpen
+	bool ____isTutorialVideoOpen_57;
 	// System.Boolean GameManager::_repeatingStage
-	bool ____repeatingStage_57;
+	bool ____repeatingStage_58;
 	// System.Boolean GameManager::_compassionateVictoryAchieved
-	bool ____compassionateVictoryAchieved_58;
+	bool ____compassionateVictoryAchieved_59;
 	// UnityEngine.Vector3 GameManager::_tileSpeed
-	Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2 ____tileSpeed_59;
+	Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2 ____tileSpeed_60;
 	// UnityEngine.Vector3 GameManager::_transitionSpeed
-	Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2 ____transitionSpeed_60;
+	Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2 ____transitionSpeed_61;
 	// UnityEngine.Vector3 GameManager::_boardLength
-	Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2 ____boardLength_61;
+	Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2 ____boardLength_62;
 	// Answer GameManager::_stageAnswerQuality
-	int32_t ____stageAnswerQuality_62;
+	int32_t ____stageAnswerQuality_63;
 	// System.Action`1<GameState> GameManager::OnStateChanged
-	Action_1_t97EB52F89C98CE3C1B240F2A8FA7F1168E9C2978* ___OnStateChanged_63;
+	Action_1_t97EB52F89C98CE3C1B240F2A8FA7F1168E9C2978* ___OnStateChanged_64;
 	// System.Action GameManager::OnSetupNextStage
-	Action_tD00B0A84D7945E50C2DFFC28EFEE6ED44ED2AD07* ___OnSetupNextStage_64;
+	Action_tD00B0A84D7945E50C2DFFC28EFEE6ED44ED2AD07* ___OnSetupNextStage_65;
 	// System.Action`1<System.Int32> GameManager::OnStarBonusChanged
-	Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* ___OnStarBonusChanged_65;
+	Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* ___OnStarBonusChanged_66;
 	// System.Action`1<System.Int32> GameManager::OnCompassionateStarAdded
-	Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* ___OnCompassionateStarAdded_66;
+	Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* ___OnCompassionateStarAdded_67;
 	// System.Action GameManager::OnCompassionateStarsReset
-	Action_tD00B0A84D7945E50C2DFFC28EFEE6ED44ED2AD07* ___OnCompassionateStarsReset_67;
+	Action_tD00B0A84D7945E50C2DFFC28EFEE6ED44ED2AD07* ___OnCompassionateStarsReset_68;
 	// System.Action GameManager::OnCompassionateVictory
-	Action_tD00B0A84D7945E50C2DFFC28EFEE6ED44ED2AD07* ___OnCompassionateVictory_68;
+	Action_tD00B0A84D7945E50C2DFFC28EFEE6ED44ED2AD07* ___OnCompassionateVictory_69;
 	// System.Action GameManager::OnStageEnd
-	Action_tD00B0A84D7945E50C2DFFC28EFEE6ED44ED2AD07* ___OnStageEnd_69;
+	Action_tD00B0A84D7945E50C2DFFC28EFEE6ED44ED2AD07* ___OnStageEnd_70;
 	// System.Action`1<UnityEngine.GameObject> GameManager::OnRunnerSpawned
-	Action_1_tFF0F3D982F6CEB68CBA322555CBBEE6AE1D2519C* ___OnRunnerSpawned_70;
+	Action_1_tFF0F3D982F6CEB68CBA322555CBBEE6AE1D2519C* ___OnRunnerSpawned_71;
 	// System.Action`1<System.Int32> GameManager::OnStarGained
-	Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* ___OnStarGained_71;
+	Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* ___OnStarGained_72;
 	// System.Action GameManager::OnMainMenuOpen
-	Action_tD00B0A84D7945E50C2DFFC28EFEE6ED44ED2AD07* ___OnMainMenuOpen_72;
+	Action_tD00B0A84D7945E50C2DFFC28EFEE6ED44ED2AD07* ___OnMainMenuOpen_73;
 	// System.Action GameManager::OnMainMenuClose
-	Action_tD00B0A84D7945E50C2DFFC28EFEE6ED44ED2AD07* ___OnMainMenuClose_73;
+	Action_tD00B0A84D7945E50C2DFFC28EFEE6ED44ED2AD07* ___OnMainMenuClose_74;
 	// System.Action GameManager::OnGameOver
-	Action_tD00B0A84D7945E50C2DFFC28EFEE6ED44ED2AD07* ___OnGameOver_74;
+	Action_tD00B0A84D7945E50C2DFFC28EFEE6ED44ED2AD07* ___OnGameOver_75;
 	// System.Action GameManager::OnQuitToMenu
-	Action_tD00B0A84D7945E50C2DFFC28EFEE6ED44ED2AD07* ___OnQuitToMenu_75;
+	Action_tD00B0A84D7945E50C2DFFC28EFEE6ED44ED2AD07* ___OnQuitToMenu_76;
 	// System.Action`1<System.Int32> GameManager::OnCompassionateChargeUp
-	Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* ___OnCompassionateChargeUp_76;
+	Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* ___OnCompassionateChargeUp_77;
 	// System.Action`1<System.Boolean> GameManager::OnCompassionateStarsToggle
-	Action_1_t10DCB0C07D0D3C565CEACADC80D1152B35A45F6C* ___OnCompassionateStarsToggle_77;
+	Action_1_t10DCB0C07D0D3C565CEACADC80D1152B35A45F6C* ___OnCompassionateStarsToggle_78;
 	// System.Action`1<System.Int32> GameManager::OnNextTutorial
-	Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* ___OnNextTutorial_78;
+	Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* ___OnNextTutorial_79;
 	// System.Action GameManager::OnShowEmptySlots
-	Action_tD00B0A84D7945E50C2DFFC28EFEE6ED44ED2AD07* ___OnShowEmptySlots_79;
+	Action_tD00B0A84D7945E50C2DFFC28EFEE6ED44ED2AD07* ___OnShowEmptySlots_80;
 	// System.Action GameManager::OnDisableTutorials
-	Action_tD00B0A84D7945E50C2DFFC28EFEE6ED44ED2AD07* ___OnDisableTutorials_80;
+	Action_tD00B0A84D7945E50C2DFFC28EFEE6ED44ED2AD07* ___OnDisableTutorials_81;
+	// System.Action`1<System.String> GameManager::OnErrorMessage
+	Action_1_t3CB5D1A819C3ED3F99E9E39F890F18633253949A* ___OnErrorMessage_82;
+	// System.Action GameManager::OnCrashMessage
+	Action_tD00B0A84D7945E50C2DFFC28EFEE6ED44ED2AD07* ___OnCrashMessage_83;
+	// System.Action`1<System.Int32> GameManager::OnTutorialVideo
+	Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* ___OnTutorialVideo_84;
 	// GameState GameManager::CurrentState
-	int32_t ___CurrentState_81;
+	int32_t ___CurrentState_85;
 	// GameManager GameManager::Instance
-	GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1* ___Instance_82;
+	GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1* ___Instance_86;
 	// UnityEngine.GameObject GameManager::LastCrystal
-	GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* ___LastCrystal_83;
+	GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* ___LastCrystal_87;
 	// System.Single GameManager::HighestDrawnRowHeight
-	float ___HighestDrawnRowHeight_84;
+	float ___HighestDrawnRowHeight_88;
 	// System.Single GameManager::RunnerHeight
-	float ___RunnerHeight_85;
+	float ___RunnerHeight_89;
 	// System.Int32 GameManager::NumberOfRows
-	int32_t ___NumberOfRows_86;
+	int32_t ___NumberOfRows_90;
 	// System.Boolean GameManager::IsRunnerInTransition
-	bool ___IsRunnerInTransition_87;
+	bool ___IsRunnerInTransition_91;
 	// System.Boolean GameManager::IsStageCompleted
-	bool ___IsStageCompleted_88;
+	bool ___IsStageCompleted_92;
 	// System.Boolean[] GameManager::DoTutorial
-	BooleanU5BU5D_tD317D27C31DB892BE79FAE3AEBC0B3FFB73DE9B4* ___DoTutorial_89;
+	BooleanU5BU5D_tD317D27C31DB892BE79FAE3AEBC0B3FFB73DE9B4* ___DoTutorial_93;
 	// System.Boolean GameManager::GreenCrystalTouched
-	bool ___GreenCrystalTouched_90;
+	bool ___GreenCrystalTouched_94;
 	// System.Boolean GameManager::GameUnderway
-	bool ___GameUnderway_91;
+	bool ___GameUnderway_95;
 	// System.Int32 GameManager::GlobalDialogueCounter
-	int32_t ___GlobalDialogueCounter_92;
+	int32_t ___GlobalDialogueCounter_96;
 	// System.Int32 GameManager::HighScore
-	int32_t ___HighScore_93;
+	int32_t ___HighScore_97;
 	// System.Int32 GameManager::PreviousHighScore
-	int32_t ___PreviousHighScore_94;
+	int32_t ___PreviousHighScore_98;
 };
 
 // GameManager
@@ -3709,7 +3725,7 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void Crystal_Update_mA19C4551FAC630CCE5466A04
 	{
 		// GameManager.Instance.CompassionateProgress++;
 		il2cpp_codegen_runtime_class_init_inline(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var);
-		GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1* L_1 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___Instance_82;
+		GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1* L_1 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___Instance_86;
 		GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1* L_2 = L_1;
 		NullCheck(L_2);
 		int32_t L_3;
@@ -3818,7 +3834,7 @@ IL_002e:
 	}
 	{
 		il2cpp_codegen_runtime_class_init_inline(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var);
-		BooleanU5BU5D_tD317D27C31DB892BE79FAE3AEBC0B3FFB73DE9B4* L_6 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___DoTutorial_89;
+		BooleanU5BU5D_tD317D27C31DB892BE79FAE3AEBC0B3FFB73DE9B4* L_6 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___DoTutorial_93;
 		NullCheck(L_6);
 		int32_t L_7 = ((int32_t)11);
 		uint8_t L_8 = (uint8_t)(L_6)->GetAt(static_cast<il2cpp_array_size_t>(L_7));
@@ -3870,7 +3886,7 @@ IL_0069:
 	}
 	{
 		il2cpp_codegen_runtime_class_init_inline(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var);
-		BooleanU5BU5D_tD317D27C31DB892BE79FAE3AEBC0B3FFB73DE9B4* L_13 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___DoTutorial_89;
+		BooleanU5BU5D_tD317D27C31DB892BE79FAE3AEBC0B3FFB73DE9B4* L_13 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___DoTutorial_93;
 		NullCheck(L_13);
 		int32_t L_14 = 5;
 		uint8_t L_15 = (uint8_t)(L_13)->GetAt(static_cast<il2cpp_array_size_t>(L_14));
@@ -3882,7 +3898,7 @@ IL_0069:
 	{
 		// GameManager.OnNextTutorial?.Invoke(18);
 		il2cpp_codegen_runtime_class_init_inline(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var);
-		Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* L_16 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___OnNextTutorial_78;
+		Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* L_16 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___OnNextTutorial_79;
 		Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* L_17 = L_16;
 		G_B14_0 = L_17;
 		if (L_17)
@@ -3904,22 +3920,22 @@ IL_0096:
 IL_009d:
 	{
 		// AudioManager.Instance.MissileBeep.pitch = Random.Range(0.6f, 1.2f);
-		AudioManager_t6D07140015098E8E7109BA8FD297F4537104D613* L_18 = ((AudioManager_t6D07140015098E8E7109BA8FD297F4537104D613_StaticFields*)il2cpp_codegen_static_fields_for(AudioManager_t6D07140015098E8E7109BA8FD297F4537104D613_il2cpp_TypeInfo_var))->___Instance_26;
+		AudioManager_t6D07140015098E8E7109BA8FD297F4537104D613* L_18 = ((AudioManager_t6D07140015098E8E7109BA8FD297F4537104D613_StaticFields*)il2cpp_codegen_static_fields_for(AudioManager_t6D07140015098E8E7109BA8FD297F4537104D613_il2cpp_TypeInfo_var))->___Instance_30;
 		NullCheck(L_18);
-		AudioSource_t871AC2272F896738252F04EE949AEF5B241D3299* L_19 = L_18->___MissileBeep_15;
+		AudioSource_t871AC2272F896738252F04EE949AEF5B241D3299* L_19 = L_18->___MissileBeep_17;
 		float L_20;
 		L_20 = Random_Range_m5236C99A7D8AE6AC9190592DC66016652A2D2494((0.600000024f), (1.20000005f), NULL);
 		NullCheck(L_19);
 		AudioSource_set_pitch_mD14631FC99BF38AAFB356D9C45546BC16CF9E811(L_19, L_20, NULL);
 		// AudioManager.Instance.MissileBeep.Play();
-		AudioManager_t6D07140015098E8E7109BA8FD297F4537104D613* L_21 = ((AudioManager_t6D07140015098E8E7109BA8FD297F4537104D613_StaticFields*)il2cpp_codegen_static_fields_for(AudioManager_t6D07140015098E8E7109BA8FD297F4537104D613_il2cpp_TypeInfo_var))->___Instance_26;
+		AudioManager_t6D07140015098E8E7109BA8FD297F4537104D613* L_21 = ((AudioManager_t6D07140015098E8E7109BA8FD297F4537104D613_StaticFields*)il2cpp_codegen_static_fields_for(AudioManager_t6D07140015098E8E7109BA8FD297F4537104D613_il2cpp_TypeInfo_var))->___Instance_30;
 		NullCheck(L_21);
-		AudioSource_t871AC2272F896738252F04EE949AEF5B241D3299* L_22 = L_21->___MissileBeep_15;
+		AudioSource_t871AC2272F896738252F04EE949AEF5B241D3299* L_22 = L_21->___MissileBeep_17;
 		NullCheck(L_22);
 		AudioSource_Play_m95DF07111C61D0E0F00257A00384D31531D590C3(L_22, NULL);
 		// GameManager.Instance.StarProgress++;
 		il2cpp_codegen_runtime_class_init_inline(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var);
-		GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1* L_23 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___Instance_82;
+		GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1* L_23 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___Instance_86;
 		GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1* L_24 = L_23;
 		NullCheck(L_24);
 		int32_t L_25;
@@ -3982,7 +3998,7 @@ IL_012a:
 	{
 		// GameManager.OnNextTutorial?.Invoke(1);
 		il2cpp_codegen_runtime_class_init_inline(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var);
-		Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* L_35 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___OnNextTutorial_78;
+		Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* L_35 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___OnNextTutorial_79;
 		Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* L_36 = L_35;
 		G_B22_0 = L_36;
 		if (L_36)
@@ -4050,7 +4066,7 @@ IL_0167:
 	{
 		// GameManager.OnNextTutorial?.Invoke(4);
 		il2cpp_codegen_runtime_class_init_inline(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var);
-		Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* L_41 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___OnNextTutorial_78;
+		Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* L_41 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___OnNextTutorial_79;
 		Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* L_42 = L_41;
 		G_B30_0 = L_42;
 		if (L_42)
@@ -4123,7 +4139,7 @@ IL_01a6:
 	{
 		// GameManager.OnNextTutorial?.Invoke(5);
 		il2cpp_codegen_runtime_class_init_inline(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var);
-		Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* L_48 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___OnNextTutorial_78;
+		Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* L_48 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___OnNextTutorial_79;
 		Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* L_49 = L_48;
 		G_B39_0 = L_49;
 		if (L_49)
@@ -4157,7 +4173,7 @@ IL_01b7:
 	{
 		// GameManager.OnNextTutorial?.Invoke(2);
 		il2cpp_codegen_runtime_class_init_inline(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var);
-		Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* L_51 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___OnNextTutorial_78;
+		Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* L_51 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___OnNextTutorial_79;
 		Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* L_52 = L_51;
 		G_B43_0 = L_52;
 		if (L_52)
@@ -4231,7 +4247,7 @@ IL_01e5:
 		((Crystal_t6F7C62C7B4413EA51D74760F21441F83E0E364CA_StaticFields*)il2cpp_codegen_static_fields_for(Crystal_t6F7C62C7B4413EA51D74760F21441F83E0E364CA_il2cpp_TypeInfo_var))->____firstPurpleCrystal_28 = (bool)0;
 		// GameManager.OnNextTutorial?.Invoke(15);
 		il2cpp_codegen_runtime_class_init_inline(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var);
-		Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* L_58 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___OnNextTutorial_78;
+		Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* L_58 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___OnNextTutorial_79;
 		Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* L_59 = L_58;
 		G_B52_0 = L_59;
 		if (L_59)
@@ -4282,7 +4298,7 @@ IL_0215:
 		((Crystal_t6F7C62C7B4413EA51D74760F21441F83E0E364CA_StaticFields*)il2cpp_codegen_static_fields_for(Crystal_t6F7C62C7B4413EA51D74760F21441F83E0E364CA_il2cpp_TypeInfo_var))->____firstGoldCrystal_29 = (bool)0;
 		// GameManager.OnNextTutorial?.Invoke(16);
 		il2cpp_codegen_runtime_class_init_inline(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var);
-		Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* L_63 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___OnNextTutorial_78;
+		Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* L_63 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___OnNextTutorial_79;
 		Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* L_64 = L_63;
 		G_B58_0 = L_64;
 		if (L_64)
@@ -4377,14 +4393,14 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void Crystal_OnTriggerExit_mEFDAFE71BBDFED2FB
 		// _standingInGreenCrystal = false;
 		__this->____standingInGreenCrystal_23 = (bool)0;
 		// AudioManager.Instance.PowerUp.Stop();
-		AudioManager_t6D07140015098E8E7109BA8FD297F4537104D613* L_4 = ((AudioManager_t6D07140015098E8E7109BA8FD297F4537104D613_StaticFields*)il2cpp_codegen_static_fields_for(AudioManager_t6D07140015098E8E7109BA8FD297F4537104D613_il2cpp_TypeInfo_var))->___Instance_26;
+		AudioManager_t6D07140015098E8E7109BA8FD297F4537104D613* L_4 = ((AudioManager_t6D07140015098E8E7109BA8FD297F4537104D613_StaticFields*)il2cpp_codegen_static_fields_for(AudioManager_t6D07140015098E8E7109BA8FD297F4537104D613_il2cpp_TypeInfo_var))->___Instance_30;
 		NullCheck(L_4);
-		AudioSource_t871AC2272F896738252F04EE949AEF5B241D3299* L_5 = L_4->___PowerUp_23;
+		AudioSource_t871AC2272F896738252F04EE949AEF5B241D3299* L_5 = L_4->___PowerUp_25;
 		NullCheck(L_5);
 		AudioSource_Stop_m318F17F17A147C77FF6E0A5A7A6BE057DB90F537(L_5, NULL);
 		// GameManager.OnNextTutorial?.Invoke(9);
 		il2cpp_codegen_runtime_class_init_inline(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var);
-		Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* L_6 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___OnNextTutorial_78;
+		Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* L_6 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___OnNextTutorial_79;
 		Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* L_7 = L_6;
 		G_B4_0 = L_7;
 		if (L_7)
@@ -4567,8 +4583,8 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void Crystal_PlayerContact_mA7E490EAB90D78460
 		GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* L_0;
 		L_0 = Component_get_gameObject_m57AEFBB14DB39EC476F740BA000E170355DE691B(__this, NULL);
 		il2cpp_codegen_runtime_class_init_inline(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var);
-		((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___LastCrystal_83 = L_0;
-		Il2CppCodeGenWriteBarrier((void**)(&((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___LastCrystal_83), (void*)L_0);
+		((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___LastCrystal_87 = L_0;
+		Il2CppCodeGenWriteBarrier((void**)(&((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___LastCrystal_87), (void*)L_0);
 		// StartCoroutine(Explode());
 		RuntimeObject* L_1;
 		L_1 = Crystal_Explode_m57F000AC6F49A1FE544A0DB2D4D631EBEED89E2E(__this, NULL);
@@ -4583,9 +4599,9 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void Crystal_PlayerContact_mA7E490EAB90D78460
 	}
 	{
 		// if (_initialLevel == 0) { AudioManager.Instance.CrystalPop[_initialLevel].pitch = Random.Range(0.5f, 1.5f); }
-		AudioManager_t6D07140015098E8E7109BA8FD297F4537104D613* L_4 = ((AudioManager_t6D07140015098E8E7109BA8FD297F4537104D613_StaticFields*)il2cpp_codegen_static_fields_for(AudioManager_t6D07140015098E8E7109BA8FD297F4537104D613_il2cpp_TypeInfo_var))->___Instance_26;
+		AudioManager_t6D07140015098E8E7109BA8FD297F4537104D613* L_4 = ((AudioManager_t6D07140015098E8E7109BA8FD297F4537104D613_StaticFields*)il2cpp_codegen_static_fields_for(AudioManager_t6D07140015098E8E7109BA8FD297F4537104D613_il2cpp_TypeInfo_var))->___Instance_30;
 		NullCheck(L_4);
-		AudioSourceU5BU5D_tBBF6E920E0DC80D53D4BB2A8D4C80D244EF170B2* L_5 = L_4->___CrystalPop_25;
+		AudioSourceU5BU5D_tBBF6E920E0DC80D53D4BB2A8D4C80D244EF170B2* L_5 = L_4->___CrystalPop_29;
 		int32_t L_6 = __this->____initialLevel_16;
 		NullCheck(L_5);
 		int32_t L_7 = L_6;
@@ -4599,13 +4615,13 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void Crystal_PlayerContact_mA7E490EAB90D78460
 IL_0045:
 	{
 		// AudioManager.Instance.CrystalPop[Mathf.Min(_initialLevel, AudioManager.Instance.CrystalPop.Length - 1)].Play();
-		AudioManager_t6D07140015098E8E7109BA8FD297F4537104D613* L_10 = ((AudioManager_t6D07140015098E8E7109BA8FD297F4537104D613_StaticFields*)il2cpp_codegen_static_fields_for(AudioManager_t6D07140015098E8E7109BA8FD297F4537104D613_il2cpp_TypeInfo_var))->___Instance_26;
+		AudioManager_t6D07140015098E8E7109BA8FD297F4537104D613* L_10 = ((AudioManager_t6D07140015098E8E7109BA8FD297F4537104D613_StaticFields*)il2cpp_codegen_static_fields_for(AudioManager_t6D07140015098E8E7109BA8FD297F4537104D613_il2cpp_TypeInfo_var))->___Instance_30;
 		NullCheck(L_10);
-		AudioSourceU5BU5D_tBBF6E920E0DC80D53D4BB2A8D4C80D244EF170B2* L_11 = L_10->___CrystalPop_25;
+		AudioSourceU5BU5D_tBBF6E920E0DC80D53D4BB2A8D4C80D244EF170B2* L_11 = L_10->___CrystalPop_29;
 		int32_t L_12 = __this->____initialLevel_16;
-		AudioManager_t6D07140015098E8E7109BA8FD297F4537104D613* L_13 = ((AudioManager_t6D07140015098E8E7109BA8FD297F4537104D613_StaticFields*)il2cpp_codegen_static_fields_for(AudioManager_t6D07140015098E8E7109BA8FD297F4537104D613_il2cpp_TypeInfo_var))->___Instance_26;
+		AudioManager_t6D07140015098E8E7109BA8FD297F4537104D613* L_13 = ((AudioManager_t6D07140015098E8E7109BA8FD297F4537104D613_StaticFields*)il2cpp_codegen_static_fields_for(AudioManager_t6D07140015098E8E7109BA8FD297F4537104D613_il2cpp_TypeInfo_var))->___Instance_30;
 		NullCheck(L_13);
-		AudioSourceU5BU5D_tBBF6E920E0DC80D53D4BB2A8D4C80D244EF170B2* L_14 = L_13->___CrystalPop_25;
+		AudioSourceU5BU5D_tBBF6E920E0DC80D53D4BB2A8D4C80D244EF170B2* L_14 = L_13->___CrystalPop_29;
 		NullCheck(L_14);
 		int32_t L_15;
 		L_15 = Mathf_Min_m888083F74FF5655778F0403BB5E9608BEFDEA8CB_inline(L_12, ((int32_t)il2cpp_codegen_subtract(((int32_t)(((RuntimeArray*)L_14)->max_length)), 1)), NULL);
@@ -4651,7 +4667,7 @@ IL_0045:
 	{
 		// GameManager.Instance.StarProgress += 10;
 		il2cpp_codegen_runtime_class_init_inline(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var);
-		GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1* L_25 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___Instance_82;
+		GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1* L_25 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___Instance_86;
 		GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1* L_26 = L_25;
 		NullCheck(L_26);
 		int32_t L_27;
@@ -4672,7 +4688,7 @@ IL_00b7:
 	{
 		// if (GameManager.Instance.CompassionateStars > 0)
 		il2cpp_codegen_runtime_class_init_inline(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var);
-		GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1* L_29 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___Instance_82;
+		GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1* L_29 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___Instance_86;
 		NullCheck(L_29);
 		int32_t L_30;
 		L_30 = GameManager_get_CompassionateStars_mC10D44463CFC587C028B958A747A6A7BF8AFB799_inline(L_29, NULL);
@@ -4684,7 +4700,7 @@ IL_00b7:
 	{
 		// GameManager.Instance.CompassionateStars = 0;
 		il2cpp_codegen_runtime_class_init_inline(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var);
-		GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1* L_31 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___Instance_82;
+		GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1* L_31 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___Instance_86;
 		NullCheck(L_31);
 		GameManager_set_CompassionateStars_m56E2D523BE292FA663DD2CF091D7723150C7967E(L_31, 0, NULL);
 		// if (_firstGreenCrystalPopped)
@@ -4701,7 +4717,7 @@ IL_00b7:
 		((Crystal_t6F7C62C7B4413EA51D74760F21441F83E0E364CA_StaticFields*)il2cpp_codegen_static_fields_for(Crystal_t6F7C62C7B4413EA51D74760F21441F83E0E364CA_il2cpp_TypeInfo_var))->____firstGreenCrystalPopped_32 = (bool)0;
 		// if (GameManager.DoTutorial[11]) { GameManager.OnNextTutorial?.Invoke(11); }
 		il2cpp_codegen_runtime_class_init_inline(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var);
-		BooleanU5BU5D_tD317D27C31DB892BE79FAE3AEBC0B3FFB73DE9B4* L_33 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___DoTutorial_89;
+		BooleanU5BU5D_tD317D27C31DB892BE79FAE3AEBC0B3FFB73DE9B4* L_33 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___DoTutorial_93;
 		NullCheck(L_33);
 		int32_t L_34 = ((int32_t)11);
 		uint8_t L_35 = (uint8_t)(L_33)->GetAt(static_cast<il2cpp_array_size_t>(L_34));
@@ -4713,7 +4729,7 @@ IL_00b7:
 	{
 		// if (GameManager.DoTutorial[11]) { GameManager.OnNextTutorial?.Invoke(11); }
 		il2cpp_codegen_runtime_class_init_inline(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var);
-		Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* L_36 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___OnNextTutorial_78;
+		Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* L_36 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___OnNextTutorial_79;
 		Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* L_37 = L_36;
 		G_B10_0 = L_37;
 		if (L_37)
@@ -4737,7 +4753,7 @@ IL_0106:
 	{
 		// else { GameManager.OnNextTutorial?.Invoke(22); }
 		il2cpp_codegen_runtime_class_init_inline(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var);
-		Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* L_38 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___OnNextTutorial_78;
+		Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* L_38 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___OnNextTutorial_79;
 		Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* L_39 = L_38;
 		G_B13_0 = L_39;
 		if (L_39)
@@ -4761,7 +4777,7 @@ IL_0118:
 		// GameManager.Instance.StarProgress +=
 		//     (int)Mathf.Clamp((_initialLevel * _initialLevel * ConsecutiveBonus * _scoreConstant) + _scoreMin, 1, 100);
 		il2cpp_codegen_runtime_class_init_inline(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var);
-		GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1* L_40 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___Instance_82;
+		GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1* L_40 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___Instance_86;
 		GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1* L_41 = L_40;
 		NullCheck(L_41);
 		int32_t L_42;
@@ -4784,9 +4800,9 @@ IL_0118:
 IL_0159:
 	{
 		// AudioManager.Instance.PowerUp.Stop();
-		AudioManager_t6D07140015098E8E7109BA8FD297F4537104D613* L_49 = ((AudioManager_t6D07140015098E8E7109BA8FD297F4537104D613_StaticFields*)il2cpp_codegen_static_fields_for(AudioManager_t6D07140015098E8E7109BA8FD297F4537104D613_il2cpp_TypeInfo_var))->___Instance_26;
+		AudioManager_t6D07140015098E8E7109BA8FD297F4537104D613* L_49 = ((AudioManager_t6D07140015098E8E7109BA8FD297F4537104D613_StaticFields*)il2cpp_codegen_static_fields_for(AudioManager_t6D07140015098E8E7109BA8FD297F4537104D613_il2cpp_TypeInfo_var))->___Instance_30;
 		NullCheck(L_49);
-		AudioSource_t871AC2272F896738252F04EE949AEF5B241D3299* L_50 = L_49->___PowerUp_23;
+		AudioSource_t871AC2272F896738252F04EE949AEF5B241D3299* L_50 = L_49->___PowerUp_25;
 		NullCheck(L_50);
 		AudioSource_Stop_m318F17F17A147C77FF6E0A5A7A6BE057DB90F537(L_50, NULL);
 		// OnGreenCrystalPopped?.Invoke();
@@ -4948,16 +4964,16 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void Crystal_CompassionateCrystalChargeUp_mCA
 	Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* G_B5_0 = NULL;
 	{
 		// AudioManager.Instance.PowerUp.Play();
-		AudioManager_t6D07140015098E8E7109BA8FD297F4537104D613* L_0 = ((AudioManager_t6D07140015098E8E7109BA8FD297F4537104D613_StaticFields*)il2cpp_codegen_static_fields_for(AudioManager_t6D07140015098E8E7109BA8FD297F4537104D613_il2cpp_TypeInfo_var))->___Instance_26;
+		AudioManager_t6D07140015098E8E7109BA8FD297F4537104D613* L_0 = ((AudioManager_t6D07140015098E8E7109BA8FD297F4537104D613_StaticFields*)il2cpp_codegen_static_fields_for(AudioManager_t6D07140015098E8E7109BA8FD297F4537104D613_il2cpp_TypeInfo_var))->___Instance_30;
 		NullCheck(L_0);
-		AudioSource_t871AC2272F896738252F04EE949AEF5B241D3299* L_1 = L_0->___PowerUp_23;
+		AudioSource_t871AC2272F896738252F04EE949AEF5B241D3299* L_1 = L_0->___PowerUp_25;
 		NullCheck(L_1);
 		AudioSource_Play_m95DF07111C61D0E0F00257A00384D31531D590C3(L_1, NULL);
 		// GameManager.GreenCrystalTouched = true;
 		il2cpp_codegen_runtime_class_init_inline(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var);
-		((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___GreenCrystalTouched_90 = (bool)1;
+		((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___GreenCrystalTouched_94 = (bool)1;
 		// GameManager.OnCompassionateStarsToggle?.Invoke(true);
-		Action_1_t10DCB0C07D0D3C565CEACADC80D1152B35A45F6C* L_2 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___OnCompassionateStarsToggle_77;
+		Action_1_t10DCB0C07D0D3C565CEACADC80D1152B35A45F6C* L_2 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___OnCompassionateStarsToggle_78;
 		Action_1_t10DCB0C07D0D3C565CEACADC80D1152B35A45F6C* L_3 = L_2;
 		G_B1_0 = L_3;
 		if (L_3)
@@ -4988,7 +5004,7 @@ IL_0026:
 	{
 		// GameManager.OnNextTutorial?.Invoke(17);
 		il2cpp_codegen_runtime_class_init_inline(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var);
-		Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* L_5 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___OnNextTutorial_78;
+		Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* L_5 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___OnNextTutorial_79;
 		Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* L_6 = L_5;
 		G_B5_0 = L_6;
 		if (L_6)
@@ -5064,7 +5080,7 @@ IL_0009:
 		((Crystal_t6F7C62C7B4413EA51D74760F21441F83E0E364CA_StaticFields*)il2cpp_codegen_static_fields_for(Crystal_t6F7C62C7B4413EA51D74760F21441F83E0E364CA_il2cpp_TypeInfo_var))->____firstGreenCrystal_31 = (bool)0;
 		// GameManager.OnNextTutorial?.Invoke(10);
 		il2cpp_codegen_runtime_class_init_inline(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var);
-		Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* L_2 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___OnNextTutorial_78;
+		Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* L_2 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___OnNextTutorial_79;
 		Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* L_3 = L_2;
 		G_B4_0 = L_3;
 		if (L_3)
@@ -5272,7 +5288,7 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void Crystal_StarGained_mEA222910E65F939AD0E8
 	{
 		// if (GameManager.LastCrystal == this.gameObject)
 		il2cpp_codegen_runtime_class_init_inline(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var);
-		GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* L_0 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___LastCrystal_83;
+		GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* L_0 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___LastCrystal_87;
 		GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* L_1;
 		L_1 = Component_get_gameObject_m57AEFBB14DB39EC476F740BA000E170355DE691B(__this, NULL);
 		il2cpp_codegen_runtime_class_init_inline(Object_tC12DECB6760A7F2CBF65D9DCF18D044C2D97152C_il2cpp_TypeInfo_var);

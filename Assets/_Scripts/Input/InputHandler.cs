@@ -1,3 +1,4 @@
+//using UnityEditor; // not needed once debug is done
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -5,6 +6,7 @@ public class InputHandler : MonoBehaviour
 {
     private PlayerInput _playerInput;
     private InputAction _pressAction, _drawAction;
+    //private InputAction _debugPauseAction;
     private static bool _isPressingScreen;
     private static Vector3 _pressPosition = new Vector3();
 
@@ -16,6 +18,7 @@ public class InputHandler : MonoBehaviour
         _playerInput = GetComponent<PlayerInput>();
         _pressAction = _playerInput.actions["Press"];
         _drawAction = _playerInput.actions["Draw"];
+        //_debugPauseAction = _playerInput.actions["Pause"];
     }
 
     private void OnEnable()
@@ -23,6 +26,7 @@ public class InputHandler : MonoBehaviour
         _pressAction.performed += HandlePress;
         _pressAction.canceled += HandlePress;
         _drawAction.performed += HandleDraw;
+        //_debugPauseAction.performed += DebugHandlePause;
     }
 
     private void OnDisable()
@@ -30,6 +34,7 @@ public class InputHandler : MonoBehaviour
         _pressAction.performed -= HandlePress;
         _pressAction.canceled -= HandlePress;
         _drawAction.performed -= HandleDraw;
+        //_debugPauseAction.performed -= DebugHandlePause;
     }
 
     private void HandleDraw(InputAction.CallbackContext ctx)
@@ -41,4 +46,9 @@ public class InputHandler : MonoBehaviour
     {
         _isPressingScreen = ctx.ReadValueAsButton();
     }
+
+    //private void DebugHandlePause(InputAction.CallbackContext ctx)
+    //{
+    //    EditorApplication.isPaused = true;
+    //}
 }

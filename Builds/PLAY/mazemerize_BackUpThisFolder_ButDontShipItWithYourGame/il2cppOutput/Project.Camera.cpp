@@ -21,6 +21,8 @@ struct Action_1_t97EB52F89C98CE3C1B240F2A8FA7F1168E9C2978;
 struct Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404;
 // System.Action`1<System.Int32Enum>
 struct Action_1_tC926860F20D428DA3E93D6FBA36420E904DD903B;
+// System.Action`1<System.String>
+struct Action_1_t3CB5D1A819C3ED3F99E9E39F890F18633253949A;
 // System.Boolean[]
 struct BooleanU5BU5D_tD317D27C31DB892BE79FAE3AEBC0B3FFB73DE9B4;
 // System.Delegate[]
@@ -355,20 +357,18 @@ struct CameraBehavior_t692908962FD6C495DF905CCF28266CED12557DF2  : public MonoBe
 	Quaternion_tDA59F214EF07D7700B26E40E562F267AF7306974 ____refDeriv_14;
 	// System.Boolean CameraBehavior::_goodToMove
 	bool ____goodToMove_15;
-	// System.Boolean CameraBehavior::_goodToRotate
-	bool ____goodToRotate_16;
 	// System.Boolean CameraBehavior::_firstMove
-	bool ____firstMove_17;
+	bool ____firstMove_16;
 	// System.Single CameraBehavior::_delta
-	float ____delta_18;
+	float ____delta_17;
 	// System.Single CameraBehavior::_smooth
-	float ____smooth_19;
+	float ____smooth_18;
 	// System.Single CameraBehavior::_shakeDuration
-	float ____shakeDuration_20;
+	float ____shakeDuration_19;
 	// System.Single CameraBehavior::_shakeAmount
-	float ____shakeAmount_21;
+	float ____shakeAmount_20;
 	// System.Single CameraBehavior::_decreaseFactor
-	float ____decreaseFactor_22;
+	float ____decreaseFactor_21;
 };
 
 // GameManager
@@ -609,82 +609,90 @@ struct GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields
 	bool ____spawnGreenCrystal_55;
 	// System.Boolean GameManager::_isGameOver
 	bool ____isGameOver_56;
+	// System.Boolean GameManager::_isTutorialVideoOpen
+	bool ____isTutorialVideoOpen_57;
 	// System.Boolean GameManager::_repeatingStage
-	bool ____repeatingStage_57;
+	bool ____repeatingStage_58;
 	// System.Boolean GameManager::_compassionateVictoryAchieved
-	bool ____compassionateVictoryAchieved_58;
+	bool ____compassionateVictoryAchieved_59;
 	// UnityEngine.Vector3 GameManager::_tileSpeed
-	Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2 ____tileSpeed_59;
+	Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2 ____tileSpeed_60;
 	// UnityEngine.Vector3 GameManager::_transitionSpeed
-	Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2 ____transitionSpeed_60;
+	Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2 ____transitionSpeed_61;
 	// UnityEngine.Vector3 GameManager::_boardLength
-	Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2 ____boardLength_61;
+	Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2 ____boardLength_62;
 	// Answer GameManager::_stageAnswerQuality
-	int32_t ____stageAnswerQuality_62;
+	int32_t ____stageAnswerQuality_63;
 	// System.Action`1<GameState> GameManager::OnStateChanged
-	Action_1_t97EB52F89C98CE3C1B240F2A8FA7F1168E9C2978* ___OnStateChanged_63;
+	Action_1_t97EB52F89C98CE3C1B240F2A8FA7F1168E9C2978* ___OnStateChanged_64;
 	// System.Action GameManager::OnSetupNextStage
-	Action_tD00B0A84D7945E50C2DFFC28EFEE6ED44ED2AD07* ___OnSetupNextStage_64;
+	Action_tD00B0A84D7945E50C2DFFC28EFEE6ED44ED2AD07* ___OnSetupNextStage_65;
 	// System.Action`1<System.Int32> GameManager::OnStarBonusChanged
-	Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* ___OnStarBonusChanged_65;
+	Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* ___OnStarBonusChanged_66;
 	// System.Action`1<System.Int32> GameManager::OnCompassionateStarAdded
-	Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* ___OnCompassionateStarAdded_66;
+	Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* ___OnCompassionateStarAdded_67;
 	// System.Action GameManager::OnCompassionateStarsReset
-	Action_tD00B0A84D7945E50C2DFFC28EFEE6ED44ED2AD07* ___OnCompassionateStarsReset_67;
+	Action_tD00B0A84D7945E50C2DFFC28EFEE6ED44ED2AD07* ___OnCompassionateStarsReset_68;
 	// System.Action GameManager::OnCompassionateVictory
-	Action_tD00B0A84D7945E50C2DFFC28EFEE6ED44ED2AD07* ___OnCompassionateVictory_68;
+	Action_tD00B0A84D7945E50C2DFFC28EFEE6ED44ED2AD07* ___OnCompassionateVictory_69;
 	// System.Action GameManager::OnStageEnd
-	Action_tD00B0A84D7945E50C2DFFC28EFEE6ED44ED2AD07* ___OnStageEnd_69;
+	Action_tD00B0A84D7945E50C2DFFC28EFEE6ED44ED2AD07* ___OnStageEnd_70;
 	// System.Action`1<UnityEngine.GameObject> GameManager::OnRunnerSpawned
-	Action_1_tFF0F3D982F6CEB68CBA322555CBBEE6AE1D2519C* ___OnRunnerSpawned_70;
+	Action_1_tFF0F3D982F6CEB68CBA322555CBBEE6AE1D2519C* ___OnRunnerSpawned_71;
 	// System.Action`1<System.Int32> GameManager::OnStarGained
-	Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* ___OnStarGained_71;
+	Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* ___OnStarGained_72;
 	// System.Action GameManager::OnMainMenuOpen
-	Action_tD00B0A84D7945E50C2DFFC28EFEE6ED44ED2AD07* ___OnMainMenuOpen_72;
+	Action_tD00B0A84D7945E50C2DFFC28EFEE6ED44ED2AD07* ___OnMainMenuOpen_73;
 	// System.Action GameManager::OnMainMenuClose
-	Action_tD00B0A84D7945E50C2DFFC28EFEE6ED44ED2AD07* ___OnMainMenuClose_73;
+	Action_tD00B0A84D7945E50C2DFFC28EFEE6ED44ED2AD07* ___OnMainMenuClose_74;
 	// System.Action GameManager::OnGameOver
-	Action_tD00B0A84D7945E50C2DFFC28EFEE6ED44ED2AD07* ___OnGameOver_74;
+	Action_tD00B0A84D7945E50C2DFFC28EFEE6ED44ED2AD07* ___OnGameOver_75;
 	// System.Action GameManager::OnQuitToMenu
-	Action_tD00B0A84D7945E50C2DFFC28EFEE6ED44ED2AD07* ___OnQuitToMenu_75;
+	Action_tD00B0A84D7945E50C2DFFC28EFEE6ED44ED2AD07* ___OnQuitToMenu_76;
 	// System.Action`1<System.Int32> GameManager::OnCompassionateChargeUp
-	Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* ___OnCompassionateChargeUp_76;
+	Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* ___OnCompassionateChargeUp_77;
 	// System.Action`1<System.Boolean> GameManager::OnCompassionateStarsToggle
-	Action_1_t10DCB0C07D0D3C565CEACADC80D1152B35A45F6C* ___OnCompassionateStarsToggle_77;
+	Action_1_t10DCB0C07D0D3C565CEACADC80D1152B35A45F6C* ___OnCompassionateStarsToggle_78;
 	// System.Action`1<System.Int32> GameManager::OnNextTutorial
-	Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* ___OnNextTutorial_78;
+	Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* ___OnNextTutorial_79;
 	// System.Action GameManager::OnShowEmptySlots
-	Action_tD00B0A84D7945E50C2DFFC28EFEE6ED44ED2AD07* ___OnShowEmptySlots_79;
+	Action_tD00B0A84D7945E50C2DFFC28EFEE6ED44ED2AD07* ___OnShowEmptySlots_80;
 	// System.Action GameManager::OnDisableTutorials
-	Action_tD00B0A84D7945E50C2DFFC28EFEE6ED44ED2AD07* ___OnDisableTutorials_80;
+	Action_tD00B0A84D7945E50C2DFFC28EFEE6ED44ED2AD07* ___OnDisableTutorials_81;
+	// System.Action`1<System.String> GameManager::OnErrorMessage
+	Action_1_t3CB5D1A819C3ED3F99E9E39F890F18633253949A* ___OnErrorMessage_82;
+	// System.Action GameManager::OnCrashMessage
+	Action_tD00B0A84D7945E50C2DFFC28EFEE6ED44ED2AD07* ___OnCrashMessage_83;
+	// System.Action`1<System.Int32> GameManager::OnTutorialVideo
+	Action_1_tD69A6DC9FBE94131E52F5A73B2A9D4AB51EEC404* ___OnTutorialVideo_84;
 	// GameState GameManager::CurrentState
-	int32_t ___CurrentState_81;
+	int32_t ___CurrentState_85;
 	// GameManager GameManager::Instance
-	GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1* ___Instance_82;
+	GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1* ___Instance_86;
 	// UnityEngine.GameObject GameManager::LastCrystal
-	GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* ___LastCrystal_83;
+	GameObject_t76FEDD663AB33C991A9C9A23129337651094216F* ___LastCrystal_87;
 	// System.Single GameManager::HighestDrawnRowHeight
-	float ___HighestDrawnRowHeight_84;
+	float ___HighestDrawnRowHeight_88;
 	// System.Single GameManager::RunnerHeight
-	float ___RunnerHeight_85;
+	float ___RunnerHeight_89;
 	// System.Int32 GameManager::NumberOfRows
-	int32_t ___NumberOfRows_86;
+	int32_t ___NumberOfRows_90;
 	// System.Boolean GameManager::IsRunnerInTransition
-	bool ___IsRunnerInTransition_87;
+	bool ___IsRunnerInTransition_91;
 	// System.Boolean GameManager::IsStageCompleted
-	bool ___IsStageCompleted_88;
+	bool ___IsStageCompleted_92;
 	// System.Boolean[] GameManager::DoTutorial
-	BooleanU5BU5D_tD317D27C31DB892BE79FAE3AEBC0B3FFB73DE9B4* ___DoTutorial_89;
+	BooleanU5BU5D_tD317D27C31DB892BE79FAE3AEBC0B3FFB73DE9B4* ___DoTutorial_93;
 	// System.Boolean GameManager::GreenCrystalTouched
-	bool ___GreenCrystalTouched_90;
+	bool ___GreenCrystalTouched_94;
 	// System.Boolean GameManager::GameUnderway
-	bool ___GameUnderway_91;
+	bool ___GameUnderway_95;
 	// System.Int32 GameManager::GlobalDialogueCounter
-	int32_t ___GlobalDialogueCounter_92;
+	int32_t ___GlobalDialogueCounter_96;
 	// System.Int32 GameManager::HighScore
-	int32_t ___HighScore_93;
+	int32_t ___HighScore_97;
 	// System.Int32 GameManager::PreviousHighScore
-	int32_t ___PreviousHighScore_94;
+	int32_t ___PreviousHighScore_98;
 };
 
 // GameManager
@@ -725,8 +733,6 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void Tile_remove_OnChargedTileHit_m0F0F0FBBC1
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void Runner_remove_OnTransitionReached_mDEDEFBBF104A79C79A28A7369E11896583A5F25B (Action_tD00B0A84D7945E50C2DFFC28EFEE6ED44ED2AD07* ___0_value, const RuntimeMethod* method) ;
 // System.Void CameraBehavior::MoveCamera()
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void CameraBehavior_MoveCamera_m73FB87D95101949DB2CC2EEC96C2D3354BA542FB (CameraBehavior_t692908962FD6C495DF905CCF28266CED12557DF2* __this, const RuntimeMethod* method) ;
-// System.Void CameraBehavior::RotateCamera()
-IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void CameraBehavior_RotateCamera_mD3A9B3FADF765B7D8BF32BCE2D075909AFB7B037 (CameraBehavior_t692908962FD6C495DF905CCF28266CED12557DF2* __this, const RuntimeMethod* method) ;
 // System.Void CameraBehavior::ShakeCamera()
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void CameraBehavior_ShakeCamera_m7EEAF157F9EE0A3B3A9AB254FAF799B32D43B2DA (CameraBehavior_t692908962FD6C495DF905CCF28266CED12557DF2* __this, const RuntimeMethod* method) ;
 // System.Boolean GameManager::get_IsInMainMenu()
@@ -745,14 +751,6 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void Transform_set_position_mA1A817124BB41B68
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR bool GameManager_CompareVectorsAsInts_mC3D05CC3EA84460C48FD0844DD7EA91B9446DA56 (Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2 ___0_v1, Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2 ___1_v2, const RuntimeMethod* method) ;
 // System.Void GameManager::EndStage()
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void GameManager_EndStage_m93413402020C4A76FB4DD0D1765EB63BC2AFEE61 (GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1* __this, const RuntimeMethod* method) ;
-// UnityEngine.Quaternion UnityEngine.Transform::get_rotation()
-IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR Quaternion_tDA59F214EF07D7700B26E40E562F267AF7306974 Transform_get_rotation_m32AF40CA0D50C797DA639A696F8EAEC7524C179C (Transform_tB27202C6F4E36D225EE28A13E4D662BF99785DB1* __this, const RuntimeMethod* method) ;
-// UnityEngine.Quaternion CameraHelperMethods::SmoothDamp(UnityEngine.Quaternion,UnityEngine.Quaternion,UnityEngine.Quaternion&,System.Single)
-IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR Quaternion_tDA59F214EF07D7700B26E40E562F267AF7306974 CameraHelperMethods_SmoothDamp_m5FA667E52E927523817BC23EF231D735F46107AA (Quaternion_tDA59F214EF07D7700B26E40E562F267AF7306974 ___0_rot, Quaternion_tDA59F214EF07D7700B26E40E562F267AF7306974 ___1_target, Quaternion_tDA59F214EF07D7700B26E40E562F267AF7306974* ___2_deriv, float ___3_time, const RuntimeMethod* method) ;
-// System.Void UnityEngine.Transform::set_rotation(UnityEngine.Quaternion)
-IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void Transform_set_rotation_m61340DE74726CF0F9946743A727C4D444397331D (Transform_tB27202C6F4E36D225EE28A13E4D662BF99785DB1* __this, Quaternion_tDA59F214EF07D7700B26E40E562F267AF7306974 ___0_value, const RuntimeMethod* method) ;
-// System.Boolean CameraHelperMethods::CompareQuaternions(UnityEngine.Quaternion,UnityEngine.Quaternion,System.Single)
-IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR bool CameraHelperMethods_CompareQuaternions_mA747964C33633BD9A9FBF415CF4FB8214A8DE846 (Quaternion_tDA59F214EF07D7700B26E40E562F267AF7306974 ___0_q1, Quaternion_tDA59F214EF07D7700B26E40E562F267AF7306974 ___1_q2, float ___2_acceptableRange, const RuntimeMethod* method) ;
 // UnityEngine.Vector3 UnityEngine.Random::get_insideUnitSphere()
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2 Random_get_insideUnitSphere_mA488D6859560B73565B8D890ED6B39DB4091C54F (const RuntimeMethod* method) ;
 // UnityEngine.Vector3 UnityEngine.Vector3::op_Multiply(UnityEngine.Vector3,System.Single)
@@ -928,25 +926,11 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void CameraBehavior_Update_mF8A81843488173057
 
 IL_000e:
 	{
-		// if (_goodToRotate) { RotateCamera(); }
-		bool L_1 = __this->____goodToRotate_16;
+		// if (_goodToShake) { ShakeCamera(); }
+		bool L_1 = __this->____goodToShake_10;
 		if (!L_1)
 		{
 			goto IL_001c;
-		}
-	}
-	{
-		// if (_goodToRotate) { RotateCamera(); }
-		CameraBehavior_RotateCamera_mD3A9B3FADF765B7D8BF32BCE2D075909AFB7B037(__this, NULL);
-	}
-
-IL_001c:
-	{
-		// if (_goodToShake) { ShakeCamera(); }
-		bool L_2 = __this->____goodToShake_10;
-		if (!L_2)
-		{
-			goto IL_002a;
 		}
 	}
 	{
@@ -954,7 +938,7 @@ IL_001c:
 		CameraBehavior_ShakeCamera_m7EEAF157F9EE0A3B3A9AB254FAF799B32D43B2DA(__this, NULL);
 	}
 
-IL_002a:
+IL_001c:
 	{
 		// }
 		return;
@@ -971,7 +955,7 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void CameraBehavior_SetTargetForTransition_mF
 	}
 	{
 		// if (_firstMove)
-		bool L_0 = __this->____firstMove_17;
+		bool L_0 = __this->____firstMove_16;
 		if (!L_0)
 		{
 			goto IL_0010;
@@ -979,7 +963,7 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void CameraBehavior_SetTargetForTransition_mF
 	}
 	{
 		// _firstMove = false;
-		__this->____firstMove_17 = (bool)0;
+		__this->____firstMove_16 = (bool)0;
 		// return;
 		return;
 	}
@@ -1012,8 +996,6 @@ IL_001e:
 		__this->____targetRotation_13 = L_3;
 		// _goodToMove = true;
 		__this->____goodToMove_15 = (bool)1;
-		// _goodToRotate = true;
-		__this->____goodToRotate_16 = (bool)1;
 		// }
 		return;
 	}
@@ -1044,8 +1026,6 @@ IL_0005:
 		__this->____targetRotation_13 = L_2;
 		// _goodToMove = true;
 		__this->____goodToMove_15 = (bool)1;
-		// _goodToRotate = true;
-		__this->____goodToRotate_16 = (bool)1;
 		// }
 		return;
 	}
@@ -1062,8 +1042,6 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void CameraBehavior_SetTargetForMenu_m1E3D857
 		__this->____targetRotation_13 = L_1;
 		// _goodToMove = true;
 		__this->____goodToMove_15 = (bool)1;
-		// _goodToRotate = true;
-		__this->____goodToRotate_16 = (bool)1;
 		// }
 		return;
 	}
@@ -1080,7 +1058,7 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void CameraBehavior_EnableCameraShake_m3E3682
 	{
 		// if (GameManager.CurrentState == GameState.Progressing)
 		il2cpp_codegen_runtime_class_init_inline(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var);
-		int32_t L_0 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___CurrentState_81;
+		int32_t L_0 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___CurrentState_85;
 		if ((!(((uint32_t)L_0) == ((uint32_t)2))))
 		{
 			goto IL_001a;
@@ -1090,7 +1068,7 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void CameraBehavior_EnableCameraShake_m3E3682
 		// _goodToShake = true;
 		__this->____goodToShake_10 = (bool)1;
 		// _shakeDuration = 0.5f;
-		__this->____shakeDuration_20 = (0.5f);
+		__this->____shakeDuration_19 = (0.5f);
 	}
 
 IL_001a:
@@ -1119,7 +1097,7 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void CameraBehavior_MoveCamera_m73FB87D951019
 		L_2 = Transform_get_position_m69CD5FA214FDAE7BB701552943674846C220FDE1(L_1, NULL);
 		Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2 L_3 = __this->____targetPosition_11;
 		Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2* L_4 = (&__this->____refVelocity_12);
-		float L_5 = __this->____smooth_19;
+		float L_5 = __this->____smooth_18;
 		Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2 L_6;
 		L_6 = Vector3_SmoothDamp_mF673AC30464B7DF671A0556140EB6E9DD75827ED_inline(L_2, L_3, L_4, L_5, NULL);
 		NullCheck(L_0);
@@ -1144,7 +1122,7 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void CameraBehavior_MoveCamera_m73FB87D951019
 		__this->____goodToMove_15 = (bool)0;
 		// if (GameManager.CurrentState == GameState.Transition && GameManager.IsStageCompleted)
 		il2cpp_codegen_runtime_class_init_inline(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var);
-		int32_t L_11 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___CurrentState_81;
+		int32_t L_11 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___CurrentState_85;
 		if ((!(((uint32_t)L_11) == ((uint32_t)1))))
 		{
 			goto IL_0065;
@@ -1152,7 +1130,7 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void CameraBehavior_MoveCamera_m73FB87D951019
 	}
 	{
 		il2cpp_codegen_runtime_class_init_inline(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var);
-		bool L_12 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___IsStageCompleted_88;
+		bool L_12 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___IsStageCompleted_92;
 		if (!L_12)
 		{
 			goto IL_0065;
@@ -1161,7 +1139,7 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void CameraBehavior_MoveCamera_m73FB87D951019
 	{
 		// GameManager.Instance.EndStage();
 		il2cpp_codegen_runtime_class_init_inline(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var);
-		GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1* L_13 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___Instance_82;
+		GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1* L_13 = ((GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_StaticFields*)il2cpp_codegen_static_fields_for(GameManager_t30E6C4E0762DB9731151D46B84CE7BE7BDCD8CE1_il2cpp_TypeInfo_var))->___Instance_86;
 		NullCheck(L_13);
 		GameManager_EndStage_m93413402020C4A76FB4DD0D1765EB63BC2AFEE61(L_13, NULL);
 	}
@@ -1172,57 +1150,12 @@ IL_0065:
 		return;
 	}
 }
-// System.Void CameraBehavior::RotateCamera()
-IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void CameraBehavior_RotateCamera_mD3A9B3FADF765B7D8BF32BCE2D075909AFB7B037 (CameraBehavior_t692908962FD6C495DF905CCF28266CED12557DF2* __this, const RuntimeMethod* method) 
-{
-	{
-		// transform.rotation = CameraHelperMethods.SmoothDamp(transform.rotation, _targetRotation, ref _refDeriv, _smooth);
-		Transform_tB27202C6F4E36D225EE28A13E4D662BF99785DB1* L_0;
-		L_0 = Component_get_transform_m2919A1D81931E6932C7F06D4C2F0AB8DDA9A5371(__this, NULL);
-		Transform_tB27202C6F4E36D225EE28A13E4D662BF99785DB1* L_1;
-		L_1 = Component_get_transform_m2919A1D81931E6932C7F06D4C2F0AB8DDA9A5371(__this, NULL);
-		NullCheck(L_1);
-		Quaternion_tDA59F214EF07D7700B26E40E562F267AF7306974 L_2;
-		L_2 = Transform_get_rotation_m32AF40CA0D50C797DA639A696F8EAEC7524C179C(L_1, NULL);
-		Quaternion_tDA59F214EF07D7700B26E40E562F267AF7306974 L_3 = __this->____targetRotation_13;
-		Quaternion_tDA59F214EF07D7700B26E40E562F267AF7306974* L_4 = (&__this->____refDeriv_14);
-		float L_5 = __this->____smooth_19;
-		Quaternion_tDA59F214EF07D7700B26E40E562F267AF7306974 L_6;
-		L_6 = CameraHelperMethods_SmoothDamp_m5FA667E52E927523817BC23EF231D735F46107AA(L_2, L_3, L_4, L_5, NULL);
-		NullCheck(L_0);
-		Transform_set_rotation_m61340DE74726CF0F9946743A727C4D444397331D(L_0, L_6, NULL);
-		// if (CameraHelperMethods.CompareQuaternions(transform.rotation, _targetRotation, _delta))
-		Transform_tB27202C6F4E36D225EE28A13E4D662BF99785DB1* L_7;
-		L_7 = Component_get_transform_m2919A1D81931E6932C7F06D4C2F0AB8DDA9A5371(__this, NULL);
-		NullCheck(L_7);
-		Quaternion_tDA59F214EF07D7700B26E40E562F267AF7306974 L_8;
-		L_8 = Transform_get_rotation_m32AF40CA0D50C797DA639A696F8EAEC7524C179C(L_7, NULL);
-		Quaternion_tDA59F214EF07D7700B26E40E562F267AF7306974 L_9 = __this->____targetRotation_13;
-		float L_10 = __this->____delta_18;
-		bool L_11;
-		L_11 = CameraHelperMethods_CompareQuaternions_mA747964C33633BD9A9FBF415CF4FB8214A8DE846(L_8, L_9, L_10, NULL);
-		if (!L_11)
-		{
-			goto IL_0052;
-		}
-	}
-	{
-		// _goodToRotate = false;
-		__this->____goodToRotate_16 = (bool)0;
-	}
-
-IL_0052:
-	{
-		// }
-		return;
-	}
-}
 // System.Void CameraBehavior::ShakeCamera()
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void CameraBehavior_ShakeCamera_m7EEAF157F9EE0A3B3A9AB254FAF799B32D43B2DA (CameraBehavior_t692908962FD6C495DF905CCF28266CED12557DF2* __this, const RuntimeMethod* method) 
 {
 	{
 		// if (_shakeDuration > 0)
-		float L_0 = __this->____shakeDuration_20;
+		float L_0 = __this->____shakeDuration_19;
 		if ((!(((float)L_0) > ((float)(0.0f)))))
 		{
 			goto IL_004d;
@@ -1235,7 +1168,7 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void CameraBehavior_ShakeCamera_m7EEAF157F9EE
 		Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2 L_2 = __this->____targetPosition_11;
 		Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2 L_3;
 		L_3 = Random_get_insideUnitSphere_mA488D6859560B73565B8D890ED6B39DB4091C54F(NULL);
-		float L_4 = __this->____shakeAmount_21;
+		float L_4 = __this->____shakeAmount_20;
 		Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2 L_5;
 		L_5 = Vector3_op_Multiply_m87BA7C578F96C8E49BB07088DAAC4649F83B0353_inline(L_3, L_4, NULL);
 		Vector3_t24C512C7B96BBABAD472002D0BA2BDA40A5A80B2 L_6;
@@ -1243,18 +1176,18 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void CameraBehavior_ShakeCamera_m7EEAF157F9EE
 		NullCheck(L_1);
 		Transform_set_localPosition_mDE1C997F7D79C0885210B7732B4BA50EE7D73134(L_1, L_6, NULL);
 		// _shakeDuration -= Time.deltaTime * _decreaseFactor;
-		float L_7 = __this->____shakeDuration_20;
+		float L_7 = __this->____shakeDuration_19;
 		float L_8;
 		L_8 = Time_get_deltaTime_mC3195000401F0FD167DD2F948FD2BC58330D0865(NULL);
-		float L_9 = __this->____decreaseFactor_22;
-		__this->____shakeDuration_20 = ((float)il2cpp_codegen_subtract(L_7, ((float)il2cpp_codegen_multiply(L_8, L_9))));
+		float L_9 = __this->____decreaseFactor_21;
+		__this->____shakeDuration_19 = ((float)il2cpp_codegen_subtract(L_7, ((float)il2cpp_codegen_multiply(L_8, L_9))));
 		return;
 	}
 
 IL_004d:
 	{
 		// _shakeDuration = 0f;
-		__this->____shakeDuration_20 = (0.0f);
+		__this->____shakeDuration_19 = (0.0f);
 		// transform.localPosition = _targetPosition;
 		Transform_tB27202C6F4E36D225EE28A13E4D662BF99785DB1* L_10;
 		L_10 = Component_get_transform_m2919A1D81931E6932C7F06D4C2F0AB8DDA9A5371(__this, NULL);
@@ -1272,15 +1205,15 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void CameraBehavior__ctor_mF1719B9161404C363F
 {
 	{
 		// private bool _firstMove = true;
-		__this->____firstMove_17 = (bool)1;
+		__this->____firstMove_16 = (bool)1;
 		// private float _delta = 0.1f;
-		__this->____delta_18 = (0.100000001f);
+		__this->____delta_17 = (0.100000001f);
 		// private float _smooth = 1f; // the larger this is, the slower you move
-		__this->____smooth_19 = (1.0f);
+		__this->____smooth_18 = (1.0f);
 		// private float _shakeAmount = 0.25f;
-		__this->____shakeAmount_21 = (0.25f);
+		__this->____shakeAmount_20 = (0.25f);
 		// private float _decreaseFactor = 1.0f;
-		__this->____decreaseFactor_22 = (1.0f);
+		__this->____decreaseFactor_21 = (1.0f);
 		MonoBehaviour__ctor_m592DB0105CA0BC97AA1C5F4AD27B12D68A3B7C1E(__this, NULL);
 		return;
 	}
