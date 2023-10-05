@@ -1,0 +1,4 @@
+There is absolutely no data collection of any kind in this app. None. If there is, message me and I will remove it. 
+The game will store game data (ie, your score, your progress in the game, etc) in the app's internal storage location, but none of that relates to you (the user) at all. 
+
+It really is that simple. This is just a single player game, there should be no permissions needed beyond those required to run the app in fullscreen. 
