@@ -37,6 +37,9 @@ public class DialogueManager : MonoBehaviour
 
     private void StartDialogue(string[] sentences)
     {
+        EndDialogue();
+        return;
+
         if (!_isQuery) { _isDialogueActive = true; }
         OnDialogueOpen?.Invoke(true);
         _currentDialogue.Clear();
@@ -122,6 +125,7 @@ public class DialogueManager : MonoBehaviour
     public void NextComment(StageDialogue stageDialogue)
     {
         if (stageDialogue == null) { EndDialogue(); return; }
+
 
         if (!GameManager.RepeatingStage)
         {

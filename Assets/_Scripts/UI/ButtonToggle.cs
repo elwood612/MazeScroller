@@ -93,7 +93,8 @@ public class ButtonToggle : MonoBehaviour
     {
         Toggle();
         UpdateImage();
-        GameManager.IsTutorialsEnabled = _isEnabled;
+        //GameManager.IsTutorialsEnabled = _isEnabled; // old code
+        GameManager.IsTutorialsEnabled = false; // hacky, but will work
         //GameManager.DoTutorial[6] = _isEnabled;
     }
 }
