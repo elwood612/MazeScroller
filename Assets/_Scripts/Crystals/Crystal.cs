@@ -115,8 +115,9 @@ public class Crystal : MonoBehaviour
                 AudioManager.Instance.MissileBeep.pitch = Random.Range(0.6f, 1.2f);
                 AudioManager.Instance.MissileBeep.Play();
                 GameManager.Instance.StarProgress++;
-                DestroyOrbitMissile(_orbitMissiles[_level - 1]);
-                _level--;
+                //DestroyOrbitMissile(_orbitMissiles[_level - 1]);
+                //_level--;
+                DelevelCrystal();
             }
 
             #region Tutorial Stuff
@@ -306,6 +307,13 @@ public class Crystal : MonoBehaviour
         _particlesExplosionMissile.Play();
     }
 
+    private void DelevelCrystal()
+    {
+        _level--;
+        SetMaterials(_wireframeMaterials[_level], _shadowMaterials[_level]);
+        _particlesExplosionMissile.Play();
+    }
+
     private void SetMaterials(Material wireframe, Material shadow)
     {
         for (int i = 0; i < _wireframe.transform.childCount; i++)
@@ -365,8 +373,8 @@ public class Crystal : MonoBehaviour
         _crystalPool = crystalPool;
         _compassionateScore = false;
         SetMaterials(_wireframeMaterials[_level], _shadowMaterials[_level]);
-        ResetOrbitMissiles();
-        SpawnOrbitMissiles();
+        //ResetOrbitMissiles();
+        //SpawnOrbitMissiles();
         ResetWord();
         SetScale();
     }
