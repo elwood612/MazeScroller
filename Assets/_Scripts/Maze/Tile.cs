@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -30,6 +31,9 @@ public class Tile : MonoBehaviour
     private bool _isCharged = false;
     private bool _firstSpawnInStage = true;
     private bool _deadEndPrimed = false;
+    private bool _flashTrigger = false;
+    private bool _flashToggle = true;
+    private bool _tileHasPlayer = false;
     private int _crossings = 0;
     private int _tileColorOffset = 0;
     private Tile _pathfindingParent;
@@ -38,6 +42,7 @@ public class Tile : MonoBehaviour
     private Material _newMaterial;
     private static Color _baseTileColor = new Color(0.1725489f, 0.3896077f, 0.490196f, 1f);
     private static Color _newTileColor;
+    private WaitForSeconds _flashDelay = new WaitForSeconds(0.1f);
 
     public static event Action<Tile> OnTileDestroy;
     public static event Action<Tile> OnTileDeactivate;
@@ -74,6 +79,11 @@ public class Tile : MonoBehaviour
         DisableTile();
     }
 
+    private void Update()
+    {
+        if (!_flashTrigger && _tileHasPlayer && !IsTransitionTile) { StartCoroutine(FlashTile()); }
+    }
+
     private void OnEnable()
     {
         _parentRow.OnRowReset += ResetTile;
@@ -96,7 +106,7 @@ public class Tile : MonoBehaviour
     {
         if (other.CompareTag("Runner"))
         {
-            PlayerCrossing(other.GetComponent<IRunner>());
+            PlayerCurrentPosition(other.GetComponent<IRunner>());
         }
         else if (other.CompareTag("TileSpawner"))
         {
@@ -112,9 +122,18 @@ public class Tile : MonoBehaviour
         }
     }
 
-    private void PlayerCrossing(IRunner runner)
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Runner"))
+        {
+            PlayerHasCrossed();
+        }
+    }
+
+    private void PlayerCurrentPosition(IRunner runner)
     {
         SetMaterial(_tileCrossed);
+        _tileHasPlayer = true;
         ChargedCheck();
         _crossings++;
         _pathfindingParent = null;
@@ -122,10 +141,16 @@ public class Tile : MonoBehaviour
         runner.CurrentTile = this;
         runner.CalculateNextTargetWrapper(this);
         if (IsTransitionTile && !runner.IsInTransition) { runner.BeginTransition(); }
-        if (!IsTransitionTile && runner.IsInTransition) 
-        { 
+        if (!IsTransitionTile && runner.IsInTransition)
+        {
             runner.BeginStage();
         }
+    }
+
+    private void PlayerHasCrossed()
+    {
+        _tileHasPlayer = false;
+        SetMaterial(_tileCrossed);
     }
 
     private void ChargedCheck()
@@ -173,6 +198,19 @@ public class Tile : MonoBehaviour
             SetMaterial(_newMaterial);
             _firstSpawnInStage = false;
         }
+    }
+
+    private IEnumerator FlashTile()
+    {
+        _flashTrigger = true;
+        _flashToggle = !_flashToggle;
+
+        yield return _flashDelay;
+
+        if (_flashToggle && _tileHasPlayer) { SetMaterial(_tileFlash); }
+        else { SetMaterial(_tileCrossed); }
+
+        _flashTrigger = false;
     }
 
     private void SetMaterial(Material material)
@@ -394,6 +432,7 @@ public class Tile : MonoBehaviour
     {
         _crossings = 0;
         AttachedCrystal = null;
+        _tileHasPlayer = false;
         
         SetMaterial(_newMaterial);
         DisableTile();

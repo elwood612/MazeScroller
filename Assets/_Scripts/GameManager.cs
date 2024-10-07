@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
     private int _starBonus = 0;
     private int _compassionateStars = 0;
     private int _compassionateProgress = 0;
-    private WaitForSeconds _bonusDelay = new WaitForSeconds(1f);
+    private WaitForSeconds _bonusDelay = new WaitForSeconds(0.5f);
     private WaitForSeconds _bonusStep = new WaitForSeconds(0.4f);
     private WaitForSeconds _runnerTeleportDelay = new WaitForSeconds(0.5f);
     private bool _startOfGame = true;
